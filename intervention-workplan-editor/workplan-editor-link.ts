@@ -1,8 +1,8 @@
 import {LitElement, html, CSSResult, css, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 
-@customElement('workplan-editor-link')
-export class WorkplanEditorLink extends LitElement {
+@customElement('gdd-workplan-editor-link')
+export class GDDWorkplanEditorLink extends LitElement {
   @property({type: String, reflect: true}) link = '';
   @property({type: String, reflect: true}) direction: 'right' | 'left' = 'left';
   @property({type: Boolean}) lowResolutionLayout = false;

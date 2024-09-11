@@ -18,7 +18,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {patchIntervention} from '../../common/actions/interventions';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import isEmpty from 'lodash-es/isEmpty';
@@ -31,8 +31,8 @@ import {translate, get as getTranslation, langChanged} from 'lit-translate';
 /**
  * @customElement
  */
-@customElement('partner-info')
-export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-partner-info')
+export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -215,7 +215,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
 
   getAllPartnerStaffMembers(partnerId: number) {
     return sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.partnerStaffMembers, {id: partnerId})
+      endpoint: getEndpoint(gddEndpoints.partnerStaffMembers, {id: partnerId})
     }).then((resp) => {
       return resp.sort(
         (a: PartnerStaffMember, b: PartnerStaffMember) =>

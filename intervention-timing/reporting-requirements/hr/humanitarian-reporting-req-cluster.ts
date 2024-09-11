@@ -11,7 +11,7 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-
 import {translate} from 'lit-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -21,8 +21,10 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
  * @appliesMixin ReportingRequirementsCommonMixin
  */
 
-@customElement('humanitarian-reporting-req-cluster')
-export class HumanitarianReportingReqCluster extends EndpointsLitMixin(ReportingRequirementsCommonMixin(LitElement)) {
+@customElement('gdd-humanitarian-reporting-req-cluster')
+export class GDDHumanitarianReportingReqCluster extends EndpointsLitMixin(
+  ReportingRequirementsCommonMixin(LitElement)
+) {
   static get styles() {
     return [layoutStyles];
   }
@@ -108,7 +110,7 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
     }
     let reportingRequirementsOriginal = this.reportingRequirements;
     this.fireRequest(
-      interventionEndpoints,
+      gddEndpoints,
       'hrClusterReportingRequirements',
       {},
       {

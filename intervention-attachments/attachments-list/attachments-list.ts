@@ -21,7 +21,7 @@ import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/uti
 import {getFileNameFromURL, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -33,8 +33,8 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('attachments-list')
-export class AttachmentsList extends CommentsMixin(LitElement) {
+@customElement('gdd-attachments-list')
+export class GDDAttachmentsList extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     return [layoutStyles];
   }
@@ -202,7 +202,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
       loadingSource: 'interv-attachment-remove'
     });
 
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.updatePdAttachment, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.updatePdAttachment, {
       id: attachment.intervention,
       attachment_id: attachment.id
     });

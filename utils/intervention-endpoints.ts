@@ -58,7 +58,7 @@ export interface EtoolsEndpoints {
   exportReviewPdf: EtoolsEndpoint;
 }
 
-export const interventionEndpoints: EtoolsEndpoints = {
+export const gddEndpoints: EtoolsEndpoints = {
   intervention: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/'
   },

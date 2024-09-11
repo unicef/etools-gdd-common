@@ -1,6 +1,6 @@
 import {LitElement, html, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
@@ -17,8 +17,8 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 
-@customElement('pd-output-dialog')
-export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
+@customElement('gdd-pd-output-dialog')
+export class GDDPdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
   @property() loadingInProcess = false;
   @property() isEditDialog = false;
 
@@ -147,11 +147,11 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     this.loadingInProcess = true;
     // get endpoint
     const endpoint: RequestEndpoint = this.isEditDialog
-      ? getEndpoint(interventionEndpoints.pdOutputDetails, {
+      ? getEndpoint(gddEndpoints.pdOutputDetails, {
           pd_id: this.editedData.id,
           intervention_id: this.interventionId
         })
-      : getEndpoint(interventionEndpoints.createPdOutput, {intervention_id: this.interventionId});
+      : getEndpoint(gddEndpoints.createPdOutput, {intervention_id: this.interventionId});
 
     // get changed fields
     const diff: Partial<ResultLinkLowerResult> = getDifference<ResultLinkLowerResult>(

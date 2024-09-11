@@ -23,7 +23,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
@@ -64,8 +64,8 @@ const customStyles = html`
   </style>
 `;
 
-@customElement('supply-agreements')
-export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-supply-agreements')
+export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -184,7 +184,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         hidden
         accept=".csv"
         .endpointInfo="${{
-          endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyItemsUpload, {
+          endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.supplyItemsUpload, {
             interventionId: this.intervention.id
           }).url,
           rawFilePropertyName: 'supply_items_file',
@@ -368,14 +368,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   deleteSupplyItem(supplyId: number) {
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.supplyAgreementEdit, {
       interventionId: this.intervention.id,
       supplyId: supplyId
     });
 
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'intervention-tabs'
+      loadingSource: 'gdd-intervention-tabs'
     });
 
     sendRequest({
@@ -388,7 +388,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           .finally(() =>
             fireEvent(this, 'global-loading', {
               active: false,
-              loadingSource: 'intervention-tabs'
+              loadingSource: 'gdd-intervention-tabs'
             })
           );
       })
@@ -396,7 +396,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'intervention-tabs'
+          loadingSource: 'gdd-intervention-tabs'
         });
       });
   }

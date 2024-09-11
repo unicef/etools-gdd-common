@@ -18,8 +18,8 @@ import {patchIntervention} from '../../common/actions/interventions';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 
 /** Visible only when PD is in status Ended */
-@customElement('final-progress-report')
-export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-final-progress-report')
+export class GDDIndicatorReportTarget extends connectStore(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }

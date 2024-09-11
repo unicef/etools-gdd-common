@@ -14,10 +14,10 @@ import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 
-@customElement('general-review-information')
-export class GeneralReviewInformation extends LitElement {
+@customElement('gdd-general-review-information')
+export class GDDGeneralReviewInformation extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -195,7 +195,7 @@ export class GeneralReviewInformation extends LitElement {
     if (!interventionId || !reviewId) {
       return '';
     }
-    return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.exportReviewPdf, {
+    return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.exportReviewPdf, {
       interventionId: interventionId,
       reviewId: reviewId
     }).url;

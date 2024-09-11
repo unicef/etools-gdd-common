@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
+import {ReportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
@@ -22,10 +22,10 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
  * @appliesMixin ReportingRequirementsCommonMixin
  */
 
-@customElement('hru-list')
-export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequirementsCommonMixin(LitElement)) {
+@customElement('gdd-hru-list')
+export class GDDHruList extends ReportingReqPastDatesCheckMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [layoutStyles, reportingRequirementsListStyles];
+    return [layoutStyles, ReportingRequirementsListStyles];
   }
   render() {
     if (!this.hruData) {
@@ -121,4 +121,4 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
   }
 }
 
-export {HruList as HruListEl};
+export {GDDHruList as GDDHruListEl};

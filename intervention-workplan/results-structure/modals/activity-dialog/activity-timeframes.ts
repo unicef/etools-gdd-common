@@ -7,8 +7,8 @@ import {translate} from 'lit-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
-@customElement('activity-time-frames')
-export class ActivityTimeFrames extends LitElement {
+@customElement('gdd-activity-time-frames')
+export class GDDActivityTimeFrames extends LitElement {
   static get styles(): CSSResultArray {
     // language=css
     return [

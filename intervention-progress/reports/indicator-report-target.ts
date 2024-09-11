@@ -11,8 +11,8 @@ import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-
  * @customElement
  * @appliesMixin UtilsMixin
  */
-@customElement('indicator-report-target')
-export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
+@customElement('gdd-indicator-report-target')
+export class GDDIndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
   // static get is() {
   //   return 'indicator-report-target';
   // }

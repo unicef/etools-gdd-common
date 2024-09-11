@@ -26,7 +26,7 @@ import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {buildUrlQueryString, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {gddEndpoints} from '../utils/intervention-endpoints';
 import {RouteDetails} from '@unicef-polymer/etools-types/dist/router.types';
 import pick from 'lodash-es/pick';
 import './reports/final-progress-report';
@@ -43,8 +43,8 @@ import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 /**
  * @customElement
  */
-@customElement('intervention-reports')
-export class InterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsLitMixin(LitElement)))) {
+@customElement('gdd-intervention-reports')
+export class GDDInterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsLitMixin(LitElement)))) {
   static get styles() {
     return [layoutStyles, elevationStyles];
   }
@@ -143,7 +143,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                       </sl-tooltip>
                     </span>
                     <span class="col-data col-2" data-col-header-label="${translate('REPORT_STATUS')}">
-                      <intervention-report-status status="${report.status}"></intervention-report-status>
+                      <gdd-intervention-report-status status="${report.status}"></gdd-intervention-report-status>
                     </span>
                     <span class="col-data col-2" data-col-header-label="${translate('DUE_DATE')}">
                       ${this._displayOrDefault(report.due_date)}
@@ -174,7 +174,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
               >
               </etools-data-table-footer>`}
       </etools-content-panel>
-      <final-progress-report></final-progress-report>
+      <gdd-final-progress-report></gdd-final-progress-report>
     `;
   }
 
@@ -329,7 +329,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     // abort previous req and then fire a new one with updated params
     abortRequestByKey(this._endpointName);
 
-    this.fireRequest(interventionEndpoints, 'reports', {}, {params: params}, this._endpointName)
+    this.fireRequest(gddEndpoints, 'reports', {}, {params: params}, this._endpointName)
       .then((response: any) => {
         if (response) {
           this.reports = [...response.results];

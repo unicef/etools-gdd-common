@@ -18,8 +18,8 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 /**
  * @customElement
  */
-@customElement('fund-reservations-display')
-export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElement) {
+@customElement('gdd-fund-reservations-display')
+export class GDDFundReservationsDisplay extends FrNumbersConsistencyMixin(LitElement) {
   static get styles() {
     return [frWarningsStyles, layoutStyles];
   }

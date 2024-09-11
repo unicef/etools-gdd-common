@@ -5,7 +5,7 @@ import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
+import {ReportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
@@ -23,12 +23,12 @@ import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query.
  * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
-@customElement('qpr-list')
-export class QprList extends PaginationMixin(
+@customElement('gdd-qpr-list')
+export class GDDQprList extends PaginationMixin(
   ReportingRequirementsCommonMixin(ReportingReqPastDatesCheckMixin(LitElement))
 ) {
   static get styles() {
-    return [layoutStyles, reportingRequirementsListStyles];
+    return [layoutStyles, ReportingRequirementsListStyles];
   }
   render() {
     if (!this.qprData) {
@@ -189,4 +189,4 @@ export class QprList extends PaginationMixin(
   }
 }
 
-export {QprList as QprListEl};
+export {GDDQprList as GDDQprListEl};

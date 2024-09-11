@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
@@ -24,8 +24,8 @@ import dayjs from 'dayjs';
  * @LitElement
  * @customElement
  */
-@customElement('pd-termination')
-export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitElement)) {
+@customElement('gdd-pd-termination')
+export class GDDPdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -100,7 +100,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   }
 
   @property({type: String})
-  uploadEndpoint: string | undefined = interventionEndpoints.attachmentsUpload.url;
+  uploadEndpoint: string | undefined = gddEndpoints.attachmentsUpload.url;
 
   @property({type: Number})
   interventionId!: number;

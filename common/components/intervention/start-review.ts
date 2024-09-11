@@ -20,8 +20,8 @@ import {get as getTranslation} from 'lit-translate';
  * @LitElement
  * @customElement
  */
-@customElement('start-review')
-export class StartReview extends connectStore(LitElement) {
+@customElement('gdd-start-review')
+export class GDDStartReview extends connectStore(LitElement) {
   @property() type = '';
 
   @property() reviewTypes: LabelAndValue[] = [];

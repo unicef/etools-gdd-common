@@ -17,8 +17,8 @@ class GroupedLocations {
 /**
  * @customElement
  */
-@customElement('grouped-locations-dialog')
-export class GroupedLocationsDialog extends LitElement {
+@customElement('gdd-grouped-locations-dialog')
+export class GDDGroupedLocationsDialog extends LitElement {
   static get styles() {
     return [layoutStyles];
   }

@@ -5,13 +5,13 @@ import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
 import './add-edit-special-rep-req';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
+import {ReportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../common/constants';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
@@ -31,10 +31,10 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
  * @mixinFunction
  * @appliesMixin ReportingRequirementsCommonMixin
  */
-@customElement('special-reporting-requirements')
-export class SpecialReportingRequirements extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
+@customElement('gdd-special-reporting-requirements')
+export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [layoutStyles, reportingRequirementsListStyles];
+    return [layoutStyles, ReportingRequirementsListStyles];
   }
   render() {
     return html`
@@ -212,12 +212,9 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
     const reportingRequirementsOriginal = this.reportingRequirements;
     if (this._itemToDeleteIndex > -1) {
       const itemToDelete = this.reportingRequirements[this._itemToDeleteIndex] as any;
-      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(
-        interventionEndpoints.specialReportingRequirementsUpdate,
-        {
-          reportId: itemToDelete.id
-        }
-      );
+      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirementsUpdate, {
+        reportId: itemToDelete.id
+      });
       sendRequest({
         method: 'DELETE',
         endpoint: endpoint

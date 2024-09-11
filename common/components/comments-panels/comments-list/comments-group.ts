@@ -5,8 +5,8 @@ import {translate} from 'lit-translate';
 import {CommentRelatedItem} from '../../comments/comments-types';
 import dayjs from 'dayjs';
 
-@customElement('comments-group')
-export class CommentsGroup extends LitElement {
+@customElement('gdd-comments-group')
+export class GDDCommentsGroup extends LitElement {
   @property({type: Number}) commentsCount = 0;
   @property({type: String}) relatedItem: CommentRelatedItem | null = null;
   @property({type: String}) relatedTo = '';

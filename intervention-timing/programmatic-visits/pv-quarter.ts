@@ -10,8 +10,8 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import dayjs from 'dayjs';
 
-@customElement('pv-quarter')
-export class PvQuarter extends LitElement {
+@customElement('gdd-pv-quarter')
+export class GDDPvQuarter extends LitElement {
   static get styles() {
     return [
       layoutStyles,

@@ -3,7 +3,7 @@ import {property, customElement} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention} from '../../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -16,8 +16,8 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-
 import {areEqual} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
-@customElement('cp-output-dialog')
-export class CpOutputDialog extends LitElement {
+@customElement('gdd-cp-output-dialog')
+export class GDDCpOutputDialog extends LitElement {
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
 
@@ -173,10 +173,10 @@ export class CpOutputDialog extends LitElement {
     this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
     this.loadingInProcess = true;
     const endpoint = this.cpOutputId
-      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.resultLinkGetDelete, {
           result_link: this.resultLinkId
         })
-      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinks, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.resultLinks, {
           id: this.interventionId
         });
     const method = this.cpOutputId ? 'PATCH' : 'POST';
@@ -215,7 +215,7 @@ export class CpOutputDialog extends LitElement {
     this.spinnerText = getTranslation('GENERAL.LOADING');
     this.loadingInProcess = true;
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.ramIndicators, {id: cpOutputId})
+      endpoint: getEndpoint(gddEndpoints.ramIndicators, {id: cpOutputId})
     }).then((data: ResultIndicator[]) => {
       this.loadingInProcess = false;
       this.indicators = data;

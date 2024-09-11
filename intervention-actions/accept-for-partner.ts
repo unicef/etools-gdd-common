@@ -7,8 +7,8 @@ import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
-@customElement('accept-for-partner')
-export class AcceptForPartner extends LitElement {
+@customElement('gdd-accept-for-partner')
+export class GDDAcceptForPartner extends LitElement {
   render() {
     return html` ${sharedStyles}
       <style>

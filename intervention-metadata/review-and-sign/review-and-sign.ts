@@ -18,7 +18,7 @@ import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-compari
 
 import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../common/managementDocument.selectors';
-import {ReviewDataPermission, ReviewData} from './managementDocument.model';
+import {GDDReviewDataPermission, GDDReviewData} from './managementDocument.model';
 import isEmpty from 'lodash-es/isEmpty';
 import cloneDeep from 'lodash-es/cloneDeep';
 
@@ -33,7 +33,7 @@ import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 
@@ -42,8 +42,8 @@ import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/aja
  * @appliesMixin CommonMixin
  * @appliesMixin UploadsMixin
  */
-@customElement('review-and-sign')
-export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
+@customElement('gdd-review-and-sign')
+export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
   static get styles() {
     return [layoutStyles];
   }
@@ -252,16 +252,16 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
-  originalData!: ReviewData;
+  originalData!: GDDReviewData;
 
   @property({type: Object})
-  data!: ReviewData;
+  data!: GDDReviewData;
 
   @property({type: Object})
-  permissions!: Permission<ReviewDataPermission>;
+  permissions!: Permission<GDDReviewDataPermission>;
 
   @property({type: Array})
   signedByUnicefUsers!: User[] | MinimalUser[];
@@ -429,7 +429,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     return getStore()
       .dispatch<AsyncAction>(
         // @ts-ignore
-        patchIntervention(this.formatUserData(getDifference<ReviewData>(this.originalData, this.data)))
+        patchIntervention(this.formatUserData(getDifference<GDDReviewData>(this.originalData, this.data)))
       )
       .then(() => {
         this._onUploadSaved();
@@ -437,7 +437,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       });
   }
 
-  private formatUserData(data: ReviewData) {
+  private formatUserData(data: GDDReviewData) {
     const dataToSave: any = cloneDeep(data);
     dataToSave.unicef_signatory = data.unicef_signatory?.id;
     // eslint-disable-next-line max-len

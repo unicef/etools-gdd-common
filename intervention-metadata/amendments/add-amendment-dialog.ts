@@ -10,7 +10,7 @@ import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -25,8 +25,8 @@ import {resetInvalidElement} from '../../utils/utils';
 /**
  * @customElement
  */
-@customElement('add-amendment-dialog')
-export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-add-amendment-dialog')
+export class GDDAddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -205,7 +205,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
     const options = {
       method: 'POST',
-      endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAmendmentAdd, {
+      endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.interventionAmendmentAdd, {
         intervId: this.intervention.id
       }),
       body: {

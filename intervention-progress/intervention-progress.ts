@@ -10,8 +10,8 @@ import './intervention-monitoring-activities.js';
 import './intervention-results-reported.js';
 import './intervention-reports.js';
 
-@customElement('intervention-progress')
-export class InterventionProgress extends connectStore(LitElement) {
+@customElement('gdd-intervention-progress')
+export class GDDInterventionProgress extends connectStore(LitElement) {
   render() {
     return html`
       <style>
@@ -21,16 +21,16 @@ export class InterventionProgress extends connectStore(LitElement) {
       </style>
       ${this.isUnicefUser
         ? html`
-            <intervention-implementation-status
+            <gdd-intervention-implementation-status
               ?hidden="${this.activeSubTab !== TABS.ImplementationStatus}"
-            ></intervention-implementation-status>
-            <intervention-monitoring-activities
+            ></gdd-intervention-implementation-status>
+            <gdd-intervention-monitoring-activities
               ?hidden="${this.activeSubTab !== TABS.MonitoringActivities}"
-            ></intervention-monitoring-activities>
-            <intervention-results-reported
+            ></gdd-intervention-monitoring-activities>
+            <gdd-intervention-results-reported
               ?hidden="${this.activeSubTab !== TABS.ResultsReported}"
-            ></intervention-results-reported>
-            <intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></intervention-reports>
+            ></gdd-intervention-results-reported>
+            <gdd-intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></gdd-intervention-reports>
           `
         : ''}
     `;

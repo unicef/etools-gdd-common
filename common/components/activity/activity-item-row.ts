@@ -10,8 +10,8 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/ac
 import {ActivitiesCommonMixin} from '../../mixins/activities-common.mixin';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';
 
-@customElement('activity-item-row')
-export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
+@customElement('gdd-activity-item-row')
+export class GDDActivityItemRow extends ActivitiesCommonMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [

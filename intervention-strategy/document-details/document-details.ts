@@ -28,8 +28,8 @@ import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 /**
  * @customElement
  */
-@customElement('document-details')
-export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-document-details')
+export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }

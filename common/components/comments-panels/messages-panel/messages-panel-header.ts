@@ -7,8 +7,8 @@ import {makeCommentsDraggable} from '../../comments/comments.helpers';
 import {CommentRelatedItem} from '../../comments/comments-types';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('messages-panel-header')
-export class MessagesPanelHeader extends LitElement {
+@customElement('gdd-messages-panel-header')
+export class GDDMessagesPanelHeader extends LitElement {
   @property() relatedToKey = '';
   @property() relatedItem: CommentRelatedItem | null = null;
 

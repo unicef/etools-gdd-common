@@ -4,10 +4,10 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils
 import {LitElement} from 'lit';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
-import {interventionEndpoints} from '../../../../../utils/intervention-endpoints';
-import {NonClusterIndicatorEl} from '../non-cluster-indicator';
-import {ClusterIndicatorEl} from '../cluster-indicator';
-import {IndicatorDisaggregations} from '../indicator-dissaggregations';
+import {gddEndpoints} from '../../../../../utils/intervention-endpoints';
+import {GDDNonClusterIndicatorEl} from '../non-cluster-indicator';
+import {GDDClusterIndicatorEl} from '../cluster-indicator';
+import {GDDIndicatorDisaggregations} from '../indicator-dissaggregations';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../../../../common/actions/interventions';
 import {Constructor, EtoolsEndpoint} from '@unicef-polymer/etools-types';
@@ -140,7 +140,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return isCluster ? '#clusterIndicatorEl' : '#nonClusterIndicatorEl';
     }
 
-    getIndicatorElement(isCluster: boolean): NonClusterIndicatorEl | ClusterIndicatorEl {
+    getIndicatorElement(isCluster: boolean): GDDNonClusterIndicatorEl | GDDClusterIndicatorEl {
       return this.shadowRoot!.querySelector<any>(this.getElementId(isCluster));
     }
 
@@ -149,7 +149,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     _getEndpointName() {
-      return this.data.id ? interventionEndpoints.getEditDeleteIndicator : interventionEndpoints.createIndicator;
+      return this.data.id ? gddEndpoints.getEditDeleteIndicator : gddEndpoints.createIndicator;
     }
 
     _handleSaveIndicatorResponse(response: any) {
@@ -255,7 +255,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     getDisaggregations() {
-      return this.shadowRoot?.querySelector<IndicatorDisaggregations>('#indicatorDisaggregations')?.data;
+      return this.shadowRoot?.querySelector<GDDIndicatorDisaggregations>('#indicatorDisaggregations')?.data;
     }
   }
   return SaveIndicatorClass;

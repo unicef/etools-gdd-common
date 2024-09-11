@@ -14,8 +14,8 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 
-@customElement('intervention-monitoring-activities')
-export class InterventionMonitoringActivities extends connectStore(LitElement) {
+@customElement('gdd-intervention-monitoring-activities')
+export class GDDInterventionMonitoringActivities extends connectStore(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -27,11 +27,11 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
         class="content-section"
         panel-title=${translate('MONITORING_ACTIVITIES_SUBTAB')}
       >
-        <monitoring-visits-list
+        <gdd-monitoring-visits-list
           .interventionId="${this.intervention?.id}"
           .partnerId="${this.intervention?.partner_id}"
         >
-        </monitoring-visits-list>
+        </gdd-monitoring-visits-list>
       </etools-content-panel>
     `;
   }

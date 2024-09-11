@@ -1,5 +1,5 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {INTERVENTION_LOADING, SHOULD_REGET_LIST, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
 import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -44,7 +44,7 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
   });
 
   return sendRequest({
-    endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId})
+    endpoint: getEndpoint(gddEndpoints.intervention, {interventionId: interventionId})
   })
     .then((intervention: Intervention) => {
       dispatch(updateCurrentIntervention(intervention));
@@ -85,7 +85,7 @@ export const patchIntervention =
     }
     const prevInterventionState = getState().interventions?.current;
     return _sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId}),
+      endpoint: getEndpoint(gddEndpoints.intervention, {interventionId: interventionId}),
       body: interventionChunck,
       method: 'PATCH'
     }).then((intervention: Intervention) => {

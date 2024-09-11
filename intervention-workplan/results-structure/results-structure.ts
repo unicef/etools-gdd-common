@@ -25,7 +25,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {TABS} from '../../common/constants';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
@@ -51,9 +51,9 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
-import {PdActivities} from './pd-activities';
-import {PdIndicators} from './pd-indicators';
-import {CpOutputLevel} from './cp-output-level';
+import {GDDPdActivities} from './pd-activities';
+import {GDDPdIndicators} from './pd-indicators';
+import {GDDCpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {_canDelete} from '../../common/mixins/results-structure-common';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -62,8 +62,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 /**
  * @customElement
  */
-@customElement('results-structure')
-export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
+@customElement('gdd-results-structure')
+export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
   get resultLinks(): ExpectedResult[] {
     return this._resultLinks || [];
   }
@@ -119,14 +119,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         elevation="0"
       >
         <div slot="after-title">
-          <display-controls
+          <gdd-display-controls
             ?show-inactive-toggle="${this.showInactiveToggle}"
             .showIndicators="${this.showIndicators}"
             .showActivities="${this.showActivities}"
             .interventionId="${this.interventionId}"
             @show-inactive-changed="${this.inactiveChange}"
             @tab-view-changed="${this.updateTableView}"
-          ></display-controls>
+          ></gdd-display-controls>
         </div>
         <div slot="panel-btns">
           <div class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
@@ -167,7 +167,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           this.resultLinks,
           (result: ExpectedResult) => result.id,
           (result, _index) => html`
-            <cp-output-level
+            <gdd-cp-output-level
               index="${_index}"
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
@@ -256,7 +256,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     </div>
 
                     <div slot="row-data-details">
-                      <pd-activities
+                      <gdd-pd-activities
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
                         .interventionStatus="${this.interventionStatus}"
@@ -268,8 +268,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
                         .inAmendment="${this.intervention.in_amendment}"
-                      ></pd-activities>
-                      <pd-indicators
+                      ></gdd-pd-activities>
+                      <gdd-pd-indicators
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
                         .pdOutputId="${pdOutput.id}"
@@ -277,12 +277,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .showInactiveIndicators="${this.showInactiveIndicatorsActivities}"
                         .inAmendment="${this.intervention.in_amendment}"
                         .inAmendmentDate="${this.intervention.in_amendment_date}"
-                      ></pd-indicators>
+                      ></gdd-pd-indicators>
                     </div>
                   </etools-data-table-row>
                 `
               )}
-            </cp-output-level>
+            </gdd-cp-output-level>
           `
         )}
         ${!this.resultLinks.length ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> ` : ''}
@@ -305,26 +305,26 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     if (!event.detail.opened) {
       return;
     }
-    this.openCPChildren(event.target as CpOutputLevel);
+    this.openCPChildren(event.target as GDDCpOutputLevel);
   }
 
   openAllCpOutputs() {
     this.shadowRoot!.querySelectorAll('cp-output-level').forEach((element) => {
-      const row = (element as CpOutputLevel).shadowRoot!.querySelector('etools-data-table-row');
+      const row = (element as GDDCpOutputLevel).shadowRoot!.querySelector('etools-data-table-row');
       if (row) {
         (row as EtoolsDataTableRow).detailsOpened = true;
       }
-      this.openCPChildren(element as CpOutputLevel);
+      this.openCPChildren(element as GDDCpOutputLevel);
     });
   }
 
-  openCPChildren(cpElement: CpOutputLevel): void {
+  openCPChildren(cpElement: GDDCpOutputLevel): void {
     cpElement
       .querySelectorAll('etools-data-table-row')
       .forEach((row: Element) => ((row as EtoolsDataTableRow).detailsOpened = true));
     cpElement
       .querySelectorAll('pd-activities, pd-indicators')
-      .forEach((row: Element) => (row as PdActivities | PdIndicators).openAllRows());
+      .forEach((row: Element) => (row as GDDPdActivities | GDDPdIndicators).openAllRows());
   }
 
   stateChanged(state: RootState) {
@@ -417,7 +417,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       active: true,
       loadingSource: 'interv-pd-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
     });
@@ -485,7 +485,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       active: true,
       loadingSource: 'interv-cp-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.resultLinkGetDelete, {
       result_link: resultLinkId
     });
     _sendRequest({

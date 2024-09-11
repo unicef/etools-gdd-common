@@ -5,13 +5,13 @@ import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {setPrpCountries} from '../../actions/interventions';
 import get from 'lodash-es/get';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 
-@customElement('prp-country-data')
-export class PrpCountryData extends EndpointsLitMixin(LitElement) {
+@customElement('gdd-prp-country-data')
+export class GDDPrpCountryData extends EndpointsLitMixin(LitElement) {
   getPRPCountries() {
     if (!(get(getStore().getState(), 'commonData.PRPCountryData') || []).length) {
-      this.fireRequest(interventionEndpoints, 'getPRPCountries', {}).then((prpCountries: any[]) => {
+      this.fireRequest(gddEndpoints, 'getPRPCountries', {}).then((prpCountries: any[]) => {
         getStore().dispatch(setPrpCountries(prpCountries));
       });
     }

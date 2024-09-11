@@ -7,8 +7,8 @@ import {InterventionComment} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import dayjs from 'dayjs';
 
-@customElement('comment-element')
-export class CommentElement extends LitElement {
+@customElement('gdd-comment-element')
+export class GDDCommentElement extends LitElement {
   static get styles(): CSSResultArray {
     // language=css
     return [CommentStyles];

@@ -11,7 +11,7 @@ import {ActivityItemsMixin} from './activity-item-mixin';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
@@ -159,7 +159,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 </td>
                 <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="tdTimeIntervals">
                   <div class="flex-h justify-center">
-                    <time-intervals
+                    <gdd-time-intervals
                       .readonly="${!this.permissions.edit.result_links || !activity.inEditMode}"
                       .invalid="${activity.invalid?.time_frames}"
                       .quarters="${this.quarters}"
@@ -175,7 +175,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         this.requestUpdate();
                       }}"
                       @keydown="${(e: any) => this.handleEsc(e)}"
-                    ></time-intervals>
+                    ></gdd-time-intervals>
                   </div>
                 </td>
                 <td
@@ -440,12 +440,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     _getEndpoint(activityId: any, pdOutputId: string, interventionId: string) {
       return activityId
-        ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+        ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.pdActivityDetails, {
             activityId,
             pdOutputId,
             interventionId
           })
-        : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivities, {
+        : getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.pdActivities, {
             pdOutputId,
             interventionId
           });

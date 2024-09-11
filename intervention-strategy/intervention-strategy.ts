@@ -9,17 +9,17 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 /**
  * @customElement
  */
-@customElement('intervention-strategy')
-export class InterventionStrategy extends LitElement {
+@customElement('gdd-intervention-strategy')
+export class GDDInterventionStrategy extends LitElement {
   render() {
     // language=HTML
     return html`
       <style></style>
 
-      <document-details></document-details>
-      <geographical-coverage></geographical-coverage>
-      <gender-equity-rating></gender-equity-rating>
-      <risks-element></risks-element>
+      <gdd-document-details></gdd-document-details>
+      <gdd-geographical-coverage></gdd-geographical-coverage>
+      <gdd-gender-equity-rating></gdd-gender-equity-rating>
+      <gdd-risks-element></gdd-risks-element>
     `;
   }
   connectedCallback() {

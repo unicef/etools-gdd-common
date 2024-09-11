@@ -13,7 +13,7 @@ import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mi
 import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
@@ -43,8 +43,8 @@ import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-
 import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('pd-indicators')
-export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
+@customElement('gdd-pd-indicators')
+export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
   @property({type: Array}) indicators: Indicator[] = [];
   @property() private locations: LocationObject[] = [];
   @property() private sections: Section[] = [];
@@ -110,7 +110,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           ${this.indicators.length
             ? this.indicators.map(
                 (indicator: Indicator, index: number) => html`
-                  <pd-indicator
+                  <gdd-pd-indicator
                     .index="${index}"
                     .indicator="${indicator}"
                     .disaggregations="${this.disaggregations}"
@@ -127,7 +127,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
                     @open-deactivate-confirmation="${(e: CustomEvent) =>
                       this.openDeactivationDialog(e.detail.indicatorId)}"
                     @open-delete-confirmation="${(e: CustomEvent) => this.openDeletionDialog(e.detail.indicatorId)}"
-                  ></pd-indicator>
+                  ></gdd-pd-indicator>
                 `
               )
             : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_PD_INDICATORS')}</div> `}
@@ -223,7 +223,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   deactivateIndicator(indicatorId: string) {
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
     fireEvent(this, 'global-loading', {
@@ -272,7 +272,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       active: true,
       loadingSource: 'interv-indicator-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
     sendRequest({

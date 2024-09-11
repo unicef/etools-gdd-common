@@ -10,20 +10,20 @@ import './editor-table';
 /**
  * @customElement
  */
-@customElement('intervention-workplan-editor')
-export class InterventionWorkplanEditor extends LitElement {
+@customElement('gdd-intervention-workplan-editor')
+export class GDDInterventionWorkplanEditor extends LitElement {
   @property() interventionId!: number;
   render() {
     // language=HTML
     return html`
       <div class="top-card">
-        <workplan-editor-link link="interventions/${this.interventionId}/${TABS.Workplan}">
+        <gdd-workplan-editor-link link="interventions/${this.interventionId}/${TABS.Workplan}">
           ${translate('BACK_TO_WORKPLAN')}
-        </workplan-editor-link>
+        </gdd-workplan-editor-link>
 
-        <budget-summary embeded></budget-summary>
+        <gdd-budget-summary embeded></gdd-budget-summary>
       </div>
-      <editor-table></editor-table>
+      <gdd-editor-table></gdd-editor-table>
     `;
   }
 

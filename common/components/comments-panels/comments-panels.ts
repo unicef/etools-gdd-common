@@ -19,11 +19,11 @@ import {ComponentsPosition} from '../comments/comments-items-name-map';
 import {removeTrailingIds} from '../comments/comments.helpers';
 import {currentIntervention} from '../../selectors';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 
-@customElement('comments-panels')
-export class CommentsPanels extends connectStore(LitElement) {
+@customElement('gdd-comments-panels')
+export class GDDCommentsPanels extends connectStore(LitElement) {
   @property() messagesOpened = false;
   @property() commentsCollection?: CommentsCollection;
   @property() comments: InterventionComment[] = [];
@@ -36,15 +36,15 @@ export class CommentsPanels extends connectStore(LitElement) {
 
   protected render(): TemplateResult {
     return html`
-      <comments-list
+      <gdd-comments-list
         @show-messages="${(event: CustomEvent) => this.openCollection(event.detail.commentsGroup)}"
         @close-comments-panels="${this.closePanels}"
         @toggle-minimize="${this.toggleMinimize}"
         .selectedGroup="${this.openedCollection?.relatedTo}"
         .commentsCollection="${this.commentsCollection}"
         .relatedItems="${this.relatedItems}"
-      ></comments-list>
-      <messages-panel
+      ></gdd-comments-list>
+      <gdd-messages-panel
         class="${this.openedCollection ? 'opened' : ''}"
         .relatedItem="${this.openedCollection?.relatedItem}"
         .relatedTo="${this.openedCollection?.relatedTo}"
@@ -55,7 +55,7 @@ export class CommentsPanels extends connectStore(LitElement) {
         .interventionId="${this.interventionId}"
         .endpoints="${this.endpoints}"
         @hide-messages="${() => this.closeCollection()}"
-      ></messages-panel>
+      ></gdd-messages-panel>
     `;
   }
 
@@ -94,7 +94,7 @@ export class CommentsPanels extends connectStore(LitElement) {
     const intervention = currentIntervention(state);
     if (intervention) {
       sendRequest({
-        endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: intervention.id})
+        endpoint: getEndpoint(gddEndpoints.resultLinksDetails, {id: intervention.id})
       }).then((response: any) => {
         const pds = response?.result_links.map(({ll_results: pds}: ExpectedResult) => pds).flat();
         const activities = pds.map(({activities}: ResultLinkLowerResult) => activities).flat();

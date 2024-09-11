@@ -10,8 +10,8 @@ import {extractId, removeTrailingIds} from '../../comments/comments.helpers';
 import {CommentItemData, CommentRelatedItem} from '../../comments/comments-types';
 import {EtoolsTextarea} from '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 
-@customElement('comments-list')
-export class CommentsList extends LitElement {
+@customElement('gdd-comments-list')
+export class GDDCommentsList extends LitElement {
   @property() selectedGroup: string | null = null;
   @property() relatedItems: CommentRelatedItem[] = [];
 
@@ -42,11 +42,11 @@ export class CommentsList extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <comments-panel-header .count="${this.commentsGroups.length}"></comments-panel-header>
+      <gdd-comments-panel-header .count="${this.commentsGroups.length}"></gdd-comments-panel-header>
       <div class="data-container">
         ${this.commentsGroups.map((group) => {
           return html`
-            <comments-group
+            <gdd-comments-group
               ?opened="${group.relatedTo === this.selectedGroup}"
               .relatedItem="${group.relatedItem}"
               .relatedTo="${group.relatedToTranslateKey}"
@@ -64,7 +64,7 @@ export class CommentsList extends LitElement {
                   (messagesPanelElement?.shadowRoot?.querySelector('etools-textarea') as EtoolsTextarea)?.focus();
                 }
               }}"
-            ></comments-group>
+            ></gdd-comments-group>
           `;
         })}
       </div>

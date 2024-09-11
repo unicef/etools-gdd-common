@@ -10,12 +10,12 @@ import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
 
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
-import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
-import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
+import {GDDHumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
+import {GDDQuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
+import {GDDReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isUnicefUser} from '../../common/selectors';
@@ -35,8 +35,8 @@ import {isActiveTab} from '../../utils/utils';
  * @LitElement
  * @customElement
  */
-@customElement('partner-reporting-requirements')
-export class PartnerReportingRequirements extends connectStore(LitElement) {
+@customElement('gdd-partner-reporting-requirements')
+export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -208,7 +208,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               </div>
             </div>
             <div class="reporting-req-data">
-              <quarterly-reporting-requirements
+              <gdd-quarterly-reporting-requirements
                 ?hidden="${!isActiveTab(this.selectedReportType, 'qtyProgress')}"
                 id="qpr"
                 name="qtyProgress"
@@ -220,9 +220,9 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateQPRCount(e.detail)}
               >
-              </quarterly-reporting-requirements>
+              </gdd-quarterly-reporting-requirements>
 
-              <humanitarian-reporting-req-unicef
+              <gdd-humanitarian-reporting-req-unicef
                 ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianUnicef')}"
                 id="hru"
                 name="humanitarianUnicef"
@@ -233,9 +233,9 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateHRUCount(e.detail)}
               >
-              </humanitarian-reporting-req-unicef>
+              </gdd-humanitarian-reporting-req-unicef>
 
-              <humanitarian-reporting-req-cluster
+              <gdd-humanitarian-reporting-req-cluster
                 ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianCluster')}"
                 name="humanitarianCluster"
                 .interventionId="${this.interventionId}"
@@ -243,9 +243,9 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .expectedResults="${this.expectedResults}"
                 @count-changed=${(e: CustomEvent) => this.updateHRCCount(e.detail)}
               >
-              </humanitarian-reporting-req-cluster>
+              </gdd-humanitarian-reporting-req-cluster>
 
-              <special-reporting-requirements
+              <gdd-special-reporting-requirements
                 ?hidden="${!isActiveTab(this.selectedReportType, 'special')}"
                 name="special"
                 .interventionId="${this.interventionId}"
@@ -253,7 +253,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
               >
-              </special-reporting-requirements>
+              </gdd-special-reporting-requirements>
             </div>
           </div>
         </div>
@@ -296,7 +296,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   specialRequirementsCount = 0;
 
   @property({type: Object})
-  reportingRequirementsPermissions!: Permission<ReportingRequirementsPermissions>;
+  reportingRequirementsPermissions!: Permission<GDDReportingRequirementsPermissions>;
 
   @property({type: Object})
   intervention!: AnyObject;
@@ -361,12 +361,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
 
   _openQprEditDialog() {
-    const dialog = this.shadowRoot!.querySelector(`#qpr`) as QuarterlyReportingRequirementsEL;
+    const dialog = this.shadowRoot!.querySelector(`#qpr`) as GDDQuarterlyReportingRequirementsEL;
     dialog.openQuarterlyRepRequirementsDialog();
   }
 
   _openHruEditDialog() {
-    const dialog = this.shadowRoot!.querySelector(`#hru`) as HumanitarianReportingReqUnicefEl;
+    const dialog = this.shadowRoot!.querySelector(`#hru`) as GDDHumanitarianReportingReqUnicefEl;
     dialog.openUnicefHumanitarianRepReqDialog();
   }
 

@@ -20,8 +20,8 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
  * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin PaginationMixin
  */
-@customElement('humanitarian-reporting-req-unicef')
-export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
+@customElement('gdd-humanitarian-reporting-req-unicef')
+export class GDDHumanitarianReportingReqUnicef extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -55,8 +55,8 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
       </div>
 
       <div class="col-12" ?hidden="${this._empty(this.reportingRequirements)}">
-        <hru-list id="hruList" .hruData="${this.paginatedReports}" .paginator="${this.paginator}" disable-sorting>
-        </hru-list>
+        <gdd-hru-list id="hruList" .hruData="${this.paginatedReports}" .paginator="${this.paginator}" disable-sorting>
+        </gdd-hru-list>
 
         <etools-data-table-footer
           .pageSize="${this.paginator.page_size}"
@@ -178,4 +178,4 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
   }
 }
 
-export {HumanitarianReportingReqUnicef as HumanitarianReportingReqUnicefEl};
+export {GDDHumanitarianReportingReqUnicef as GDDHumanitarianReportingReqUnicefEl};

@@ -1,7 +1,7 @@
 import {InterventionPermissionsFields} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class LocationsPermissions extends ModelsBase {
+export class GDDLocationsPermissions extends GDDModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);

@@ -1,7 +1,7 @@
 import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class NonFinancialContributionData extends ModelsBase {
+export class GDDNonFinancialContributionData extends GDDModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
@@ -9,7 +9,7 @@ export class NonFinancialContributionData extends ModelsBase {
   ip_program_contribution = '';
 }
 
-export class NonFinancialContributionPermissions extends ModelsBase {
+export class GDDNonFinancialContributionPermissions extends GDDModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);

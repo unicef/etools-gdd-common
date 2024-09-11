@@ -31,8 +31,8 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 /**
  * @customElement
  */
-@customElement('unicef-details')
-export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-unicef-details')
+export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }

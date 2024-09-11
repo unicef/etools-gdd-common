@@ -13,15 +13,15 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../../utils/intervention-endpoints';
 import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 /**
  * @customElement
  * @appliesMixin IndicatorsCommonMixin
  */
-@customElement('cluster-indicator')
-class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMixin(LitElement))) {
+@customElement('gdd-cluster-indicator')
+class GDDClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMixin(LitElement))) {
   static get styles() {
     return [layoutStyles];
   }
@@ -388,7 +388,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
   connectedCallback() {
     super.connectedCallback();
     this.waitForReduxDataToLoad().then(() =>
-      this.fireRequest(interventionEndpoints, 'getResponsePlans', {})
+      this.fireRequest(gddEndpoints, 'getResponsePlans', {})
         .then((response: any) => {
           this.responsePlans = response;
         })
@@ -431,7 +431,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
   _getPrpClusterIndicator(clusterIndicId: string) {
     fireEvent(this, 'start-spinner', {spinnerText: getTranslation('GENERAL.LOADING')});
 
-    this.fireRequest(interventionEndpoints, 'getPrpClusterIndicator', {id: clusterIndicId})
+    this.fireRequest(gddEndpoints, 'getPrpClusterIndicator', {id: clusterIndicId})
       .then((response: any) => {
         this.prpClusterIndicator = response;
         fireEvent(this, 'stop-spinner');
@@ -481,7 +481,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
     }
     fireEvent(this, 'start-spinner', {spinnerText: getTranslation('GENERAL.LOADING')});
 
-    this.fireRequest(interventionEndpoints, 'getPrpClusterIndicators', {id: clusterId})
+    this.fireRequest(gddEndpoints, 'getPrpClusterIndicators', {id: clusterId})
       .then((response: any) => {
         this.prpClusterIndicators = this._unnestIndicatorTitle(response.results);
         fireEvent(this, 'stop-spinner');
@@ -593,4 +593,4 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
     return prpIndic.blueprint.display_type === type;
   }
 }
-export {ClusterIndicator as ClusterIndicatorEl};
+export {GDDClusterIndicator as GDDClusterIndicatorEl};

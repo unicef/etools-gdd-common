@@ -5,8 +5,8 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {translate} from 'lit-translate';
 import dayjs from 'dayjs';
-@customElement('message-item')
-export class MessageItem extends LitElement {
+@customElement('gdd-message-item')
+export class GDDMessageItem extends LitElement {
   @property({type: Boolean, reflect: true, attribute: 'my-comment'}) myComment!: boolean;
   @property() comment!: InterventionComment & {loadingError?: boolean; created: string};
   @property() resolving = false;

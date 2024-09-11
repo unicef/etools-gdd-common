@@ -9,8 +9,8 @@ import {translate} from 'lit-translate';
 /**
  * @customElement
  */
-@customElement('cluster-indicator-disaggregations')
-export class ClusterIndicatorDisaggregations extends LitElement {
+@customElement('gdd-cluster-indicator-disaggregations')
+export class GDDClusterIndicatorDisaggregations extends LitElement {
   static get styles() {
     return [layoutStyles];
   }

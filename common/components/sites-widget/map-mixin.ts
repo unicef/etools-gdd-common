@@ -14,7 +14,7 @@ export type MarkerDataObj = {
   popup?: string;
 };
 
-export class MapHelper {
+export class GDDMapHelper {
   map: L.Map | null = null;
   webmap!: GenericObject;
   staticMarkers: IMarker[] | null = null;

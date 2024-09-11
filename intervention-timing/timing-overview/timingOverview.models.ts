@@ -2,9 +2,9 @@
 // @lajos TO DO: check with backend about cfei_number and humanitarian values, where they shuld come from
 
 import {Intervention} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class TimingOverviewData extends ModelsBase {
+export class GDDTimingOverviewData extends GDDModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);

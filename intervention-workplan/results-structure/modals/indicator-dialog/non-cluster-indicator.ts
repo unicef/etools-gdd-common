@@ -22,8 +22,8 @@ import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.js'
  * @customElement
  * @appliesMixin IndicatorsCommonMixin
  */
-@customElement('non-cluster-indicator')
-class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
+@customElement('gdd-non-cluster-indicator')
+class GDDNonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -550,4 +550,4 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 }
 
-export {NonClusterIndicator as NonClusterIndicatorEl};
+export {GDDNonClusterIndicator as GDDNonClusterIndicatorEl};

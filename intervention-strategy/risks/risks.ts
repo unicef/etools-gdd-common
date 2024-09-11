@@ -20,7 +20,7 @@ import {selectRisks} from './risk.selectors';
 import './risk-dialog';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions/interventions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -50,8 +50,8 @@ const customStyles = html`
 /**
  * @customElement
  */
-@customElement('risks-element')
-export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-risks-element')
+export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -208,7 +208,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       active: true,
       loadingSource: 'interv-risk-item-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.riskDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.riskDelete, {
       interventionId: this.interventionId,
       riskId: riskId
     });

@@ -8,7 +8,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
@@ -26,8 +26,8 @@ import {get as getTranslation} from 'lit-translate';
 /**
  * @customElement
  */
-@customElement('supply-agreement-dialog')
-export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-supply-agreement-dialog')
+export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -221,10 +221,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     }
     this.requestInProcess = true;
     const endpoint = this.isNewRecord
-      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementAdd, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.supplyAgreementAdd, {
           interventionId: this.interventionId
         })
-      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.supplyAgreementEdit, {
           interventionId: this.interventionId,
           supplyId: this.data.id
         });

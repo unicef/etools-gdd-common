@@ -5,8 +5,8 @@ import {customElement, property} from 'lit/decorators.js';
  * @LitElement
  * @customElement
  */
-@customElement('intervention-page-content-header')
-export class InterventionPageContentHeader extends LitElement {
+@customElement('gdd-intervention-page-content-header')
+export class GDDInterventionPageContentHeader extends LitElement {
   render() {
     // language=HTML
     return html`

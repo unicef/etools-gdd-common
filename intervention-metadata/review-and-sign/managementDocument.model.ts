@@ -1,7 +1,7 @@
 import {Intervention, InterventionPermissionsFields, MinimalUser} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class ReviewData extends ModelsBase {
+export class GDDReviewData extends GDDModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
@@ -25,7 +25,7 @@ export class ReviewData extends ModelsBase {
   termination_doc_attachment = '';
 }
 
-export class ReviewDataPermission extends ModelsBase {
+export class GDDReviewDataPermission extends GDDModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);

@@ -31,8 +31,8 @@ import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query.js';
 
-@customElement('pd-activities')
-export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
+@customElement('gdd-pd-activities')
+export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
   currency = '';
 
@@ -161,19 +161,19 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                         ? html`<div class="layout-horizontal w100">
                             <div class="cellLabel">${translate('TIME_PERIODS')}</div>
                             <div>
-                              <time-intervals
+                              <gdd-time-intervals
                                 .quarters="${this.quarters}"
                                 .selectedTimeFrames="${activity.time_frames}"
                                 without-popup
                               >
-                              </time-intervals>
+                              </gdd-time-intervals>
                             </div>
                           </div>`
-                        : html` <time-intervals
+                        : html` <gdd-time-intervals
                             .quarters="${this.quarters}"
                             .selectedTimeFrames="${activity.time_frames}"
                             without-popup
-                          ></time-intervals>`}
+                          ></gdd-time-intervals>`}
                     </div>
 
                     <!--    CSO Cash    -->

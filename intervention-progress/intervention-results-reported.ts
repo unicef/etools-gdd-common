@@ -44,7 +44,7 @@ import {
   datesAreEqual,
   isValidDate
 } from '@unicef-polymer/etools-utils/dist/date.util';
-import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {gddEndpoints} from '../utils/intervention-endpoints';
 import {getIndicatorDisplayType} from '../utils/utils';
 import dayjs from 'dayjs';
 
@@ -58,8 +58,8 @@ import dayjs from 'dayjs';
 /**
  * @customElement
  */
-@customElement('intervention-results-reported')
-export class InterventionResultsReported extends connectStore(
+@customElement('gdd-intervention-results-reported')
+export class GDDInterventionResultsReported extends connectStore(
   UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
 ) {
   static get styles() {
@@ -182,7 +182,7 @@ export class InterventionResultsReported extends connectStore(
               .value="${this._getPdDuration(this.progress.start_date, this.progress.end_date)}"
             >
             </etools-input>
-            <etools-progress-bar value="${this.pdProgress}" noDecimals></etools-progress-bar>
+            <gdd-etools-progress-bar value="${this.pdProgress}" noDecimals></gdd-etools-progress-bar>
           </div>
           <div class="layout-vertical col-md-5 col-12">
             <div class="row" id="cash-progress">
@@ -222,12 +222,12 @@ export class InterventionResultsReported extends connectStore(
               </etools-input>
             </div>
 
-            <etools-progress-bar
+            <gdd-etools-progress-bar
               .value="${this._getPropertyText(this.progress.disbursement_percent)}"
               noDecimals
               ?hidden="${this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
             >
-            </etools-progress-bar>
+            </gdd-etools-progress-bar>
             ${this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)
               ? html`<etools-info-tooltip
                   class="currency-mismatch col-6"
@@ -249,10 +249,10 @@ export class InterventionResultsReported extends connectStore(
               .value="${this._getOverallPdStatusDate(this.latestAcceptedPr)}"
               noPlaceholder
             >
-              <intervention-report-status
+              <gdd-intervention-report-status
                 status="${this.latestAcceptedPr ? this.latestAcceptedPr.review_overall_status : ''}"
                 slot="prefix"
-              ></intervention-report-status>
+              ></gdd-intervention-report-status>
             </etools-input>
           </div>
         </div>
@@ -272,10 +272,10 @@ export class InterventionResultsReported extends connectStore(
             </div>
 
             <!-- RAM indicators display -->
-            <etools-ram-indicators
+            <gdd-etools-ram-indicators
               interventionId="${this.interventionId}"
               cpId="${item.external_cp_output_id}"
-            ></etools-ram-indicators>
+            ></gdd-etools-ram-indicators>
 
             <div class="row padding-row" ?hidden="${!this._emptyList(item.ll_outputs)}">
               <p class="col-12">${translate('NO_PD_OUTPUTS')}</p>
@@ -294,9 +294,9 @@ export class InterventionResultsReported extends connectStore(
                       ${lowerResult.title}
                     </span>
                     <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
-                      <intervention-report-status
+                      <gdd-intervention-report-status
                         status="${this._getLowerResultStatus(lowerResult.id)}"
-                      ></intervention-report-status>
+                      ></gdd-intervention-report-status>
                       <span class="lower-result-status-date">${this._getLowerResultStatusDate(lowerResult.id)}</span>
                     </span>
                   </div>
@@ -312,19 +312,19 @@ export class InterventionResultsReported extends connectStore(
                               ${indicatorReport.reportable.blueprint.title}
                             </div>
                             <div class="col-data col-12 col-md-3 progress-bar">
-                              <etools-progress-bar
+                              <gdd-etools-progress-bar
                                 class="report-progress-bar"
                                 value="${this.getProgressPercentage(
                                   indicatorReport.reportable.total_against_target,
                                   indicatorReport.reportable.blueprint.display_type
                                 )}"
                               >
-                              </etools-progress-bar>
+                              </gdd-etools-progress-bar>
                             </div>
                           </div>
                           <div class="row progress-details">
                             <div class="layout-vertical col-12 col-md-5 target-details">
-                              <indicator-report-target
+                              <gdd-indicator-report-target
                                 class="print-inline"
                                 .displayType="${indicatorReport.reportable.blueprint.display_type}"
                                 .target="${indicatorReport.reportable.target}"
@@ -340,7 +340,7 @@ export class InterventionResultsReported extends connectStore(
                                   indicatorReport.total.v,
                                   indicatorReport.total.c
                                 )}"
-                              ></indicator-report-target>
+                              ></gdd-indicator-report-target>
                             </div>
                           </div>`
                       )}
@@ -454,7 +454,7 @@ export class InterventionResultsReported extends connectStore(
     });
     this.requestInProgress = true;
 
-    this.fireRequest(interventionEndpoints, 'interventionProgress', {pdId: id})
+    this.fireRequest(gddEndpoints, 'interventionProgress', {pdId: id})
       .then((response: any) => {
         this.progress = response;
         fireEvent(this, 'global-loading', {

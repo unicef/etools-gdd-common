@@ -2,7 +2,7 @@
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
@@ -23,8 +23,8 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
  * @customElement
  * @mixinFunction
  */
-@customElement('add-edit-special-rep-req')
-export class AddEditSpecialRepReq extends LitElement {
+@customElement('gdd-add-edit-special-rep-req')
+export class GDDAddEditSpecialRepReq extends LitElement {
   static get styles() {
     return [layoutStyles];
   }
@@ -109,12 +109,12 @@ export class AddEditSpecialRepReq extends LitElement {
   _getEndpoint() {
     if (this._isNew()) {
       // new/create
-      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirements, {
         intervId: this.interventionId
       });
     } else {
       // already saved... update/delete
-      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirementsUpdate, {
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirementsUpdate, {
         reportId: this.item.id
       });
     }
@@ -164,4 +164,4 @@ export class AddEditSpecialRepReq extends LitElement {
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 }
-export {AddEditSpecialRepReq as AddEditSpecialRepReqEl};
+export {GDDAddEditSpecialRepReq as GDDAddEditSpecialRepReqEl};

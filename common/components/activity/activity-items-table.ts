@@ -2,7 +2,7 @@ import {LitElement, html, css, TemplateResult, CSSResultArray, PropertyValues} f
 import {customElement, property} from 'lit/decorators.js';
 import {ActivityItemsTableStyles} from './activity-items-table.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {ActivityItemRow} from './activity-item-row';
+import {GDDActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
@@ -12,8 +12,8 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/ac
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
 import {EtoolsTextarea} from '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 
-@customElement('activity-items-table')
-export class ActivityItemsTable extends LitElement {
+@customElement('gdd-activity-items-table')
+export class GDDActivityItemsTable extends LitElement {
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -58,7 +58,7 @@ export class ActivityItemsTable extends LitElement {
 
       ${this.activityItems.map(
         (item: Partial<InterventionActivityItem>, index: number) =>
-          html`<activity-item-row
+          html`<gdd-activity-item-row
             .activityItem="${item}"
             @item-changed="${({detail}: CustomEvent) => this.updateActivityItem(index, detail)}"
             @remove-item="${() => {
@@ -67,7 +67,7 @@ export class ActivityItemsTable extends LitElement {
             .readonly="${this.readonly}"
             .lastItem="${this.isLastItem(index)}"
             .currency="${this.currency}"
-          ></activity-item-row>`
+          ></gdd-activity-item-row>`
       )}
       ${!this.readonly
         ? html`<etools-icon id="btnAddItem" name="add" tabIndex="0" @click="${() => this.addNew()}"></etools-icon>`
@@ -122,9 +122,9 @@ export class ActivityItemsTable extends LitElement {
   }
 
   validate(): AnyObject | undefined {
-    const rows: NodeListOf<ActivityItemRow> = this.shadowRoot!.querySelectorAll('activity-item-row');
+    const rows: NodeListOf<GDDActivityItemRow> = this.shadowRoot!.querySelectorAll('activity-item-row');
     let validationData: AnyObject | undefined;
-    rows.forEach((row: ActivityItemRow) => {
+    rows.forEach((row: GDDActivityItemRow) => {
       if (!validationData) {
         const rowValidationData = row.validate();
         if (rowValidationData.invalidRequired || rowValidationData.invalidSum) {

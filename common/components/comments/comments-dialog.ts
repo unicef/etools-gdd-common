@@ -14,8 +14,8 @@ import {EditComments} from './edit-comments-base';
 import {removeTrailingIds} from './comments.helpers';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
-@customElement('comments-dialog')
-export class CommentsDialog extends EditComments {
+@customElement('gdd-comments-dialog')
+export class GDDCommentsDialog extends EditComments {
   get dialogTitle(): string {
     if (!this.relatedTo) {
       return '';
@@ -59,7 +59,7 @@ export class CommentsDialog extends EditComments {
         <div class="container-dialog">
           ${this.comments.map(
             (comment: any, index: number) =>
-              html`<comment-element
+              html`<gdd-comment-element
                 .comment="${comment}"
                 ?my-comment="${comment.user.id === this.currentUser.id}"
                 .resolving="${this.isResolving(comment.id)}"
@@ -67,7 +67,7 @@ export class CommentsDialog extends EditComments {
                 @resolve="${() => this.resolveComment(comment.id, index)}"
                 @delete="${() => this.deleteComment(comment.id, index)}"
                 @retry="${() => this.retry(index)}"
-              ></comment-element>`
+              ></gdd-comment-element>`
           )}
           <div class="no-comments" ?hidden="${this.comments.length}">${translate('NO_COMMENTS')}</div>
         </div>

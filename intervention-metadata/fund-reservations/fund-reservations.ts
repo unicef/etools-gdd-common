@@ -6,14 +6,14 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import './update-fr-numbers';
-import {UpdateFrNumbers} from './update-fr-numbers';
+import {GDDUpdateFrNumbers} from './update-fr-numbers';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention} from '../../common/actions/interventions';
-import {FundReservationsPermissions} from './fund-reservations.models';
+import {GDDFundReservationsPermissions} from './fund-reservations.models';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
 import {AnyObject, AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polymer/etools-types';
@@ -37,8 +37,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 /**
  * @customElement
  */
-@customElement('fund-reservations')
-export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersConsistencyMixin(LitElement))) {
+@customElement('gdd-fund-reservations')
+export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersConsistencyMixin(LitElement))) {
   static get styles() {
     return [frWarningsStyles];
   }
@@ -117,13 +117,13 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   }
 
   @property({type: Object})
-  permissions!: Permission<FundReservationsPermissions>;
+  permissions!: Permission<GDDFundReservationsPermissions>;
 
   @property({type: Object})
   intervention!: Intervention;
 
   @property({type: Object})
-  frsDialogEl!: UpdateFrNumbers;
+  frsDialogEl!: GDDUpdateFrNumbers;
 
   @property({type: Object})
   _lastFrsDetailsReceived!: FrsDetails | null;
@@ -179,7 +179,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
 
   _createFrsDialogEl() {
     // init frs update element
-    this.frsDialogEl = document.createElement('update-fr-numbers') as UpdateFrNumbers;
+    this.frsDialogEl = document.createElement('update-fr-numbers') as GDDUpdateFrNumbers;
     this.frsDialogEl.setAttribute('id', 'frNumbersUpdateEl');
 
     // attach frs update handler (on modal/dialog close)
@@ -270,10 +270,10 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
    * Get FR Numbers details from server
    */
   _triggerFrsDetailsRequest(frNumbers: string[]) {
-    (this.frsDialogEl as UpdateFrNumbers).startSpinner();
+    (this.frsDialogEl as GDDUpdateFrNumbers).startSpinner();
 
     let url =
-      getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.frNumbersDetails).url +
+      getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.frNumbersDetails).url +
       '?values=' +
       frNumbers.join(',');
     if (this.intervention.id) {

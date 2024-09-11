@@ -22,7 +22,7 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/cur
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {gddEndpoints} from '../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention, updateCurrentIntervention} from '../common/actions/interventions';
@@ -52,8 +52,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 import MatomoMixin from '@unicef-polymer/etools-piwik-analytics/matomo-mixin';
 
 // @ts-ignore
-@customElement('editor-table')
-export class EditorTable extends CommentsMixin(
+@customElement('gdd-editor-table')
+export class GDDEditorTable extends CommentsMixin(
   ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(MatomoMixin(LitElement)))))
 ) {
   static get styles() {
@@ -391,8 +391,8 @@ export class EditorTable extends CommentsMixin(
                         <etools-icon-button
                           name="delete"
                           ?hidden="${pdOutput.inEditMode ||
-                          !_canDelete(
-                            pdOutput,
+                          !this._canDelete(
+                            this.pdOutput,
                             !this.permissions?.edit.result_links!,
                             this.intervention.status,
                             this.intervention.in_amendment,
@@ -577,7 +577,7 @@ export class EditorTable extends CommentsMixin(
     });
     this.resultStructureIsLoaded = false;
     return sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})
+      endpoint: getEndpoint(gddEndpoints.resultLinksDetails, {id: this.intervention.id})
     }).then((response: any) => {
       this.resultStructureDetails = response.result_links;
       this.originalResultStructureDetails = cloneDeep(this.resultStructureDetails);
@@ -640,8 +640,11 @@ export class EditorTable extends CommentsMixin(
 
     this.trackAnalytics(e);
     const endpoint: RequestEndpoint = pdOutput.id
-      ? getEndpoint(interventionEndpoints.pdOutputDetails, {pd_id: pdOutput.id, intervention_id: this.interventionId})
-      : getEndpoint(interventionEndpoints.createPdOutput, {intervention_id: this.interventionId});
+      ? getEndpoint(gddEndpoints.pdOutputDetails, {
+          pd_id: pdOutput.id,
+          intervention_id: this.interventionId
+        })
+      : getEndpoint(gddEndpoints.createPdOutput, {intervention_id: this.interventionId});
 
     sendRequest({
       endpoint,
@@ -763,7 +766,7 @@ export class EditorTable extends CommentsMixin(
       active: true,
       loadingSource: 'interv-pdoutput-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
     });

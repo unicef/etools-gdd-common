@@ -14,8 +14,8 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {translate} from 'lit-translate';
 import {cloneDeep} from 'lodash-es';
 
-@customElement('intervention-review')
-export class InterventionReviewTab extends connectStore(LitElement) {
+@customElement('gdd-intervention-review')
+export class GDDInterventionReviewTab extends connectStore(LitElement) {
   @property() canEditReview = false;
   @property() canEditPRCReviews = false;
   @property() currentReview: InterventionReview | null = null;
@@ -49,29 +49,32 @@ export class InterventionReviewTab extends connectStore(LitElement) {
           </reason-display>`
         : ''}
 
-      <general-review-information
+      <gdd-general-review-information
         .reviews="${this.reviews}"
         .currentReview="${this.currentReview}"
         @review-changed="${this.reviewChanged}"
         .interventionId="${this.interventionId}"
       >
-      </general-review-information>
+      </gdd-general-review-information>
 
       ${this.currentReview && this.currentReview.review_type != NO_REVIEW
-        ? html`<review-members
+        ? html`<gdd-review-members
               .review="${this.currentReview}"
               .interventionId="${this.interventionId}"
               .usersList="${this.unicefUsers}"
               .canEditAtLeastOneField="${this.canEditReview}"
-            ></review-members>
+            ></gdd-review-members>
 
-            <reviews-list
+            <gdd-reviews-list
               .review="${this.currentReview}"
               .readonly="${!this.canEditPRCReviews}"
               ?hidden="${this.currentReview?.review_type !== PRC_REVIEW}"
-            ></reviews-list>
+            ></gdd-reviews-list>
 
-            <overall-approval .review="${this.currentReview}" .readonly="${!this.canEditReview}"></overall-approval>`
+            <gdd-overall-approval
+              .review="${this.currentReview}"
+              .readonly="${!this.canEditReview}"
+            ></gdd-overall-approval>`
         : null}
     `;
   }

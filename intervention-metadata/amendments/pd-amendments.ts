@@ -23,7 +23,7 @@ import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, Permission} from 
 import {translate} from 'lit-translate';
 import {get as getTranslation} from 'lit-translate/util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention, setShouldReGetList} from '../../common/actions/interventions';
@@ -36,8 +36,8 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-
 /**
  * @customElement
  */
-@customElement('pd-amendments')
-export class PdAmendments extends CommentsMixin(LitElement) {
+@customElement('gdd-pd-amendments')
+export class GDDPdAmendments extends CommentsMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -207,7 +207,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
                   <div class="info-block">
                     <div class="label">${translate('DIFFERENCE')}</div>
-                    <amendment-difference .difference="${item.difference}"></amendment-difference>
+                    <gdd-amendment-difference .difference="${item.difference}"></gdd-amendment-difference>
                   </div>
                 </div>
               </etools-data-table-row>
@@ -317,7 +317,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       });
       const options = {
         method: 'DELETE',
-        endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAmendmentDelete, {
+        endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.interventionAmendmentDelete, {
           amendmentId
         })
       };

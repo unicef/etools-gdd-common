@@ -1,7 +1,7 @@
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -15,8 +15,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
  * @customElement
  * @LitElement
  */
-@customElement('export-intervention-data')
-export class ExportInterventionData extends LitElement {
+@customElement('gdd-export-intervention-data')
+export class GDDExportInterventionData extends LitElement {
   public render() {
     return html`
       <style>
@@ -51,28 +51,28 @@ export class ExportInterventionData extends LitElement {
   export(_type: string) {
     let url = '';
     if (_type == 'download_comments') {
-      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.downloadComment, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.downloadComment, {
         interventionId: this.interventionId
       }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_results') {
-      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.expectedResultsExport, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.expectedResultsExport, {
         intervention_id: this.interventionId
       }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_pdf') {
-      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.exportPdf, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.exportPdf, {
         interventionId: this.interventionId
       }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_xls') {
-      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.exportXls, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.exportXls, {
         interventionId: this.interventionId
       }).url;
       window.open(url, '_blank');

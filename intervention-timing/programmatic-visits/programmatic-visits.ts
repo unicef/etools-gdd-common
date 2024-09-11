@@ -8,7 +8,7 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
-import {PlannedVisitsPermissions} from './programmaticVisits.models';
+import {GDDPlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
@@ -25,7 +25,7 @@ import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-compari
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
 import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import '../../common/components/sites-widget/sites-dialog';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import './pv-quarter';
@@ -34,8 +34,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 /**
  * @customElement
  */
-@customElement('programmatic-visits')
-export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
+@customElement('gdd-programmatic-visits')
+export class GDDProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
     return [layoutStyles];
   }
@@ -157,13 +157,13 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   interventionStatus!: string;
 
   @property({type: Object})
-  permissions!: Permission<PlannedVisitsPermissions>;
+  permissions!: Permission<GDDPlannedVisitsPermissions>;
 
   @property({type: Array})
   data!: PlannedVisit[];
 
   @property({type: String})
-  _deleteEpName = interventionEndpoints.interventionPVDelete;
+  _deleteEpName = gddEndpoints.interventionPVDelete;
 
   @property({type: Object})
   extraEndpointParams!: AnyObject;
@@ -234,7 +234,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     const planned_visits = selectPlannedVisits(state).planned_visits;
     if (!isJsonStrMatch(this.originalData, planned_visits)) {
       const auxData = cloneDeep(planned_visits);
-      auxData.forEach((item) => {
+      auxData.forEach((item: any) => {
         item.quarterIntervals = this.setQuartersIntervals(Number(item.year)!);
       });
 
@@ -324,48 +324,48 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
             <div class="col-12 row layout-wrap">
               <div class="col-10 row pl-48">
                 <div class="col layout-horizontal">
-                  <pv-quarter
+                  <gdd-pv-quarter
                     qIndex="1"
                     .item="${item}"
                     .currentCountry="${this.currentCountry}"
                     .allSites="${this.allSites}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                     ?required="${item.year && this.editMode}"
-                  ></pv-quarter>
+                  ></gdd-pv-quarter>
                   <div class="separator"></div>
                 </div>
 
                 <div class="col layout-horizontal">
-                  <pv-quarter
+                  <gdd-pv-quarter
                     qIndex="2"
                     .item="${item}"
                     .currentCountry="${this.currentCountry}"
                     .allSites="${this.allSites}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                     ?required="${item.year && this.editMode}"
-                  ></pv-quarter>
+                  ></gdd-pv-quarter>
                   <div class="separator"></div>
                 </div>
                 <div class="col layout-horizontal">
-                  <pv-quarter
+                  <gdd-pv-quarter
                     qIndex="3"
                     .item="${item}"
                     .currentCountry="${this.currentCountry}"
                     .allSites="${this.allSites}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                     ?required="${item.year && this.editMode}"
-                  ></pv-quarter>
+                  ></gdd-pv-quarter>
                   <div class="separator"></div>
                 </div>
                 <div class="col layout-horizontal">
-                  <pv-quarter
+                  <gdd-pv-quarter
                     qIndex="4"
                     .item="${item}"
                     .currentCountry="${this.currentCountry}"
                     .allSites="${this.allSites}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                     ?required="${item.year && this.editMode}"
-                  ></pv-quarter>
+                  ></gdd-pv-quarter>
                   <div class="separator"></div>
                 </div>
               </div>

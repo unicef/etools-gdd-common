@@ -19,8 +19,8 @@ export const RESULT_VIEW = 'result_view';
 export const BUDGET_VIEW = 'budget_view';
 export const COMBINED_VIEW = 'combined_view';
 
-@customElement('display-controls')
-export class DisplayControls extends LitElement {
+@customElement('gdd-display-controls')
+export class GDDDisplayControls extends LitElement {
   @property({type: Boolean, attribute: 'show-inactive-toggle'}) showInactiveToggle = false;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;

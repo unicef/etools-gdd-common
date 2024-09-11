@@ -31,8 +31,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 /**
  * @customElement
  */
-@customElement('gender-equity-rating')
-export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-gender-equity-rating')
+export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }

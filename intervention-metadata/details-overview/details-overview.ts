@@ -6,7 +6,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
-import {InterventionOverview} from './interventionOverview.models';
+import {GDDInterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -28,8 +28,8 @@ import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/l
 /**
  * @customElement
  */
-@customElement('details-overview')
-export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-details-overview')
+export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles, elevationStyles];
   }
@@ -111,7 +111,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
   intervention!: Intervention;
 
   @property({type: Object})
-  interventionOverview!: InterventionOverview;
+  interventionOverview!: GDDInterventionOverview;
 
   @property({type: Boolean})
   isUnicefUser = false;

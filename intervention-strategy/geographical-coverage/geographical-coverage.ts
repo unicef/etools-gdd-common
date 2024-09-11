@@ -7,7 +7,7 @@ import '../../common/components/sites-widget/sites-dialog';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {LocationsPermissions} from './geographicalCoverage.models';
+import {GDDLocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -29,8 +29,8 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 /**
  * @customElement
  */
-@customElement('geographical-coverage')
-export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-geographical-coverage')
+export class GDDGeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -238,7 +238,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   data!: {flat_locations: string[]; sites: Site[]};
 
   @property({type: Object})
-  permissions!: Permission<LocationsPermissions>;
+  permissions!: Permission<GDDLocationsPermissions>;
 
   connectedCallback() {
     super.connectedCallback();

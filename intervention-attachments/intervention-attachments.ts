@@ -7,8 +7,8 @@ import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environme
 /**
  * @customElement
  */
-@customElement('intervention-attachments')
-export class InterventionAttachments extends LitElement {
+@customElement('gdd-intervention-attachments')
+export class GDDInterventionAttachments extends LitElement {
   private isEPDApp = Environment.basePath === '/epd/';
 
   render() {
@@ -18,8 +18,8 @@ export class InterventionAttachments extends LitElement {
           --ecp-title-white-space: wrap;
         }
       </style>
-      <attachments-list></attachments-list>
-      ${!this.isEPDApp ? html`<prc-document></prc-document>` : ``}`;
+      <gdd-attachments-list></gdd-attachments-list>
+      ${!this.isEPDApp ? html`<gdd-prc-document></gdd-prc-document>` : ``}`;
   }
 
   connectedCallback() {

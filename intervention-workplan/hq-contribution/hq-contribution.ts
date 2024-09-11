@@ -30,8 +30,8 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';
 /**
  * @customElement
  */
-@customElement('hq-contribution')
-export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-hq-contribution')
+export class GDDHqContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }

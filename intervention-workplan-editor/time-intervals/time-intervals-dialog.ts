@@ -6,19 +6,19 @@ import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '../../intervention-workplan/results-structure/modals/activity-dialog/activity-timeframes';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 // eslint-disable-next-line
-import {ActivityTimeFrames} from '../../intervention-workplan/results-structure/modals/activity-dialog/activity-timeframes';
+import {GDDActivityTimeFrames} from '../../intervention-workplan/results-structure/modals/activity-dialog/activity-timeframes';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
-@customElement('time-intervals-dialog')
-export class TimeIntervalsDialog extends LitElement {
+@customElement('gdd-time-intervals-dialog')
+export class GDDTimeIntervalsDialog extends LitElement {
   static get styles(): CSSResultArray {
     return [layoutStyles];
   }
   @property() readonly: boolean | undefined = false;
   @property() selectedTimeFrames: number[] = [];
-  quarters: ActivityTimeFrames[] = [];
+  quarters: GDDActivityTimeFrames[] = [];
 
   set dialogData({quarters, readonly, selectedTimeFrames}: any) {
     this.quarters = quarters;
@@ -48,14 +48,14 @@ export class TimeIntervalsDialog extends LitElement {
         no-padding
       >
         <div class="container layout vertical">
-          <activity-time-frames
+          <gdd-activity-time-frames
             tabindex="0"
             hide-label
             .quarters="${this.quarters}"
             .selectedTimeFrames="${this.selectedTimeFrames || []}"
             .readonly="${this.readonly}"
             @time-frames-changed="${({detail}: CustomEvent) => (this.selectedTimeFrames = detail)}"
-          ></activity-time-frames>
+          ></gdd-activity-time-frames>
         </div>
       </etools-dialog>
     `;

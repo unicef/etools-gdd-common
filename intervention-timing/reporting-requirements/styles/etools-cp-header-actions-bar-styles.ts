@@ -1,6 +1,6 @@
 import {css, unsafeCSS} from 'lit';
 
-export const etoolsCpHeaderActionsBarStyles = `
+export const gddEtoolsCpHeaderActionsBarStyles = `
   .cp-header-actions-bar {
       display: flex;
   }
@@ -18,6 +18,6 @@ export const etoolsCpHeaderActionsBarStyles = `
   `;
 
 // language=CSS
-export const etoolsCpHeaderActionsBarStylesLit = css`
-  ${unsafeCSS(etoolsCpHeaderActionsBarStyles)}
+export const gddEtoolsCpHeaderActionsBarStylesLit = css`
+  ${unsafeCSS(gddEtoolsCpHeaderActionsBarStyles)}
 `;

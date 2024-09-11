@@ -31,8 +31,8 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
 /**
  * @customElement
  */
-@customElement('other-metadata')
-export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-other-metadata')
+export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }

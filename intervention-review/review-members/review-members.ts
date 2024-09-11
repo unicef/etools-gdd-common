@@ -6,7 +6,7 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
@@ -21,8 +21,8 @@ import {PRC_REVIEW} from '../../common/components/intervention/review.const';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import {addItemToListIfMissing} from '../../utils/utils';
 
-@customElement('review-members')
-export class ReviewMembers extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-review-members')
+export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -142,7 +142,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   saveData(): Promise<void> {
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionReview, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.interventionReview, {
       id: this.data!.id,
       interventionId: this.interventionId
     });
@@ -166,7 +166,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   sendNotification(): void {
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.sendReviewNotification, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.sendReviewNotification, {
       id: this.data!.id,
       interventionId: this.interventionId
     });

@@ -8,8 +8,8 @@ import {translate} from 'lit-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
-@customElement('time-intervals')
-export class TimeIntervals extends LitElement {
+@customElement('gdd-time-intervals')
+export class GDDTimeIntervals extends LitElement {
   @property() quarters: InterventionQuarter[] = [];
   @property() selectedTimeFrames: number[] = [];
   @property({type: Boolean, reflect: true, attribute: true}) readonly: boolean | undefined = false;

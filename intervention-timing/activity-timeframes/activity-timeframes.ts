@@ -19,8 +19,8 @@ import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polym
 import {translate} from 'lit-translate';
 import {repeat} from 'lit/directives/repeat.js';
 
-@customElement('activity-timeframes')
-export class ActivityTimeframes extends CommentsMixin(LitElement) {
+@customElement('gdd-activity-timeframes')
+export class GDDActivityTimeframes extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [layoutStyles, ActivityTimeframesStyles];

@@ -6,9 +6,9 @@ import {translate} from 'lit-translate';
 import {fitCommentsToWindow, makeCommentsDraggable} from '../../comments/comments.helpers';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('comments-panel-header')
+@customElement('gdd-comments-panel-header')
 /* eslint-disable max-len */
-export class CommentsPanelHeader extends LitElement {
+export class GDDCommentsPanelHeader extends LitElement {
   @property() count = 0;
   @property() isExpanded = false;
   protected render(): TemplateResult {

@@ -1,7 +1,7 @@
 import {Intervention, InterventionPermissionsFields, MinimalUser} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class PartnerInfo extends ModelsBase {
+export class GDDPartnerInfo extends GDDModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
@@ -13,7 +13,7 @@ export class PartnerInfo extends ModelsBase {
   agreement: number | null = null;
 }
 
-export class PartnerInfoPermissions extends ModelsBase {
+export class GDDPartnerInfoPermissions extends GDDModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);

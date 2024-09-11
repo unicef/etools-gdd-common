@@ -1,5 +1,5 @@
 import {AsyncAction} from '@unicef-polymer/etools-types/dist/global.types';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../actions/interventions';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
@@ -23,7 +23,7 @@ function deactivateActivity(activityId: number, pdOutputId: number, intervention
     active: true,
     loadingSource: 'interv-activity-deactivate'
   });
-  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.pdActivityDetails, {
     activityId: activityId,
     interventionId: interventionId,
     pdOutputId: pdOutputId
@@ -55,7 +55,7 @@ function deleteActivity(activityId: number, pdOutputId: number, interventionId: 
     loadingSource: 'interv-activity-remove'
   });
 
-  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.pdActivityDetails, {
     activityId: activityId,
     interventionId: interventionId,
     pdOutputId: pdOutputId

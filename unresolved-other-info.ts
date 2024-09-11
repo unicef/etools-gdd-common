@@ -12,8 +12,8 @@ import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {patchIntervention} from './common/actions/interventions';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
-@customElement('unresolved-other-info-review')
-export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-unresolved-other-info-review')
+export class GDDUnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }

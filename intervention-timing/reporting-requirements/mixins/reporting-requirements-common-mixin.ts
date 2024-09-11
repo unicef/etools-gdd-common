@@ -1,5 +1,5 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import CONSTANTS from '../../../common/constants';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
@@ -48,12 +48,12 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
 
     _getEndpointObj(id: number, type: string) {
       if (type === CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL) {
-        return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
+        return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirements, {
           intervId: id
         });
       }
 
-      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.reportingRequirements, {
         intervId: id,
         reportType: type
       });

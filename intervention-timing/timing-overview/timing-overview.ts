@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-toolti
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {TimingOverviewData} from './timingOverview.models';
+import {GDDTimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
 import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {RootState} from '../../common/types/store.types';
@@ -21,8 +21,8 @@ import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/l
 /**
  * @customElement
  */
-@customElement('timing-overview')
-export class TimingOverview extends CommentsMixin(LitElement) {
+@customElement('gdd-timing-overview')
+export class GDDTimingOverview extends CommentsMixin(LitElement) {
   static get styles() {
     return [layoutStyles, elevationStyles];
   }
@@ -121,7 +121,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
   }
 
   @property({type: Object})
-  timingOverview!: TimingOverviewData;
+  timingOverview!: GDDTimingOverviewData;
 
   connectedCallback() {
     super.connectedCallback();

@@ -6,7 +6,7 @@ import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-re
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {translate, get as getTranslation} from 'lit-translate';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 
@@ -16,8 +16,8 @@ import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/commo
  * @mixinFunction
  * @appliesMixin EndpointsMixin
  */
-@customElement('etools-ram-indicators')
-export class EtoolsRamIndicators extends CommonMixin(LitElement) {
+@customElement('gdd-etools-ram-indicators')
+export class GDDEtoolsRamIndicators extends CommonMixin(LitElement) {
   render() {
     return html`
       <style>
@@ -122,7 +122,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
     this.loading = true;
     sendRequest({
       method: 'GET',
-      endpoint: getEndpoint(interventionEndpoints.cpOutputRamIndicators, reqPayload)
+      endpoint: getEndpoint(gddEndpoints.cpOutputRamIndicators, reqPayload)
     })
       .then((resp: any) => {
         this.loading = false;

@@ -29,8 +29,8 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 /**
  * @customElement
  */
-@customElement('financial-component')
-export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-financial-component')
+export class GDDFinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }

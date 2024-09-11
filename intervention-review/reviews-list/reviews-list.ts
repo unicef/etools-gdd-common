@@ -17,8 +17,8 @@ import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('reviews-list')
-export class ReviewsList extends connectStore(LitElement) {
+@customElement('gdd-reviews-list')
+export class GDDReviewsList extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [

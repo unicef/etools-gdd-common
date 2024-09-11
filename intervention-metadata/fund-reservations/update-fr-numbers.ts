@@ -19,8 +19,8 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
 /**
  * @customElement
  */
-@customElement('update-fr-numbers')
-export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
+@customElement('gdd-update-fr-numbers')
+export class GDDUpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }

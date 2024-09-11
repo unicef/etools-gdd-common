@@ -15,8 +15,8 @@ import {getIndicatorDisplayType} from '../../utils/utils';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {_canDeactivate, _canDelete} from '../../common/mixins/results-structure-common';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
-@customElement('pd-indicator')
-export class PdIndicator extends CommentsMixin(LitElement) {
+@customElement('gdd-pd-indicator')
+export class GDDPdIndicator extends CommentsMixin(LitElement) {
   @property() private disaggregations: Disaggregation[] = [];
   @property({type: Array}) indicator!: Indicator;
   @property({type: Boolean}) readonly!: boolean;

@@ -1,7 +1,7 @@
 import {Intervention, InterventionPermissionsFields, PlannedBudget} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class OtherData extends ModelsBase {
+export class GDDOtherData extends GDDModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
@@ -15,7 +15,7 @@ export class OtherData extends ModelsBase {
   cfei_number = '';
 }
 
-export class OtherPermissions extends ModelsBase {
+export class GDDOtherPermissions extends GDDModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);

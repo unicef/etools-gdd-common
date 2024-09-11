@@ -19,8 +19,8 @@ import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-compari
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 // TODO - NOT USED AT THE MOMENT
-@customElement('intervention-summary')
-export class InterventionSummary extends connectStore(LitElement) {
+@customElement('gdd-intervention-summary')
+export class GDDInterventionSummary extends connectStore(LitElement) {
   static get styles() {
     return [layoutStyles, elevationStyles];
   }

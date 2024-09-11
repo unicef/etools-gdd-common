@@ -7,13 +7,13 @@ import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../../../common/components/activity/get-total.helper';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './activity-timeframes';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {ActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
+import {GDDActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
 import {updateCurrentIntervention} from '../../../../common/actions/interventions';
-import {ActivityTimeFrames} from './activity-timeframes';
+import {GDDActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, EtoolsEndpoint, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
@@ -27,8 +27,8 @@ import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools
 import cloneDeep from 'lodash-es/cloneDeep';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 
-@customElement('activity-data-dialog')
-export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
+@customElement('gdd-activity-data-dialog')
+export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
   static get styles(): CSSResultArray {
     return [layoutStyles];
   }
@@ -41,8 +41,8 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property({type: String}) spinnerText = getTranslation('GENERAL.LOADING');
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
-  @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
-  quarters: ActivityTimeFrames[] = [];
+  @query('activity-items-table') private activityItemsTable!: GDDActivityItemsTable;
+  quarters: GDDActivityTimeFrames[] = [];
 
   set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
     this.quarters = quarters;
@@ -51,7 +51,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     if (!activityId) {
       this.data = {} as InterventionActivity;
       this.isEditDialog = false;
-      this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivities, {
+      this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.pdActivities, {
         pdOutputId,
         interventionId
       });
@@ -59,7 +59,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     }
 
     this.loadingInProcess = true;
-    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.pdActivityDetails, {
       activityId,
       pdOutputId,
       interventionId
@@ -235,7 +235,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           >
             ${translate('USE_INPUT_LEVEL')}
           </sl-switch>
-          <activity-items-table
+          <gdd-activity-items-table
             .dialogElement=${this.dialogElement}
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
@@ -245,8 +245,8 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               this.editedData.items = detail;
               this.requestUpdate();
             }}"
-          ></activity-items-table>
-          <activity-time-frames
+          ></gdd-activity-items-table>
+          <gdd-activity-time-frames
             tabindex="0"
             .quarters="${this.quarters}"
             .selectedTimeFrames="${this.editedData.time_frames || []}"
@@ -255,7 +255,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               this.editedData.time_frames = detail;
               this.requestUpdate();
             }}"
-          ></activity-time-frames>
+          ></gdd-activity-time-frames>
         </div>
       </etools-dialog>
     `;
@@ -372,12 +372,12 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   // }
 
   validateActivityItems(): AnyObject | undefined {
-    const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
+    const itemsTable: GDDActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
     return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 
   validateActivityTimeFrames() {
-    const items: ActivityTimeFrames | null = this.shadowRoot!.querySelector('activity-time-frames');
+    const items: GDDActivityTimeFrames | null = this.shadowRoot!.querySelector('activity-time-frames');
     return items !== null && items.validate();
   }
 }

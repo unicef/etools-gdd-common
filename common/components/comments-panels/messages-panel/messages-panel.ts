@@ -9,8 +9,8 @@ import {EditComments} from '../../comments/edit-comments-base';
 import {CommentRelatedItem} from '../../comments/comments-types';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
-@customElement('messages-panel')
-export class MessagesPanel extends EditComments {
+@customElement('gdd-messages-panel')
+export class GDDMessagesPanel extends EditComments {
   @query('#messages-container') container?: HTMLElement;
   @property() relatedToKey = '';
   @property() relatedItem: CommentRelatedItem | null = null;
@@ -29,14 +29,14 @@ export class MessagesPanel extends EditComments {
           overflow-y: auto;
         }
       </style>
-      <messages-panel-header
+      <gdd-messages-panel-header
         .relatedToKey="${this.relatedToKey}"
         .relatedItem="${this.relatedItem}"
-      ></messages-panel-header>
+      ></gdd-messages-panel-header>
       <div class="data-container layout-vertical">
         <div class="messages" id="messages-container">
           ${this.comments?.map(
-            (comment, index) => html`<message-item
+            (comment, index) => html`<gdd-message-item
               ?my-comment="${comment.user.id === this.currentUser.id}"
               .resolving="${this.isResolving(comment.id)}"
               .deleting="${this.isDeleting(comment.id)}"
@@ -45,7 +45,7 @@ export class MessagesPanel extends EditComments {
               @retry="${() => this.retry(index)}"
               .comment="${comment}"
               my-comment
-            ></message-item>`
+            ></gdd-message-item>`
           )}
         </div>
 

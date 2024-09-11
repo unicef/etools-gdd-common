@@ -13,7 +13,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {EtoolsEndpoint, LabelAndValue} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
@@ -24,8 +24,8 @@ import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/uti
 /**
  * @customElement
  */
-@customElement('risk-dialog')
-export class RiskDialog extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-risk-dialog')
+export class GDDRiskDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -116,7 +116,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
     }
     const {item, interventionId, permissions, riskTypes} = data;
     this.originalData = item;
-    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.intervention, {
+    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.intervention, {
       interventionId
     });
     this.permissions = permissions;

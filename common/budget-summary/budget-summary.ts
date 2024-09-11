@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {BudgetSummary} from './budgetSummary.models';
+import {GDDBudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {RootState} from '../types/store.types';
@@ -24,8 +24,8 @@ import {getPageDirection} from '../../utils/utils';
 /**
  * @customElement
  */
-@customElement('budget-summary')
-export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(LitElement)) {
+@customElement('gdd-budget-summary')
+export class GDDBudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(LitElement)) {
   static get styles() {
     return [
       layoutStyles,
@@ -260,7 +260,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   intervention!: Intervention;
 
   @property({type: Object})
-  budgetSummary!: BudgetSummary;
+  budgetSummary!: GDDBudgetSummary;
 
   @property({type: String})
   _frsConsistencyWarning = '';

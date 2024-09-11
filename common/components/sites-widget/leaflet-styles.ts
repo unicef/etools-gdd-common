@@ -4,7 +4,7 @@ import {css, CSSResult} from 'lit';
 /* tslint:disable:max-line-length */
 /* eslint-disable no-tabs */
 // language=CSS
-export const leafletStyles: CSSResult = css`
+export const LeafletStyles: CSSResult = css`
   /* required styles */
 
   .leaflet-pane,

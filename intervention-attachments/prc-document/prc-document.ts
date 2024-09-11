@@ -22,15 +22,15 @@ import {translate} from 'lit-translate';
 import CONSTANTS from '../../common/constants';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {patchIntervention} from '../../common/actions/interventions';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 
 /**
  * @customElement
  */
-@customElement('prc-document')
-export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(LitElement))) {
+@customElement('gdd-prc-document')
+export class GDDPrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(LitElement))) {
   static get styles() {
     return [layoutStyles];
   }
@@ -82,7 +82,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   data!: PrcDocumentData;

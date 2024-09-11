@@ -26,8 +26,8 @@ import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
 import {isActiveTab} from '../../../../utils/utils';
 
-@customElement('indicator-dialog')
-export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
+@customElement('gdd-indicator-dialog')
+export class GDDIndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
   static get styles() {
     return [layoutStyles];
   }
@@ -129,24 +129,24 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           </div>
           <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
             ${!this.isCluster
-              ? html` <non-cluster-indicator
+              ? html` <gdd-non-cluster-indicator
                   id="nonClusterIndicatorEl"
                   .indicator="${this.data}"
                   .locationOptions="${this.locationOptions}"
                   .interventionStatus="${this.interventionStatus}"
                   .readonly="${this.readonly}"
                   .isUnicefUser="${this.currentUser?.is_unicef_user}"
-                ></non-cluster-indicator>`
+                ></gdd-non-cluster-indicator>`
               : html``}
             ${this.isCluster
-              ? html` <cluster-indicator
+              ? html` <gdd-cluster-indicator
                   id="clusterIndicatorEl"
                   .indicator="${this.data}"
                   .locationOptions="${this.locationOptions}"
                   .readonly="${this.readonly}"
                   @prp-disaggregations-changed="${({detail}: CustomEvent) =>
                     this.displayClusterDisaggregations(detail)}"
-                ></cluster-indicator>`
+                ></gdd-cluster-indicator>`
               : html``}
           </div>
         </div>
@@ -156,7 +156,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
             <a href="/pmp/settings" target="_blank">${translate('HERE')}</a>.
           </div>
           ${!this.isCluster
-            ? html` <indicator-dissaggregations
+            ? html` <gdd-indicator-dissaggregations
                 id="indicatorDisaggregations"
                 .data="${this.disaggregations}"
                 .readonly="${this.readonly}"
@@ -165,11 +165,11 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   this.disaggregations = detail;
                 }}"
               >
-              </indicator-dissaggregations>`
+              </gdd-indicator-dissaggregations>`
             : html``}
           ${this.isCluster
-            ? html` <cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
-              </cluster-indicator-disaggregations>`
+            ? html` <gdd-cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
+              </gdd-cluster-indicator-disaggregations>`
             : html``}
         </div>
       </etools-dialog>

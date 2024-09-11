@@ -5,7 +5,7 @@ import '../common/layout/export-intervention-data';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
 import './accept-for-partner';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {gddEndpoints} from '../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
@@ -56,8 +56,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
-@customElement('intervention-actions')
-export class InterventionActions extends connectStore(LitElement) {
+@customElement('gdd-intervention-actions')
+export class GDDInterventionActions extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     return [
       InterventionActionsStyles,
@@ -117,10 +117,10 @@ export class InterventionActions extends connectStore(LitElement) {
     }));
     return actions.length
       ? html`
-          <export-intervention-data
+          <gdd-export-intervention-data
             .exportLinks="${preparedExportActions}"
             .interventionId="${this.interventionPartial.id}"
-          ></export-intervention-data>
+          ></gdd-export-intervention-data>
         `
       : html``;
   }
@@ -259,7 +259,7 @@ export class InterventionActions extends connectStore(LitElement) {
 
     const loadingMessage = getTranslation(action === AMENDMENT_MERGE ? 'AMENDMENT_MERGE_MESSAGE' : 'GENERAL.LOADING');
 
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAction, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.interventionAction, {
       interventionId: this.interventionPartial.id,
       action
     });

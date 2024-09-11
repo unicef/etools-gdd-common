@@ -9,14 +9,14 @@ import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {repeat} from 'lit/directives/repeat.js';
 import {translate, get as getTranslation} from 'lit-translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 /* eslint-disable max-len */
-import {ProgrammeManagement} from '../../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.models';
+import {GDDProgrammeManagement} from '../../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.models';
 import {ProgrammeManagementItemMixin} from './programme-management-item-mixin';
 import {
   ProgrammeManagementRowExtended,
@@ -240,7 +240,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       `;
     }
 
-    formatProgrammeManagement(data: ProgrammeManagement): ProgrammeManagementRowExtended[] {
+    formatProgrammeManagement(data: GDDProgrammeManagement): ProgrammeManagementRowExtended[] {
       return [
         {
           code: 'EEPM.1',
@@ -361,7 +361,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       this.formatDataBeforeSave(patchData);
 
       sendRequest({
-        endpoint: getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
+        endpoint: getEndpoint(gddEndpoints.interventionBudgetUpdate, {
           interventionId
         }),
         method: 'PATCH',

@@ -15,8 +15,8 @@ import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {_canDelete} from '../../common/mixins/results-structure-common';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('cp-output-level')
-export class CpOutputLevel extends TruncateMixin(LitElement) {
+@customElement('gdd-cp-output-level')
+export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
   @property() interventionId!: number;
   @property() currency!: string | undefined;
   @property() resultLink!: ExpectedResult;

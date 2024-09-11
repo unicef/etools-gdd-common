@@ -9,7 +9,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
@@ -18,7 +18,7 @@ import '../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
-import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
+import {GDDActivityItemsTable} from '../../common/components/activity/activity-items-table';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {removeCurrencyAmountDelimiter} from '../../utils/utils';
@@ -29,8 +29,8 @@ import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 /**
  * @customElement
  */
-@customElement('activity-dialog')
-export class ActivityDialog extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-activity-dialog')
+export class GDDActivityDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -172,7 +172,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             </sl-switch>
           </div>
         </div>
-        <activity-items-table
+        <gdd-activity-items-table
           .dialogElement=${this.dialogElement}
           ?hidden="${!this.useInputLevel}"
           .activityItems="${this.items || []}"
@@ -182,7 +182,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             this.items = detail;
             this.requestUpdate();
           }}"
-        ></activity-items-table>
+        ></gdd-activity-items-table>
       </etools-dialog>
     `;
   }
@@ -217,7 +217,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Array}) items: ManagementBudgetItem[] = [];
   @property({type: Boolean}) readonly = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
-  @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
+  @query('activity-items-table') private activityItemsTable!: GDDActivityItemsTable;
 
   valdateNonInputLevFields() {
     const pCash = this.shadowRoot?.querySelector<EtoolsCurrency>('#partnerContribution')!;
@@ -259,7 +259,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     patchData.items = patchData.items.concat(this.items);
     this.formatDataBeforeSave(patchData);
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
+      endpoint: getEndpoint(gddEndpoints.interventionBudgetUpdate, {
         interventionId: this.interventionId
       }),
       method: 'PATCH',
@@ -322,7 +322,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   }
 
   validateActivityItems(): AnyObject | undefined {
-    const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
+    const itemsTable: GDDActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
     return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 

@@ -14,8 +14,8 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 
-@customElement('intervention-implementation-status')
-export class InterventionImplementationStatus extends connectStore(LitElement) {
+@customElement('gdd-intervention-implementation-status')
+export class GDDInterventionImplementationStatus extends connectStore(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -27,10 +27,10 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
         class="content-section"
         panel-title=${translate('IMPLEMENTATION_STATUS_SUBTAB')}
       >
-        <fund-reservations-display
+        <gdd-fund-reservations-display
           .intervention="${this.intervention}"
           .frsDetails="${this.intervention?.frs_details}"
-        ></fund-reservations-display>
+        ></gdd-fund-reservations-display>
       </etools-content-panel>
     `;
   }

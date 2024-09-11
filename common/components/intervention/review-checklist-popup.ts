@@ -10,7 +10,7 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {loadPrcMembersIndividualReviews} from '../../actions/officers-reviews';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from './review.const';
 import {updateCurrentIntervention} from '../../actions/interventions';
@@ -24,8 +24,8 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-radio/etools-radio-group';
 import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 
-@customElement('review-checklist-popup')
-export class ReviewChecklistPopup extends LitElement {
+@customElement('gdd-review-checklist-popup')
+export class GDDReviewChecklistPopup extends LitElement {
   static get styles() {
     return [
       layoutStyles,
@@ -201,9 +201,7 @@ export class ReviewChecklistPopup extends LitElement {
     const interventionId = getStore().getState().app.routeDetails.params!.interventionId;
     const userId = getStore().getState().user.data!.user;
     const reviewId: number = this.overallReview.id as number;
-    const endpoint = this.isOverallReview
-      ? interventionEndpoints.interventionReview
-      : interventionEndpoints.officerReviewData;
+    const endpoint = this.isOverallReview ? gddEndpoints.interventionReview : gddEndpoints.officerReviewData;
 
     const body = getDifference(this.originalReview, this.review);
     this.requestInProcess = true;

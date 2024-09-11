@@ -7,8 +7,8 @@ import {listenForLangChanged} from 'lit-translate';
 /**
  * @customElement
  */
-@customElement('intervention-report-status')
-export class InterventionReportStatus extends LitElement {
+@customElement('gdd-intervention-report-status')
+export class GDDInterventionReportStatus extends LitElement {
   render() {
     return html`
       <style>

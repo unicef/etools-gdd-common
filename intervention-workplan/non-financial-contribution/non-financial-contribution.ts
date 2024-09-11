@@ -30,8 +30,8 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 /**
  * @customElement
  */
-@customElement('non-financial-contribution')
-export class NonFinancialContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-non-financial-contribution')
+export class GDDNonFinancialContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }

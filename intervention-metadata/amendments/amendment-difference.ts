@@ -15,8 +15,8 @@ const ACTIONS: GenericObject<string> = {
   original: 'ORIGINAL_VALUE'
 };
 
-@customElement('amendment-difference')
-export class AmendmentDifference extends LitElement {
+@customElement('gdd-amendment-difference')
+export class GDDAmendmentDifference extends LitElement {
   static get styles() {
     // language=css
     return [

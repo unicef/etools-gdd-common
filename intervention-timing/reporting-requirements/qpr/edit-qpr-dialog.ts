@@ -4,7 +4,7 @@ import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 
 import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite.js';
@@ -12,7 +12,7 @@ import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import {QprListEl} from './qpr-list.js';
+import {GDDQprListEl} from './qpr-list.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import dayjs from 'dayjs';
@@ -28,8 +28,8 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
  * @LitElement
  * @customElement
  */
-@customElement('edit-qpr-dialog')
-export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(LitElement) {
+@customElement('gdd-edit-qpr-dialog')
+export class GDDEditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(LitElement) {
   static get styles() {
     return [
       layoutStyles,
@@ -117,14 +117,14 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             >
           </div>
           <div class="col-12">
-            <qpr-list
+            <gdd-qpr-list
               id="qprList"
               with-scroll
               .qprData="${this.qprData}"
               always-show-row-actions
               ?editMode="${true}"
               @delete-qpr="${(event: CustomEvent) => this._deleteQprDatesSet(event)}"
-            ></qpr-list>
+            ></gdd-qpr-list>
           </div>
         </div>
       </etools-dialog>
@@ -358,7 +358,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   }
 
   _getEditedQprDatesSetId(index: number) {
-    const dialog = this.shadowRoot!.querySelector(`#qprList`) as QprListEl;
+    const dialog = this.shadowRoot!.querySelector(`#qprList`) as GDDQprListEl;
     if (dialog) {
       return dialog.getIndex(index, this.qprData.length);
     }
@@ -366,7 +366,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   }
 
   _saveModifiedQprData() {
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
     });
@@ -402,4 +402,4 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   }
 }
 
-export {EditQprDialog as EditQprDialogEl};
+export {GDDEditQprDialog as GDDEditQprDialogEl};

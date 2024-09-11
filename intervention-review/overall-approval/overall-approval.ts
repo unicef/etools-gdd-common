@@ -12,8 +12,8 @@ import '../../common/components/intervention/review-checklist-popup';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('overall-approval')
-export class OverallApproval extends LitElement {
+@customElement('gdd-overall-approval')
+export class GDDOverallApproval extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [

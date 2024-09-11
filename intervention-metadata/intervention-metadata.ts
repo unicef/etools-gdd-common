@@ -18,7 +18,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 /**
  * @customElement
  */
-export class InterventionMetadata extends connectStore(LitElement) {
+export class GDDInterventionMetadata extends connectStore(LitElement) {
   @property({type: Object})
   permissions!: Permission<InterventionPermissionsFields>;
 
@@ -29,14 +29,14 @@ export class InterventionMetadata extends connectStore(LitElement) {
     return html`
       <style></style>
 
-      <details-overview></details-overview>
-      <partner-info></partner-info>
-      <unicef-details></unicef-details>
-      <financial-component></financial-component>
-      ${this.permissions?.view!.frs ? html`<fund-reservations></fund-reservations>` : ''}
-      ${this.permissions?.view!.amendments ? html`<pd-amendments></pd-amendments>` : ''}
-      ${this.showSignatureAndDates ? html`<review-and-sign></review-and-sign>` : ''}
-      <other-metadata></other-metadata>
+      <gdd-details-overview></gdd-details-overview>
+      <gdd-partner-info></gdd-partner-info>
+      <gdd-unicef-details></gdd-unicef-details>
+      <gdd-financial-component></gdd-financial-component>
+      ${this.permissions?.view!.frs ? html`<gdd-fund-reservations></gdd-fund-reservations>` : ''}
+      ${this.permissions?.view!.amendments ? html`<gdd-pd-amendments></gdd-pd-amendments>` : ''}
+      ${this.showSignatureAndDates ? html`<gdd-review-and-sign></gdd-review-and-sign>` : ''}
+      <gdd-other-metadata></gdd-other-metadata>
     `;
   }
 
@@ -69,4 +69,4 @@ export class InterventionMetadata extends connectStore(LitElement) {
   }
 }
 
-window.customElements.define('intervention-metadata', InterventionMetadata);
+window.customElements.define('gdd-intervention-metadata', GDDInterventionMetadata);

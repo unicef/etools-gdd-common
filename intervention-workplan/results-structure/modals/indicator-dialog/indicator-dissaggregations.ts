@@ -25,8 +25,8 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
  * @customElement
  * @applies MixinRepeatableDataSets
  */
-@customElement('indicator-dissaggregations')
-export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
+@customElement('gdd-indicator-dissaggregations')
+export class GDDIndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }

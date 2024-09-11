@@ -24,8 +24,8 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
  * @appliesMixin GenerateQuarterlyReportingRequirementsMixin
  */
 
-@customElement('quarterly-reporting-requirements')
-export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequirementsMixin(
+@customElement('gdd-quarterly-reporting-requirements')
+export class GDDQuarterlyReportingRequirements extends GenerateQuarterlyReportingRequirementsMixin(
   ReportingRequirementsCommonMixin(LitElement)
 ) {
   static get styles() {
@@ -41,7 +41,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       </style>
 
       <div class="col-12" ?hidden="${this._empty(this.reportingRequirements)}">
-        <qpr-list .qprData="${this.reportingRequirements}"></qpr-list>
+        <gdd-qpr-list .qprData="${this.reportingRequirements}"></gdd-qpr-list>
       </div>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
@@ -118,4 +118,4 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   }
 }
 
-export {QuarterlyReportingRequirements as QuarterlyReportingRequirementsEL};
+export {GDDQuarterlyReportingRequirements as GDDQuarterlyReportingRequirementsEL};
