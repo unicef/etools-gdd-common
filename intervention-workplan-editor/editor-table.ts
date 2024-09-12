@@ -484,7 +484,7 @@ export class GDDEditorTable extends CommentsMixin(
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(state.app?.routeDetails, 'gdd', TABS.WorkplanEditor)) {
       this.prevInterventionId = null;
       this.oneEntityInEditMode = false;
       if (!state.commentsData.commentsModeEnabled) {
@@ -764,7 +764,7 @@ export class GDDEditorTable extends CommentsMixin(
   deletePDOutputFromPD(lower_result_id: number) {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-pdoutput-remove'
+      loadingSource: 'gdd-interv-pdoutput-remove'
     });
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.lowerResultsDelete, {
       lower_result_id,
@@ -781,7 +781,7 @@ export class GDDEditorTable extends CommentsMixin(
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'interv-pdoutput-remove'
+          loadingSource: 'gdd-interv-pdoutput-remove'
         })
       );
   }

@@ -418,7 +418,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   public stateChanged(state: RootState) {
     const notInterventionTabs: boolean =
-      currentPage(state) !== 'interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
+      currentPage(state) !== 'gdd' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
     const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
     const commentsState = Boolean(state.app?.routeDetails?.queryParams?.comment_mode);
     this.checkCommentsMode(commentsState);
@@ -807,7 +807,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
   _showInterventionPageLoadingMessage() {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 

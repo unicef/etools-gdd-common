@@ -138,7 +138,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
 
   stateChanged(state: RootState): void {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.Workplan) ||
       !state.interventions.current
     ) {
       return;
@@ -228,7 +228,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
     });
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-indicator-deactivate'
+      loadingSource: 'gdd-interv-indicator-deactivate'
     });
     sendRequest({
       method: 'PATCH',
@@ -246,7 +246,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'interv-indicator-deactivate'
+          loadingSource: 'gdd-interv-indicator-deactivate'
         })
       );
   }
@@ -270,7 +270,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
   deleteIndicator(indicatorId: string) {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-indicator-remove'
+      loadingSource: 'gdd-interv-indicator-remove'
     });
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.getEditDeleteIndicator, {
       id: indicatorId
@@ -288,7 +288,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'interv-indicator-remove'
+          loadingSource: 'gdd-interv-indicator-remove'
         })
       );
   }

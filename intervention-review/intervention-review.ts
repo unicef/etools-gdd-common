@@ -84,13 +84,13 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review') ||
+      EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'gdd', 'review') ||
       !state.interventions.current
     ) {
       return;

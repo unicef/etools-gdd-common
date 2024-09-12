@@ -40,7 +40,7 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
 
   fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
     active: true,
-    loadingSource: 'interv-get'
+    loadingSource: 'gdd-interv-get'
   });
 
   return sendRequest({
@@ -58,7 +58,7 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
       dispatch(setInterventionLoading(null));
       fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
         active: false,
-        loadingSource: 'interv-get'
+        loadingSource: 'gdd-interv-get'
       });
     });
 };

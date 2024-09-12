@@ -55,7 +55,7 @@ export class GDDIndicatorReportTarget extends connectStore(ComponentBaseMixin(Li
   permissions: any;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Reports)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.Reports)) {
       return;
     }
     if (state.interventions.current) {

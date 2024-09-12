@@ -212,7 +212,7 @@ export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMix
   data!: GenderEquityRating;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'strategy')) {
       return;
     }
 

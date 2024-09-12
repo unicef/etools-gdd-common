@@ -174,7 +174,7 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
   async stateChanged(state: RootState) {
     if (
       !state.interventions.current ||
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'metadata')
     ) {
       return;
     }

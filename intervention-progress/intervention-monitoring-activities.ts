@@ -39,9 +39,7 @@ export class GDDInterventionMonitoringActivities extends connectStore(LitElement
   intervention!: Intervention;
 
   stateChanged(state: RootState) {
-    if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.MonitoringActivities)
-    ) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.MonitoringActivities)) {
       return;
     }
 
@@ -55,7 +53,7 @@ export class GDDInterventionMonitoringActivities extends connectStore(LitElement
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 }

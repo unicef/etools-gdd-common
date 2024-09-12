@@ -211,7 +211,7 @@ export class GDDProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repe
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'timing')) {
       return;
     }
     if (!state.interventions.current) {

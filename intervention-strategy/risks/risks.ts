@@ -160,7 +160,7 @@ export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement
     if (!state.interventions.current) {
       return;
     }
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'strategy')) {
       return;
     }
 
@@ -206,7 +206,7 @@ export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement
   deleteRiskItem(riskId: string) {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-risk-item-remove'
+      loadingSource: 'gdd-interv-risk-item-remove'
     });
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.riskDelete, {
       interventionId: this.interventionId,
@@ -222,7 +222,7 @@ export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'interv-risk-item-remove'
+          loadingSource: 'gdd-interv-risk-item-remove'
         })
       );
   }

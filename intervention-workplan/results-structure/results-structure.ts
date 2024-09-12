@@ -329,7 +329,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.Workplan) ||
       !state.interventions.current
     ) {
       return;
@@ -415,7 +415,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   deletePDOutputFromPD(lower_result_id: number) {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-pd-remove'
+      loadingSource: 'gdd-interv-pd-remove'
     });
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.lowerResultsDelete, {
       lower_result_id,
@@ -429,7 +429,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'interv-pd-remove'
+          loadingSource: 'gdd-interv-pd-remove'
         })
       );
   }
@@ -483,7 +483,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   deleteCPOutputFromPD(resultLinkId: number) {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-cp-remove'
+      loadingSource: 'gdd-interv-cp-remove'
     });
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.resultLinkGetDelete, {
       result_link: resultLinkId
@@ -496,7 +496,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'interv-cp-remove'
+          loadingSource: 'gdd-interv-cp-remove'
         })
       );
   }

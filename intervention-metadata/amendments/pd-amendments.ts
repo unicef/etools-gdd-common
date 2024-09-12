@@ -241,7 +241,7 @@ export class GDDPdAmendments extends CommentsMixin(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'metadata') ||
       !state.interventions.current
     ) {
       return;

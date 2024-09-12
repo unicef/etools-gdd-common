@@ -266,7 +266,7 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     }
   }
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'metadata')) {
       return;
     }
     if (!state.interventions.current) {

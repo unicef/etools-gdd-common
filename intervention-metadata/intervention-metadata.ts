@@ -45,16 +45,12 @@ export class GDDInterventionMetadata extends connectStore(LitElement) {
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 
   stateChanged(state: RootState): void {
-    if (
-      currentPage(state) !== 'interventions' ||
-      currentSubpage(state) !== 'metadata' ||
-      !state.interventions.current
-    ) {
+    if (currentPage(state) !== 'gdd' || currentSubpage(state) !== 'metadata' || !state.interventions.current) {
       return;
     }
     this.permissions = currentInterventionPermissions(state);

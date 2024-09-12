@@ -403,7 +403,7 @@ export class GDDInterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.ResultsReported) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.ResultsReported) ||
       !state.interventions.current
     ) {
       return;
@@ -425,7 +425,7 @@ export class GDDInterventionResultsReported extends connectStore(
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
     fireEvent(this, 'tab-content-attached');
   }

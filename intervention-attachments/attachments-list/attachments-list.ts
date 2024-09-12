@@ -153,7 +153,7 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: any): void {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'attachments')) {
       return;
     }
     if (!state.interventions.current) {
@@ -199,7 +199,7 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
   deleteAttachment(attachment: InterventionAttachment) {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-attachment-remove'
+      loadingSource: 'gdd-interv-attachment-remove'
     });
 
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.updatePdAttachment, {
@@ -220,7 +220,7 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'interv-attachment-remove'
+          loadingSource: 'gdd-interv-attachment-remove'
         })
       );
   }

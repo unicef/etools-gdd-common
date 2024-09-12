@@ -274,8 +274,8 @@ export class GDDBudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(
 
   public stateChanged(state: RootState) {
     if (
-      (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) &&
-        EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.WorkplanEditor)) ||
+      (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.Workplan) &&
+        EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.WorkplanEditor)) ||
       !state.interventions.current
     ) {
       return;
