@@ -12,7 +12,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './prcDocument.models';
 import './prcDocument.selectors';
 import {selectPrcDocumentData, selectPrcDocumentPermissions} from './prcDocument.selectors';
-import {PrcDocumentData, PrcDocumentPermissions} from './prcDocument.models';
+import {GDDPrcDocumentData, GDDPrcDocumentPermissions} from './prcDocument.models';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
@@ -85,10 +85,10 @@ export class GDDPrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixi
   uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
-  data!: PrcDocumentData;
+  data!: GDDPrcDocumentData;
 
   @property({type: Object})
-  permissions!: Permission<PrcDocumentPermissions>;
+  permissions!: Permission<GDDPrcDocumentPermissions>;
 
   stateChanged(state: RootState) {
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'attachments')) {

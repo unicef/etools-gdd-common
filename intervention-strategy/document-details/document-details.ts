@@ -9,7 +9,7 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documentDetails.selectors';
-import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
+import {GDDDocumentDetailsPermissions, GDDDocumentDetails} from './documentDetails.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -268,10 +268,10 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
     `;
   }
   @property({type: Object})
-  data!: DocumentDetails;
+  data!: GDDDocumentDetails;
 
   @property({type: Object})
-  permissions!: Permission<DocumentDetailsPermissions>;
+  permissions!: Permission<GDDDocumentDetailsPermissions>;
 
   @property({type: Object})
   originalData = {};

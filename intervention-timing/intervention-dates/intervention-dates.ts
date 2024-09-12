@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
-import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
+import {GDDProgrammeDocDates, GDDInterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
 
@@ -156,10 +156,10 @@ export class GDDInterventionDates extends CommentsMixin(
   uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
-  originalData!: ProgrammeDocDates;
+  originalData!: GDDProgrammeDocDates;
 
   @property({type: Object})
-  data!: ProgrammeDocDates;
+  data!: GDDProgrammeDocDates;
 
   @property({type: String})
   _frsStartConsistencyWarning: string | boolean = '';
@@ -168,7 +168,7 @@ export class GDDInterventionDates extends CommentsMixin(
   _frsEndConsistencyWarning: string | boolean = '';
 
   @property({type: Object})
-  permissions!: Permission<InterventionDatesPermissions>;
+  permissions!: Permission<GDDInterventionDatesPermissions>;
 
   warningRequired = false;
 
@@ -193,7 +193,7 @@ export class GDDInterventionDates extends CommentsMixin(
     super.stateChanged(state);
   }
 
-  checkIntervDateConsistency(data: ProgrammeDocDates, frs_details: FrsDetails) {
+  checkIntervDateConsistency(data: GDDProgrammeDocDates, frs_details: FrsDetails) {
     this._frsStartConsistencyWarning = this.checkFrsAndIntervDateConsistency(
       data.start,
       frs_details.earliest_start_date,

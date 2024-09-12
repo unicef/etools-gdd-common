@@ -9,7 +9,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
-import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
+import {GDDGenderEquityRatingPermissions, GDDGenderEquityRating} from './genderEquityRating.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -203,13 +203,13 @@ export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMix
   }
 
   @property({type: Object})
-  permissions!: Permission<GenderEquityRatingPermissions>;
+  permissions!: Permission<GDDGenderEquityRatingPermissions>;
 
   @property({type: Array})
   ratings!: LabelAndValue[];
 
   @property({type: Object})
-  data!: GenderEquityRating;
+  data!: GDDGenderEquityRating;
 
   stateChanged(state: RootState) {
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'strategy')) {

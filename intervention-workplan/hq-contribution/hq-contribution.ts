@@ -9,7 +9,7 @@ import '@shoelace-style/shoelace/dist/components/range/range.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {selectHqContributionData, selectHqContributionPermissions} from './hqContribution.selectors';
-import {HqContributionData, HqContributionPermissions} from './hqContribution.models';
+import {GDDHqContributionData, GDDHqContributionPermissions} from './hqContribution.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -150,10 +150,10 @@ export class GDDHqContributionElement extends CommentsMixin(ComponentBaseMixin(L
     `;
   }
   @property({type: Object})
-  data!: HqContributionData;
+  data!: GDDHqContributionData;
 
   @property({type: Object})
-  permissions!: Permission<HqContributionPermissions>;
+  permissions!: Permission<GDDHqContributionPermissions>;
 
   @property({type: Object})
   originalData = {};
@@ -198,7 +198,7 @@ export class GDDHqContributionElement extends CommentsMixin(ComponentBaseMixin(L
     if (!e.target) {
       return;
     }
-    this.data = {...this.data, hq_support_cost: (e.target as any).value} as HqContributionData;
+    this.data = {...this.data, hq_support_cost: (e.target as any).value} as GDDHqContributionData;
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
   }
 
@@ -241,7 +241,7 @@ export class GDDHqContributionElement extends CommentsMixin(ComponentBaseMixin(L
   /**
    * Backend errors out otherwise
    */
-  cleanUp(data: HqContributionData) {
+  cleanUp(data: GDDHqContributionData) {
     if (!data || !data.planned_budget) {
       return data;
     }

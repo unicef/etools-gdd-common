@@ -8,7 +8,7 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
-import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
+import {GDDPartnerInfo, GDDPartnerInfoPermissions} from './partnerInfo.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
@@ -137,13 +137,13 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   @property({type: Object})
-  originalData!: PartnerInfo;
+  originalData!: GDDPartnerInfo;
 
   @property({type: Object})
-  data!: PartnerInfo;
+  data!: GDDPartnerInfo;
 
   @property({type: Object})
-  permissions!: Permission<PartnerInfoPermissions>;
+  permissions!: Permission<GDDPartnerInfoPermissions>;
 
   @property({type: Array})
   partnerAgreements!: MinimalAgreement[];
@@ -209,7 +209,7 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
     return agreements.filter((a: any) => String(a.partner) === String(partnerId));
   }
 
-  partnerIdHasChanged(newPartnerDetails: PartnerInfo) {
+  partnerIdHasChanged(newPartnerDetails: GDDPartnerInfo) {
     return get(this.data, 'partner_id') !== newPartnerDetails.partner_id;
   }
 
@@ -254,7 +254,7 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
         this.editMode = false;
       });
   }
-  private formatUsersData(data: PartnerInfo) {
+  private formatUsersData(data: GDDPartnerInfo) {
     const dataToSave: AnyObject = cloneDeep(data);
     dataToSave.partner_focal_points = data.partner_focal_points.map((u: any) => u.id);
     return dataToSave;

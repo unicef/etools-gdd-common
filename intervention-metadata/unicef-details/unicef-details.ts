@@ -12,7 +12,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
-import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.models';
+import {GDDPdUnicefDetailsPermissions, GDDPdUnicefDetails} from './pdUnicefDetails.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
 import {RootState} from '../../common/types/store.types';
@@ -199,7 +199,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
   }
 
   @property({type: Object})
-  permissions!: Permission<PdUnicefDetailsPermissions>;
+  permissions!: Permission<GDDPdUnicefDetailsPermissions>;
 
   @property({type: Boolean})
   isUnicefUser = false;
@@ -298,7 +298,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
       });
   }
 
-  private formatUsersData(data: PdUnicefDetails) {
+  private formatUsersData(data: GDDPdUnicefDetails) {
     const dataToSave: AnyObject = cloneDeep(data);
     dataToSave.budget_owner = data.budget_owner ? data.budget_owner.id : null;
     dataToSave.unicef_focal_points = data.unicef_focal_points.map((u: any) => u.id);

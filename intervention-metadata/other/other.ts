@@ -18,7 +18,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {listenForLangChanged, translate} from 'lit-translate';
-import {OtherData, OtherPermissions} from './other.models';
+import {GDDOtherData, GDDOtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
@@ -227,13 +227,13 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   autoValidate = false;
 
   @property({type: Object})
-  originalData!: OtherData;
+  originalData!: GDDOtherData;
 
   @property({type: Object})
-  data!: OtherData;
+  data!: GDDOtherData;
 
   @property({type: Object})
-  permissions!: Permission<OtherPermissions>;
+  permissions!: Permission<GDDOtherPermissions>;
 
   @property({type: Boolean})
   showLoading = false;
@@ -342,14 +342,14 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   /**
    * Backend errors out otherwise
    */
-  cleanUp(data: OtherData) {
+  cleanUp(data: GDDOtherData) {
     if (!data || !data.planned_budget) {
       return data;
     }
     return this.removeUnchangedData(data);
   }
 
-  removeUnchangedData(data: OtherData) {
+  removeUnchangedData(data: GDDOtherData) {
     Object.keys(data).forEach((key) => {
       if (key == 'planned_budget') {
         if (!this.permissions.edit.document_currency) {

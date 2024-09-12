@@ -11,7 +11,10 @@ import {
   selectNonFinancialContribution,
   selectNonFinancialContributionPermissions
 } from './nonFinancialContribution.selectors';
-import {NonFinancialContributionData, NonFinancialContributionPermissions} from './nonFinancialContribution.models';
+import {
+  GDDNonFinancialContributionData,
+  GDDNonFinancialContributionPermissions
+} from './nonFinancialContribution.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -105,10 +108,10 @@ export class GDDNonFinancialContributionElement extends CommentsMixin(ComponentB
     `;
   }
   @property({type: Object})
-  data!: NonFinancialContributionData;
+  data!: GDDNonFinancialContributionData;
 
   @property({type: Object})
-  permissions!: Permission<NonFinancialContributionPermissions>;
+  permissions!: Permission<GDDNonFinancialContributionPermissions>;
 
   @property({type: Object})
   originalData = {};

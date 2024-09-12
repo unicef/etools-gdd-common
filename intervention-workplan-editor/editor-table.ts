@@ -197,7 +197,7 @@ export class GDDEditorTable extends CommentsMixin(
               </tbody>
             `}
         ${repeat(
-          this.resultStructureDetails,
+          this.resultStructureDetails as any,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
             <tbody

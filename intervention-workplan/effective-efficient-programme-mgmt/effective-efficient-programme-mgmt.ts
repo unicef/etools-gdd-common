@@ -20,7 +20,7 @@ import {
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {KindChoices, ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
+import {KindChoices, GDDProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
@@ -184,7 +184,7 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
   canEdit = true;
 
   @property({type: Object})
-  data!: ProgrammeManagement;
+  data!: GDDProgrammeManagement;
 
   @property({type: Number})
   total_amount = '0';
@@ -219,7 +219,7 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
     super.stateChanged(state);
   }
 
-  formatData(data: ProgrammeManagement) {
+  formatData(data: GDDProgrammeManagement) {
     this.total_amount = addCurrencyAmountDelimiter(data.total) || '0';
     return [
       {

@@ -12,7 +12,7 @@ import {RootState} from '../../common/types/store.types';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './financialComponent.models';
 import './financialComponent.selectors';
-import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.models';
+import {GDDFinancialComponentData, GDDFinancialComponentPermissions} from './financialComponent.models';
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.selectors';
 import {patchIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
@@ -92,13 +92,13 @@ export class GDDFinancialComponent extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   @property({type: Object})
-  originalData!: FinancialComponentData;
+  originalData!: GDDFinancialComponentData;
 
   @property({type: Object})
-  data!: FinancialComponentData;
+  data!: GDDFinancialComponentData;
 
   @property({type: Object})
-  permissions!: Permission<FinancialComponentPermissions>;
+  permissions!: Permission<GDDFinancialComponentPermissions>;
 
   @property({type: Array})
   cashTransferModalities!: LabelAndValue[];
@@ -135,7 +135,10 @@ export class GDDFinancialComponent extends CommentsMixin(ComponentBaseMixin(LitE
     } else if (this.data.cash_transfer_modalities.indexOf(checkValue) === -1) {
       this.data.cash_transfer_modalities.push(checkValue);
     }
-    this.data = {...this.data, cash_transfer_modalities: this.data.cash_transfer_modalities} as FinancialComponentData;
+    this.data = {
+      ...this.data,
+      cash_transfer_modalities: this.data.cash_transfer_modalities
+    } as GDDFinancialComponentData;
   }
 
   saveData() {
