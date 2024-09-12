@@ -368,7 +368,7 @@ export class GDDInterventionReports extends connectStore(PaginationMixin(CommonM
 
     const stringParams: string = buildUrlQueryString(this.prevQueryStringObj);
 
-    history.pushState(window.history.state, '', `interventions/${this.interventionId}/reports?${stringParams}`);
+    history.pushState(window.history.state, '', `gdd/${this.interventionId}/reports?${stringParams}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 

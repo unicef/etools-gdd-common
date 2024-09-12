@@ -289,7 +289,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
       <div class="amendment-info" ?hidden="${!this.isInAmendment}">
         ${translate('AMENDMENT_MODE_TEXT')}
-        <a href="${Environment.basePath}interventions/${this.intervention?.original_intervention}/metadata">
+        <a href="${Environment.basePath}gdd/${this.intervention?.original_intervention}/metadata">
           ${translate('ORIGINAL_VERSION')}
         </a>
       </div>
@@ -764,7 +764,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
       delete this._routeDetails?.queryParams?.size;
     }
     const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
-    let newPath = `interventions/${this.intervention!.id}/${newTabName}`;
+    let newPath = `gdd/${this.intervention!.id}/${newTabName}`;
     if (newSubTab) {
       newPath += `/${newSubTab}`;
     } else {

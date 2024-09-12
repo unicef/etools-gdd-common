@@ -118,7 +118,7 @@ export class GDDCommentsPanels extends connectStore(LitElement) {
     this.comments = [...this.commentsCollection![this.openedCollection.relatedTo]];
     const relatedToKey: string = removeTrailingIds(this.openedCollection.relatedTo);
     const expectedTab: string = ComponentsPosition[relatedToKey];
-    const path = `interventions/${this.interventionId}/${expectedTab}${location.search}`;
+    const path = `gdd/${this.interventionId}/${expectedTab}${location.search}`;
     history.pushState(window.history.state, '', path);
     window.dispatchEvent(new CustomEvent('popstate'));
     this.slideToRight();
