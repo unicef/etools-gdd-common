@@ -39,7 +39,13 @@ export class GDDInterventionMonitoringActivities extends connectStore(LitElement
   intervention!: Intervention;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.MonitoringActivities)) {
+    if (
+      EtoolsRouter.pageIsNotCurrentlyActive(
+        get(state, 'app.routeDetails'),
+        'gdd-interventions',
+        TABS.MonitoringActivities
+      )
+    ) {
       return;
     }
 

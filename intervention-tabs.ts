@@ -37,7 +37,7 @@ import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions
 import {RootState} from './common/types/store.types';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from './utils/intervention-endpoints';
-import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
+import {CommentsEndpoints} from './common/components/comments/comments-types';
 import {GDDCommentsPanels} from './common/components/comments-panels/comments-panels';
 import './unresolved-other-info';
 import {translatesMap} from './utils/intervention-labels-map';
@@ -289,7 +289,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
       <div class="amendment-info" ?hidden="${!this.isInAmendment}">
         ${translate('AMENDMENT_MODE_TEXT')}
-        <a href="${Environment.basePath}gdd/${this.intervention?.original_intervention}/metadata">
+        <a href="${Environment.basePath}gdd-interventions/${this.intervention?.original_intervention}/metadata">
           ${translate('ORIGINAL_VERSION')}
         </a>
       </div>
@@ -382,7 +382,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
   // id from route params
   private interventionId: string | null = null;
 
-  private isEPDApp = Environment.basePath === '/epd/';
+  private isGDDApp = Environment.basePath === '/gdd/';
 
   connectedCallback() {
     super.connectedCallback();
@@ -418,7 +418,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   public stateChanged(state: RootState) {
     const notInterventionTabs: boolean =
-      currentPage(state) !== 'gdd' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
+      currentPage(state) !== 'gdd-interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
     const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
     const commentsState = Boolean(state.app?.routeDetails?.queryParams?.comment_mode);
     this.checkCommentsMode(commentsState);
@@ -568,7 +568,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
     const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view!.reviews;
     const restrictedSubTabs =
-      (!unicefUser || this.isEPDApp) &&
+      (!unicefUser || this.isGDDApp) &&
       [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
     return !attachmentRestricted && !reviewRestricted && !restrictedSubTabs;
   }
@@ -582,7 +582,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   handleProgressTabVisibility(envFlags: EnvFlags | null, isUnicefUser?: boolean) {
-    if (!isUnicefUser || this.isEPDApp) {
+    if (!isUnicefUser || this.isGDDApp) {
       return; // ONLY visible for unicef users
     }
 
@@ -764,7 +764,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
       delete this._routeDetails?.queryParams?.size;
     }
     const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
-    let newPath = `gdd/${this.intervention!.id}/${newTabName}`;
+    let newPath = `gdd-interventions/${this.intervention!.id}/${newTabName}`;
     if (newSubTab) {
       newPath += `/${newSubTab}`;
     } else {

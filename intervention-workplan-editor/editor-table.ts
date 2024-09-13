@@ -484,7 +484,7 @@ export class GDDEditorTable extends CommentsMixin(
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(state.app?.routeDetails, 'gdd', TABS.WorkplanEditor)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(state.app?.routeDetails, 'gdd-interventions', TABS.WorkplanEditor)) {
       this.prevInterventionId = null;
       this.oneEntityInEditMode = false;
       if (!state.commentsData.commentsModeEnabled) {

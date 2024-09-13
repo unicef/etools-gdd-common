@@ -38,7 +38,13 @@ export class GDDInterventionImplementationStatus extends connectStore(LitElement
   intervention!: Intervention;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.ImplementationStatus)) {
+    if (
+      EtoolsRouter.pageIsNotCurrentlyActive(
+        get(state, 'app.routeDetails'),
+        'gdd-interventions',
+        TABS.ImplementationStatus
+      )
+    ) {
       return;
     }
 

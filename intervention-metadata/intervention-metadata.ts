@@ -50,7 +50,11 @@ export class GDDInterventionMetadata extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState): void {
-    if (currentPage(state) !== 'gdd' || currentSubpage(state) !== 'metadata' || !state.interventions.current) {
+    if (
+      currentPage(state) !== 'gdd-interventions' ||
+      currentSubpage(state) !== 'metadata' ||
+      !state.interventions.current
+    ) {
       return;
     }
     this.permissions = currentInterventionPermissions(state);

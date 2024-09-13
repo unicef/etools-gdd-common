@@ -17,7 +17,7 @@ export class GDDInterventionWorkplanEditor extends LitElement {
     // language=HTML
     return html`
       <div class="top-card">
-        <gdd-workplan-editor-link link="gdd/${this.interventionId}/${TABS.Workplan}">
+        <gdd-workplan-editor-link link="gdd-interventions/${this.interventionId}/${TABS.Workplan}">
           ${translate('BACK_TO_WORKPLAN')}
         </gdd-workplan-editor-link>
 

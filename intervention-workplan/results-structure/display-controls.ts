@@ -106,7 +106,7 @@ export class GDDDisplayControls extends LitElement {
             )}
           </sl-menu>
         </sl-dropdown>
-        <a class="editorLink" href="gdd/${this.interventionId}/${TABS.WorkplanEditor}">
+        <a class="editorLink" href="gdd-interventions/${this.interventionId}/${TABS.WorkplanEditor}">
           <div class="editor-link">
             ${translate('ACTIVITES_EDITOR')}
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -138,7 +138,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
 
   stateChanged(state: RootState): void {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.Workplan) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Workplan) ||
       !state.interventions.current
     ) {
       return;

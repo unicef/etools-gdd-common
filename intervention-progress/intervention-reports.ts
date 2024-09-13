@@ -249,7 +249,7 @@ export class GDDInterventionReports extends connectStore(PaginationMixin(CommonM
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'reports')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'reports')) {
       return;
     }
 
@@ -368,7 +368,7 @@ export class GDDInterventionReports extends connectStore(PaginationMixin(CommonM
 
     const stringParams: string = buildUrlQueryString(this.prevQueryStringObj);
 
-    history.pushState(window.history.state, '', `gdd/${this.interventionId}/reports?${stringParams}`);
+    history.pushState(window.history.state, '', `gdd-interventions/${this.interventionId}/reports?${stringParams}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 

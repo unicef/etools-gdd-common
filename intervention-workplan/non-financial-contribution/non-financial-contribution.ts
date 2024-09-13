@@ -117,7 +117,7 @@ export class GDDNonFinancialContributionElement extends CommentsMixin(ComponentB
   originalData = {};
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Workplan)) {
       return;
     }
 

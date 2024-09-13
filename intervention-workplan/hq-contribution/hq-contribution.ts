@@ -168,7 +168,7 @@ export class GDDHqContributionElement extends CommentsMixin(ComponentBaseMixin(L
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Workplan)) {
       return;
     }
 

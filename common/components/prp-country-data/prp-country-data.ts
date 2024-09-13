@@ -19,7 +19,7 @@ export class GDDPrpCountryData extends EndpointsLitMixin(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    if (!window.location.href.includes('/epd/')) {
+    if (!window.location.href.includes('/gdd/')) {
       this.getPRPCountries();
     }
   }

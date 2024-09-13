@@ -153,7 +153,7 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: any): void {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'attachments')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'attachments')) {
       return;
     }
     if (!state.interventions.current) {

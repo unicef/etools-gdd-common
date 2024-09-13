@@ -283,7 +283,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
   autoValidate = false;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'strategy')) {
       return;
     }
 

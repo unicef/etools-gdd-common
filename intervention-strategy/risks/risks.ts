@@ -160,7 +160,7 @@ export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement
     if (!state.interventions.current) {
       return;
     }
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'strategy')) {
       return;
     }
 

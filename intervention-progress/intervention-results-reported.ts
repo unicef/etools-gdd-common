@@ -403,7 +403,11 @@ export class GDDInterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', TABS.ResultsReported) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(
+        get(state, 'app.routeDetails'),
+        'gdd-interventions',
+        TABS.ResultsReported
+      ) ||
       !state.interventions.current
     ) {
       return;

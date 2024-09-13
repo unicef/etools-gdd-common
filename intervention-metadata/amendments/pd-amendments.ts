@@ -161,7 +161,7 @@ export class GDDPdAmendments extends CommentsMixin(LitElement) {
                       ? html`
                           <a
                             class="layout-horizontal align-items-center"
-                            href="${Environment.basePath}gdd/${item.amended_intervention}/metadata"
+                            href="${Environment.basePath}gdd-interventions/${item.amended_intervention}/metadata"
                           >
                             ${translate('ACTIVE')} <etools-icon name="launch"></etools-icon>
                           </a>
@@ -241,7 +241,7 @@ export class GDDPdAmendments extends CommentsMixin(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'metadata') ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'metadata') ||
       !state.interventions.current
     ) {
       return;
@@ -294,7 +294,7 @@ export class GDDPdAmendments extends CommentsMixin(LitElement) {
     }).then(({response}) => {
       if (response?.id) {
         getStore().dispatch(setShouldReGetList(true));
-        history.pushState(window.history.state, '', `${Environment.basePath}gdd/${response.id}/metadata`);
+        history.pushState(window.history.state, '', `${Environment.basePath}gdd-interventions/${response.id}/metadata`);
         window.dispatchEvent(new CustomEvent('popstate'));
       }
     });

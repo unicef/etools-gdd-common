@@ -83,7 +83,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
   @property({type: Number})
   commonDataLoadedTimestamp = 0;
 
-  private isEPDApp = Environment.basePath === '/epd/';
+  private isGDDApp = Environment.basePath === '/gdd/';
 
   connectedCallback() {
     super.connectedCallback();
@@ -112,7 +112,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
   private renderExport(actions: string[]): TemplateResult {
     // for ePD app must add ePD text on Export links
     const preparedExportActions = actions.map((action: string) => ({
-      name: this.actionsNamesMap[this.isEPDApp ? `${action}_epd` : action],
+      name: this.actionsNamesMap[this.isGDDApp ? `${action}_epd` : action],
       type: action
     }));
     return actions.length
@@ -319,7 +319,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
   }
 
   private redirectToTabPage(id: number | null, tabName: string) {
-    history.pushState(window.history.state, '', `${Environment.basePath}gdd/${id}/${tabName}`);
+    history.pushState(window.history.state, '', `${Environment.basePath}gdd-interventions/${id}/${tabName}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 

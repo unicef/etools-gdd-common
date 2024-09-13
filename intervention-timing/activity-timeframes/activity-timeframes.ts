@@ -98,7 +98,7 @@ export class GDDActivityTimeframes extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: RootState): void {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'timing')) {
       return;
     }
     this.language = state.activeLanguage.activeLanguage; // Set language property in order to trigger re-render
