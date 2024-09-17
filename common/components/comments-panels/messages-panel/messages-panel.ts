@@ -6,14 +6,14 @@ import './message-item';
 import {translate} from 'lit-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {EditComments} from '../../comments/edit-comments-base';
-import {CommentRelatedItem} from '../../comments/comments-types';
+import {GDDCommentRelatedItem} from '../../comments/comments-types';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 @customElement('gdd-messages-panel')
 export class GDDMessagesPanel extends EditComments {
   @query('#messages-container') container?: HTMLElement;
   @property() relatedToKey = '';
-  @property() relatedItem: CommentRelatedItem | null = null;
+  @property() relatedItem: GDDCommentRelatedItem | null = null;
 
   set collectionId(collectionId: string) {
     if (!collectionId) {

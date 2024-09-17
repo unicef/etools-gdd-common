@@ -14,7 +14,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {GDDPdUnicefDetailsPermissions, GDDPdUnicefDetails} from './pdUnicefDetails.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {RootState} from '../../common/types/store.types';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -26,7 +26,7 @@ import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -72,7 +72,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
           <div class="col-xl-4 col-md-6 col-12">
             <etools-dropdown-multi
               id="officeInput"
-              label=${translate(translatesMap.offices)}
+              label=${translate(gddTranslatesMap.offices)}
               class="row-padding-v"
               .options="${this.office_list}"
               option-label="name"
@@ -90,7 +90,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
           <div class="col-xl-4 col-md-6 col-12">
             <etools-dropdown-multi
               id="sectionInput"
-              label=${translate(translatesMap.sections)}
+              label=${translate(gddTranslatesMap.sections)}
               class="w100"
               .options="${this.section_list}"
               option-label="name"
@@ -216,7 +216,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
   stateChanged(state: RootState) {
     if (
       EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'metadata') ||
-      !state.interventions.current
+      !state.gddInterventions.current
     ) {
       return;
     }
@@ -228,7 +228,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
     if (state.user && state.user.data) {
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
-    if (state.interventions.current && !isJsonStrMatch(this.originalData, selectPdUnicefDetails(state))) {
+    if (state.gddInterventions.current && !isJsonStrMatch(this.originalData, selectPdUnicefDetails(state))) {
       this.data = cloneDeep(selectPdUnicefDetails(state));
       this.originalData = cloneDeep(this.data);
     }

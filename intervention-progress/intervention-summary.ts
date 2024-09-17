@@ -271,8 +271,8 @@ export class GDDInterventionSummary extends connectStore(LitElement) {
       return;
     }
 
-    if (get(state, 'interventions.current')) {
-      const currentIntervention = get(state, 'interventions.current');
+    if (get(state, 'gddInterventions.current')) {
+      const currentIntervention = get(state, 'gddInterventions.current');
       this.intervention = cloneDeep(currentIntervention) as Intervention;
       this.resultLinks = this.intervention.result_links;
     }

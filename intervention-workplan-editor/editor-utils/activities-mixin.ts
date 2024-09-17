@@ -12,14 +12,14 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit/directives/repeat.js';
 import {
-  ExpectedResultExtended,
-  InterventionActivityExtended,
-  ResultLinkLowerResultExtended
+  GDDExpectedResultExtended,
+  GDDInterventionActivityExtended,
+  GDDResultLinkLowerResultExtended
 } from '../../common/types/editor-page-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
@@ -36,10 +36,10 @@ import MatomoMixin from '@unicef-polymer/etools-piwik-analytics/matomo-mixin';
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(MatomoMixin(baseClass))) {
     @property({type: Array})
-    originalResultStructureDetails!: ExpectedResultExtended[];
+    originalResultStructureDetails!: GDDExpectedResultExtended[];
 
     @property({type: Array})
-    resultStructureDetails!: ExpectedResultExtended[];
+    resultStructureDetails!: GDDExpectedResultExtended[];
 
     @property({type: Object})
     intervention!: Intervention;
@@ -62,7 +62,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     commentMode: any;
     localName: any;
 
-    renderActivities(pdOutput: ResultLinkLowerResultExtended, resultIndex: number, pdOutputIndex: number) {
+    renderActivities(pdOutput: GDDResultLinkLowerResultExtended, resultIndex: number, pdOutputIndex: number) {
       if (!pdOutput || !pdOutput.activities) {
         return '';
       }
@@ -71,8 +71,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return html`
         ${repeat(
           pdOutput.activities || [],
-          (activity: InterventionActivityExtended) => activity.id,
-          (activity: InterventionActivityExtended, activityIndex: number) => html`
+          (activity: GDDInterventionActivityExtended) => activity.id,
+          (activity: GDDInterventionActivityExtended, activityIndex: number) => html`
             <tbody
               ?hoverable="${!(activity.inEditMode || activity.itemsInEditMode || !activity.is_active) &&
               this.permissions.edit.result_links &&
@@ -327,7 +327,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     _onTimeIntervalsKeyDown(event: any) {
       if (event.key === 'Enter') {
         const editBtnEl = event.currentTarget.parentElement.querySelector('etools-icon-button[name="create"]');
-        const timeIntervalEl = event.currentTarget.querySelector('time-intervals');
+        const timeIntervalEl = event.currentTarget.querySelector('gdd-time-intervals');
         // if in edit mode and found time-interval component, open Time Periods dialog
         if (timeIntervalEl && editBtnEl && editBtnEl.hasAttribute('hidden')) {
           timeIntervalEl.openDialog();
@@ -341,8 +341,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     // @ts-ignore
     cancelActivity(
-      activities: Partial<InterventionActivityExtended>[],
-      activity: InterventionActivityExtended,
+      activities: Partial<GDDInterventionActivityExtended>[],
+      activity: GDDInterventionActivityExtended,
       resultIndex: number,
       pdOutputIndex: number,
       activityIndex: number
@@ -376,7 +376,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       ];
     }
 
-    validateActivity(activity: InterventionActivityExtended) {
+    validateActivity(activity: GDDInterventionActivityExtended) {
       activity.invalid = {};
       if (!activity.name) {
         activity.invalid.name = true;
@@ -391,7 +391,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     // @ts-ignore
     saveActivity(
-      activity: InterventionActivityExtended,
+      activity: GDDInterventionActivityExtended,
       pdOutputId: number,
       interventionId: number,
       event?: CustomEvent

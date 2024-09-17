@@ -150,7 +150,7 @@ export class GDDPvQuarter extends LitElement {
 
   private openSitesDialog() {
     openDialog({
-      dialog: 'sites-dialog',
+      dialog: 'gdd-sites-dialog',
       dialogData: {
         workspaceCoordinates: [this.currentCountry.longitude, this.currentCountry.latitude],
         sites: this.allSites,

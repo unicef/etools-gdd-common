@@ -8,21 +8,21 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {PartnerReportingRequirements} from '../types/store.types';
 import {RESET_CURRENT_ITEM} from '../actions/actionsContants';
 
-export interface InterventionsState {
+export interface GDDInterventionsState {
   current: Intervention | null;
   interventionLoading: number | null;
   partnerReportingRequirements: PartnerReportingRequirements;
   shouldReGetList: boolean;
 }
 
-const INITIAL_STATE: InterventionsState = {
+const INITIAL_STATE: GDDInterventionsState = {
   current: null,
   interventionLoading: null,
   partnerReportingRequirements: {special: [], qpr: [], hr: [], sr: []},
   shouldReGetList: false
 };
 
-export const interventions = (state = INITIAL_STATE, action: any) => {
+export const gddInterventions = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case UPDATE_CURRENT_INTERVENTION:
       return {

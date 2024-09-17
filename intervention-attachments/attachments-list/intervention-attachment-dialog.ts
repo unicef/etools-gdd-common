@@ -8,7 +8,7 @@ import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import {
   validateRequiredFields,
   resetRequiredFields
@@ -120,7 +120,7 @@ export class GDDInterventionAttachmentDialog extends connectStore(LitElement) {
   }
 
   stateChanged(state: any): void {
-    this.interventionId = state.interventions?.current.id;
+    this.interventionId = state.gddInterventions?.current.id;
     this.fileTypes =
       state.commonData.fileTypes.map((x: any) => ({
         ...x,

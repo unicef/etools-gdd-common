@@ -131,7 +131,7 @@ export class GDDTimingOverview extends CommentsMixin(LitElement) {
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'timing')) {
       return;
     }
-    if (state.interventions.current) {
+    if (state.gddInterventions.current) {
       this.timingOverview = selectTimingOverview(state);
       this.dir = getPageDirection(state);
       super.stateChanged(state);

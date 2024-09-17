@@ -1,6 +1,6 @@
 import {RootState} from '../../types/store.types';
 import {LitElement} from 'lit';
-import {CommentsCollection} from './comments.reducer';
+import {GDDCommentsCollection} from './comments.reducer';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import './comments-dialog';
 import '../comments-panels/comments-panels';
@@ -46,15 +46,15 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private currentInterventionId: number | null = null;
-    private comments: CommentsCollection = {};
+    private comments: GDDCommentsCollection = {};
     private metaDataCollection: MetaData[] = [];
     private commentsModeEnabled = false;
     private currentEditedComments: MetaData | null = null;
 
     stateChanged(state: RootState) {
-      const commentsState = state.commentsData;
+      const commentsState = state.gddCommentsData;
       this.currentInterventionId =
-        Number(state.app.routeDetails?.params?.interventionId) || state.interventions?.current?.id || null;
+        Number(state.app.routeDetails?.params?.interventionId) || state.gddInterventions?.current?.id || null;
       if (!commentsState || !this.currentInterventionId) {
         return;
       }
@@ -336,14 +336,15 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private onTriggerListener(meta: MetaData, shouldRefocus?: boolean) {
+      console.log('helllo');
       this.currentEditedComments = meta;
       openDialog({
-        dialog: 'comments-dialog',
+        dialog: 'gdd-comments-dialog',
         dialogData: {
           interventionId: this.currentInterventionId,
           relatedTo: meta.relatedTo,
           relatedToDescription: meta.relatedToDescription,
-          endpoints: getStore().getState().commentsData.endpoints
+          endpoints: getStore().getState().gddCommentsData.endpoints
         }
       }).then(() => {
         this.currentEditedComments = null;
@@ -352,6 +353,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
           meta.overlay.focus();
         }
       });
+      console.log('helllo2');
     }
   };
 }

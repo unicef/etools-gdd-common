@@ -1,7 +1,7 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import CONSTANTS from '../../../common/constants';
+import GDD_CONSTANTS from '../../../common/constants';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {LitElement} from 'lit';
@@ -10,7 +10,7 @@ import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparis
 import {Constructor, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import {updatePartnerReportingRequirements} from '../../../common/actions/interventions';
+import {updatePartnerReportingRequirements} from '../../../common/actions/gddInterventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 
 /**
@@ -47,7 +47,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
     }
 
     _getEndpointObj(id: number, type: string) {
-      if (type === CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL) {
+      if (type === GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL) {
         return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirements, {
           intervId: id
         });
@@ -70,7 +70,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
       sendRequest({method: 'GET', endpoint: endpoint})
         .then((response: any) => {
           this.reportingRequirements =
-            CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL == type ? response : response.reporting_requirements;
+            GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL == type ? response : response.reporting_requirements;
           this._countReportingReq(this.reportingRequirements.length);
           this.updateReportingRequirements(response, type);
         })
@@ -112,22 +112,22 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
     }
 
     updateReportingRequirements(reportingRequirements: any, type: string) {
-      const requirements = getStore().getState().interventions.partnerReportingRequirements;
+      const requirements = getStore().getState().gddInterventions.partnerReportingRequirements;
 
       switch (type) {
-        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL: {
+        case GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL: {
           requirements.special = reportingRequirements;
           break;
         }
-        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR: {
+        case GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR: {
           requirements.qpr = reportingRequirements.reporting_requirements || reportingRequirements;
           break;
         }
-        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR: {
+        case GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR: {
           requirements.hr = reportingRequirements.reporting_requirements || reportingRequirements;
           break;
         }
-        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR: {
+        case GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR: {
           requirements.sr = reportingRequirements;
           break;
         }

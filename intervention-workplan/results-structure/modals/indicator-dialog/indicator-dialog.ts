@@ -21,7 +21,7 @@ import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
 import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../../../utils/intervention-labels-map';
 import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
 import {isActiveTab} from '../../../../utils/utils';
@@ -108,7 +108,7 @@ export class GDDIndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMi
             <div class="col-md-4 col-12">
               <etools-dropdown
                 id="sectionDropdw"
-                label=${translate(translatesMap.section)}
+                label=${translate(gddTranslatesMap.section)}
                 .selected="${this.data?.section}"
                 placeholder="&#8212;"
                 .options="${this.sectionOptions}"
@@ -235,7 +235,7 @@ export class GDDIndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMi
     this.llResultId = data.llResultId;
     // this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
-    this.interventionStatus = getStore().getState().interventions.current?.status || '';
+    this.interventionStatus = getStore().getState().gddInterventions.current?.status || '';
     this.readonly = data.readonly || !this.data.is_active;
 
     if (!this.data.id) {

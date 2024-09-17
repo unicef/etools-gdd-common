@@ -26,7 +26,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {getIntervention, setShouldReGetList} from '../../common/actions/interventions';
+import {getIntervention, setShouldReGetList} from '../../common/actions/gddInterventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import './amendment-difference';
@@ -242,7 +242,7 @@ export class GDDPdAmendments extends CommentsMixin(LitElement) {
   stateChanged(state: RootState) {
     if (
       EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'metadata') ||
-      !state.interventions.current
+      !state.gddInterventions.current
     ) {
       return;
     }
@@ -251,7 +251,7 @@ export class GDDPdAmendments extends CommentsMixin(LitElement) {
     if (amendmentTypes && !isJsonStrMatch(this.amendmentTypes, amendmentTypes)) {
       this.amendmentTypes = [...state.commonData!.interventionAmendmentTypes];
     }
-    const currentIntervention = get(state, 'interventions.current');
+    const currentIntervention = get(state, 'gddInterventions.current');
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
       this.amendments = this.intervention.amendments?.sort((a: any, b: any) => b.id - a.id);
@@ -286,7 +286,7 @@ export class GDDPdAmendments extends CommentsMixin(LitElement) {
 
   _showAddAmendmentDialog() {
     openDialog({
-      dialog: 'add-amendment-dialog',
+      dialog: 'gdd-add-amendment-dialog',
       dialogData: {
         intervention: cloneDeep(this.intervention),
         amendmentTypes: this.amendmentTypes

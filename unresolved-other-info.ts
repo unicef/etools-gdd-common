@@ -9,7 +9,7 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {patchIntervention} from './common/actions/interventions';
+import {patchIntervention} from './common/actions/gddInterventions';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 @customElement('gdd-unresolved-other-info-review')

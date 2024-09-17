@@ -1,7 +1,7 @@
 import {get as getTranslation} from 'lit-translate/util';
 import {GenericObject} from '@unicef-polymer/etools-types';
 
-export const translatesMap: GenericObject = {
+export const gddTranslatesMap: GenericObject = {
   end: 'END_DATE',
   start: 'START_DATE',
   context: 'CONTEXT',

@@ -7,7 +7,7 @@ import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {updateCurrentIntervention} from '../../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../../common/actions/gddInterventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {CpOutput} from '@unicef-polymer/etools-types';

@@ -11,7 +11,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../../../utils/intervention-labels-map';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import {EtoolsDropdownMulti} from '@unicef-polymer/etools-unicef/src/etools-dropdown/EtoolsDropdownMulti';
@@ -167,7 +167,7 @@ class GDDNonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="col-md-3 col-6">
           <etools-input
             id="numeratorLbl"
-            label=${translate(translatesMap.numerator_label)}
+            label=${translate(gddTranslatesMap.numerator_label)}
             .value="${this.indicator.numerator_label}"
             placeholder="&#8212;"
             ?readonly="${this.readonly}"
@@ -180,7 +180,7 @@ class GDDNonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="col-md-3 col-6">
           <etools-input
             id="denomitorLbl"
-            label=${translate(translatesMap.denominator_label)}
+            label=${translate(gddTranslatesMap.denominator_label)}
             .value="${this.indicator.denominator_label}"
             placeholder="&#8212;"
             ?readonly="${this.readonly}"
@@ -270,7 +270,7 @@ class GDDNonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           ? html` <div class="col-md-3 col-12 layout-horizontal">
                 <etools-input
                   id="baselineNumerator"
-                  label=${translate(translatesMap.baseline)}
+                  label=${translate(gddTranslatesMap.baseline)}
                   .value="${this.indicator.baseline.v}"
                   allowed-pattern="[0-9]"
                   .pattern="${this.digitsNotStartingWith0Pattern}"
@@ -344,7 +344,7 @@ class GDDNonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             ?disabled="${this.readonly || !this.isUnicefUser}"
             @sl-change="${this.isHighFrequencyChanged}"
           >
-            ${translate(translatesMap.is_high_frequency)}
+            ${translate(gddTranslatesMap.is_high_frequency)}
           </sl-switch>
         </div>
       </div>
@@ -362,7 +362,7 @@ class GDDNonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       <div class="row">
         <div class="col-12">
           <etools-textarea
-            label=${translate(translatesMap.means_of_verification)}
+            label=${translate(gddTranslatesMap.means_of_verification)}
             type="text"
             .value="${this.indicator.means_of_verification}"
             ?readonly="${this.readonly}"
@@ -376,7 +376,7 @@ class GDDNonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="col-12 layout-horizontal last-item">
           <etools-dropdown-multi
             id="locationsDropdw"
-            label=${translate(translatesMap.locations)}
+            label=${translate(gddTranslatesMap.locations)}
             placeholder="&#8212;"
             .selectedValues="${this.indicator.locations}"
             .options="${this.locationOptions}"

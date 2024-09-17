@@ -9,7 +9,7 @@ import {GDDNonClusterIndicatorEl} from '../non-cluster-indicator';
 import {GDDClusterIndicatorEl} from '../cluster-indicator';
 import {GDDIndicatorDisaggregations} from '../indicator-dissaggregations';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {updateCurrentIntervention} from '../../../../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../../../../common/actions/gddInterventions';
 import {Constructor, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {get as getTranslation} from 'lit-translate';

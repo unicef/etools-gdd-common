@@ -9,7 +9,7 @@ import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {CommentsItemsNameMap} from './comments-items-name-map';
+import {GDDCommentsItemsNameMap} from './comments-items-name-map';
 import {EditComments} from './edit-comments-base';
 import {removeTrailingIds} from './comments.helpers';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
@@ -21,10 +21,10 @@ export class GDDCommentsDialog extends EditComments {
       return '';
     }
     const relatedToKey: string = removeTrailingIds(this.relatedTo);
-    const itemType = CommentsItemsNameMap[relatedToKey];
+    const itemType = GDDCommentsItemsNameMap[relatedToKey];
     if (itemType) {
       const description = this.relatedToDescription ? ` - ${this.relatedToDescription}` : '';
-      return `${getTranslation('COMMENTS_ON')}: ${getTranslation(CommentsItemsNameMap[relatedToKey])}${description}`;
+      return `${getTranslation('COMMENTS_ON')}: ${getTranslation(GDDCommentsItemsNameMap[relatedToKey])}${description}`;
     } else if (this.relatedToDescription) {
       return `${getTranslation('COMMENTS_ON')}: ${this.relatedToDescription}`;
     } else {
@@ -38,7 +38,7 @@ export class GDDCommentsDialog extends EditComments {
     this.endpoints = endpoints;
     this.relatedToDescription = relatedToDescription;
     const comments: GenericObject<InterventionComment[]> =
-      getStore().getState().commentsData.collection[interventionId];
+      getStore().getState().gddCommentsData.collection[interventionId];
     const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
     this.updateComplete.then(() => this.scrollDown());

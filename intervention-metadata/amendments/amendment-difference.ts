@@ -1,6 +1,6 @@
 import {css, html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {translate} from 'lit-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate/util';
@@ -88,11 +88,11 @@ export class GDDAmendmentDifference extends LitElement {
   displayDifference(difference: GenericObject): TemplateResult[] {
     return Object.entries(difference as GenericObject).map(([field, diff]) => {
       let translatedString;
-      if (!translatesMap[field]) {
+      if (!gddTranslatesMap[field]) {
         translatedString = field;
       } else {
         translatedString =
-          typeof translatesMap[field] === 'string' ? translate(translatesMap[field]) : translatesMap[field]();
+          typeof gddTranslatesMap[field] === 'string' ? translate(gddTranslatesMap[field]) : gddTranslatesMap[field]();
       }
       return html`<div class="offset">
         <div class="field-name">${translatedString || field}</div>

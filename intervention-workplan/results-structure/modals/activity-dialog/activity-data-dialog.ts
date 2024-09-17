@@ -12,13 +12,13 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './activity-timeframes';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {GDDActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
-import {updateCurrentIntervention} from '../../../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../../../common/actions/gddInterventions';
 import {GDDActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, EtoolsEndpoint, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../../../utils/intervention-labels-map';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -176,7 +176,7 @@ export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(Lit
                 ? html`
                     <div class="col-md-3 col-6">
                       <etools-currency
-                        label=${translate(translatesMap.cso_cash)}
+                        label=${translate(gddTranslatesMap.cso_cash)}
                         ?readonly="${this.readonly}"
                         .value="${this.editedData.cso_cash}"
                         @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
@@ -372,12 +372,12 @@ export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(Lit
   // }
 
   validateActivityItems(): AnyObject | undefined {
-    const itemsTable: GDDActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
+    const itemsTable: GDDActivityItemsTable | null = this.shadowRoot!.querySelector('gdd-activity-items-table');
     return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 
   validateActivityTimeFrames() {
-    const items: GDDActivityTimeFrames | null = this.shadowRoot!.querySelector('activity-time-frames');
+    const items: GDDActivityTimeFrames | null = this.shadowRoot!.querySelector('gdd-activity-time-frames');
     return items !== null && items.validate();
   }
 }

@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import CONSTANTS from '../../../common/constants';
+import GDD_CONSTANTS from '../../../common/constants';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -88,7 +88,7 @@ export class GDDQuarterlyReportingRequirements extends GenerateQuarterlyReportin
     }
 
     openDialog({
-      dialog: 'edit-qpr-dialog',
+      dialog: 'gdd-edit-qpr-dialog',
       dialogData: {
         qprData: cloneDeep(qprData),
         interventionId: this.interventionId,
@@ -102,12 +102,12 @@ export class GDDQuarterlyReportingRequirements extends GenerateQuarterlyReportin
         return;
       }
       this._onReportingRequirementsSaved(response);
-      this.updateReportingRequirements(response, CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR);
+      this.updateReportingRequirements(response, GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR);
     });
   }
 
   _getReportType() {
-    return CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR;
+    return GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR;
   }
 
   _sortRequirementsAsc() {

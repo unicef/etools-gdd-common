@@ -53,7 +53,7 @@ export class GDDInterventionMetadata extends connectStore(LitElement) {
     if (
       currentPage(state) !== 'gdd-interventions' ||
       currentSubpage(state) !== 'metadata' ||
-      !state.interventions.current
+      !state.gddInterventions.current
     ) {
       return;
     }

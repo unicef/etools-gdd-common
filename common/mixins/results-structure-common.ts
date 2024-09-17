@@ -1,6 +1,6 @@
 import {AsyncAction} from '@unicef-polymer/etools-types/dist/global.types';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
-import {getIntervention} from '../actions/interventions';
+import {getIntervention} from '../actions/gddInterventions';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -16,7 +16,7 @@ import {
 import {convertDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {translate} from 'lit-translate';
-import {InterventionActivityExtended} from '../types/editor-page-types';
+import {GDDInterventionActivityExtended} from '../types/editor-page-types';
 
 function deactivateActivity(activityId: number, pdOutputId: number, interventionId: number) {
   fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
@@ -79,7 +79,7 @@ function deleteActivity(activityId: number, pdOutputId: number, interventionId: 
 }
 
 export function _canDeactivate(
-  item: InterventionActivity | InterventionActivityExtended | Indicator,
+  item: InterventionActivity | GDDInterventionActivityExtended | Indicator,
   readonly: boolean,
   interventionStatus: string,
   inAmendment: boolean,
@@ -113,7 +113,7 @@ export function _canDeactivate(
 }
 
 export function _canDelete(
-  item: Indicator | InterventionActivity | InterventionActivityExtended | ResultLinkLowerResult | ExpectedResult,
+  item: Indicator | InterventionActivity | GDDInterventionActivityExtended | ResultLinkLowerResult | ExpectedResult,
   readonly: boolean,
   interventionStatus: string,
   inAmendment: boolean,

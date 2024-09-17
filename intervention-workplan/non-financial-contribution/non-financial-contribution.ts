@@ -17,15 +17,15 @@ import {
 } from './nonFinancialContribution.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -77,7 +77,7 @@ export class GDDNonFinancialContributionElement extends CommentsMixin(ComponentB
 
         <div class="row">
           <div class="col-12">
-            <label class="label">${translate(translatesMap.ip_program_contribution)}</label>
+            <label class="label">${translate(gddTranslatesMap.ip_program_contribution)}</label>
             <info-icon-tooltip
               id="iit-non-fin"
               slot="after-label"
@@ -117,11 +117,11 @@ export class GDDNonFinancialContributionElement extends CommentsMixin(ComponentB
   originalData = {};
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Workplan)) {
       return;
     }
 
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
     this.data = selectNonFinancialContribution(state);

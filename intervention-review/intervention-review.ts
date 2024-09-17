@@ -91,24 +91,24 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
   stateChanged(state: RootState) {
     if (
       EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'gdd-interventions', 'review') ||
-      !state.interventions.current
+      !state.gddInterventions.current
     ) {
       return;
     }
 
-    this.reviews = state.interventions.current.reviews;
+    this.reviews = state.gddInterventions.current.reviews;
     if (this.currentReview?.id) {
-      this.currentReview = state.interventions.current.reviews.find((x) => x.id === this.currentReview!.id) || null;
+      this.currentReview = state.gddInterventions.current.reviews.find((x) => x.id === this.currentReview!.id) || null;
     }
     if (!this.currentReview && this.reviews?.length) {
-      this.currentReview = state.interventions.current.reviews[0];
+      this.currentReview = state.gddInterventions.current.reviews[0];
     }
     this.unicefUsers = state.commonData?.unicefUsersData || [];
-    this.canEditReview = state.interventions.current.permissions!.edit.reviews || false;
-    this.canEditPRCReviews = state.interventions.current.permissions!.edit.prc_reviews || false;
-    this.interventionId = state.interventions.current.id;
-    this.interventionStatus = state.interventions.current.status;
-    this.cfeiNumber = state.interventions.current.cfei_number || '';
+    this.canEditReview = state.gddInterventions.current.permissions!.edit.reviews || false;
+    this.canEditPRCReviews = state.gddInterventions.current.permissions!.edit.prc_reviews || false;
+    this.interventionId = state.gddInterventions.current.id;
+    this.interventionStatus = state.gddInterventions.current.status;
+    this.cfeiNumber = state.gddInterventions.current.cfei_number || '';
   }
 
   reviewChanged(ev: CustomEvent) {

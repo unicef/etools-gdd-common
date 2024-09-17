@@ -13,7 +13,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {loadPrcMembersIndividualReviews} from '../../actions/officers-reviews';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from './review.const';
-import {updateCurrentIntervention} from '../../actions/interventions';
+import {updateCurrentIntervention} from '../../actions/gddInterventions';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
@@ -75,7 +75,7 @@ export class GDDReviewChecklistPopup extends LitElement {
       return;
     }
     this.isOverallReview = data.isOverall;
-    this.overallReview = getStore().getState().interventions.current!.reviews[0];
+    this.overallReview = getStore().getState().gddInterventions.current!.reviews[0];
     const review = this.isOverallReview ? this.overallReview : data.review;
     this.originalReview = review || {};
     this.review = review ? cloneDeep(this.originalReview) : {overall_approval: true};

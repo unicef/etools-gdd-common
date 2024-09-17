@@ -1,26 +1,26 @@
 import {InterventionActivityItem, ManagementBudgetItem} from '@unicef-polymer/etools-types/dist/intervention.types';
 import {Indicator} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 
-export interface ExpectedResultExtended {
+export interface GDDExpectedResultExtended {
   id: number;
   code: string;
   created: string;
   cp_output: number;
   cp_output_name: string;
   intervention: number;
-  ll_results: ResultLinkLowerResultExtended[];
+  ll_results: GDDResultLinkLowerResultExtended[];
   ram_indicators: number[];
   ram_indicator_names: string[];
   total: string;
 }
 
-export declare type InterventionActivity = {
+export declare type GDDInterventionActivity = {
   id: number;
   code: string;
   context_details: string;
   cso_cash: string;
   cso_supplies: string;
-  items: InterventionActivityItemExtended[];
+  items: GDDInterventionActivityItemExtended[];
   name: string;
   time_frames: number[];
   unicef_cash: string;
@@ -29,11 +29,11 @@ export declare type InterventionActivity = {
   created: string;
 };
 
-export interface ResultLinkLowerResult {
+export interface GDDResultLinkLowerResult {
   id: number;
   name: string;
   applied_indicators: Indicator[];
-  activities: InterventionActivityExtended[];
+  activities: GDDInterventionActivityExtended[];
   code?: string;
   created?: string;
   result_link?: number;
@@ -41,20 +41,20 @@ export interface ResultLinkLowerResult {
   total: string;
 }
 
-export type InterventionActivityItemExtended = InterventionActivityItem & {
+export type GDDInterventionActivityItemExtended = InterventionActivityItem & {
   id: number;
   code: string;
   inEditMode: boolean;
-  invalid: Partial<InvalidItem>;
-  autovalidate: Partial<AutovalidateItem>;
+  invalid: Partial<GDDInvalidItem>;
+  autovalidate: Partial<GDDAutovalidateItem>;
 };
 
-type AutovalidateItem = {
+type GDDAutovalidateItem = {
   name: boolean;
   unit: boolean;
   [prop: string]: boolean;
 };
-type InvalidItem = {
+type GDDInvalidItem = {
   name: boolean;
   unit: boolean;
   no_units: boolean;
@@ -63,36 +63,36 @@ type InvalidItem = {
   unicef_cash: boolean;
 };
 
-export type InterventionActivityExtended = InterventionActivity & {
+export type GDDInterventionActivityExtended = GDDInterventionActivity & {
   inEditMode: boolean;
   itemsInEditMode: boolean;
-  invalid: Partial<ItemInvalid>;
+  invalid: Partial<GDDItemInvalid>;
   total: string;
 };
 
-type ItemInvalid = {name: boolean; context_details: boolean; time_frames: boolean};
+type GDDItemInvalid = {name: boolean; context_details: boolean; time_frames: boolean};
 
-export type ResultLinkLowerResultExtended = ResultLinkLowerResult & {
+export type GDDResultLinkLowerResultExtended = GDDResultLinkLowerResult & {
   inEditMode: boolean;
   invalid: boolean;
   invalidCpOutput: boolean;
 };
 
-export enum ProgrammeManagementKindChoices {
+export enum GDDProgrammeManagementKindChoices {
   inCountry = 'in_country',
   operational = 'operational',
   planning = 'planning'
 }
 
-export type ProgrammeManagementRowItemExtended = ManagementBudgetItem & {
+export type GDDProgrammeManagementRowItemExtended = ManagementBudgetItem & {
   id?: number;
   code: string;
   inEditMode: boolean;
-  invalid: Partial<InvalidItem>;
-  autovalidate: Partial<AutovalidateItem>;
+  invalid: Partial<GDDInvalidItem>;
+  autovalidate: Partial<GDDAutovalidateItem>;
 };
 
-export type ProgrammeManagementRow = {
+export type GDDProgrammeManagementRow = {
   code: string;
   name: string;
   context_details: string;
@@ -100,14 +100,14 @@ export type ProgrammeManagementRow = {
   unicef_cash: string;
   totalProgrammeManagementCash: number;
   total: string;
-  items: ProgrammeManagementRowItemExtended[];
+  items: GDDProgrammeManagementRowItemExtended[];
   id: number;
-  kind: ProgrammeManagementKindChoices;
+  kind: GDDProgrammeManagementKindChoices;
   inEditMode: boolean;
   itemsInEditMode: boolean;
 };
 
-export type ProgrammeManagementRowExtended = ProgrammeManagementRow & {
+export type GDDProgrammeManagementRowExtended = GDDProgrammeManagementRow & {
   inEditMode: boolean;
   itemsInEditMode: boolean;
   invalid?: Partial<{unicef_cash: boolean; cso_cash: boolean}>;

@@ -21,12 +21,12 @@ import './risk-dialog';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
-import {getIntervention} from '../../common/actions/interventions';
+import {getIntervention} from '../../common/actions/gddInterventions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
@@ -92,7 +92,7 @@ export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement
           }
         }
       </style>
-      <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.risks)} comment-element="risks">
+      <etools-content-panel show-expand-btn panel-title=${translate(gddTranslatesMap.risks)} comment-element="risks">
         <div slot="after-title">
           <info-icon-tooltip
             id="iit-risk"
@@ -157,14 +157,14 @@ export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement
   ];
 
   stateChanged(state: RootState) {
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'strategy')) {
       return;
     }
 
-    this.interventionId = state.interventions.current.id!;
+    this.interventionId = state.gddInterventions.current.id!;
     this.riskTypes = (state.commonData && state.commonData.riskTypes) || [];
     this.data = selectRisks(state);
     this.set_canEditAtLeastOneField({risks: currentInterventionPermissions(state)?.edit.risks});
@@ -177,7 +177,7 @@ export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement
 
   openRiskDialog(e?: CustomEvent) {
     openDialog({
-      dialog: 'risk-dialog',
+      dialog: 'gdd-risk-dialog',
       dialogData: {
         item: e ? cloneDeep(e.detail) : {},
         interventionId: this.interventionId,

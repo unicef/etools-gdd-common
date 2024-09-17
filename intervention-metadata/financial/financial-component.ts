@@ -14,7 +14,7 @@ import './financialComponent.models';
 import './financialComponent.selectors';
 import {GDDFinancialComponentData, GDDFinancialComponentPermissions} from './financialComponent.models';
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.selectors';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
@@ -22,8 +22,8 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
@@ -68,7 +68,7 @@ export class GDDFinancialComponent extends CommentsMixin(ComponentBaseMixin(LitE
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
-            <label class="label">${translate(translatesMap.cash_transfer_modalities)}</label>
+            <label class="label">${translate(gddTranslatesMap.cash_transfer_modalities)}</label>
           </div>
         </div>
         <div class="row">
@@ -108,11 +108,11 @@ export class GDDFinancialComponent extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Metadata)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Metadata)) {
       return;
     }
 
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
     this.permissions = selectFinancialComponentPermissions(state);

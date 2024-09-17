@@ -6,7 +6,7 @@ import {GDDActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../../utils/intervention-labels-map';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
@@ -47,8 +47,8 @@ export class GDDActivityItemsTable extends LitElement {
         <div class="grid-cell header-cell left">
           <label required>${translate('ITEM_DESCRIPTION')}</label>
         </div>
-        <div class="grid-cell header-cell left"><label required>${translate(translatesMap.unit)}</label></div>
-        <div class="grid-cell header-cell end"><label required>${translate(translatesMap.no_units)}</label></div>
+        <div class="grid-cell header-cell left"><label required>${translate(gddTranslatesMap.unit)}</label></div>
+        <div class="grid-cell header-cell end"><label required>${translate(gddTranslatesMap.no_units)}</label></div>
         <div class="grid-cell header-cell end">${translate('PRICE_UNIT')}</div>
         <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>
         <div class="grid-cell header-cell end">${translate('UNICEF_CASH')}</div>

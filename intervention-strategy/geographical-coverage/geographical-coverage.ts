@@ -10,7 +10,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {GDDLocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {RootState} from '../../common/types/store.types';
@@ -21,8 +21,8 @@ import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
@@ -138,7 +138,7 @@ export class GDDGeographicalCoverage extends CommentsMixin(ComponentBaseMixin(Li
         <div class="row">
           <div class="col-12 location-row">
             <div class="location-icon">
-              <label class="label"> ${translate(translatesMap.flat_locations)}</label>
+              <label class="label"> ${translate(gddTranslatesMap.flat_locations)}</label>
               <info-icon-tooltip
                 id="iit-locations"
                 class="iit"
@@ -180,7 +180,7 @@ export class GDDGeographicalCoverage extends CommentsMixin(ComponentBaseMixin(Li
         </div>
         <div class="row mt-50">
           <div class="col-12">
-            <label class="label">${translate(translatesMap.sites)}</label>
+            <label class="label">${translate(gddTranslatesMap.sites)}</label>
             <info-icon-tooltip
               id="iit-sites"
               class="iit"
@@ -245,10 +245,10 @@ export class GDDGeographicalCoverage extends CommentsMixin(ComponentBaseMixin(Li
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Strategy)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Strategy)) {
       return;
     }
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
     if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
@@ -274,8 +274,8 @@ export class GDDGeographicalCoverage extends CommentsMixin(ComponentBaseMixin(Li
 
   selectCurrentLocationSites(state: RootState) {
     return {
-      flat_locations: get(state, 'interventions.current.flat_locations') as unknown as string[],
-      sites: get(state, 'interventions.current.sites') || []
+      flat_locations: get(state, 'gddInterventions.current.flat_locations') as unknown as string[],
+      sites: get(state, 'gddInterventions.current.sites') || []
     };
   }
 
@@ -286,7 +286,7 @@ export class GDDGeographicalCoverage extends CommentsMixin(ComponentBaseMixin(Li
 
   private openLocationsDialog() {
     openDialog({
-      dialog: 'grouped-locations-dialog',
+      dialog: 'gdd-grouped-locations-dialog',
       dialogData: {
         adminLevel: null,
         allLocations: this.allLocations,
@@ -298,7 +298,7 @@ export class GDDGeographicalCoverage extends CommentsMixin(ComponentBaseMixin(Li
 
   private openSitesDialog() {
     openDialog({
-      dialog: 'sites-dialog',
+      dialog: 'gdd-sites-dialog',
       dialogData: {
         workspaceCoordinates: [this.currentCountry.longitude, this.currentCountry.latitude],
         sites: this.allSites,

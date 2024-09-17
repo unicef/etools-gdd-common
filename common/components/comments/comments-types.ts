@@ -1,21 +1,21 @@
 import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 
-export interface CommentsEndpoints {
+export interface GDDCommentsEndpoints {
   saveComments: EtoolsEndpoint;
   resolveComment: EtoolsEndpoint;
   deleteComment: EtoolsEndpoint;
 }
 
 // Related item details if any.
-export interface CommentRelatedItem {
+export interface GDDCommentRelatedItem {
   type: string;
   id: string;
   name: string;
   code?: string;
 }
 
-export interface CommentItemData {
-  relatedItem?: CommentRelatedItem;
+export interface GDDCommentItemData {
+  relatedItem?: GDDCommentRelatedItem;
   relatedTo: string;
   // translate key that describes type of element - Budget Summary/Attachments/PD Output after translate
   relatedToTranslateKey: string;

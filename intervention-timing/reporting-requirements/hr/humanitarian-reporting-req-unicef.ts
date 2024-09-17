@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import CONSTANTS from '../../../common/constants';
+import GDD_CONSTANTS from '../../../common/constants';
 import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
@@ -115,7 +115,7 @@ export class GDDHumanitarianReportingReqUnicef extends PaginationMixin(Reporting
   _reportingRequirementsSaved(reportingRequirements: any[]) {
     this._onReportingRequirementsSaved(reportingRequirements);
     this.paginator = {...this.paginator, page: 1};
-    this.updateReportingRequirements(reportingRequirements, CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR);
+    this.updateReportingRequirements(reportingRequirements, GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR);
   }
 
   _sortRequirementsAsc() {
@@ -126,7 +126,7 @@ export class GDDHumanitarianReportingReqUnicef extends PaginationMixin(Reporting
   }
 
   _getReportType() {
-    return CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR;
+    return GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR;
   }
 
   openUnicefHumanitarianRepReqDialog() {
@@ -141,7 +141,7 @@ export class GDDHumanitarianReportingReqUnicef extends PaginationMixin(Reporting
       hruData = JSON.parse(JSON.stringify(this.reportingRequirements));
     }
     openDialog({
-      dialog: 'edit-hru-dialog',
+      dialog: 'gdd-edit-hru-dialog',
       dialogData: {
         hruData: cloneDeep(hruData),
         selectedDate: '',

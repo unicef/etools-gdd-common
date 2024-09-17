@@ -8,7 +8,7 @@ import {RootState} from '../common/types/store.types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './fund-reservations-display.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {TABS} from '../common/constants';
+import {GDD_TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -42,14 +42,14 @@ export class GDDInterventionImplementationStatus extends connectStore(LitElement
       EtoolsRouter.pageIsNotCurrentlyActive(
         get(state, 'app.routeDetails'),
         'gdd-interventions',
-        TABS.ImplementationStatus
+        GDD_TABS.ImplementationStatus
       )
     ) {
       return;
     }
 
-    if (get(state, 'interventions.current')) {
-      this.intervention = cloneDeep(get(state, 'interventions.current'));
+    if (get(state, 'gddInterventions.current')) {
+      this.intervention = cloneDeep(get(state, 'gddInterventions.current'));
     }
   }
 

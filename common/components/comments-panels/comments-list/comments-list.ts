@@ -4,26 +4,26 @@ import {CommentPanelsStyles} from '../common-comments.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './comments-group';
 import './comments-panel-header';
-import {CommentsCollection} from '../../comments/comments.reducer';
-import {CommentsDescription, CommentsItemsNameMap} from '../../comments/comments-items-name-map';
+import {GDDCommentsCollection} from '../../comments/comments.reducer';
+import {GDDCommentsDescription, GDDCommentsItemsNameMap} from '../../comments/comments-items-name-map';
 import {extractId, removeTrailingIds} from '../../comments/comments.helpers';
-import {CommentItemData, CommentRelatedItem} from '../../comments/comments-types';
+import {GDDCommentItemData, GDDCommentRelatedItem} from '../../comments/comments-types';
 import {EtoolsTextarea} from '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 
 @customElement('gdd-comments-list')
 export class GDDCommentsList extends LitElement {
   @property() selectedGroup: string | null = null;
-  @property() relatedItems: CommentRelatedItem[] = [];
+  @property() relatedItems: GDDCommentRelatedItem[] = [];
 
-  set commentsCollection(collection: CommentsCollection) {
+  set commentsCollection(collection: GDDCommentsCollection) {
     this.commentsGroups = Object.entries(collection || {}).map(([relatedTo, comments]) => {
       const relatedToKey: string = removeTrailingIds(relatedTo);
       const relatedToId = extractId(relatedTo);
       const relatedItem = this.relatedItems?.find((x) => x.type === relatedToKey && x.id.toString() === relatedToId);
-      const relatedToTranslateKey = CommentsItemsNameMap[relatedToKey];
+      const relatedToTranslateKey = GDDCommentsItemsNameMap[relatedToKey];
       const commentWithDescription = comments.find(({related_to_description}) => related_to_description);
       const relatedToDescription = commentWithDescription?.related_to_description || '';
-      const fieldDescription = CommentsDescription[relatedToKey] || CommentsDescription[relatedTo] || null;
+      const fieldDescription = GDDCommentsDescription[relatedToKey] || GDDCommentsDescription[relatedTo] || null;
 
       return {
         relatedItem,
@@ -38,7 +38,7 @@ export class GDDCommentsList extends LitElement {
     this.requestUpdate();
   }
 
-  commentsGroups: CommentItemData[] = [];
+  commentsGroups: GDDCommentItemData[] = [];
 
   protected render(): TemplateResult {
     return html`
@@ -59,8 +59,8 @@ export class GDDCommentsList extends LitElement {
               @keyup="${(event: KeyboardEvent) => {
                 if (event.key === 'Enter') {
                   this.showMessages(group);
-                  const commentsPanelElement = document.querySelector('comments-panels');
-                  const messagesPanelElement = commentsPanelElement?.shadowRoot?.querySelector('messages-panel');
+                  const commentsPanelElement = document.querySelector('gdd-comments-panels');
+                  const messagesPanelElement = commentsPanelElement?.shadowRoot?.querySelector('gdd-messages-panel');
                   (messagesPanelElement?.shadowRoot?.querySelector('etools-textarea') as EtoolsTextarea)?.focus();
                 }
               }}"
@@ -71,7 +71,7 @@ export class GDDCommentsList extends LitElement {
     `;
   }
 
-  showMessages(commentsGroup: CommentItemData): void {
+  showMessages(commentsGroup: GDDCommentItemData): void {
     fireEvent(this, 'show-messages', {commentsGroup});
   }
 

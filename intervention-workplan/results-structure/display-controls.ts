@@ -8,7 +8,7 @@ import {
   callClickOnEnterPushListener,
   callClickOnSpacePushListener
 } from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import {TABS} from '../../common/constants';
+import {GDD_TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
@@ -106,7 +106,7 @@ export class GDDDisplayControls extends LitElement {
             )}
           </sl-menu>
         </sl-dropdown>
-        <a class="editorLink" href="gdd-interventions/${this.interventionId}/${TABS.WorkplanEditor}">
+        <a class="editorLink" href="gdd-interventions/${this.interventionId}/${GDD_TABS.WorkplanEditor}">
           <div class="editor-link">
             ${translate('ACTIVITES_EDITOR')}
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">

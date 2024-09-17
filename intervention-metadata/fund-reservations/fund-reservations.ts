@@ -12,7 +12,7 @@ import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {GDDFundReservationsPermissions} from './fund-reservations.models';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
@@ -137,12 +137,12 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
   stateChanged(state: RootState) {
     if (
       EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'metadata') ||
-      !state.interventions.current
+      !state.gddInterventions.current
     ) {
       return;
     }
     this.isUnicefUser = isUnicefUser(state);
-    const currentIntervention = get(state, 'interventions.current');
+    const currentIntervention = get(state, 'gddInterventions.current');
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
       this._frsDetailsChanged(this.intervention.frs_details);
@@ -179,7 +179,7 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
 
   _createFrsDialogEl() {
     // init frs update element
-    this.frsDialogEl = document.createElement('update-fr-numbers') as GDDUpdateFrNumbers;
+    this.frsDialogEl = document.createElement('gdd-update-fr-numbers') as GDDUpdateFrNumbers;
     this.frsDialogEl.setAttribute('id', 'frNumbersUpdateEl');
 
     // attach frs update handler (on modal/dialog close)

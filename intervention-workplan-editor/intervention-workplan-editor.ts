@@ -3,7 +3,7 @@ import {property, customElement} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './workplan-editor-link';
 import '../common/budget-summary/budget-summary';
-import {TABS} from '../common/constants';
+import {GDD_TABS} from '../common/constants';
 import {translate} from 'lit-translate';
 import './editor-table';
 
@@ -17,7 +17,7 @@ export class GDDInterventionWorkplanEditor extends LitElement {
     // language=HTML
     return html`
       <div class="top-card">
-        <gdd-workplan-editor-link link="gdd-interventions/${this.interventionId}/${TABS.Workplan}">
+        <gdd-workplan-editor-link link="gdd-interventions/${this.interventionId}/${GDD_TABS.Workplan}">
           ${translate('BACK_TO_WORKPLAN')}
         </gdd-workplan-editor-link>
 

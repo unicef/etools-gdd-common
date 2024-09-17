@@ -19,9 +19,9 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import CONSTANTS from '../../common/constants';
+import GDD_CONSTANTS from '../../common/constants';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -95,7 +95,7 @@ export class GDDPrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixi
       return;
     }
 
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
 
@@ -129,7 +129,7 @@ export class GDDPrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixi
   }
 
   _isDraft(status: string) {
-    return status === CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
+    return status === GDD_CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
   }
 
   saveData() {

@@ -11,7 +11,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
@@ -85,7 +85,7 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
       ></etools-media-query>
       <etools-data-table-row .detailsOpened="${true}" id="activitiesRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
-          <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
+          <div class="title-text">${translate(gddTranslatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
             <etools-icon-button
               name="add-box"
@@ -329,7 +329,7 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
   openDialog(activity?: InterventionActivity, readonly?: boolean): void {
     openDialog<any>({
-      dialog: 'activity-data-dialog',
+      dialog: 'gdd-activity-data-dialog',
       dialogData: {
         activityId: activity && activity.id,
         interventionId: this.interventionId,

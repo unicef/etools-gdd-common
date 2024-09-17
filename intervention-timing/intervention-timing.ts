@@ -46,9 +46,9 @@ export class GDDInterventionTiming extends CommentsMixin(LitElement) {
   stateChanged(state: RootState) {
     super.stateChanged(state);
 
-    this.viewPlannedVisits = Boolean(state.interventions?.current?.permissions?.view!.planned_visits);
+    this.viewPlannedVisits = Boolean(state.gddInterventions?.current?.permissions?.view!.planned_visits);
     this.viewPartnerReportingRequirements = Boolean(
-      state.interventions?.current?.permissions?.view!.reporting_requirements
+      state.gddInterventions?.current?.permissions?.view!.reporting_requirements
     );
   }
 

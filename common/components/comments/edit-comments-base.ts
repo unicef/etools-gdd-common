@@ -1,7 +1,7 @@
 import {InterventionComment} from '@unicef-polymer/etools-types';
 import {LitElement, PropertyValues} from 'lit';
 import {property} from 'lit/decorators.js';
-import {CommentsEndpoints} from './comments-types';
+import {GDDCommentsEndpoints} from './comments-types';
 import {RootState} from '../../types/store.types';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -13,7 +13,7 @@ import {get as getTranslation} from 'lit-translate';
 
 export abstract class EditComments extends connectStore(LitElement) {
   @property() comments: (InterventionComment & {loadingError?: boolean})[] = [];
-  @property() endpoints!: CommentsEndpoints;
+  @property() endpoints!: GDDCommentsEndpoints;
   newMessageText = '';
   currentUser: any;
 

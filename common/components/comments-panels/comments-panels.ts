@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import './comments-list/comments-list';
 import './messages-panel/messages-panel';
 import {CommentPanelsStyles} from './common-comments.styles';
-import {CommentsCollection} from '../comments/comments.reducer';
+import {GDDCommentsCollection} from '../comments/comments.reducer';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {RootState} from '../../types/store.types';
 import {
@@ -12,10 +12,10 @@ import {
   InterventionComment,
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
-import {CommentItemData, CommentRelatedItem, CommentsEndpoints} from '../comments/comments-types';
+import {GDDCommentItemData, GDDCommentRelatedItem, GDDCommentsEndpoints} from '../comments/comments-types';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {buildUrlQueryString} from '@unicef-polymer/etools-utils/dist/general.util';
-import {ComponentsPosition} from '../comments/comments-items-name-map';
+import {GDDComponentsPosition} from '../comments/comments-items-name-map';
 import {removeTrailingIds} from '../comments/comments.helpers';
 import {currentIntervention} from '../../selectors';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -25,14 +25,14 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 @customElement('gdd-comments-panels')
 export class GDDCommentsPanels extends connectStore(LitElement) {
   @property() messagesOpened = false;
-  @property() commentsCollection?: CommentsCollection;
+  @property() commentsCollection?: GDDCommentsCollection;
   @property() comments: InterventionComment[] = [];
   @property() minimized = false;
 
   interventionId?: number;
-  endpoints?: CommentsEndpoints;
-  openedCollection: CommentItemData | null = null;
-  relatedItems?: CommentRelatedItem[] = [];
+  endpoints?: GDDCommentsEndpoints;
+  openedCollection: GDDCommentItemData | null = null;
+  relatedItems?: GDDCommentRelatedItem[] = [];
 
   protected render(): TemplateResult {
     return html`
@@ -64,7 +64,7 @@ export class GDDCommentsPanels extends connectStore(LitElement) {
     this.closeCollection();
   }
 
-  mapToOpjectType(array: any[], type: string): CommentRelatedItem[] {
+  mapToOpjectType(array: any[], type: string): GDDCommentRelatedItem[] {
     return array.map(({id, code, name, indicator}: any) => ({
       type,
       id: indicator?.id || id,
@@ -74,15 +74,15 @@ export class GDDCommentsPanels extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState): void {
-    const commentsState = state.commentsData;
+    const commentsState = state.gddCommentsData;
     const currentInterventionId =
-      Number(state.app.routeDetails?.params?.interventionId) || state.interventions?.current?.id || null;
+      Number(state.app.routeDetails?.params?.interventionId) || state.gddInterventions?.current?.id || null;
     if (!commentsState || !currentInterventionId) {
       return;
     }
 
     this.interventionId = currentInterventionId;
-    this.endpoints = state.commentsData.endpoints;
+    this.endpoints = state.gddCommentsData.endpoints;
     const {collection} = commentsState;
     this.commentsCollection = {...(collection[currentInterventionId] || {})};
     if (this.openedCollection) {
@@ -113,11 +113,11 @@ export class GDDCommentsPanels extends connectStore(LitElement) {
     }
   }
 
-  openCollection(commentsGroup: CommentItemData) {
+  openCollection(commentsGroup: GDDCommentItemData) {
     this.openedCollection = commentsGroup;
     this.comments = [...this.commentsCollection![this.openedCollection.relatedTo]];
     const relatedToKey: string = removeTrailingIds(this.openedCollection.relatedTo);
-    const expectedTab: string = ComponentsPosition[relatedToKey];
+    const expectedTab: string = GDDComponentsPosition[relatedToKey];
     const path = `gdd-interventions/${this.interventionId}/${expectedTab}${location.search}`;
     history.pushState(window.history.state, '', path);
     window.dispatchEvent(new CustomEvent('popstate'));
@@ -196,8 +196,8 @@ export class GDDCommentsPanels extends connectStore(LitElement) {
         }
 
         :host([data-minimized]),
-        :host([data-minimized]) messages-panel,
-        :host([data-minimized]) comments-list {
+        :host([data-minimized]) gdd-messages-panel,
+        :host([data-minimized]) gdd-comments-list {
           height: 64px;
         }
       `

@@ -15,7 +15,7 @@ import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {getIntervention} from '../../common/actions/interventions';
+import {getIntervention} from '../../common/actions/gddInterventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
@@ -36,8 +36,8 @@ import {
   EtoolsEndpoint
 } from '@unicef-polymer/etools-types';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
 import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query';
@@ -81,7 +81,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
       ></etools-media-query>
       <etools-data-table-row .detailsOpened="${true}" id="indicatorsRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
-          <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
+          <div class="title-text">${translate(gddTranslatesMap.applied_indicators)} (${this.indicators.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
             <etools-icon-button
               name="add-box"
@@ -138,8 +138,8 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
 
   stateChanged(state: RootState): void {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Workplan) ||
-      !state.interventions.current
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Workplan) ||
+      !state.gddInterventions.current
     ) {
       return;
     }
@@ -149,7 +149,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
     /**
      * Computing here to avoid recomputation on every open indicator dialog
      */
-    this.computeAvailableOptionsForIndicators(get(state, 'interventions.current') as Intervention);
+    this.computeAvailableOptionsForIndicators(get(state, 'gddInterventions.current') as Intervention);
     this.envFlagsStateChanged(state);
   }
 
@@ -194,7 +194,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
       return;
     }
     openDialog<IndicatorDialogData>({
-      dialog: 'indicator-dialog',
+      dialog: 'gdd-indicator-dialog',
       dialogData: {
         indicator: indicator ? cloneDeep(indicator) : null,
         sectionOptions: this.indicatorSectionOptions,

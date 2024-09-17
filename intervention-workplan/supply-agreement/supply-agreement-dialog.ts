@@ -11,7 +11,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
@@ -19,7 +19,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {EtoolsEndpoint, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {get as getTranslation} from 'lit-translate';
 
@@ -55,7 +55,7 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
               class="w100"
               value="${this.data.title}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-              label=${translate(translatesMap.title)}
+              label=${translate(gddTranslatesMap.title)}
               type="text"
               placeholder="—"
               error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -67,7 +67,7 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             <etools-input
               value="${this.data.unit_number ? this.data.unit_number : ''}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
-              label=${translate(translatesMap.unit_number)}
+              label=${translate(gddTranslatesMap.unit_number)}
               allowed-pattern="[0-9]"
               placeholder="—"
               error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -79,7 +79,7 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-md-4 col-6">
             <etools-currency
               id="unicefCash"
-              label=${translate(translatesMap.unit_price)}
+              label=${translate(gddTranslatesMap.unit_price)}
               placeholder="—"
               required
               .value="${this.data.unit_price ? this.data.unit_price : ''}"
@@ -92,7 +92,7 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           </div>
           <div class="col col-md-4 col-12">
             <etools-dropdown
-              label=${translate(translatesMap.provided_by)}
+              label=${translate(gddTranslatesMap.provided_by)}
               placeholder="&#8212;"
               .options="${this.providers}"
               option-label="label"
@@ -112,7 +112,7 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             ? html` <div class="col col-md-8 col-12">
                 <etools-dropdown
                   class="cp-out"
-                  label=${translate(translatesMap.result)}
+                  label=${translate(gddTranslatesMap.result)}
                   placeholder="&#8212;"
                   .options="${this.cpOutputs}"
                   option-label="cp_output_name"
@@ -130,7 +130,7 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-md-4 col-12" ?hidden="${this.data.provided_by == 'partner'}">
             <etools-input
               id="unicefProductNumber"
-              label=${translate(translatesMap.unicef_product_number)}
+              label=${translate(gddTranslatesMap.unicef_product_number)}
               placeholder="—"
               .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
@@ -140,7 +140,7 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-12">
             <etools-textarea
               id="otherMentions"
-              label=${translate(translatesMap.other_mentions)}
+              label=${translate(gddTranslatesMap.other_mentions)}
               always-float-label
               placeholder="—"
               .value="${this.data.other_mentions}"

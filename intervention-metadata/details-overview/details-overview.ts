@@ -18,8 +18,8 @@ import {translate, get as getTranslation, langChanged} from 'lit-translate';
 import {allPartners, currentIntervention, isUnicefUser} from '../../common/selectors';
 import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
-import {TABS} from '../../common/constants';
-import CONSTANTS from '../../common/constants';
+import {GDD_TABS} from '../../common/constants';
+import GDD_CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
@@ -121,11 +121,11 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
   }
 
   public stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Metadata)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Metadata)) {
       return;
     }
 
-    if (state.interventions.current) {
+    if (state.gddInterventions.current) {
       this.interventionOverview = selectInterventionOverview(state);
       this.isUnicefUser = isUnicefUser(state);
       this.intervention = currentIntervention(state);
@@ -175,7 +175,7 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
       return;
     }
 
-    const name = (CONSTANTS.DOCUMENT_TYPES_LONG as any)[value.toUpperCase()];
+    const name = (GDD_CONSTANTS.DOCUMENT_TYPES_LONG as any)[value.toUpperCase()];
     return translateValue(name, 'ITEM_TYPE');
   }
 }

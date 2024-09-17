@@ -37,7 +37,7 @@ import {
   SEND_BACK_REVIEW,
   UNLOCK
 } from './intervention-actions.constants';
-import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
+import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/gddInterventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {
   defaultKeyTranslate,
@@ -46,7 +46,7 @@ import {
 import {AnyObject, EtoolsEndpoint, GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../utils/intervention-labels-map';
 import {RootState} from '../common/types/store.types';
 
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
@@ -299,7 +299,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
       .catch((error: any) => {
         fireEvent(this, 'toast', {
           text: formatServerErrorAsText(error, (key) => {
-            const labelKey = translatesMap[key];
+            const labelKey = gddTranslatesMap[key];
             return labelKey ? getTranslation(labelKey) : defaultKeyTranslate(key);
           })
         });
@@ -359,7 +359,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
 
   private openTermiantionDialog() {
     return openDialog({
-      dialog: 'pd-termination',
+      dialog: 'gdd-pd-termination',
       dialogData: {
         interventionId: this.interventionPartial.id
       }
@@ -377,7 +377,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
 
   private openStartReviewDialog() {
     return openDialog({
-      dialog: 'start-review'
+      dialog: 'gdd-start-review'
     }).then(({confirmed, response}) => {
       if (!confirmed) {
         return null;
@@ -388,7 +388,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
 
   private openReviewDialog(additional?: GenericObject) {
     return openDialog({
-      dialog: 'review-checklist-popup',
+      dialog: 'gdd-review-checklist-popup',
       dialogData: {
         isOverall: Boolean(additional),
         ...additional
@@ -404,7 +404,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
 
   private openAcceptForPartner() {
     return openDialog({
-      dialog: 'accept-for-partner',
+      dialog: 'gdd-accept-for-partner',
       dialogData: {
         interventionId: this.interventionPartial.id
       }

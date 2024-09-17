@@ -10,7 +10,7 @@ import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
-import CONSTANTS from '../../common/constants';
+import GDD_CONSTANTS from '../../common/constants';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -23,7 +23,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import cloneDeep from 'lodash-es/cloneDeep';
 
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
@@ -297,7 +297,7 @@ export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMix
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
 
-    if (state.interventions.current) {
+    if (state.gddInterventions.current) {
       const reviewData = selectReviewData(state);
       if (!isJsonStrMatch(this.originalData, reviewData)) {
         this.data = cloneDeep(reviewData);
@@ -357,7 +357,7 @@ export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMix
   }
 
   _isDraft(status: string) {
-    return status === CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
+    return status === GDD_CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
   }
 
   _hideDeleteBtn(status: string, fileUrl: string) {

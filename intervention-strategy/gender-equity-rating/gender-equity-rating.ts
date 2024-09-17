@@ -12,7 +12,7 @@ import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './g
 import {GDDGenderEquityRatingPermissions, GDDGenderEquityRating} from './genderEquityRating.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -20,7 +20,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
@@ -91,7 +91,7 @@ export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMix
 
         <div class="row pb-20">
           <div class="col-12">
-            <label class="label">${translate(translatesMap.gender_rating)}</label>
+            <label class="label">${translate(gddTranslatesMap.gender_rating)}</label>
             <info-icon-tooltip id="iit-gender" ?hidden=${!this.editMode}
               .tooltipText=${translate('GENDER_RATING_INFO')}>
             </info-icon-tooltip>
@@ -107,7 +107,7 @@ export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMix
           </div>
           <div class="col-12">
             <etools-textarea
-              label=${translate(translatesMap.gender_narrative)}
+              label=${translate(gddTranslatesMap.gender_narrative)}
               always-float-label
               class="w100"
               placeholder="&#8212;"
@@ -126,7 +126,7 @@ export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMix
 
         <div class="row pb-20">
           <div class="col-12">
-            <label class="label">${translate(translatesMap.equity_rating)}</label>
+            <label class="label">${translate(gddTranslatesMap.equity_rating)}</label>
             <info-icon-tooltip id="iit-equity" ?hidden=${!this.editMode}
               .tooltipText=${translate('EQUITY_RATING_INFO')}>
             </info-icon-tooltip>
@@ -142,7 +142,7 @@ export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMix
           </div>
           <div class="col-12">
             <etools-textarea
-              label=${translate(translatesMap.equity_narrative)}
+              label=${translate(gddTranslatesMap.equity_narrative)}
               always-float-label
               class="w100"
               placeholder="&#8212;"
@@ -161,7 +161,7 @@ export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMix
 
         <div class="row pb-20">
           <div class="col-12">
-            <label class="label">${translate(translatesMap.sustainability_rating)}</label>
+            <label class="label">${translate(gddTranslatesMap.sustainability_rating)}</label>
             <info-icon-tooltip id="iit-sust" ?hidden=${!this.editMode}
               .tooltipText=${translate('SUSTAINABILITY_RATING_INFO')}>
             </info-icon-tooltip>
@@ -177,7 +177,7 @@ export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMix
           </div>
           <div class="col-12">
             <etools-textarea
-              label=${translate(translatesMap.sustainability_narrative)}
+              label=${translate(gddTranslatesMap.sustainability_narrative)}
               always-float-label
               class="w100"
               placeholder="&#8212;"
@@ -219,7 +219,7 @@ export class GDDGenderEquityRatingElement extends CommentsMixin(ComponentBaseMix
     if (state.commonData.genderEquityRatings) {
       this.ratings = state.commonData.genderEquityRatings;
     }
-    if (state.interventions.current) {
+    if (state.gddInterventions.current) {
       this.setPermissions(state);
       const genderEquityRating = selectGenderEquityRating(state);
       if (!isJsonStrMatch(this.originalData, genderEquityRating)) {

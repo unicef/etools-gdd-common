@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import './hru-list.js';
-import CONSTANTS from '../../../common/constants.js';
+import GDD_CONSTANTS from '../../../common/constants.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
@@ -285,7 +285,7 @@ export class GDDEditHruDialog extends connectStore(LitElement) {
     this.updateStartDates(this.repStartDate);
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.reportingRequirements, {
       intervId: this.interventionId,
-      reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
+      reportType: GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });
     const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as unknown as EtoolsDialog;
     dialog.startSpinner();

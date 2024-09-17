@@ -12,7 +12,7 @@ import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styl
 import {CommentsMixin} from '../components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {TABS} from '../constants';
+import {GDD_TABS} from '../constants';
 import {isUnicefUser} from '../selectors';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
@@ -274,18 +274,18 @@ export class GDDBudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(
 
   public stateChanged(state: RootState) {
     if (
-      (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Workplan) &&
+      (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Workplan) &&
         EtoolsRouter.pageIsNotCurrentlyActive(
           get(state, 'app.routeDetails'),
           'gdd-interventions',
-          TABS.WorkplanEditor
+          GDD_TABS.WorkplanEditor
         )) ||
-      !state.interventions.current
+      !state.gddInterventions.current
     ) {
       return;
     }
     this.budgetSummary = selectBudgetSummary(state);
-    this.intervention = state.interventions.current;
+    this.intervention = state.gddInterventions.current;
     this.frsDetails = this.intervention.frs_details;
     if (isUnicefUser(state)) {
       this.setFrsConsistencyWarning();

@@ -2,13 +2,13 @@ import {css, LitElement, html, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {translate} from 'lit-translate';
-import {CommentRelatedItem} from '../../comments/comments-types';
+import {GDDCommentRelatedItem} from '../../comments/comments-types';
 import dayjs from 'dayjs';
 
 @customElement('gdd-comments-group')
 export class GDDCommentsGroup extends LitElement {
   @property({type: Number}) commentsCount = 0;
-  @property({type: String}) relatedItem: CommentRelatedItem | null = null;
+  @property({type: String}) relatedItem: GDDCommentRelatedItem | null = null;
   @property({type: String}) relatedTo = '';
   @property({type: String}) relatedToDescription = '';
   @property({type: String}) fieldDescription = '';

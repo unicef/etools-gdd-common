@@ -117,7 +117,7 @@ export class GDDOverallApproval extends LitElement {
 
   openReviewPopup() {
     openDialog({
-      dialog: 'review-checklist-popup',
+      dialog: 'gdd-review-checklist-popup',
       dialogData: {
         isOverall: true
       }

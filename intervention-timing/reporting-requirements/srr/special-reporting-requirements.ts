@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
 import './add-edit-special-rep-req';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {ReportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import CONSTANTS from '../../../common/constants';
+import GDD_CONSTANTS from '../../../common/constants';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
@@ -168,7 +168,7 @@ export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRe
 
   _onEdit(index?: number) {
     openDialog({
-      dialog: 'add-edit-special-rep-req',
+      dialog: 'gdd-add-edit-special-rep-req',
       dialogData: {
         item: typeof index === 'undefined' ? {} : cloneDeep(this.reportingRequirements[index!]),
         interventionId: this.interventionId
@@ -244,7 +244,7 @@ export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRe
   }
 
   _getReportType() {
-    return CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL;
+    return GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL;
   }
 
   _getIndexById(id: number) {
@@ -263,7 +263,7 @@ export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRe
     }
     this.reportingRequirements = [...reportingRequirementsOriginal];
     this.paginator = {...this.paginator, page: 1};
-    this.updateReportingRequirements(this.reportingRequirements, CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR);
+    this.updateReportingRequirements(this.reportingRequirements, GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR);
     this.requestUpdate();
   }
 }

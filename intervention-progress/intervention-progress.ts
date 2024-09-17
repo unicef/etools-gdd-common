@@ -2,7 +2,7 @@ import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {TABS} from '../common/constants';
+import {GDD_TABS} from '../common/constants';
 import {isUnicefUser} from '../common/selectors';
 import {RootState} from '../common/types/store.types';
 import './intervention-implementation-status.js';
@@ -22,13 +22,13 @@ export class GDDInterventionProgress extends connectStore(LitElement) {
       ${this.isUnicefUser
         ? html`
             <gdd-intervention-implementation-status
-              ?hidden="${this.activeSubTab !== TABS.ImplementationStatus}"
+              ?hidden="${this.activeSubTab !== GDD_TABS.ImplementationStatus}"
             ></gdd-intervention-implementation-status>
             <gdd-intervention-monitoring-activities
-              ?hidden="${this.activeSubTab !== TABS.MonitoringActivities}"
+              ?hidden="${this.activeSubTab !== GDD_TABS.MonitoringActivities}"
             ></gdd-intervention-monitoring-activities>
             <gdd-intervention-results-reported
-              ?hidden="${this.activeSubTab !== TABS.ResultsReported}"
+              ?hidden="${this.activeSubTab !== GDD_TABS.ResultsReported}"
             ></gdd-intervention-results-reported>
             <gdd-intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></gdd-intervention-reports>
           `
@@ -53,9 +53,12 @@ export class GDDInterventionProgress extends connectStore(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      ![TABS.ImplementationStatus, TABS.MonitoringActivities, TABS.ResultsReported, TABS.Reports].includes(
-        state.app?.routeDetails?.subRouteName!
-      )
+      ![
+        GDD_TABS.ImplementationStatus,
+        GDD_TABS.MonitoringActivities,
+        GDD_TABS.ResultsReported,
+        GDD_TABS.Reports
+      ].includes(state.app?.routeDetails?.subRouteName!)
     ) {
       return;
     }

@@ -13,7 +13,7 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdow
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {getIntervention, patchIntervention} from '../../common/actions/interventions';
+import {getIntervention, patchIntervention} from '../../common/actions/gddInterventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
@@ -214,18 +214,18 @@ export class GDDProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repe
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'timing')) {
       return;
     }
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
-    this.intervention = cloneDeep(state.interventions.current);
+    this.intervention = cloneDeep(state.gddInterventions.current);
     if (!isJsonStrMatch(this.allSites, this.intervention.sites)) {
       this.allSites = [...this.intervention.sites];
     }
     this.populateVisits(state);
     this.permissions = selectPlannedVisitsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
-    this.interventionStatus = state.interventions.current.status;
-    this.extraEndpointParams = {intervention_id: state.interventions.current.id};
+    this.interventionStatus = state.gddInterventions.current.status;
+    this.extraEndpointParams = {intervention_id: state.gddInterventions.current.id};
     this.currentCountry = get(state, 'user.data.country') as any;
     super.stateChanged(state);
   }

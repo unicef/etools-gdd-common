@@ -1,7 +1,7 @@
 import {LitElement, html, TemplateResult, CSSResultArray} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import CONSTANTS from '../../common/constants';
+import GDD_CONSTANTS from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
@@ -25,7 +25,7 @@ import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {getIntervention} from '../../common/actions/interventions';
+import {getIntervention} from '../../common/actions/gddInterventions';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
@@ -156,11 +156,11 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'attachments')) {
       return;
     }
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
 
-    this.intervention = cloneDeep(state.interventions.current);
+    this.intervention = cloneDeep(state.gddInterventions.current);
     this.attachments = this.intervention.attachments || [];
     this.canEdit = this.intervention.permissions!.edit.attachments || false;
 
@@ -170,7 +170,7 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
 
   openAttachmentDialog(attachment?: InterventionAttachment): void {
     openDialog({
-      dialog: 'intervention-attachment-dialog',
+      dialog: 'gdd-intervention-attachment-dialog',
       dialogData: {attachment}
     });
   }
@@ -227,12 +227,12 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
 
   canEditAttachments() {
     return (
-      this.intervention.status !== CONSTANTS.STATUSES.Closed.toLowerCase() &&
-      this.intervention.status !== CONSTANTS.STATUSES.Terminated.toLowerCase()
+      this.intervention.status !== GDD_CONSTANTS.STATUSES.Closed.toLowerCase() &&
+      this.intervention.status !== GDD_CONSTANTS.STATUSES.Terminated.toLowerCase()
     );
   }
 
   canDeleteAttachments() {
-    return this.intervention.status === CONSTANTS.STATUSES.Draft.toLowerCase();
+    return this.intervention.status === GDD_CONSTANTS.STATUSES.Draft.toLowerCase();
   }
 }

@@ -68,7 +68,7 @@ export class GDDStartReview extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    this.reviewTypes = state.interventions?.current?.in_amendment
+    this.reviewTypes = state.gddInterventions?.current?.in_amendment
       ? [this.PRC, this.NON_PRC, this.WITHOUT]
       : [this.PRC, this.NON_PRC];
   }

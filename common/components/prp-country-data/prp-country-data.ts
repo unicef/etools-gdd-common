@@ -3,7 +3,7 @@ import {customElement} from 'lit/decorators.js';
 // eslint-disable-next-line max-len
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {setPrpCountries} from '../../actions/interventions';
+import {setPrpCountries} from '../../actions/gddInterventions';
 import get from 'lodash-es/get';
 import {gddEndpoints} from '../../../utils/intervention-endpoints';
 

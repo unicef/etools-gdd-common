@@ -12,14 +12,14 @@ import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documen
 import {GDDDocumentDetailsPermissions, GDDDocumentDetails} from './documentDetails.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -95,7 +95,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
               id="context"
               no-label-float
               type="text"
-              label="${translate(translatesMap.context)}"
+              label="${translate(gddTranslatesMap.context)}"
               placeholder="—"
               .value="${this.data.context}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
@@ -112,7 +112,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
 
           <div class="col-12">
             <div>
-              <label class="label">${translate(translatesMap.implementation_strategy)}</label>
+              <label class="label">${translate(gddTranslatesMap.implementation_strategy)}</label>
               <info-icon-tooltip
                 id="iit-implemen-strat"
                 slot="after-label"
@@ -140,7 +140,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
 
           <div class="col-12">
             <div>
-              <label class="label">${translate(translatesMap.capacity_development)}</label>
+              <label class="label">${translate(gddTranslatesMap.capacity_development)}</label>
               <info-icon-tooltip
                 id="iit-cap-develop"
                 slot="after-label"
@@ -170,7 +170,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
 
           <div class="col-12">
             <div>
-              <label class="label">${translate(translatesMap.other_partners_involved)}</label>
+              <label class="label">${translate(gddTranslatesMap.other_partners_involved)}</label>
               <info-icon-tooltip
                 id="iit-other-p-i"
                 ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved)}"
@@ -199,7 +199,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
 
           <div class="col-12">
             <div>
-              <label class="label">${translate(translatesMap.other_details)}</label>
+              <label class="label">${translate(gddTranslatesMap.other_details)}</label>
             </div>
             <etools-textarea
               no-label-float
@@ -228,7 +228,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
                 : undefined}"
               @sl-change=${(e: any) => this.valueChanged({value: e.target.checked}, 'has_data_processing_agreement')}
             >
-              ${translate(translatesMap.has_data_processing_agreement)}
+              ${translate(gddTranslatesMap.has_data_processing_agreement)}
             </etools-checkbox>
           </div>
 
@@ -242,7 +242,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
               @sl-change=${(e: any) =>
                 this.valueChanged({value: e.target.checked}, 'has_activities_involving_children')}
             >
-              ${translate(translatesMap.has_activities_involving_children)}
+              ${translate(gddTranslatesMap.has_activities_involving_children)}
             </etools-checkbox>
           </div>
 
@@ -259,7 +259,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
               @sl-change=${(e: any) =>
                 this.valueChanged({value: e.target.checked}, 'has_special_conditions_for_construction')}
             >
-              ${translate(translatesMap.has_special_conditions_for_construction)}
+              ${translate(gddTranslatesMap.has_special_conditions_for_construction)}
             </etools-checkbox>
           </div>
         </div>
@@ -287,7 +287,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
       return;
     }
 
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
     this.data = selectDocumentDetails(state);

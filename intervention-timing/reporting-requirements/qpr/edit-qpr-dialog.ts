@@ -6,7 +6,7 @@ import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
-import CONSTANTS from '../../../common/constants';
+import GDD_CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite.js';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -17,7 +17,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import dayjs from 'dayjs';
 import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../../utils/intervention-labels-map';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
@@ -149,7 +149,7 @@ export class GDDEditQprDialog extends GenerateQuarterlyReportingRequirementsMixi
 
         <div class="row custom-margin">
           <div class="layout-vertical">
-            <label class="label" for="startDate">${translate(translatesMap.start_date)}</label>
+            <label class="label" for="startDate">${translate(gddTranslatesMap.start_date)}</label>
             <calendar-lite
               id="startDate"
               .date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
@@ -368,7 +368,7 @@ export class GDDEditQprDialog extends GenerateQuarterlyReportingRequirementsMixi
   _saveModifiedQprData() {
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.reportingRequirements, {
       intervId: this.interventionId,
-      reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
+      reportType: GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
     });
     const dialog = this.editQprDialog as EtoolsDialog;
     dialog.startSpinner();

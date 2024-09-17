@@ -24,12 +24,12 @@ import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {TABS} from '../../common/constants';
+import {GDD_TABS} from '../../common/constants';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
-import {getIntervention} from '../../common/actions/interventions';
+import {getIntervention} from '../../common/actions/gddInterventions';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -47,7 +47,7 @@ import {
   EtoolsEndpoint
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
@@ -115,7 +115,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
+        panel-title="${translate(gddTranslatesMap.result_links)} (${this.noOfPdOutputs})"
         elevation="0"
       >
         <div slot="after-title">
@@ -329,15 +329,15 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Workplan) ||
-      !state.interventions.current
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Workplan) ||
+      !state.gddInterventions.current
     ) {
       return;
     }
-    if (state.commentsData?.commentsModeEnabled && !this.commentsModeEnabledFlag) {
+    if (state.gddCommentsData?.commentsModeEnabled && !this.commentsModeEnabledFlag) {
       this.openAllCpOutputs();
     }
-    this.commentsModeEnabledFlag = Boolean(state.commentsData?.commentsModeEnabled);
+    this.commentsModeEnabledFlag = Boolean(state.gddCommentsData?.commentsModeEnabled);
     this.updateResultLinks(state);
     this.showInactiveToggle = this.resultLinks.some(({ll_results}: ExpectedResult) =>
       ll_results.some(
@@ -386,7 +386,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       }))
       .filter(({id}: IdAndName<number>) => id);
     openDialog<any>({
-      dialog: 'pd-output-dialog',
+      dialog: 'gdd-pd-output-dialog',
       dialogData: {
         pdOutput: pdOutput ? {...pdOutput, cp_output: cpOutput} : undefined,
         cpOutputs,
@@ -438,7 +438,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     const canChangeCpOp =
       !this.intervention.in_amendment && ['draft', 'development'].includes(this.intervention.status);
     openDialog({
-      dialog: 'cp-output-dialog',
+      dialog: 'gdd-cp-output-dialog',
       dialogData: {
         resultLink,
         cpOutputs: this.filterOutAlreadySelectedAndByCPStructure(canChangeCpOp),

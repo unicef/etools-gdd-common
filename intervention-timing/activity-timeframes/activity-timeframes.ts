@@ -102,7 +102,7 @@ export class GDDActivityTimeframes extends CommentsMixin(LitElement) {
       return;
     }
     this.language = state.activeLanguage.activeLanguage; // Set language property in order to trigger re-render
-    this.intervention = state.interventions.current;
+    this.intervention = state.gddInterventions.current;
     super.stateChanged(state);
   }
 

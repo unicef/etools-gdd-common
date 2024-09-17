@@ -12,7 +12,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import '../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
@@ -322,7 +322,7 @@ export class GDDActivityDialog extends ComponentBaseMixin(LitElement) {
   }
 
   validateActivityItems(): AnyObject | undefined {
-    const itemsTable: GDDActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
+    const itemsTable: GDDActivityItemsTable | null = this.shadowRoot!.querySelector('gdd-activity-items-table');
     return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 

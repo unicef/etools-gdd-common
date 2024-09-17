@@ -25,7 +25,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
@@ -140,7 +140,7 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
       <etools-content-panel
         show-expand-btn
         class="content-section"
-        panel-title=${translate(translatesMap.reporting_requirements)}
+        panel-title=${translate(gddTranslatesMap.reporting_requirements)}
       >
         <div class="row">
           <div class="col-12 d-flex">
@@ -314,12 +314,12 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'timing')) {
       return;
     }
-    if (!get(state, 'interventions.current')) {
+    if (!get(state, 'gddInterventions.current')) {
       return;
     }
     this.isUnicefUser = isUnicefUser(state);
     this.reportingRequirementsPermissions = selectReportingRequirementsPermissions(state);
-    const currentIntervention = get(state, 'interventions.current');
+    const currentIntervention = get(state, 'gddInterventions.current');
     this.intervention = cloneDeep(currentIntervention) as Intervention;
     this.interventionId = this.intervention.id;
     this.interventionStart = this.intervention.start;

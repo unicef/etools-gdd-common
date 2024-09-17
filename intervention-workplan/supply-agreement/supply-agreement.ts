@@ -26,7 +26,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
-import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {getIntervention, updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {addCurrencyAmountDelimiter, displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -35,8 +35,8 @@ import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {AnyObject, AsyncAction, EtoolsEndpoint, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 const customStyles = html`
@@ -116,7 +116,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate(translatesMap.supply_items)}
+        panel-title=${translate(gddTranslatesMap.supply_items)}
         comment-element="supply-agreement"
       >
         ${this.supply_items?.length && this.permissions.edit.supply_items
@@ -312,11 +312,11 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
   }
 
   stateChanged(state: RootState): void {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Workplan)) {
       return;
     }
-    if (get(state, 'interventions.current')) {
-      const currentIntervention = get(state, 'interventions.current');
+    if (get(state, 'gddInterventions.current')) {
+      const currentIntervention = get(state, 'gddInterventions.current');
       this.intervention = cloneDeep(currentIntervention) as Intervention;
       this.currencyDisplayForTotal();
     }
@@ -427,7 +427,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
 
   private openSupplyDialog(item: InterventionSupplyItem) {
     openDialog({
-      dialog: 'supply-agreement-dialog',
+      dialog: 'gdd-supply-agreement-dialog',
       dialogData: {
         data: cloneDeep(item),
         interventionId: this.intervention.id,

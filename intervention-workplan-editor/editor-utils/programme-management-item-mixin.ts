@@ -8,7 +8,10 @@ import {ifDefined} from 'lit/directives/if-defined.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {ProgrammeManagementRowExtended, ProgrammeManagementRowItemExtended} from '../../common/types/editor-page-types';
+import {
+  GDDProgrammeManagementRowExtended,
+  GDDProgrammeManagementRowItemExtended
+} from '../../common/types/editor-page-types';
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
 import {getItemTotalFormatted} from '../../common/components/activity/get-total.helper';
 import {ActivitiesFocusMixin} from './activities-focus-mixin';
@@ -36,7 +39,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
     commentMode: any;
 
     renderProgrammeManagementItems(
-      programmeManagement: ProgrammeManagementRowExtended,
+      programmeManagement: GDDProgrammeManagementRowExtended,
       programmeManagementIndex: number
     ) {
       if (!programmeManagement || !programmeManagement.items || !programmeManagement.items.length) {
@@ -48,8 +51,8 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       >
         ${repeat(
           programmeManagement.items || [],
-          (item: ProgrammeManagementRowItemExtended) => item.id,
-          (item: ProgrammeManagementRowItemExtended, itemIndex: number) => html`
+          (item: GDDProgrammeManagementRowItemExtended) => item.id,
+          (item: GDDProgrammeManagementRowItemExtended, itemIndex: number) => html`
             <tr
               class="activity-items-row ${programmeManagement.itemsInEditMode ? '' : 'readonly-mode'}"
               type="a-item"
@@ -319,14 +322,14 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       </tbody>`;
     }
 
-    saveProgrammeManagement!: (programmeManagement: ProgrammeManagementRowExtended, interventionId: number) => void;
+    saveProgrammeManagement!: (programmeManagement: GDDProgrammeManagementRowExtended, interventionId: number) => void;
     cancelProgrammeManagement!: (
-      items: Partial<ProgrammeManagementRowItemExtended>[],
-      programmeManagement: ProgrammeManagementRowExtended,
+      items: Partial<GDDProgrammeManagementRowItemExtended>[],
+      programmeManagement: GDDProgrammeManagementRowExtended,
       programmeManagementIndex: number
     ) => void;
 
-    async removeProgrammeManagementItem(programmeManagement: ProgrammeManagementRowExtended, itemIndex: number) {
+    async removeProgrammeManagementItem(programmeManagement: GDDProgrammeManagementRowExtended, itemIndex: number) {
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
@@ -350,7 +353,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       return itemsInEditMode ? label : '';
     }
 
-    setAutoValidate(item: ProgrammeManagementRowItemExtended, prop: string) {
+    setAutoValidate(item: GDDProgrammeManagementRowItemExtended, prop: string) {
       if (!item.autovalidate) {
         item.autovalidate = {};
       }
@@ -358,7 +361,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       this.requestUpdate();
     }
 
-    addNewItem(e: CustomEvent, programmeManagement: ProgrammeManagementRowExtended, focusClue: string) {
+    addNewItem(e: CustomEvent, programmeManagement: GDDProgrammeManagementRowExtended, focusClue: string) {
       if (!programmeManagement.items) {
         programmeManagement.items = [];
       }

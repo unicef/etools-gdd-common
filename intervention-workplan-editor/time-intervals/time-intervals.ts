@@ -58,7 +58,7 @@ export class GDDTimeIntervals extends LitElement {
       return;
     }
     openDialog<any>({
-      dialog: 'time-intervals-dialog',
+      dialog: 'gdd-time-intervals-dialog',
       dialogData: {
         selectedTimeFrames: this.selectedTimeFrames,
         quarters: this.quarters,

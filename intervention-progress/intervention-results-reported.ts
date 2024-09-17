@@ -26,7 +26,7 @@ import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {currentIntervention} from '../common/selectors';
-import {TABS} from '../common/constants';
+import {GDD_TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-mixin';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
@@ -406,9 +406,9 @@ export class GDDInterventionResultsReported extends connectStore(
       EtoolsRouter.pageIsNotCurrentlyActive(
         get(state, 'app.routeDetails'),
         'gdd-interventions',
-        TABS.ResultsReported
+        GDD_TABS.ResultsReported
       ) ||
-      !state.interventions.current
+      !state.gddInterventions.current
     ) {
       return;
     }

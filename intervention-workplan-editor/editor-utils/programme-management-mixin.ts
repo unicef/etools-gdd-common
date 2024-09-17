@@ -10,7 +10,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {repeat} from 'lit/directives/repeat.js';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -19,9 +19,9 @@ import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {GDDProgrammeManagement} from '../../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.models';
 import {ProgrammeManagementItemMixin} from './programme-management-item-mixin';
 import {
-  ProgrammeManagementRowExtended,
-  ProgrammeManagementKindChoices,
-  ProgrammeManagementRowItemExtended
+  GDDProgrammeManagementRowExtended,
+  GDDProgrammeManagementKindChoices,
+  GDDProgrammeManagementRowItemExtended
 } from '../../common/types/editor-page-types';
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
@@ -80,8 +80,8 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
         </tbody>
         ${repeat(
           this.formattedProgrammeManagement || [],
-          (item: ProgrammeManagementRowExtended) => item.id,
-          (item: ProgrammeManagementRowExtended, itemIndex: number) => html`
+          (item: GDDProgrammeManagementRowExtended) => item.id,
+          (item: GDDProgrammeManagementRowExtended, itemIndex: number) => html`
             <tbody
               ?hoverable="${!(item.inEditMode || item.itemsInEditMode) &&
               this.permissions.edit.management_budgets &&
@@ -240,7 +240,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       `;
     }
 
-    formatProgrammeManagement(data: GDDProgrammeManagement): ProgrammeManagementRowExtended[] {
+    formatProgrammeManagement(data: GDDProgrammeManagement): GDDProgrammeManagementRowExtended[] {
       return [
         {
           code: 'EEPM.1',
@@ -251,10 +251,10 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           totalProgrammeManagementCash: getTotalCash(data.act1_partner, data.act1_unicef),
           total: data.act1_total,
           items: data.items.filter(
-            (item: ProgrammeManagementRowItemExtended) => item.kind === ProgrammeManagementKindChoices.inCountry
+            (item: GDDProgrammeManagementRowItemExtended) => item.kind === GDDProgrammeManagementKindChoices.inCountry
           ),
           id: 1,
-          kind: ProgrammeManagementKindChoices.inCountry,
+          kind: GDDProgrammeManagementKindChoices.inCountry,
           inEditMode: false,
           itemsInEditMode: false
         },
@@ -267,10 +267,10 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           totalProgrammeManagementCash: getTotalCash(data.act2_partner, data.act2_unicef),
           total: data.act2_total,
           items: data.items.filter(
-            (item: ProgrammeManagementRowItemExtended) => item.kind === ProgrammeManagementKindChoices.operational
+            (item: GDDProgrammeManagementRowItemExtended) => item.kind === GDDProgrammeManagementKindChoices.operational
           ),
           id: 2,
-          kind: ProgrammeManagementKindChoices.operational,
+          kind: GDDProgrammeManagementKindChoices.operational,
           inEditMode: false,
           itemsInEditMode: false
         },
@@ -283,10 +283,10 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           totalProgrammeManagementCash: getTotalCash(data.act3_partner, data.act3_unicef),
           total: data.act3_total,
           items: data.items.filter(
-            (item: ProgrammeManagementRowItemExtended) => item.kind === ProgrammeManagementKindChoices.planning
+            (item: GDDProgrammeManagementRowItemExtended) => item.kind === GDDProgrammeManagementKindChoices.planning
           ),
           id: 3,
-          kind: ProgrammeManagementKindChoices.planning,
+          kind: GDDProgrammeManagementKindChoices.planning,
           inEditMode: false,
           itemsInEditMode: false
         }
@@ -295,8 +295,8 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
 
     // @ts-ignore
     cancelProgrammeManagement(
-      items: Partial<ProgrammeManagementRowItemExtended>[],
-      programmeManagement: ProgrammeManagementRowExtended,
+      items: Partial<GDDProgrammeManagementRowItemExtended>[],
+      programmeManagement: GDDProgrammeManagementRowExtended,
       programmeManagementIndex: number
     ) {
       programmeManagement.invalid = {cso_cash: false, unicef_cash: false};
@@ -319,7 +319,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       this.lastFocusedTd.focus();
     }
 
-    validateProgrammeManagement(programmeManagement: ProgrammeManagementRowExtended) {
+    validateProgrammeManagement(programmeManagement: GDDProgrammeManagementRowExtended) {
       programmeManagement.invalid = {};
       if (!programmeManagement.items || !programmeManagement.items.length) {
         if (programmeManagement.cso_cash === null || programmeManagement.cso_cash === undefined) {
@@ -335,7 +335,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
     // @ts-ignore
     saveProgrammeManagement(
       e: CustomEvent,
-      programmeManagement: ProgrammeManagementRowExtended,
+      programmeManagement: GDDProgrammeManagementRowExtended,
       interventionId: number
     ) {
       if (!this.validateProgrammeManagement(programmeManagement) || !this.validateActivityItems(programmeManagement)) {
@@ -357,7 +357,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
         delete programmeManagementToSave.cso_cash;
       }
       const patchData = cloneDeep(programmeManagement);
-      patchData.items = this.formattedProgrammeManagement.flatMap((pm: ProgrammeManagementRowExtended) => pm.items);
+      patchData.items = this.formattedProgrammeManagement.flatMap((pm: GDDProgrammeManagementRowExtended) => pm.items);
       this.formatDataBeforeSave(patchData);
 
       sendRequest({
@@ -382,7 +382,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
         });
     }
 
-    getPropertyName(data: ProgrammeManagementRowExtended, sufix: string) {
+    getPropertyName(data: GDDProgrammeManagementRowExtended, sufix: string) {
       return data ? `act${data.id}_${sufix}` : '';
     }
 

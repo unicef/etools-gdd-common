@@ -25,8 +25,8 @@ import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/util
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
@@ -104,7 +104,7 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
         query="(max-width: 767px)"
         @query-matches-changed="${this.resolutionChanged}"
       ></etools-media-query>
-      <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.management_budgets)}>
+      <etools-content-panel show-expand-btn panel-title=${translate(gddTranslatesMap.management_budgets)}>
         <div slot="after-title">
           <info-icon-tooltip
             id="iit-eepm"
@@ -200,13 +200,13 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
   }
 
   stateChanged(state: RootState) {
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Workplan)) {
       return;
     }
-    this.interventionId = state.interventions.current.id!;
+    this.interventionId = state.gddInterventions.current.id!;
     this.data = selectProgrammeManagement(state);
 
     this.originalData = cloneDeep(this.data);
@@ -254,7 +254,7 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
 
   openActivityDialog(activity: any) {
     openDialog({
-      dialog: 'activity-dialog',
+      dialog: 'gdd-activity-dialog',
       dialogData: {
         activity: {...activity, items: cloneDeep(this.data.items)},
         interventionId: this.interventionId,

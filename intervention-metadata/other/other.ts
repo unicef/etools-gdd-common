@@ -9,7 +9,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {RootState} from '../../common/types/store.types';
@@ -20,8 +20,8 @@ import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-typ
 import {listenForLangChanged, translate} from 'lit-translate';
 import {GDDOtherData, GDDOtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
-import CONSTANTS from '../../common/constants';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import GDD_CONSTANTS from '../../common/constants';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -171,7 +171,7 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               id="currencyDd"
               option-value="value"
               option-label="label"
-              label=${translate(translatesMap.currency)}
+              label=${translate(gddTranslatesMap.currency)}
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"
@@ -248,7 +248,7 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   autoValidateProtocol = false;
 
   get isSPD(): boolean {
-    return this.data.document_type === CONSTANTS.DOCUMENT_TYPES.SPD;
+    return this.data.document_type === GDD_CONSTANTS.DOCUMENT_TYPES.SPD;
   }
 
   constructor() {
@@ -269,7 +269,7 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'metadata')) {
       return;
     }
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
     if (!isJsonStrMatch(this.currencies, state.commonData!.currencies)) {
@@ -306,7 +306,7 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   }
 
   documentTypeChanged(type: string) {
-    if (type !== CONSTANTS.DOCUMENT_TYPES.SPD) {
+    if (type !== GDD_CONSTANTS.DOCUMENT_TYPES.SPD) {
       this.data.humanitarian_flag = false;
       this.data.contingency_pd = false;
       this.data.activation_protocol = '';

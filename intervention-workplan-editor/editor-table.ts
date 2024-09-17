@@ -3,7 +3,7 @@ import {property, customElement} from 'lit/decorators.js';
 import {EditorTableStyles} from './editor-utils/editor-table-styles';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {TABS} from '../common/constants';
+import {GDD_TABS} from '../common/constants';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {
   selectInterventionId,
@@ -25,12 +25,12 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {getIntervention, updateCurrentIntervention} from '../common/actions/interventions';
+import {getIntervention, updateCurrentIntervention} from '../common/actions/gddInterventions';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
 import {ProgrammeManagementMixin} from './editor-utils/programme-management-mixin';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
-import {ExpectedResultExtended, ResultLinkLowerResultExtended} from '../common/types/editor-page-types';
+import {GDDExpectedResultExtended, GDDResultLinkLowerResultExtended} from '../common/types/editor-page-types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {translate} from 'lit-translate';
 import {AsyncAction, EtoolsEndpoint, IdAndName} from '@unicef-polymer/etools-types';
@@ -269,8 +269,8 @@ export class GDDEditorTable extends CommentsMixin(
             </tbody>
             ${repeat(
               result.ll_results as any[],
-              (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
-              (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
+              (pdOutput: GDDResultLinkLowerResultExtended) => pdOutput.id,
+              (pdOutput: GDDResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <tbody
                   ?hoverable="${!pdOutput.inEditMode &&
                   this.permissions?.edit.result_links &&
@@ -429,13 +429,13 @@ export class GDDEditorTable extends CommentsMixin(
   }
 
   @property({type: Array})
-  resultStructureDetails: ExpectedResultExtended[] = [];
+  resultStructureDetails: GDDExpectedResultExtended[] = [];
 
   @property() interventionId!: number | null;
   @property() interventionStatus!: string;
 
   quarters: InterventionQuarter[] = [];
-  originalResultStructureDetails: ExpectedResultExtended[] = [];
+  originalResultStructureDetails: GDDExpectedResultExtended[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Object})
@@ -484,10 +484,10 @@ export class GDDEditorTable extends CommentsMixin(
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(state.app?.routeDetails, 'gdd-interventions', TABS.WorkplanEditor)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(state.app?.routeDetails, 'gdd-interventions', GDD_TABS.WorkplanEditor)) {
       this.prevInterventionId = null;
       this.oneEntityInEditMode = false;
-      if (!state.commentsData.commentsModeEnabled) {
+      if (!state.gddCommentsData.commentsModeEnabled) {
         // reset comments border on leave page to not have a flash on come back
         super.stateChanged(state);
       }
@@ -589,12 +589,12 @@ export class GDDEditorTable extends CommentsMixin(
     });
   }
 
-  showCpOutput(isUnicefUsr: boolean, result?: ExpectedResultExtended) {
+  showCpOutput(isUnicefUsr: boolean, result?: GDDExpectedResultExtended) {
     // show only for Unicef users and if cp_output wasn't assigned
     return isUnicefUsr && !result?.cp_output;
   }
 
-  addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
+  addNewPDOutput(llResults: Partial<GDDResultLinkLowerResultExtended>[]) {
     if (!llResults.find((ll) => !ll.id)) {
       llResults.unshift({name: '', total: '0', inEditMode: true});
       this.oneEntityInEditMode = true;
@@ -617,7 +617,7 @@ export class GDDEditorTable extends CommentsMixin(
     }
   }
 
-  addNewActivity(pdOutput: Partial<ResultLinkLowerResultExtended>) {
+  addNewActivity(pdOutput: Partial<GDDResultLinkLowerResultExtended>) {
     if (!pdOutput.activities?.find((a) => !a.id)) {
       // @ts-ignore
       pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
@@ -626,7 +626,7 @@ export class GDDEditorTable extends CommentsMixin(
     }
   }
 
-  savePdOutput(e: CustomEvent, pdOutput: ResultLinkLowerResultExtended, cpOutput: ExpectedResult) {
+  savePdOutput(e: CustomEvent, pdOutput: GDDResultLinkLowerResultExtended, cpOutput: ExpectedResult) {
     const cpOutputId: number | null = cpOutput.cp_output || this.unassignedPDMap.get(pdOutput.id) || null;
     if (!this.validatePdOutput(pdOutput, cpOutputId)) {
       this.requestUpdate();
@@ -672,7 +672,7 @@ export class GDDEditorTable extends CommentsMixin(
       );
   }
 
-  getBody(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number | null) {
+  getBody(pdOutput: GDDResultLinkLowerResultExtended, cpOutputId: number | null) {
     let body: any = {name: pdOutput.name};
     if (pdOutput.id) {
       body = {...body, id: pdOutput.id};
@@ -683,7 +683,7 @@ export class GDDEditorTable extends CommentsMixin(
     return body;
   }
 
-  validatePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number | null) {
+  validatePdOutput(pdOutput: GDDResultLinkLowerResultExtended, cpOutputId: number | null) {
     let valid = true;
     if (!pdOutput.name) {
       pdOutput.invalid = true;
@@ -697,8 +697,8 @@ export class GDDEditorTable extends CommentsMixin(
   }
 
   cancelPdOutput(
-    result: ExpectedResultExtended,
-    pdOutput: ResultLinkLowerResultExtended,
+    result: GDDExpectedResultExtended,
+    pdOutput: GDDResultLinkLowerResultExtended,
     resultIndex: number,
     pdOutputIndex: number
   ) {

@@ -1,4 +1,4 @@
-const CONSTANTS = {
+const GDD_CONSTANTS = {
   PD_EXPORT_TYPES: {
     PdResult: 'PD Result',
     PdBudget: 'PD Budget',
@@ -56,7 +56,7 @@ const CONSTANTS = {
   }
 };
 
-export const TABS = {
+export const GDD_TABS = {
   Metadata: 'metadata',
   Strategy: 'strategy',
   Workplan: 'workplan',
@@ -72,4 +72,4 @@ export const TABS = {
   Progress: 'progress'
 };
 
-export default CONSTANTS;
+export default GDD_CONSTANTS;

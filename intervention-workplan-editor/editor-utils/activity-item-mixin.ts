@@ -4,9 +4,9 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import {html, LitElement} from 'lit';
 import {property} from 'lit/decorators.js';
 import {
-  InterventionActivityExtended,
-  InterventionActivityItemExtended,
-  ResultLinkLowerResultExtended
+  GDDInterventionActivityExtended,
+  GDDInterventionActivityItemExtended,
+  GDDResultLinkLowerResultExtended
 } from '../../common/types/editor-page-types';
 import {repeat} from 'lit/directives/repeat.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
@@ -40,8 +40,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     commentMode: any;
 
     renderActivityItems(
-      activity: InterventionActivityExtended,
-      pdOutput: ResultLinkLowerResultExtended,
+      activity: GDDInterventionActivityExtended,
+      pdOutput: GDDResultLinkLowerResultExtended,
       resultIndex: number,
       pdOutputIndex: number,
       activityIndex: number
@@ -52,8 +52,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       return html`<tbody class="gray-1" ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}">
         ${repeat(
           activity.items || [],
-          (item: InterventionActivityItemExtended) => item.id,
-          (item: InterventionActivityItemExtended, itemIndex: number) => html`
+          (item: GDDInterventionActivityItemExtended) => item.id,
+          (item: GDDInterventionActivityItemExtended, itemIndex: number) => html`
             <tr
               class="activity-items-row ${activity.itemsInEditMode ? '' : 'readonly-mode'}"
               type="a-item"
@@ -315,22 +315,22 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     }
 
     saveActivity!: (
-      activity: InterventionActivityExtended,
+      activity: GDDInterventionActivityExtended,
       pdOutputId: number,
       interventionId: number,
       e?: CustomEvent
     ) => void;
     cancelActivity!: (
-      activities: Partial<InterventionActivityExtended>[],
-      activity: InterventionActivityExtended,
+      activities: Partial<GDDInterventionActivityExtended>[],
+      activity: GDDInterventionActivityExtended,
       resultIndex: number,
       pdOutputIndex: number,
       activityIndex: number
     ) => void;
 
     async removeActivityItem(
-      activity: InterventionActivityExtended,
-      pdOutput: ResultLinkLowerResultExtended,
+      activity: GDDInterventionActivityExtended,
+      pdOutput: GDDResultLinkLowerResultExtended,
       itemIndex: number
     ) {
       const confirmed = await openDialog({
@@ -356,7 +356,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       return itemsInEditMode ? label : '';
     }
 
-    setAutoValidate(item: InterventionActivityItemExtended, prop: string) {
+    setAutoValidate(item: GDDInterventionActivityItemExtended, prop: string) {
       if (!item.autovalidate) {
         item.autovalidate = {};
       }
@@ -364,7 +364,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.requestUpdate();
     }
 
-    addNewActivityItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>, focusClue: string) {
+    addNewActivityItem(e: CustomEvent, activity: Partial<GDDInterventionActivityExtended>, focusClue: string) {
       if (!activity.items) {
         activity.items = [];
       }

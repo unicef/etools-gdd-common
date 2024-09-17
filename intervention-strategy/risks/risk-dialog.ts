@@ -14,11 +14,11 @@ import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import {EtoolsEndpoint, LabelAndValue} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 /**
@@ -48,7 +48,7 @@ export class GDDRiskDialog extends ComponentBaseMixin(LitElement) {
           <div class="col-md-4 col-12">
             <etools-dropdown
               id="type"
-              label=${translate(translatesMap.risk_type)}
+              label=${translate(gddTranslatesMap.risk_type)}
               .options="${this.riskTypes}"
               .selected="${this.originalData.risk_type}"
               option-value="value"
@@ -68,7 +68,7 @@ export class GDDRiskDialog extends ComponentBaseMixin(LitElement) {
             <etools-textarea
               id="mitigationMeasures"
               class="w100"
-              label=${translate(translatesMap.mitigation_measures)}
+              label=${translate(gddTranslatesMap.mitigation_measures)}
               always-float-label
               type="text"
               .autoValidate="${this.autoValidate}"

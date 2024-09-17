@@ -148,7 +148,7 @@ export class GDDReviewsList extends connectStore(LitElement) {
 
   openReviewPopup(review?: any) {
     openDialog({
-      dialog: 'review-checklist-popup',
+      dialog: 'gdd-review-checklist-popup',
       dialogData: {
         review
       }

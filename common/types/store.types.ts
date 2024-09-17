@@ -1,4 +1,4 @@
-import {CommentsCollection} from '../components/comments/comments.reducer';
+import {GDDCommentsCollection} from '../components/comments/comments.reducer';
 import {
   AnyObject,
   Disaggregation,
@@ -15,7 +15,7 @@ import {
   EtoolsUser,
   CountryProgram
 } from '@unicef-polymer/etools-types';
-import {CommentsEndpoints} from '../components/comments/comments-types';
+import {GDDCommentsEndpoints} from '../components/comments/comments-types';
 import {UploadStatusState} from '../reducers/upload-status';
 
 export interface AppState {
@@ -27,7 +27,7 @@ export interface AppState {
   };
 }
 
-export interface InterventionsState {
+export interface GDDInterventionsState {
   current: Intervention | null;
   interventionLoading: number | null;
   partnerReportingRequirements: PartnerReportingRequirements;
@@ -70,15 +70,15 @@ export interface CommonDataState {
 
 export interface RootState {
   app: AppState;
-  interventions: InterventionsState;
+  gddInterventions: GDDInterventionsState;
   prcIndividualReviews: any[];
   agreements: AgreementsState;
   user: UserState;
   commonData: CommonDataState;
-  commentsData: {
+  gddCommentsData: {
     commentsModeEnabled: boolean;
-    collection: GenericObject<CommentsCollection>;
-    endpoints: CommentsEndpoints;
+    collection: GenericObject<GDDCommentsCollection>;
+    endpoints: GDDCommentsEndpoints;
   };
   uploadStatus: UploadStatusState;
   activeLanguage: any;
