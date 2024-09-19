@@ -83,7 +83,7 @@ export const patchIntervention =
     if (!interventionId) {
       interventionId = getState().app.routeDetails.params.interventionId;
     }
-    const prevInterventionState = getState().interventions?.current;
+    const prevInterventionState = getState().gddInterventions?.current;
     return _sendRequest({
       endpoint: getEndpoint(gddEndpoints.intervention, {interventionId: interventionId}),
       body: interventionChunck,
