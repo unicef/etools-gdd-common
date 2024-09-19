@@ -126,7 +126,7 @@ export class GDDInterventionDates extends CommentsMixin(
             </etools-info-tooltip>
           </div>
         </div>
-        <div class="row" ?hidden="${this.hideActivationLetter(this.data.status, this.data.contingency_pd)}">
+        <div class="row" ?hidden="${this.hideActivationLetter(this.data.status)}">
           <div class="col-12">
             <etools-upload
               label=${translate('ACTIVATION_LETTER')}
@@ -208,10 +208,7 @@ export class GDDInterventionDates extends CommentsMixin(
     );
   }
 
-  private hideActivationLetter(interventionStatus: string, isContingencyPd: boolean) {
-    if (!isContingencyPd) {
-      return true;
-    }
+  private hideActivationLetter(interventionStatus: string) {
     return ['draft', 'development', ''].includes(interventionStatus);
   }
 

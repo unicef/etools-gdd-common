@@ -9,7 +9,6 @@ export class GDDOtherData extends GDDModelsBase {
   planned_budget = new PlannedBudget();
   document_type = '';
   humanitarian_flag = false;
-  contingency_pd = false;
   activation_protocol = '';
   confidential = false;
   cfei_number = '';

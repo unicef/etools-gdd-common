@@ -127,43 +127,11 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
               ?checked="${this.data.humanitarian_flag}"
               @sl-change="${(e: CustomEvent) => {
-                this.data.contingency_pd = false;
                 this.valueChanged({value: (e.target as SlSwitch).checked}, 'humanitarian_flag');
               }}"
             >
               ${translate('SPD_HUMANITARIAN')}
             </sl-switch>
-          </div>
-
-          <!--   Contingency Document   -->
-          <div class="col-md-4 col-12" ?hidden="${!this.data.humanitarian_flag}">
-            <sl-switch
-              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
-              ?checked="${this.data.contingency_pd}"
-              @sl-change="${(e: CustomEvent) => {
-                this.valueChanged({value: (e.target as SlSwitch).checked}, 'contingency_pd');
-                if (!(e.target as SlSwitch).checked) {
-                  this.data.activation_protocol = '';
-                }
-              }}"
-            >
-              ${translate('CONTINGENCY_DOC')}
-            </sl-switch>
-          </div>
-
-          <div class="col-12" ?hidden="${!this.data.contingency_pd}">
-            <etools-textarea
-              class="w100"
-              label=${translate('ACTIVATION_PROTOCOL')}
-              placeholder="&#8212;"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
-              ?required="${this.data.contingency_pd}"
-              .autoValidate="${this.autoValidateProtocol}"
-              @focus="${() => (this.autoValidateProtocol = true)}"
-              .value="${this.data.activation_protocol}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'activation_protocol')}"
-            >
-            </etools-textarea>
           </div>
 
           <div class="col-md-4 col-12">
@@ -308,7 +276,6 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   documentTypeChanged(type: string) {
     if (type !== GDD_CONSTANTS.DOCUMENT_TYPES.SPD) {
       this.data.humanitarian_flag = false;
-      this.data.contingency_pd = false;
       this.data.activation_protocol = '';
     }
     this.data.document_type = type;

@@ -8,7 +8,6 @@ export class GDDProgrammeDocDates extends GDDModelsBase {
   }
   start = '';
   end = '';
-  contingency_pd = false;
   activation_letter_attachment = '';
   status = ''; // intervention status
 }

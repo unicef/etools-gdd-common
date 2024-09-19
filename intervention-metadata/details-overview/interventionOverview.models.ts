@@ -8,6 +8,5 @@ export class GDDInterventionOverview extends GDDModelsBase {
   }
   document_type = '';
   cfei_number = '';
-  contingency_pd = false;
   humanitarian_flag = false;
 }

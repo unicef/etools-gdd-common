@@ -68,10 +68,6 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
             <label class="label">${translate('HUMANITARIAN')}</label>
             <div class="input-label">${this._getText(this.interventionOverview.humanitarian_flag)}</div>
           </div>
-          <div class="data-column">
-            <label class="label">${translate('CONTINGENCY')}</label>
-            <div class="input-label">${this._getText(this.interventionOverview.contingency_pd)}</div>
-          </div>
           <div class="data-column" ?hidden="${!this.isUnicefUser}">
             <label class="label">${translate('PARTNER_HACT_RR')}</label>
             <div class="input-label">${this.getPartnerHactRiskRatingHtml()}</div>

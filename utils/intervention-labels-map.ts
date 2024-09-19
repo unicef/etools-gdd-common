@@ -52,7 +52,6 @@ export const gddTranslatesMap: GenericObject = {
   unit: 'UNIT',
   no_units: 'NUMBER_UNITS',
   document_type: 'DOCUMENT_TYPE',
-  contingency_pd: 'CONTINGENCY_DOC',
   humanitarian_flag: 'SPD_HUMANITARIAN',
   act2_partner: () => `${getTranslation('PARTNER_CASH')} for ${getTranslation('TITLE_2')}`,
   act1_partner: () => `${getTranslation('PARTNER_CASH')} for ${getTranslation('TITLE_1')}`,

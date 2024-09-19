@@ -65,7 +65,7 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
           <div class="col-md-8 col-12">
             <etools-input
               class="w100"
-              label=${translate('PARTNER_ORGANIZATION')}
+              label=${translate('GOVERNMENT_ORGANIZATION')}
               .value="${this.data?.partner}"
               required
               readonly

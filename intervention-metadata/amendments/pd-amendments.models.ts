@@ -10,11 +10,9 @@ export class PdAmendmentPermissions extends GDDModelsBase {
 }
 
 export enum AmendmentsKind {
-  normal = 'normal',
-  contingency = 'contingency'
+  normal = 'normal'
 }
 
 export const AmendmentsKindTranslateKeys = {
-  [AmendmentsKind.normal]: 'NORMAL',
-  [AmendmentsKind.contingency]: 'CONTINGENCY'
+  [AmendmentsKind.normal]: 'NORMAL'
 };
