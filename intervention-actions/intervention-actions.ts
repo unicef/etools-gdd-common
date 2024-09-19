@@ -83,7 +83,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
   @property({type: Number})
   commonDataLoadedTimestamp = 0;
 
-  private isGDDApp = Environment.basePath === '/gdd/';
+  private isGDDApp = Environment.basePath === '/government/';
 
   connectedCallback() {
     super.connectedCallback();

@@ -384,7 +384,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
   // id from route params
   private interventionId: string | null = null;
 
-  private isGDDApp = Environment.basePath === '/gdd/';
+  private isGDDApp = Environment.basePath === '/government/';
 
   connectedCallback() {
     super.connectedCallback();

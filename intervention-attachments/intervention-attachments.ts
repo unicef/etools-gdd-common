@@ -9,7 +9,7 @@ import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environme
  */
 @customElement('gdd-intervention-attachments')
 export class GDDInterventionAttachments extends LitElement {
-  private isGDDApp = Environment.basePath === '/gdd/';
+  private isGDDApp = Environment.basePath === '/government/';
 
   render() {
     // language=HTML
