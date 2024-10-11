@@ -143,16 +143,16 @@ export const gddEndpoints: EtoolsEndpoints = {
     url: '/api/v2/funds/frs'
   },
   comments: {
-    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/'
+    template: '/api/comments/v1/governments/gdd/<%=interventionId%>/'
   },
   resolveComment: {
-    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/resolve/'
+    template: '/api/comments/v1/governments/gdd/<%=interventionId%>/<%=commentId%>/resolve/'
   },
   deleteComment: {
-    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
+    template: '/api/comments/v1/governments/gdd/<%=interventionId%>/<%=commentId%>/delete/'
   },
   downloadComment: {
-    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/csv/'
+    template: '/api/comments/v1/governments/gdd/<%=interventionId%>/csv/'
   },
   lowerResultsDelete: {
     template: '/api/gdd/gdds/<%=intervention_id%>/pd-outputs/<%=lower_result_id%>/'
