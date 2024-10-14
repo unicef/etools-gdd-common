@@ -50,7 +50,7 @@ export class GDDPdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(L
         size="md"
         ?hidden="${this.warningOpened}"
         ok-btn-text="${translate('TERMINATE')}"
-        dialog-title="${translate('TERMINATE_PD_SPD')}"
+        dialog-title="${translate('TERMINATE_GDD_SPD')}"
         confirmBtnVariant="danger"
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
@@ -131,7 +131,7 @@ export class GDDPdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(L
     this.interventionId = interventionId;
   }
 
-  warnMessages: string[] = [getTranslation('ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE')];
+  warnMessages: string[] = [getTranslation('ONCE_YOU_HIT_SAVE_THE_GDD_WILL_BE_TERMINATED_AND_UNREVERSABLE')];
 
   _getMaxDate() {
     return dayjs(Date.now()).add(30, 'd').toDate();

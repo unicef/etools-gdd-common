@@ -94,7 +94,7 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
               @click="${() => this.openDialog()}"
               ?hidden="${this.readonly}"
             ></etools-icon-button>
-            <span class="no-wrap" slot="message">${translate('ADD_PD_ACTIVITY')}</span>
+            <span class="no-wrap" slot="message">${translate('ADD_GDD_ACTIVITY')}</span>
           </etools-info-tooltip>
         </div>
         <div slot="row-data-details">
@@ -104,8 +104,6 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           >
             <div class="left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
             <div class="secondary-cell center">${translate('TIME_PERIODS')}</div>
-            <div class="secondary-cell right">${translate('PARTNER_CASH')}</div>
-            <div class="secondary-cell right">${translate('UNICEF_CASH')}</div>
             <div class="secondary-cell right">${translate('GENERAL.TOTAL')} (${this.currency})</div>
           </div>
 
@@ -174,26 +172,6 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             .selectedTimeFrames="${activity.time_frames}"
                             without-popup
                           ></gdd-time-intervals>`}
-                    </div>
-
-                    <!--    CSO Cash    -->
-                    <div class="secondary-cell right">
-                      ${this.lowResolutionLayout
-                        ? html` <div class="layout-horizontal w100">
-                            <div class="cellLabel">${translate('PARTNER_CASH')}</div>
-                            <div>${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}</div>
-                          </div>`
-                        : html`${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}`}
-                    </div>
-
-                    <!--    UNICEF Cash    -->
-                    <div class="secondary-cell right">
-                      ${this.lowResolutionLayout
-                        ? html` <div class="layout-horizontal w100">
-                            <div class="cellLabel">${translate('UNICEF_CASH')}</div>
-                            <div></div>
-                          </div>`
-                        : html`${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}`}
                     </div>
 
                     <!--    Total    -->
@@ -270,7 +248,7 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                   </div>
                 `
               )
-            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_PD_ACTIVITIES')}</div> `}
+            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_WORKPLAN_ACTIVITIES')}</div> `}
         </div>
       </etools-data-table-row>
     `;

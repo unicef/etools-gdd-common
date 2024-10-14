@@ -78,7 +78,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   quarters: InterventionQuarter[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
-  @property({type: Boolean}) showIndicators = true;
+  @property({type: Boolean}) showIndicators = false;
   @property({type: Boolean}) showActivities = true;
   @property({type: Boolean}) showInactiveToggle = false;
   @property({type: Object})
@@ -121,11 +121,8 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
         <div slot="after-title">
           <gdd-display-controls
             ?show-inactive-toggle="${this.showInactiveToggle}"
-            .showIndicators="${this.showIndicators}"
-            .showActivities="${this.showActivities}"
             .interventionId="${this.interventionId}"
             @show-inactive-changed="${this.inactiveChange}"
-            @tab-view-changed="${this.updateTableView}"
           ></gdd-display-controls>
         </div>
         <div slot="panel-btns">
@@ -151,7 +148,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
           ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
           <div class="pd-title layout-horizontal align-items-center">
-            ${translate('PD_OUTPUTS_TITLE')}
+            ${translate('GDD_OUTPUTS_TITLE')}
             <etools-info-tooltip position="top" custom-icon offset="0">
               <etools-icon-button
                 name="add-box"
@@ -159,7 +156,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
                 class="add"
                 @click="${() => this.openPdOutputDialog()}"
               ></etools-icon-button>
-              <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+              <span class="no-wrap" slot="message">${translate('ADD_GDD_OUTPUT')}</span>
             </etools-info-tooltip>
           </div>
         </div>
@@ -193,14 +190,14 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
                 ? ''
                 : html`
                     <div class="pd-title layout-horizontal align-items-center">
-                      ${translate('PD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
+                      ${translate('GDD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
                         <etools-icon-button
                           name="add-box"
                           slot="custom-icon"
                           class="add"
                           @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
                         ></etools-icon-button>
-                        <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                        <span class="no-wrap" slot="message">${translate('ADD_GDD_OUTPUT')}</span>
                       </etools-info-tooltip>
                     </div>
                   `}
@@ -371,11 +368,6 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     return [{element, relatedTo, relatedToDescription}];
   }
 
-  updateTableView({detail}: CustomEvent): void {
-    this.showIndicators = detail.showIndicators;
-    this.showActivities = detail.showActivities;
-  }
-
   openPdOutputDialog(): void;
   openPdOutputDialog(pdOutput: Partial<ResultLinkLowerResult>, cpOutput: number): void;
   openPdOutputDialog(pdOutput?: Partial<ResultLinkLowerResult>, cpOutput?: number): void {
@@ -400,7 +392,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: translate('REMOVE_PD_MSG'),
+        content: translate('REMOVE_GDD_MSG'),
         confirmBtnText: translate('CONFIRM_BTN_TXT')
       }
     }).then(({confirmed}) => {

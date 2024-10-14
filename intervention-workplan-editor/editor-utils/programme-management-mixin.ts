@@ -93,8 +93,6 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
               <tr class="header" type="eepm-activity">
                 <td></td>
                 <td colspan="4">${translate('ACTIVITY')}</td>
-                <td class="a-right">${translate('PARTNER_CASH')}</td>
-                <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
               <tr class="text action-btns" type="activity">
@@ -229,8 +227,6 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                 <td class="col-unit">${translate('UNIT')}</td>
                 <td class="col-unit-no">${translate('NUMBER_UNITS')}</td>
                 <td class="col-p-per-unit">${translate('PRICE_UNIT')}</td>
-                <td class="col-g">${translate('PARTNER_CASH')}</td>
-                <td class="col-g">${translate('UNICEF_CASH')}</td>
                 <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
             </tbody>

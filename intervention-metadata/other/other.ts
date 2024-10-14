@@ -130,7 +130,7 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                 this.valueChanged({value: (e.target as SlSwitch).checked}, 'humanitarian_flag');
               }}"
             >
-              ${translate('SPD_HUMANITARIAN')}
+              ${translate('SGDD_HUMANITARIAN')}
             </sl-switch>
           </div>
 

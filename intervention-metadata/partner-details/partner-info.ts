@@ -74,23 +74,6 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
             >
             </etools-input>
           </div>
-          <div class="col-md-4 col-12">
-            <etools-dropdown
-              id="agreements"
-              label=${translate('AGREEMENTS')}
-              .options="${this.partnerAgreements}"
-              .selected="${this.data?.agreement}"
-              option-value="id"
-              option-label="agreement_number_status"
-              trigger-value-change-event
-              @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.agreement) ? -1 : undefined}"
-              required
-              auto-validate
-            >
-            </etools-dropdown>
-          </div>
           <div class="col-md-8 col-12">
             <etools-input
               class="w100"
@@ -101,10 +84,6 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
               always-float-label
             >
             </etools-input>
-          </div>
-          <div class="col-md-4 col-12">
-            <label for="agreementAuthOff" class="label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
-            <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
           <div class="col-md-8 col-12" ?hidden="${!this.permissions?.view!.partner_focal_points}">
             <etools-dropdown-multi
@@ -146,12 +125,6 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
   permissions!: Permission<GDDPartnerInfoPermissions>;
 
   @property({type: Array})
-  partnerAgreements!: MinimalAgreement[];
-
-  @property({type: Array})
-  agreementAuthorizedOfficers!: PartnerStaffMember[];
-
-  @property({type: Array})
   partnerStaffMembers!: PartnerStaffMember[];
 
   get formattedPartnerStaffMembers() {
@@ -189,11 +162,6 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
   async setPartnerDetailsAndPopulateDropdowns(state: any) {
     const newPartnerDetails = selectPartnerDetails(state);
 
-    const agreements = get(state, 'agreements.list');
-    if (!isEmpty(agreements)) {
-      this.partnerAgreements = this.filterAgreementsByPartner(agreements, newPartnerDetails.partner_id!);
-    }
-
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
       const partnerIdHasChanged = this.partnerIdHasChanged(newPartnerDetails);
       if (partnerIdHasChanged) {
@@ -203,10 +171,6 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
       this.data = cloneDeep(newPartnerDetails);
       this.originalData = cloneDeep(this.data);
     }
-  }
-
-  filterAgreementsByPartner(agreements: MinimalAgreement[], partnerId: number) {
-    return agreements.filter((a: any) => String(a.partner) === String(partnerId));
   }
 
   partnerIdHasChanged(newPartnerDetails: GDDPartnerInfo) {
@@ -223,24 +187,6 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
           `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`)
       );
     });
-  }
-
-  selectedAgreementChanged(detail: any) {
-    if (!detail || !detail.selectedItem) {
-      return;
-    }
-    this.selectedItemChanged(detail, 'agreement');
-    this.agreementAuthorizedOfficers = detail.selectedItem?.authorized_officers;
-  }
-
-  renderAgreementAuthorizedOfficers(authOfficers: PartnerStaffMember[]) {
-    if (isEmpty(authOfficers)) {
-      return html`—`;
-    } else {
-      return authOfficers.map((authOfficer) => {
-        return html`<div class="w100 padd-between">${this.renderNameEmailPhone(authOfficer)}</div>`;
-      });
-    }
   }
 
   saveData() {

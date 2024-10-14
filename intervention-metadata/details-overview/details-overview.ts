@@ -53,18 +53,6 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
       <section class="elevation" elevation="1" comment-element="details">
         <div class="table not-allowed">
           <div class="data-column">
-            <label class="label">${translate('DOCUMENT_TYPE')}</label>
-            <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
-              ${this.getDocumentLongName(this.interventionOverview.document_type)}
-            </div>
-          </div>
-          <div class="data-column">
-            <label class="label">${translate('UNPP_CFEI_DSR')}</label>
-            <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
-              ${this.interventionOverview.cfei_number}
-            </div>
-          </div>
-          <div class="data-column">
             <label class="label">${translate('HUMANITARIAN')}</label>
             <div class="input-label">${this._getText(this.interventionOverview.humanitarian_flag)}</div>
           </div>

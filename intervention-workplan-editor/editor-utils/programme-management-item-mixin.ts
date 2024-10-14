@@ -192,46 +192,6 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   }}"
                 ></etools-currency>
               </td>
-              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
-                <etools-currency
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('PARTNER_CASH'))}
-                  .noLabelFloat="${!programmeManagement.itemsInEditMode}"
-                  input
-                  ?readonly="${!programmeManagement.itemsInEditMode}"
-                  required
-                  error-message="${translate('INCORRECT_VALUE')}"
-                  .invalid="${item.invalid?.cso_cash}"
-                  @invalid-changed="${({detail}: CustomEvent) => {
-                    this.activityItemInvalidChanged(detail, 'cso_cash', item);
-                  }}"
-                  .value="${item.cso_cash}"
-                  @keydown="${(e: any) => this.handleEsc(e)}"
-                  @value-changed="${({detail}: CustomEvent) => {
-                    this.cashFieldChanged(detail, 'cso_cash', item);
-                    this.updateActivityCashFromItem(programmeManagement, item);
-                  }}"
-                ></etools-currency>
-              </td>
-              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
-                <etools-currency
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('UNICEF_CASH'))}
-                  .noLabelFloat="${!programmeManagement.itemsInEditMode}"
-                  input
-                  ?readonly="${!programmeManagement.itemsInEditMode}"
-                  required
-                  error-message="${translate('INCORRECT_VALUE')}"
-                  .invalid="${item.invalid?.unicef_cash}"
-                  @invalid-changed="${({detail}: CustomEvent) => {
-                    this.activityItemInvalidChanged(detail, 'unicef_cash', item);
-                  }}"
-                  .value="${item.unicef_cash}"
-                  @keydown="${(e: any) => this.handleEsc(e)}"
-                  @value-changed="${({detail}: CustomEvent) => {
-                    this.cashFieldChanged(detail, 'unicef_cash', item);
-                    this.updateActivityCashFromItem(programmeManagement, item);
-                  }}"
-                ></etools-currency>
-              </td>
               <td class="total action-btns" style="position:relative;" colspan="2">
                 <etools-input
                   readonly

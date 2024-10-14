@@ -86,8 +86,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td colspan="3">${translate('ACTIVITY')}</td>
                 <td class="a-center">${translate('TIME_PERIODS')}</td>
-                <td>${translate('PARTNER_CASH')}</td>
-                <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
               <tr class="text action-btns" type="activity">
@@ -177,38 +175,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       @keydown="${(e: any) => this.handleEsc(e)}"
                     ></gdd-time-intervals>
                   </div>
-                </td>
-                <td
-                  tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
-                  class="no-top-padding"
-                >
-                  <etools-currency
-                    no-label-float
-                    input
-                    .value="${activity.cso_cash}"
-                    tabindex="${ifDefined(
-                      (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
-                    )}"
-                    ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
-                    @keydown="${(e: any) => this.handleEsc(e)}"
-                    @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', activity)}"
-                  ></etools-currency>
-                </td>
-                <td
-                  tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
-                  class="no-top-padding"
-                >
-                  <etools-currency
-                    no-label-float
-                    input
-                    .value="${activity.unicef_cash}"
-                    tabindex="${ifDefined(
-                      (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
-                    )}"
-                    ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
-                    @keydown="${(e: any) => this.handleEsc(e)}"
-                    @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', activity)}"
-                  ></etools-currency>
                 </td>
                 <td
                   colspan="2"
@@ -305,8 +271,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-unit">${translate('UNIT')}</td>
                 <td class="col-unit-no">${translate('NUMBER_UNITS')}</td>
                 <td class="col-p-per-unit">${translate('PRICE_UNIT')}</td>
-                <td class="col-g">${translate('PARTNER_CASH')}</td>
-                <td class="col-g">${translate('UNICEF_CASH')}</td>
                 <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
             </tbody>
