@@ -391,7 +391,7 @@ export class GDDEditorTable extends CommentsMixin(
                         <etools-icon-button
                           name="delete"
                           ?hidden="${pdOutput.inEditMode ||
-                          !this._canDelete(
+                          !_canDelete(
                             this.pdOutput,
                             !this.permissions?.edit.result_links!,
                             this.intervention.status,
