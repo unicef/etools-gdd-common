@@ -22,44 +22,7 @@ export const COMBINED_VIEW = 'combined_view';
 @customElement('gdd-display-controls')
 export class GDDDisplayControls extends LitElement {
   @property({type: Boolean, attribute: 'show-inactive-toggle'}) showInactiveToggle = false;
-  @property({type: Boolean}) showIndicators = true;
-  @property({type: Boolean}) showActivities = true;
   @property() interventionId!: number | null;
-
-  get viewType(): string {
-    if (this.showActivities && this.showIndicators) {
-      return COMBINED_VIEW;
-    } else if (this.showActivities) {
-      return BUDGET_VIEW;
-    } else {
-      return RESULT_VIEW;
-    }
-  }
-  get selectedViewType(): string {
-    const selectedType = this.viewType;
-    const tab: any = this.viewTabs.find(({type}) => type === selectedType);
-    return tab?.name || '';
-  }
-  viewTabs = [
-    {
-      name: translate('RESULT_VIEW'),
-      type: RESULT_VIEW,
-      showIndicators: true,
-      showActivities: false
-    },
-    {
-      name: translate('COMBINED_VIEW'),
-      type: COMBINED_VIEW,
-      showIndicators: true,
-      showActivities: true
-    },
-    {
-      name: translate('BUDGET_VIEW'),
-      type: BUDGET_VIEW,
-      showIndicators: false,
-      showActivities: true
-    }
-  ];
 
   protected render(): TemplateResult {
     return html`
@@ -73,51 +36,6 @@ export class GDDDisplayControls extends LitElement {
       <sl-switch id="showInactive" ?hidden="${!this.showInactiveToggle}" @sl-change=${this.inactiveChange}>
         ${translate('SHOW_INACTIVE')}
       </sl-switch>
-
-      <div class="layout-horizontal layout-wrap">
-        <sl-dropdown
-          distance="-30"
-          id="view-menu-button"
-          close-on-activate
-          horizontal-align
-          @sl-select=${(e: SlSelectEvent) => {
-            const tab = this.viewTabs.find((x) => x.type === e.detail.item.value)!;
-            this.fireTabChange(tab.showIndicators, tab.showActivities);
-          }}
-        >
-          <etools-button variant="default" slot="trigger" caret>${this.selectedViewType} </etools-button>
-          <sl-menu>
-            ${this.viewTabs.map(
-              (tab) =>
-                html` <sl-menu-item
-                  @click=${(e: Event) => {
-                    // prevent selecting checked item
-                    if ((e.target as any).checked) {
-                      e.preventDefault();
-                      e.stopImmediatePropagation();
-                    }
-                  }}
-                  .checked="${this.viewType === tab.type}"
-                  value="${tab.type}"
-                  type="checkbox"
-                >
-                  ${tab.name}
-                </sl-menu-item>`
-            )}
-          </sl-menu>
-        </sl-dropdown>
-        <a class="editorLink" href="gdd-interventions/${this.interventionId}/${GDD_TABS.WorkplanEditor}">
-          <div class="editor-link">
-            ${translate('ACTIVITES_EDITOR')}
-            <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M16.5334 0.5H0.672089C0.300894 0.5 0 0.779813 0 1.125V14.875C0 15.2202 0.300894 15.5 0.672089 15.5H16.5334C16.9046 15.5 17.2055 15.2202 17.2055 14.875V1.125C17.2055 0.779813 16.9046 0.5 16.5334 0.5ZM6.58647 10.5V8H10.619V10.5H6.58647ZM10.619 11.75V14.25H6.58647V11.75H10.619ZM10.619 4.25V6.75H6.58647V4.25H10.619ZM15.8613 4.25V6.75H11.9632V4.25H15.8613ZM5.24229 6.75H1.34418V4.25H5.24229V6.75ZM1.34418 8H5.24229V10.5H1.34418V8ZM11.9632 8H15.8613V10.5H11.9632V8ZM15.8613 1.75V3H1.34418V1.75H15.8613ZM1.34418 11.75H5.24229V14.25H1.34418V11.75ZM11.9632 14.25V11.75H15.8613V14.25H11.9632Z"
-                fill="#009688"
-              />
-            </svg>
-          </div>
-        </a>
-      </div>
     `;
   }
 
@@ -138,9 +56,6 @@ export class GDDDisplayControls extends LitElement {
     fireEvent(this, 'show-inactive-changed', {value: element.checked});
   }
 
-  fireTabChange(showIndicators: boolean, showActivities: boolean): void {
-    fireEvent(this, 'tab-view-changed', {showIndicators, showActivities});
-  }
   static get styles(): CSSResultArray {
     // language=CSS
     return [

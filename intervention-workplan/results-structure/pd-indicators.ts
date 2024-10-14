@@ -90,7 +90,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
               @click="${() => this.openIndicatorDialog()}"
               ?hidden="${this.readonly}"
             ></etools-icon-button>
-            <span class="no-wrap" slot="message">${translate('ADD_PD_INDICATOR')}</span>
+            <span class="no-wrap" slot="message">${translate('ADD_GDD_INDICATOR')}</span>
           </etools-info-tooltip>
           <info-icon-tooltip
             id="iit-ind"
@@ -130,7 +130,7 @@ export class GDDPdIndicators extends connectStore(EnvironmentFlagsMixin(LitEleme
                   ></gdd-pd-indicator>
                 `
               )
-            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_PD_INDICATORS')}</div> `}
+            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_WORKPLAN_INDICATORS')}</div> `}
         </div>
       </etools-data-table-row>
     `;

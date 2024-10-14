@@ -319,7 +319,7 @@ export class GDDFundReservationsDisplay extends FrNumbersConsistencyMixin(LitEle
               <strong>${translate('PLANNED')}</strong><strong>${translate('UNICEF_CASH')}</strong>
             </span>
             <span class="col-sm-4  col-md-2 unicef-cash-col">
-              <label for="pd-currency">${translate('PD_CURRENCY')}</label>
+              <label for="pd-currency">${translate('GDD_CURRENCY')}</label>
               ${this.renderPdCurrency()}
             </span>
             <span class="col-sm-4 col-md-3 unicef-cash-col">

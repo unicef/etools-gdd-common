@@ -125,41 +125,6 @@ export class GDDActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 error-message=""
               ></etools-currency>
             </div>
-
-            <div
-              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('PARTNER_CASH')}"
-            >
-              <etools-currency
-                .value="${this.activityItem.cso_cash || 0}"
-                no-label-float
-                ?readonly="${this.readonly}"
-                @value-changed="${({detail}: CustomEvent) =>
-                  this.cashFieldChanged(detail, 'cso_cash', this.activityItem)}"
-                @blur="${() => this.onBlur()}"
-                ?invalid="${this.invalidSum}"
-                @focus="${() => (this.invalidSum = false)}"
-                @click="${() => (this.invalidSum = false)}"
-                error-message=""
-              ></etools-currency>
-            </div>
-            <div
-              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('UNICEF_CASH')}"
-            >
-              <etools-currency
-                .value="${this.activityItem.unicef_cash || 0}"
-                no-label-float
-                ?readonly="${this.readonly}"
-                @value-changed="${({detail}: CustomEvent) =>
-                  this.cashFieldChanged(detail, 'unicef_cash', this.activityItem)}"
-                @blur="${() => this.onBlur()}"
-                ?invalid="${this.invalidSum}"
-                @focus="${() => (this.invalidSum = false)}"
-                @click="${() => (this.invalidSum = false)}"
-                error-message=""
-              ></etools-currency>
-            </div>
             <div
               class="grid-cell last-cell end ${!this.lastItem && this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('TOTAL_CASH')} (${this.currency})"

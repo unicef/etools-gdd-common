@@ -43,7 +43,7 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
       ${this.cfeiNumber
         ? html`<reason-display .title="${translate('CFEI_NOTIFICATION')}" .cfeiNumber="${this.cfeiNumber}">
             <div class="text">
-              ${translate('PD_COMPLETED_AFTER_UNPP')}
+              ${translate('GDD_COMPLETED_AFTER_UNPP')}
               <a href="${this.linkUrl}" target="_blank">${translate('GO_TO_UNPP')}</a>
             </div>
           </reason-display>`

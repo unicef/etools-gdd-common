@@ -123,11 +123,6 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
             ${translate('ITEM_PD_CURRENCY')}
           </etools-data-table-column>
           <etools-data-table-column class="col-2 text-right" field="partner_contribution">
-            ${translate('PARTNER_CASH')}
-          </etools-data-table-column>
-          <etools-data-table-column class="col-2 text-right" field="unicef_cash">
-            ${translate('UNICEF_CASH')}
-          </etools-data-table-column>
           <etools-data-table-column class="col-2 text-right" field="total">
             ${getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')'}
           </etools-data-table-column>
@@ -141,9 +136,6 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
                 <div class="col-data col-5" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">${item.title}</div>
                 <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
                   ${item.partner_contribution}
-                </div>
-                <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_CASH')}">
-                  ${item.unicef_cash}
                 </div>
                 <div class="col-data col-2 text-right" data-col-header-label="${translate('TOTAL')}">${item.total}</div>
                 <div class="col-1 actions">

@@ -22,7 +22,7 @@ export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
   @property() resultLink!: ExpectedResult;
   @property() interventionInfo!: Partial<Intervention>;
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
-  @property({type: Boolean}) showIndicators = true;
+  @property({type: Boolean}) showIndicators = false;
   @property({type: Boolean}) showActivities = true;
   @property({type: Boolean}) readonly = true;
   @property({type: Boolean}) opened = false;
@@ -88,7 +88,9 @@ export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
                         <div class="flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
                       `}
                 </div>
-                <div class="outputs-count"><b>${this.resultLink.ll_results.length}</b> ${translate('PD_OUTPUT_S')}</div>
+                <div class="outputs-count">
+                  <b>${this.resultLink.ll_results.length}</b> ${translate('GDD_OUTPUT_S')}
+                </div>
               </div>
 
               <div slot="row-data-details">

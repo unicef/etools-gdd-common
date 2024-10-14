@@ -178,7 +178,7 @@ export class GDDInterventionResultsReported extends connectStore(
             <etools-input
               readonly
               placeholder="—"
-              label="${translate('PD_DURATION')}"
+              label="${translate('GDD_DURATION')}"
               .value="${this._getPdDuration(this.progress.start_date, this.progress.end_date)}"
             >
             </etools-input>
@@ -245,7 +245,7 @@ export class GDDInterventionResultsReported extends connectStore(
             <etools-input
               readonly
               placeholder="—"
-              label="${translate('OVERALL_PD_SPD_RATING')}"
+              label="${translate('OVERALL_GDD_SGDD_RATING')}"
               .value="${this._getOverallPdStatusDate(this.latestAcceptedPr)}"
               noPlaceholder
             >
@@ -278,19 +278,19 @@ export class GDDInterventionResultsReported extends connectStore(
             ></gdd-etools-ram-indicators>
 
             <div class="row padding-row" ?hidden="${!this._emptyList(item.ll_outputs)}">
-              <p class="col-12">${translate('NO_PD_OUTPUTS')}</p>
+              <p class="col-12">${translate('NO_GDD_OUTPUTS')}</p>
             </div>
 
             <div class="lower-results-table" ?hidden="${this._emptyList(item.ll_outputs)}">
               <etools-data-table-header id="listHeader" no-title .lowResolutionLayout="${this.lowResolutionLayout}">
-                <etools-data-table-column class="col-9">${translate('PD_OUTPUTS')}</etools-data-table-column>
+                <etools-data-table-column class="col-9">${translate('GDD_OUTPUTS')}</etools-data-table-column>
                 <etools-data-table-column class="col-3">${translate('CURRENT_PROGRESS')}</etools-data-table-column>
               </etools-data-table-header>
 
               ${item.ll_outputs.map(
                 (lowerResult: any) => html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
                   <div slot="row-data">
-                    <span class="col-data col-9" data-col-header-label="${translate('PD_OUTPUTS')}">
+                    <span class="col-data col-9" data-col-header-label="${translate('GDD_OUTPUTS')}">
                       ${lowerResult.title}
                     </span>
                     <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
@@ -467,7 +467,7 @@ export class GDDInterventionResultsReported extends connectStore(
         });
       })
       .catch((error: any) => {
-        EtoolsLogger.error('PD/SPD progress request failed!', 'intervention-results-reported', error);
+        EtoolsLogger.error('GDD progress request failed!', 'intervention-results-reported', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         fireEvent(this, 'global-loading', {
           active: false,

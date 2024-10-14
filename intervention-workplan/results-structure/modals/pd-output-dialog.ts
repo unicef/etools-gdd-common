@@ -71,7 +71,7 @@ export class GDDPdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitEle
         keep-dialog-open
         ?show-spinner="${this.loadingInProcess}"
         dialog-title="${this.isEditDialog ? translate('GENERAL.EDIT') : translate('GENERAL.ADD')} ${translate(
-          'PD_OUTPUT'
+          'GDD_OUTPUT'
         )}"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
@@ -88,7 +88,7 @@ export class GDDPdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitEle
           <div class="col-12">
             <etools-input
               class="validate-input"
-              label=${translate('PD_OUTPUT_NAME')}
+              label=${translate('GDD_OUTPUT_NAME')}
               placeholder="&#8212;"
               .value="${this.editedData.name}"
               @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"

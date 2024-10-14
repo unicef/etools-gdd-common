@@ -1,5 +1,5 @@
 const GDD_CONSTANTS = {
-  PD_EXPORT_TYPES: {
+  GDD_EXPORT_TYPES: {
     PdResult: 'PD Result',
     PdBudget: 'PD Budget',
     PdLocations: 'PD Locations'

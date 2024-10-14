@@ -216,10 +216,10 @@ export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMix
             }
           </div>
           <div class="col-md-9 col-12">
-            <!-- Signed PD/SPD -->
+            <!-- Signed GDD -->
             <etools-upload
               id="signedIntervFile"
-              label=${translate('SIGNED_PD_SPD')}
+              label=${translate('SIGNED_GDD_SPD')}
               accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.signed_pd_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
@@ -228,7 +228,7 @@ export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMix
               ?auto-validate="${this.editMode}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.signed_pd_attachment)}"
               ?required="${this.permissions?.required.signed_pd_attachment}"
-              error-message=${translate('SELECT_SIGNED_PD_SPD_DOC')}
+              error-message=${translate('SELECT_SIGNED_GDD_SGDD_DOC')}
               @upload-started="${this.__onUploadStarted}"
               @upload-finished="${this._signedPDUploadFinished}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"

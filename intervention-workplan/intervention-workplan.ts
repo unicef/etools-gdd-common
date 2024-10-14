@@ -28,12 +28,15 @@ export class GDDInterventionWorkplan extends LitElement {
 
       <gdd-budget-summary></gdd-budget-summary>
       <gdd-results-structure></gdd-results-structure>
-      <gdd-effective-and-efficient-programme-management></gdd-effective-and-efficient-programme-management>
-      <gdd-hq-contribution></gdd-hq-contribution>
       <gdd-supply-agreements></gdd-supply-agreements>
-      <gdd-non-financial-contribution></gdd-non-financial-contribution>
     `;
   }
+
+  /* TODO: Remove
+      <gdd-effective-and-efficient-programme-management></gdd-effective-and-efficient-programme-management>
+      <gdd-hq-contribution></gdd-hq-contribution>
+      <gdd-non-financial-contribution></gdd-non-financial-contribution>
+  */
 
   connectedCallback() {
     super.connectedCallback();

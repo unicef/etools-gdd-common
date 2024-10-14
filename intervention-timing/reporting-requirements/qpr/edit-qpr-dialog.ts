@@ -107,7 +107,7 @@ export class GDDEditQprDialog extends GenerateQuarterlyReportingRequirementsMixi
             >
           </div>
           <div class="col-12" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
-            <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
+            <span id="regenerate-info">${translate('GDD_START_END_DATE_CHANGED')}</span> &nbsp;
             <etools-button
               id="regen"
               variant="text"

@@ -21,7 +21,7 @@ export const GDDCommentsItemsNameMap: GenericObject<string> = {
   'programme-document-dates': 'PROGRAMME_DOC_DATES',
   'programmatic-visits': 'PROGRAMATIC_VISITS',
   'timing-overview': 'OVERVIEW',
-  'pd-output': 'PD_OUTPUT',
+  'pd-output': 'GDD_OUTPUT',
   activity: 'ACTIVITY',
   'budget-summary': 'BUDGET_SUMMARY',
   'programme-management': gddTranslatesMap.management_budgets,

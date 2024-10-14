@@ -69,7 +69,7 @@ export class GDDGroupedLocationsDialog extends LitElement {
       <etools-dialog
         id="groupedLocDialog"
         size="md"
-        dialog-title=${translate('LOCATIONS_PD_COVERS')}
+        dialog-title=${translate('LOCATIONS_GDD_COVERS')}
         hide-confirm-btn
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         @close="${() => this.onClose()}"

@@ -171,14 +171,14 @@ export class GDDEditorTable extends CommentsMixin(
                   ?hidden="${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode}"
                 >
                   <td></td>
-                  <td colspan="3" class="v-middle">${translate('ADD_PD_OUTPUT')}</td>
+                  <td colspan="3" class="v-middle">${translate('ADD_GDD_OUTPUT')}</td>
                   <td colspan="3"></td>
                   <td colspan="2" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                     <div class="action-btns" style="position:relative">
                       <sl-tooltip
                         ?hidden="${!this.permissions?.edit.result_links}"
                         placement="top"
-                        content="${translate('ADD_PD_OUTPUT')}"
+                        content="${translate('ADD_GDD_OUTPUT')}"
                       >
                         <etools-icon-button
                           id="add-pd-output"
@@ -248,7 +248,7 @@ export class GDDEditorTable extends CommentsMixin(
                   <div class="action-btns" style="position:relative">
                     <sl-tooltip
                       ?hidden="${!this.permissions?.edit.result_links}"
-                      content="${translate('ADD_PD_OUTPUT')}"
+                      content="${translate('ADD_GDD_OUTPUT')}"
                       placement="top"
                     >
                       <etools-icon-button
@@ -282,7 +282,7 @@ export class GDDEditorTable extends CommentsMixin(
                 >
                   <tr class="header">
                     <td></td>
-                    <td colspan="3">${translate('PD_OUTPUT')}</td>
+                    <td colspan="3">${translate('GDD_OUTPUT')}</td>
                     <td colspan="3"></td>
                     <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
@@ -749,7 +749,7 @@ export class GDDEditorTable extends CommentsMixin(
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: translate('REMOVE_PD_MSG'),
+        content: translate('REMOVE_GDD_MSG'),
         confirmBtnText: translate('CONFIRM_BTN_TXT')
       }
     }).then(({confirmed}) => {
