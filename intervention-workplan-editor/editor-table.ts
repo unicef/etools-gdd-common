@@ -254,7 +254,7 @@ export class GDDEditorTable extends CommentsMixin(
                       <etools-icon-button
                         id="add-pd-output-${result.id}"
                         @click="${(e: any) => {
-                          this.addNewPDOutput(result.ll_results as any);
+                          this.addNewPDOutput(result.key_interventions as any);
                           this.moveFocusToNewllyAdded(e.target);
                         }}"
                         ?hidden="${!this.permissions?.edit.result_links ||
@@ -268,7 +268,7 @@ export class GDDEditorTable extends CommentsMixin(
               </tr>
             </tbody>
             ${repeat(
-              result.ll_results as any[],
+              result.key_interventions as any[],
               (pdOutput: GDDResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: GDDResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <tbody
@@ -603,13 +603,13 @@ export class GDDEditorTable extends CommentsMixin(
   }
 
   addNewUnassignedPDOutput() {
-    if (!this.resultStructureDetails.some((r) => !r.cp_output && r.ll_results.some((pdO) => !pdO.id))) {
+    if (!this.resultStructureDetails.some((r) => !r.cp_output && r.key_interventions.some((pdO) => !pdO.id))) {
       this.resultStructureDetails.unshift({
         // @ts-ignore
         cp_output: null,
         intervention: this.interventionId!,
         // @ts-ignore
-        ll_results: [{name: '', total: '0', inEditMode: true}],
+        key_interventions: [{name: '', total: '0', inEditMode: true}],
         total: '0'
       });
       this.oneEntityInEditMode = true;
@@ -703,7 +703,7 @@ export class GDDEditorTable extends CommentsMixin(
     pdOutputIndex: number
   ) {
     if (!pdOutput.id) {
-      result.ll_results.shift();
+      result.key_interventions.shift();
     } else {
       pdOutput.name = this.getOriginalPDOutput(resultIndex, pdOutputIndex).name;
       if (this.isUnicefUser && !this.getOriginalCPOutput(resultIndex)?.cp_output) {
@@ -726,10 +726,10 @@ export class GDDEditorTable extends CommentsMixin(
     // thus changing the index
     let originalPdOutputIndex = pdOutputIndex;
 
-    if (this.resultStructureDetails[resultIndex].ll_results.find((pdOutput) => !pdOutput.id)) {
+    if (this.resultStructureDetails[resultIndex].key_interventions.find((pdOutput) => !pdOutput.id)) {
       originalPdOutputIndex = originalPdOutputIndex - 1;
     }
-    return this.originalResultStructureDetails[resultIndex].ll_results[originalPdOutputIndex];
+    return this.originalResultStructureDetails[resultIndex].key_interventions[originalPdOutputIndex];
   }
 
   getOriginalCPOutput(resultIndex: number) {

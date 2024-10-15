@@ -459,7 +459,7 @@
   "PROGRAMME_DOC_DATES": "مواعيد وثيقة البرنامج",
   "PROGRAMME_DOC_DATES_DESCRIPTION": "تواريخ البدء والانتهاء",
   "PROGRAMME_MANAGEMENT_ITEM": "بند إدارة البرنامج",
-  "PROGRAM_DOCUMENT_OUTPUT": "إخراج وثيقة البرنامج",
+  "KEY_INTERVENTION": "التدخل الرئيسي",
   "PROGRESS_REPORT_STATUS": {
     "ACCEPTED": "وافقت",
     "COMPLETED": "مكتمل",

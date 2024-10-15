@@ -142,8 +142,8 @@ export class GDDHumanitarianReportingReqCluster extends EndpointsLitMixin(
     }
     const clusterIndicIds: any[] = [];
     this.expectedResults.forEach((r: ExpectedResult) => {
-      return r.ll_results.forEach((llr: ResultLinkLowerResult) => {
-        return llr.applied_indicators.forEach((i) => {
+      return r.key_interventions.forEach((key_intervention: ResultLinkLowerResult) => {
+        return key_intervention.applied_indicators.forEach((i) => {
           if (i.cluster_indicator_id) {
             clusterIndicIds.push(i.cluster_indicator_id);
           }

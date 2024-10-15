@@ -89,7 +89,7 @@ export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
                       `}
                 </div>
                 <div class="outputs-count">
-                  <b>${this.resultLink.ll_results.length}</b> ${translate('GDD_OUTPUT_S')}
+                  <b>${this.resultLink.key_interventions.length}</b> ${translate('GDD_OUTPUT_S')}
                 </div>
               </div>
 

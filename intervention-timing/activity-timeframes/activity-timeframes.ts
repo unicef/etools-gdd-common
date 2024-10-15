@@ -123,7 +123,7 @@ export class GDDActivityTimeframes extends CommentsMixin(LitElement) {
 
     // get activities array
     const pdOutputs: ResultLinkLowerResult[] = this.intervention.result_links
-      .map(({ll_results}: ExpectedResult) => ll_results)
+      .map(({key_interventions}: ExpectedResult) => key_interventions)
       .flat();
     const activities: InterventionActivity[] = pdOutputs
       .map(({activities}: ResultLinkLowerResult) => activities)

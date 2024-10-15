@@ -182,7 +182,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
             >
               <div
                 class="no-results"
-                ?hidden="${!this.isUnicefUser || this.permissions.edit.result_links || result.ll_results.length}"
+                ?hidden="${!this.isUnicefUser || this.permissions.edit.result_links || result.key_interventions.length}"
               >
                 ${translate('NO_PDS_ADDED')}
               </div>
@@ -201,7 +201,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
                       </etools-info-tooltip>
                     </div>
                   `}
-              ${result.ll_results.map(
+              ${result.key_interventions.map(
                 (pdOutput: ResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
                     id="pdOutputRow"
@@ -336,8 +336,8 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     }
     this.commentsModeEnabledFlag = Boolean(state.gddCommentsData?.commentsModeEnabled);
     this.updateResultLinks(state);
-    this.showInactiveToggle = this.resultLinks.some(({ll_results}: ExpectedResult) =>
-      ll_results.some(
+    this.showInactiveToggle = this.resultLinks.some(({key_interventions}: ExpectedResult) =>
+      key_interventions.some(
         ({applied_indicators, activities}: ResultLinkLowerResult) =>
           applied_indicators.some(({is_active}: Indicator) => !is_active) || activities.some((a) => !a.is_active)
       )
@@ -501,7 +501,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     }
     this.noOfPdOutputs = this.resultLinks
       .map((rl: ExpectedResult) => {
-        return rl.ll_results.length;
+        return rl.key_interventions.length;
       })
       .reduce((a: number, b: number) => a + b, 0);
 
@@ -515,9 +515,9 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   _getNoOfInactiveIndicators() {
     return this.resultLinks
       .map((rl: ExpectedResult) => {
-        return rl.ll_results
-          .map((llr) => {
-            return llr.applied_indicators.filter((i) => !i.is_active).length;
+        return rl.key_interventions
+          .map((key_intervention) => {
+            return key_intervention.applied_indicators.filter((i) => !i.is_active).length;
           })
           .reduce((a: number, b: number) => a + b, 0);
       })
@@ -540,8 +540,10 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       // if we found new CP output - add it to track to open it on first render
       created.forEach(({id}) => this.newCPOutputs.add(id));
       // the same thing for PD
-      const existingPD = this.resultLinks.flatMap(({ll_results}) => ll_results.map(({id}) => id));
-      const createdPD = newResults.flatMap(({ll_results}) => ll_results).filter(({id}) => !existingPD.includes(id));
+      const existingPD = this.resultLinks.flatMap(({key_interventions}) => key_interventions.map(({id}) => id));
+      const createdPD = newResults
+        .flatMap(({key_interventions}) => key_interventions)
+        .filter(({id}) => !existingPD.includes(id));
       createdPD.forEach(({id}) => this.newPDOutputs.add(id));
     }
 

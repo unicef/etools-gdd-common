@@ -8,7 +8,7 @@ export interface GDDExpectedResultExtended {
   cp_output: number;
   cp_output_name: string;
   intervention: number;
-  ll_results: GDDResultLinkLowerResultExtended[];
+  key_interventions: GDDResultLinkLowerResultExtended[];
   ram_indicators: number[];
   ram_indicator_names: string[];
   total: string;

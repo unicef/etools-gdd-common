@@ -21,11 +21,9 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
-import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation, langChanged} from 'lit-translate';
 
 /**

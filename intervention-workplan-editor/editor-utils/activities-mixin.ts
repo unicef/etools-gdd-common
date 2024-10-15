@@ -332,10 +332,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       // Covers case when a new Activity is added while the cancelled one is already in edit mode,
       // thus changing the index
       let originalActivityIndex = activityIndex;
-      if (this.resultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities.find((a) => !a.id)) {
+      if (this.resultStructureDetails[resultIndex].key_interventions[pdOutputIndex].activities.find((a) => !a.id)) {
         originalActivityIndex = originalActivityIndex - 1;
       }
-      return this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[
+      return this.originalResultStructureDetails[resultIndex].key_interventions[pdOutputIndex].activities[
         originalActivityIndex
       ];
     }

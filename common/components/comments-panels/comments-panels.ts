@@ -96,7 +96,7 @@ export class GDDCommentsPanels extends connectStore(LitElement) {
       sendRequest({
         endpoint: getEndpoint(gddEndpoints.resultLinksDetails, {id: intervention.id})
       }).then((response: any) => {
-        const pds = response?.result_links.map(({ll_results: pds}: ExpectedResult) => pds).flat();
+        const pds = response?.result_links.map(({key_interventions: pds}: ExpectedResult) => pds).flat();
         const activities = pds.map(({activities}: ResultLinkLowerResult) => activities).flat();
         const indicators = pds.map(({applied_indicators}: ResultLinkLowerResult) => applied_indicators).flat();
         const activity_items = activities.map(({items}: InterventionActivity) => items).flat();

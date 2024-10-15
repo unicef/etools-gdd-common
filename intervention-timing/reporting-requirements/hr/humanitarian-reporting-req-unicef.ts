@@ -161,8 +161,8 @@ export class GDDHumanitarianReportingReqUnicef extends PaginationMixin(Reporting
       return false;
     }
     const hfIndicator = expectedResults.find((r: any) => {
-      return r.ll_results.find((llr: any) => {
-        return llr.applied_indicators.find((i: any) => {
+      return r.key_interventions.find((key_intervention: any) => {
+        return key_intervention.applied_indicators.find((i: any) => {
           return i.is_active && i.is_high_frequency;
         });
       });
