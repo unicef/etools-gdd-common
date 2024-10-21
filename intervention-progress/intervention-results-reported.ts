@@ -278,19 +278,19 @@ export class GDDInterventionResultsReported extends connectStore(
             ></gdd-etools-ram-indicators>
 
             <div class="row padding-row" ?hidden="${!this._emptyList(item.ll_outputs)}">
-              <p class="col-12">${translate('NO_GDD_OUTPUTS')}</p>
+              <p class="col-12">${translate('NO_KEY_INTERVENTIONS')}</p>
             </div>
 
             <div class="lower-results-table" ?hidden="${this._emptyList(item.ll_outputs)}">
               <etools-data-table-header id="listHeader" no-title .lowResolutionLayout="${this.lowResolutionLayout}">
-                <etools-data-table-column class="col-9">${translate('GDD_OUTPUTS')}</etools-data-table-column>
+                <etools-data-table-column class="col-9">${translate('KEY_INTERVENTIONS')}</etools-data-table-column>
                 <etools-data-table-column class="col-3">${translate('CURRENT_PROGRESS')}</etools-data-table-column>
               </etools-data-table-header>
 
               ${item.ll_outputs.map(
                 (lowerResult: any) => html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
                   <div slot="row-data">
-                    <span class="col-data col-9" data-col-header-label="${translate('GDD_OUTPUTS')}">
+                    <span class="col-data col-9" data-col-header-label="${translate('KEY_INTERVENTIONS')}">
                       ${lowerResult.title}
                     </span>
                     <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">

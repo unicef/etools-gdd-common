@@ -89,7 +89,7 @@ export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
                       `}
                 </div>
                 <div class="outputs-count">
-                  <b>${this.resultLink.gdd_key_interventions.length}</b> ${translate('GDD_OUTPUT_S')}
+                  <b>${this.resultLink.gdd_key_interventions.length}</b> ${translate('KEY_INTERVENTION_S')}
                 </div>
               </div>
 
@@ -162,7 +162,7 @@ export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
           color: #212121;
         }
         div[slot='row-data-details'] {
-          background-color: var(--pd-output-background);
+          background-color: var(--key-intervention-background);
         }
         etools-data-table-row {
           overflow: hidden;

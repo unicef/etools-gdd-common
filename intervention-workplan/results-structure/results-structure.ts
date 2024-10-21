@@ -17,7 +17,7 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './cp-output-level';
 import './pd-activities';
-import './modals/pd-output-dialog';
+import './modals/key-intervention-dialog';
 import './modals/cp-output-dialog';
 import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -85,7 +85,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   };
 
   @property() private _resultLinks: GDDExpectedResult[] | null = null;
-  @property({type: String}) noOfPdOutputs: string | number = '0';
+  @property({type: String}) noOfKeyInterventions: string | number = '0';
   @property({type: Boolean}) showInactiveIndicatorsActivities = false;
 
   @property({type: Object})
@@ -93,7 +93,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
 
   private cpOutputs: CpOutput[] = [];
   private newCPOutputs: Set<number> = new Set();
-  private newPDOutputs: Set<number> = new Set();
+  private newKeyInterventions: Set<number> = new Set();
   private commentsModeEnabledFlag?: boolean;
 
   render() {
@@ -111,7 +111,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title="${translate(gddTranslatesMap.result_links)} (${this.noOfPdOutputs})"
+        panel-title="${translate(gddTranslatesMap.result_links)} (${this.noOfKeyInterventions})"
         elevation="0"
       >
         <div slot="after-title">
@@ -144,15 +144,15 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
           ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
           <div class="pd-title layout-horizontal align-items-center">
-            ${translate('GDD_OUTPUTS_TITLE')}
+            ${translate('KEY_INTERVENTIONS_TITLE')}
             <etools-info-tooltip position="top" custom-icon offset="0">
               <etools-icon-button
                 name="add-box"
                 slot="custom-icon"
                 class="add"
-                @click="${() => this.openPdOutputDialog()}"
+                @click="${() => this.openKeyInterventionDialog()}"
               ></etools-icon-button>
-              <span class="no-wrap" slot="message">${translate('ADD_GDD_OUTPUT')}</span>
+              <span class="no-wrap" slot="message">${translate('ADD_KEY_INTERVENTION')}</span>
             </etools-info-tooltip>
           </div>
         </div>
@@ -188,30 +188,30 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
                 ? ''
                 : html`
                     <div class="pd-title layout-horizontal align-items-center">
-                      ${translate('GDD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
+                      ${translate('KEY_INTERVENTIONS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
                         <etools-icon-button
                           name="add-box"
                           slot="custom-icon"
                           class="add"
-                          @click="${() => this.openPdOutputDialog({}, result)}"
+                          @click="${() => this.openKeyInterventionDialog({}, result)}"
                         ></etools-icon-button>
-                        <span class="no-wrap" slot="message">${translate('ADD_GDD_OUTPUT')}</span>
+                        <span class="no-wrap" slot="message">${translate('ADD_KEY_INTERVENTION')}</span>
                       </etools-info-tooltip>
                     </div>
                   `}
               ${result.gdd_key_interventions.map(
                 (keyIntervention: GDDResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
-                    id="pdOutputRow"
-                    class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
-                    related-to="pd-output-${keyIntervention.id}"
+                    id="keyInterventionRow"
+                    class="keyInterventionMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
+                    related-to="key-intervention-${keyIntervention.id}"
                     related-to-description="${keyIntervention.name}"
                     comments-container
                     secondary-bg-on-hover
-                    .detailsOpened="${this.newPDOutputs.has(keyIntervention.id)}"
+                    .detailsOpened="${this.newKeyInterventions.has(keyIntervention.id)}"
                     style="z-index: ${99 - index};"
                   >
-                    <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
+                    <div slot="row-data" class="layout-horizontal editable-row key-intervention-row">
                       <div class="flex-fix">
                         <div class="data bold-data">${keyIntervention.code}&nbsp;${keyIntervention.name}</div>
                         <div class="count">
@@ -233,7 +233,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
                       >
                         <etools-icon-button
                           name="create"
-                          @click="${() => this.openPdOutputDialog(keyIntervention, result)}"
+                          @click="${() => this.openKeyInterventionDialog(keyIntervention, result)}"
                         ></etools-icon-button>
                         <etools-icon-button
                           name="delete"
@@ -244,7 +244,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
                             this.intervention.in_amendment,
                             this.intervention.in_amendment_date as any
                           )}"
-                          @click="${() => this.openDeletePdOutputDialog(keyIntervention.id)}"
+                          @click="${() => this.openDeleteKeyInterventionDialog(keyIntervention.id)}"
                         ></etools-icon-button>
                       </div>
                     </div>
@@ -332,7 +332,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
-    this._updateNoOfPdOutputs();
+    this._updateNoOfKeyInterventions();
     super.stateChanged(state);
   }
 
@@ -351,9 +351,9 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     return [{element, relatedTo, relatedToDescription}];
   }
 
-  openPdOutputDialog(): void;
-  openPdOutputDialog(keyIntervention: Partial<GDDResultLinkLowerResult>, result: any): void;
-  openPdOutputDialog(keyIntervention?: Partial<GDDResultLinkLowerResult>, result?: any): void {
+  openKeyInterventionDialog(): void;
+  openKeyInterventionDialog(keyIntervention: Partial<GDDResultLinkLowerResult>, result: any): void;
+  openKeyInterventionDialog(keyIntervention?: Partial<GDDResultLinkLowerResult>, result?: any): void {
     const cpOutputs: IdAndName<number>[] = this.intervention.result_links
       .map(({cp_output: id, cp_output_name: name}: GDDExpectedResult) => ({
         id,
@@ -361,7 +361,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       }))
       .filter(({id}: IdAndName<number>) => id);
     openDialog<any>({
-      dialog: 'gdd-pd-output-dialog',
+      dialog: 'gdd-key-intervention-dialog',
       dialogData: {
         keyIntervention: keyIntervention ? {...keyIntervention, cp_output: result?.cp_output} : undefined,
         cpOutput: result?.cp_output,
@@ -373,7 +373,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     });
   }
 
-  async openDeletePdOutputDialog(lower_result_id: number) {
+  async openDeleteKeyInterventionDialog(lower_result_id: number) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
@@ -385,11 +385,11 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     });
 
     if (confirmed) {
-      this.deletePDOutputFromPD(lower_result_id);
+      this.deleteKeyInterventionFromPD(lower_result_id);
     }
   }
 
-  deletePDOutputFromPD(lower_result_id: number) {
+  deleteKeyInterventionFromPD(lower_result_id: number) {
     fireEvent(this, 'global-loading', {
       active: true,
       loadingSource: 'gdd-interv-pd-remove'
@@ -477,12 +477,12 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       );
   }
 
-  _updateNoOfPdOutputs() {
+  _updateNoOfKeyInterventions() {
     if (!this.resultLinks) {
-      this.noOfPdOutputs = 0;
+      this.noOfKeyInterventions = 0;
       return;
     }
-    this.noOfPdOutputs = this.resultLinks
+    this.noOfKeyInterventions = this.resultLinks
       .map((rl: GDDExpectedResult) => {
         return rl.gdd_key_interventions.length;
       })
@@ -509,7 +509,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       const createdPD = newResults
         .flatMap(({gdd_key_interventions}) => gdd_key_interventions)
         .filter(({id}) => !existingPD.includes(id));
-      createdPD.forEach(({id}) => this.newPDOutputs.add(id));
+      createdPD.forEach(({id}) => this.newKeyInterventions.add(id));
     }
 
     this.resultLinks = newResults;
@@ -587,7 +587,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
           align-self: flex-start;
         }
         etools-data-table-row::part(edt-list-row-wrapper):hover {
-          background-color: var(--pd-output-background);
+          background-color: var(--key-intervention-background);
         }
 
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
@@ -595,9 +595,9 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
           border-bottom: none !important;
         }
         div.editable-row .hover-block {
-          background: linear-gradient(270deg, var(--pd-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
+          background: linear-gradient(270deg, var(--key-intervention-background) 71.65%, rgba(196, 196, 196, 0) 100%);
         }
-        div.pd-output-row > div {
+        div.key-intervention-row > div {
           line-height: 26px;
           padding-top: 6px;
           padding-bottom: 4px;
@@ -653,7 +653,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
           margin-inline-end: 20px;
         }
 
-        etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {
+        etools-data-table-row#keyInterventionRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;
         }
         .flex-fix {

@@ -21,7 +21,7 @@ export const GDDCommentsItemsNameMap: GenericObject<string> = {
   'programme-document-dates': 'PROGRAMME_DOC_DATES',
   'programmatic-visits': 'PROGRAMATIC_VISITS',
   'timing-overview': 'OVERVIEW',
-  'pd-output': 'GDD_OUTPUT',
+  key_intervention: 'KEY_INTERVENTION',
   activity: 'ACTIVITY',
   'budget-summary': 'BUDGET_SUMMARY',
   'programme-management': gddTranslatesMap.management_budgets,
@@ -85,7 +85,7 @@ export const GDDComponentsPosition: GenericObject<string> = {
   'programme-document-dates': GDD_TABS.Timing,
   'programmatic-visits': GDD_TABS.Timing,
   'timing-overview': GDD_TABS.Timing,
-  'pd-output': GDD_TABS.Workplan,
+  'key-intervention': GDD_TABS.Workplan,
   activity: GDD_TABS.Workplan,
   'budget-summary': GDD_TABS.Workplan,
   'programme-management': GDD_TABS.Workplan,
@@ -95,7 +95,5 @@ export const GDDComponentsPosition: GenericObject<string> = {
   indicator: GDD_TABS.Workplan,
   prp: GDD_TABS.Timing,
   eepm: GDD_TABS.Workplan,
-  'programme-management-item': GDD_TABS.WorkplanEditor,
-  'activity-item': GDD_TABS.WorkplanEditor,
   'other-info': GDD_TABS.Metadata
 };

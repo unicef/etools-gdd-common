@@ -3,7 +3,7 @@ import {css, CSSResult} from 'lit';
 // language=CSS
 export const ResultStructureStyles: CSSResult = css`
   :host {
-    --pd-output-background: #ccebff;
+    --key-intervention-background: #ccebff;
     --cp-output-background: #a6dbff;
   }
   .heading {

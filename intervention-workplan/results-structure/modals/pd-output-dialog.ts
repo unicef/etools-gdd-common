@@ -17,8 +17,8 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 
-@customElement('gdd-pd-output-dialog')
-export class GDDPdOutputDialog extends DataMixin()<GDDResultLinkLowerResult>(LitElement) {
+@customElement('gdd-key-intervention-dialog')
+export class GDDKeyInterventionialog extends DataMixin()<GDDResultLinkLowerResult>(LitElement) {
   @property() loadingInProcess = false;
   @property() isEditDialog = false;
 
@@ -78,7 +78,7 @@ export class GDDPdOutputDialog extends DataMixin()<GDDResultLinkLowerResult>(Lit
         keep-dialog-open
         ?show-spinner="${this.loadingInProcess}"
         dialog-title="${this.isEditDialog ? translate('GENERAL.EDIT') : translate('GENERAL.ADD')} ${translate(
-          'GDD_OUTPUT'
+          'KEY_INTERVENTION'
         )}"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
