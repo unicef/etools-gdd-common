@@ -1,6 +1,6 @@
 import {LitElement, html, CSSResultArray, TemplateResult, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {InterventionComment} from '@unicef-polymer/etools-types';
+import {GDDComment} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {translate} from 'lit-translate';
@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 @customElement('gdd-message-item')
 export class GDDMessageItem extends LitElement {
   @property({type: Boolean, reflect: true, attribute: 'my-comment'}) myComment!: boolean;
-  @property() comment!: InterventionComment & {loadingError?: boolean; created: string};
+  @property() comment!: GDDComment & {loadingError?: boolean; created: string};
   @property() resolving = false;
   @property() deleting = false;
 

@@ -1,9 +1,14 @@
 import pick from 'lodash-es/pick';
-import {Intervention, InterventionPermissionsFields, PlannedBudget} from '@unicef-polymer/etools-types';
-import {AnyObject, ManagementBudget} from '@unicef-polymer/etools-types';
+import {
+  GDD,
+  GDDPermissionsFields,
+  GDDPlannedBudget,
+  GDDManagementBudget,
+  AnyObject
+} from '@unicef-polymer/etools-types';
 
 export class GDDModelsBase {
-  setObjProperties(dataSource: Intervention | InterventionPermissionsFields | PlannedBudget | ManagementBudget) {
+  setObjProperties(dataSource: GDD | GDDPermissionsFields | GDDPlannedBudget | GDDManagementBudget) {
     Object.assign(this, pick(dataSource, Object.keys(this as AnyObject)));
   }
   setObjProperty(propKey: string, propValue: AnyObject) {

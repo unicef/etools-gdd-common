@@ -5,7 +5,7 @@ import GDD_CONSTANTS from '../../../common/constants';
 import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {ExpectedResult} from '@unicef-polymer/etools-types';
+import {GDDExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
@@ -40,7 +40,7 @@ export class GDDHumanitarianReportingReqUnicef extends PaginationMixin(Reporting
       </style>
       <div class="mt-12" ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="col-12">${translate('NO_HUMANITARIAN_REPORT')}</div>
-        <div class="col-12" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
+        <div class="col-12" ?hidden="${!this._showAdd(this.GDDExpectedResults, this.editMode)}">
           <etools-button
             variant="text"
             class="no-marg no-pad font-14"
@@ -49,7 +49,7 @@ export class GDDHumanitarianReportingReqUnicef extends PaginationMixin(Reporting
             ${translate('ADD_REQUIREMENTS')}
           </etools-button>
         </div>
-        <div class="col-12" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
+        <div class="col-12" ?hidden="${this._thereAreHFIndicators(this.GDDExpectedResults)}">
           ${translate('CAN_BE_MODIFIED_PROMPT')}
         </div>
       </div>
@@ -73,7 +73,7 @@ export class GDDHumanitarianReportingReqUnicef extends PaginationMixin(Reporting
   }
 
   @property({type: Array})
-  expectedResults!: [];
+  GDDExpectedResults!: [];
 
   @property({type: Array})
   paginatedReports!: any[];
@@ -156,25 +156,25 @@ export class GDDHumanitarianReportingReqUnicef extends PaginationMixin(Reporting
     });
   }
 
-  _thereAreHFIndicators(expectedResults: ExpectedResult[]) {
-    if (!expectedResults) {
+  _thereAreHFIndicators(GDDExpectedResults: GDDExpectedResult[]) {
+    if (!GDDExpectedResults) {
       return false;
     }
-    const hfIndicator = expectedResults.find((r: any) => {
-      return r.key_interventions.find((key_intervention: any) => {
-        return key_intervention.applied_indicators.find((i: any) => {
-          return i.is_active && i.is_high_frequency;
-        });
-      });
-    });
-    return hfIndicator ? true : false;
+    // const hfIndicator = GDDExpectedResults.find((r: any) => {
+    //   return r.gdd_key_interventions.find((key_intervention: any) => {
+    //     return key_intervention.applied_indicators.find((i: any) => {
+    //       return i.is_active && i.is_high_frequency;
+    //     });
+    //   });
+    // });
+    return false; // hfIndicator ? true : false;
   }
 
-  _showAdd(expectedResults: ExpectedResult[], editMode: boolean) {
+  _showAdd(GDDExpectedResults: GDDExpectedResult[], editMode: boolean) {
     if (!editMode) {
       return false;
     }
-    return this._thereAreHFIndicators(expectedResults);
+    return this._thereAreHFIndicators(GDDExpectedResults);
   }
 }
 

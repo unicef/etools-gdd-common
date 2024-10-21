@@ -60,7 +60,6 @@ export const GDD_TABS = {
   Metadata: 'metadata',
   Strategy: 'strategy',
   Workplan: 'workplan',
-  WorkplanEditor: 'workplan-editor',
   Timing: 'timing',
   Attachments: 'attachments',
   Review: 'review',

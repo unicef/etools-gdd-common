@@ -5,7 +5,6 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
-import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import {translate} from 'lit-translate';
@@ -91,7 +90,7 @@ export class GDDHumanitarianReportingReqCluster extends EndpointsLitMixin(
   requirementsCount = 0;
 
   @property({type: Array})
-  expectedResults!: [];
+  GDDExpectedResults!: [];
 
   connectedCallback() {
     super.connectedCallback();
@@ -137,20 +136,20 @@ export class GDDHumanitarianReportingReqCluster extends EndpointsLitMixin(
   }
 
   _getClusterIndicIds() {
-    if (isEmptyObject(this.expectedResults)) {
-      return [];
-    }
-    const clusterIndicIds: any[] = [];
-    this.expectedResults.forEach((r: ExpectedResult) => {
-      return r.key_interventions.forEach((key_intervention: ResultLinkLowerResult) => {
-        return key_intervention.applied_indicators.forEach((i) => {
-          if (i.cluster_indicator_id) {
-            clusterIndicIds.push(i.cluster_indicator_id);
-          }
-        });
-      });
-    });
-    return [...new Set(clusterIndicIds)];
+    // if (isEmptyObject(this.GDDExpectedResults)) {
+    return [];
+    // }
+    // const clusterIndicIds: any[] = [];
+    // this.GDDExpectedResults.forEach((r: GDDExpectedResult) => {
+    //   return r.gdd_key_interventions.forEach((key_intervention: GDDResultLinkLowerResult) => {
+    //     return key_intervention.applied_indicators.forEach((i) => {
+    //       if (i.cluster_indicator_id) {
+    //         clusterIndicIds.push(i.cluster_indicator_id);
+    //       }
+    //     });
+    //   });
+    // });
+    // return [...new Set(clusterIndicIds)];
   }
 
   reportingRequirementsChanged(repReq: any) {

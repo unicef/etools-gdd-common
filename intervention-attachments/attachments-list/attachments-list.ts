@@ -9,13 +9,7 @@ import './intervention-attachment-dialog';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {
-  InterventionAttachment,
-  Intervention,
-  IdAndName,
-  AsyncAction,
-  EtoolsEndpoint
-} from '@unicef-polymer/etools-types';
+import {GDDAttachment, GDD, IdAndName, AsyncAction, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {AttachmentsListStyles} from './attachments-list.styles';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {getFileNameFromURL, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
@@ -38,13 +32,13 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     return [layoutStyles];
   }
-  @property() attachments: InterventionAttachment[] = [];
+  @property() attachments: GDDAttachment[] = [];
   @property() showInvalid = false;
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
   @property({type: String}) deleteConfirmationMessage = translate('DELETE_ATTACHMENTS_PROMPT') as unknown as string;
   @property({type: Boolean}) lowResolutionLayout = false;
-  private intervention!: Intervention;
+  private intervention!: GDD;
 
   protected render(): TemplateResult {
     return html`
@@ -168,7 +162,7 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
     super.stateChanged(state);
   }
 
-  openAttachmentDialog(attachment?: InterventionAttachment): void {
+  openAttachmentDialog(attachment?: GDDAttachment): void {
     openDialog({
       dialog: 'gdd-intervention-attachment-dialog',
       dialogData: {attachment}
@@ -181,7 +175,7 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
     return attachmentType ? getTranslatedValue(attachmentType.name, 'FILE_TYPES') : '—';
   }
 
-  async openDeleteConfirmation(attachment: InterventionAttachment) {
+  async openDeleteConfirmation(attachment: GDDAttachment) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
@@ -196,7 +190,7 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
     }
   }
 
-  deleteAttachment(attachment: InterventionAttachment) {
+  deleteAttachment(attachment: GDDAttachment) {
     fireEvent(this, 'global-loading', {
       active: true,
       loadingSource: 'gdd-interv-attachment-remove'

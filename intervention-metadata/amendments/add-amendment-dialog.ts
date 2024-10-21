@@ -14,7 +14,7 @@ import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {AnyObject, EtoolsEndpoint, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsEndpoint, GDDAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {AmendmentsKind} from './pd-amendments.models';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
@@ -202,7 +202,7 @@ export class GDDAddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     this._saveAmendment(this.data);
   }
 
-  _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
+  _saveAmendment(newAmendment: Partial<GDDAmendment>) {
     const options = {
       method: 'POST',
       endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.interventionAmendmentAdd, {
@@ -216,7 +216,7 @@ export class GDDAddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     };
     this.savingInProcess = true;
     sendRequest(options)
-      .then((resp: InterventionAmendment) => {
+      .then((resp: GDDAmendment) => {
         this._handleResponse(resp);
       })
       .catch((error: any) => {
@@ -227,7 +227,7 @@ export class GDDAddAmendmentDialog extends ComponentBaseMixin(LitElement) {
       });
   }
 
-  _handleResponse(_response: InterventionAmendment) {
+  _handleResponse(_response: GDDAmendment) {
     this.onClose({id: _response.amended_intervention});
   }
 

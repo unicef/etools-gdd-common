@@ -18,8 +18,8 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, Intervention, Permission, Site} from '@unicef-polymer/etools-types';
-import {PlannedVisit} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, GDD, Permission, Site} from '@unicef-polymer/etools-types';
+import {GDDPlannedVisit} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
@@ -160,7 +160,7 @@ export class GDDProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repe
   permissions!: Permission<GDDPlannedVisitsPermissions>;
 
   @property({type: Array})
-  data!: PlannedVisit[];
+  data!: GDDPlannedVisit[];
 
   @property({type: String})
   _deleteEpName = gddEndpoints.interventionPVDelete;
@@ -169,7 +169,7 @@ export class GDDProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repe
   extraEndpointParams!: AnyObject;
 
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   @property({type: Object})
   currentCountry!: AnyObject;
@@ -289,7 +289,7 @@ export class GDDProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repe
     }
     return html`
       ${planned_visits?.map(
-        (item: PlannedVisit, index: number) => html`
+        (item: GDDPlannedVisit, index: number) => html`
           <div class="row">
             <div class="item-actions-container">
               <div class="actions">
@@ -516,7 +516,7 @@ export class GDDProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repe
       });
       return;
     }
-    this.data = [...this.data, new PlannedVisit()];
+    this.data = [...this.data, new GDDPlannedVisit()];
     setTimeout(() => {
       try {
         document
@@ -549,11 +549,11 @@ export class GDDProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repe
       });
   }
 
-  cleanUpData(data: PlannedVisit[]) {
+  cleanUpData(data: GDDPlannedVisit[]) {
     const dataToSave = cloneDeep(data);
     // @ts-ignore
     delete dataToSave.quarterIntervals;
-    dataToSave.forEach((p: PlannedVisit) => {
+    dataToSave.forEach((p: GDDPlannedVisit) => {
       // @ts-ignore
       p.programmatic_q1_sites = p.programmatic_q1_sites.map((s: any) => s.id);
       // @ts-ignore

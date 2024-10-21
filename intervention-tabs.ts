@@ -23,7 +23,7 @@ import {enableCommentMode, getComments, setCommentsEndpoint} from './common/comp
 import {gddCommentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {EnvFlags, EtoolsEndpoint, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
+import {EnvFlags, EtoolsEndpoint, GDDExpectedResult, GDD} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {gddInterventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -69,13 +69,6 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
         :host([is-in-amendment]) {
           border: 5px solid #ffd28b;
           box-sizing: border-box;
-        }
-        :host([data-active-tab='workplan-editor']) intervention-page-content-subheader {
-          display: none;
-        }
-        :host([data-active-tab='workplan-editor']) .page-content {
-          margin: 4px 0 0;
-          margin-top: 0;
         }
         .page-content {
           margin: 24px;
@@ -229,7 +222,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
       <gdd-intervention-page-content-subheader>
         <etools-status-lit
-          .statuses="${this.intervention.status_list.map((x) => [
+          .statuses="${this.intervention.status_list.map((x: any) => [
             x[0],
             getTranslatedValue(x[0], 'COMMON_DATA.INTERVENTIONSTATUSES')
           ])}"
@@ -269,11 +262,6 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
           ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Workplan)}"
           .interventionId="${this.interventionId}"
         ></gdd-intervention-workplan>
-        <gdd-intervention-workplan-editor
-          ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.WorkplanEditor)}"
-          .interventionId="${this.interventionId}"
-        >
-        </gdd-intervention-workplan-editor>
         <gdd-intervention-timing ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Timing)}"> </gdd-intervention-timing>
         <gdd-intervention-review ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Review)}"></gdd-intervention-review>
         <gdd-intervention-attachments ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Attachments)}">
@@ -356,7 +344,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
   currentLanguage!: string;
 
   @property({type: Object})
-  intervention!: Intervention | null;
+  intervention!: GDD | null;
 
   @property({type: Boolean})
   commentMode = false;
@@ -535,7 +523,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
   }
 
-  checkExportOptionsAvailability(availableActions: string[], intervention: Intervention) {
+  checkExportOptionsAvailability(availableActions: string[], intervention: GDD) {
     if (
       availableActions &&
       availableActions.includes('export_results') &&
@@ -546,7 +534,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
     return availableActions;
   }
 
-  showExportResults(status: string, resultLinks: ExpectedResult[]) {
+  showExportResults(status: string, resultLinks: GDDExpectedResult[]) {
     return (
       [
         GDD_CONSTANTS.STATUSES.Draft.toLowerCase(),
@@ -847,7 +835,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
     getStore().dispatch<AsyncAction>(getComments(gddEndpoints.comments, Number(currentInterventionId)));
   }
 
-  private getInterventionDetailsForActionsDisplay(intervention: Intervention) {
+  private getInterventionDetailsForActionsDisplay(intervention: GDD) {
     if (!intervention) {
       return {};
     }

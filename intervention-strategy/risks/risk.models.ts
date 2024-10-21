@@ -1,8 +1,8 @@
-import {Intervention} from '@unicef-polymer/etools-types';
+import {GDD} from '@unicef-polymer/etools-types';
 import {GDDModelsBase} from '../../common/models/models.base';
 
 export class GDDRisk extends GDDModelsBase {
-  constructor(intervention: Intervention) {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }

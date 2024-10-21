@@ -1,4 +1,4 @@
-import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
+import {GDD} from '@unicef-polymer/etools-types/dist/models-and-classes/gdd.classes';
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
@@ -35,7 +35,7 @@ export class GDDInterventionImplementationStatus extends connectStore(LitElement
     `;
   }
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   stateChanged(state: RootState) {
     if (

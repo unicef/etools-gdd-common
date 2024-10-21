@@ -1,5 +1,5 @@
 import {CSSResultArray, html, LitElement, TemplateResult} from 'lit';
-import {property, customElement, query} from 'lit/decorators.js';
+import {property, customElement, query, state} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
@@ -16,7 +16,7 @@ import {updateCurrentIntervention} from '../../../../common/actions/gddIntervent
 import {GDDActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {AnyObject, EtoolsEndpoint, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsEndpoint, GDDActivity, GDDActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {gddTranslatesMap} from '../../../../utils/intervention-labels-map';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
@@ -26,9 +26,12 @@ import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
+import {RootState} from '../../../../../../../../../redux/store';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 
 @customElement('gdd-activity-data-dialog')
-export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
+export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore(LitElement)) {
   static get styles(): CSSResultArray {
     return [layoutStyles];
   }
@@ -38,35 +41,63 @@ export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(Lit
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
   @property() useInputLevel = false;
+  @property() ewpActivities: any[] = [];
   @property({type: String}) spinnerText = getTranslation('GENERAL.LOADING');
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
   @query('activity-items-table') private activityItemsTable!: GDDActivityItemsTable;
   quarters: GDDActivityTimeFrames[] = [];
 
-  set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
+  @state() availableLocations: any[] = [];
+
+  private ewpKeyIntervention!: number;
+  private flatLocations: any[] = [];
+
+  stateChanged(state: RootState) {
+    if (!isJsonStrMatch(this.availableLocations, state.commonData!.locations)) {
+      this.availableLocations = [...state.commonData!.locations].filter((x: any) =>
+        this.flatLocations.includes(Number(x.id))
+      );
+    }
+  }
+
+  set dialogData({
+    activityId,
+    keyInterventionId,
+    interventionId,
+    quarters,
+    readonly,
+    currency,
+    ewpKeyIntervention,
+    flatLocations
+  }: any) {
     this.quarters = quarters;
     this.readonly = readonly;
     this.currency = currency;
+    this.flatLocations = flatLocations;
+    this.ewpKeyIntervention = ewpKeyIntervention;
+
+    this.loadEWPActivities(this.ewpKeyIntervention);
+
     if (!activityId) {
-      this.data = {} as InterventionActivity;
+      this.data = {} as GDDActivity;
       this.isEditDialog = false;
-      this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.pdActivities, {
-        pdOutputId,
-        interventionId
+      this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.gddActivities, {
+        interventionId,
+        keyInterventionId
       });
       return;
     }
 
     this.loadingInProcess = true;
-    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.pdActivityDetails, {
-      activityId,
-      pdOutputId,
-      interventionId
+    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.gddActivityDetails, {
+      interventionId,
+      keyInterventionId,
+      activityId
     });
     sendRequest({
       endpoint: this.endpoint
-    }).then((data: InterventionActivity) => {
+    }).then((data: GDDActivity) => {
       this.useInputLevel = Boolean(data.items.length);
       setTimeout(() => {
         // Avoid reset caused by inputLevelChange method
@@ -75,6 +106,22 @@ export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(Lit
         this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
       }, 100);
     });
+  }
+
+  loadEWPActivities(id: number) {
+    if (id) {
+      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.ewpActivities, {
+        keyInterventionId: id
+      });
+
+      sendRequest({
+        endpoint
+      }).then((ewpActivities: any[]) => {
+        this.ewpActivities = [...ewpActivities];
+      });
+    } else {
+      this.ewpActivities = [];
+    }
   }
 
   private endpoint!: RequestEndpoint;
@@ -139,21 +186,49 @@ export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(Lit
         .hideConfirmBtn="${this.readonly}"
       >
         <div class="row">
-          <div class="col-12">
-            <etools-input
+          <div class="col-6">
+            <etools-dropdown
               class="validate-input"
-              label=${translate('ACTIVITY_NAME')}
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                this.editedData.ewp_activity = detail.selectedItem && detail.selectedItem.id;
+              }}"
+              ?trigger-value-change-event="${!this.loadingInProcess}"
+              .selected="${this.editedData.ewp_activity}"
+              label=${translate('EWP_ACTIVITY')}
               placeholder="&#8212;"
-              .value="${this.editedData.name}"
-              @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
+              .options="${this.ewpActivities}"
+              option-label="title"
+              option-value="id"
+              allow-outside-scroll
+              dynamic-align
               required
-              auto-validate
-              ?invalid="${this.errors.name}"
-              .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
-              ?readonly="${this.readonly}"
-              @focus="${() => this.resetFieldError('name')}"
-              @click="${() => this.resetFieldError('name')}"
-            ></etools-input>
+              ?invalid="${this.errors.ewp_activity}"
+              .errorMessage="${this.errors.ewp_activity && this.errors.ewp_activity[0]}"
+              @focus="${() => this.resetFieldError('ewp_activity')}"
+              @click="${() => this.resetFieldError('ewp_activity')}"
+            ></etools-dropdown>
+          </div>
+           <div class="col-6">
+            <etools-dropdown-multi
+              class="validate-input"
+              @etools-selected-items-changed="${({detail}: CustomEvent) => {
+                this.editedData.locations = detail.selectedItems.map((x: any) => x.id);
+              }}"
+              ?trigger-value-change-event="${!this.loadingInProcess}"
+              .selectedValues="${this.editedData.locations}"
+              label=${translate('LOCATIONS')}
+              placeholder="&#8212;"
+              .options="${this.availableLocations}"
+              option-label="name"
+              option-value="id"
+              allow-outside-scroll
+              dynamic-align
+              required
+              ?invalid="${this.errors.locations}"
+              .errorMessage="${this.errors.locations && this.errors.locations[0]}"
+              @focus="${() => this.resetFieldError('locations')}"
+              @click="${() => this.resetFieldError('locations')}"
+            ></etools-dropdown-multi>
           </div>
           <div class="col-12">
             <etools-textarea
@@ -267,7 +342,7 @@ export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(Lit
 
   getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
     const columnTotal = (this.editedData.items || []).reduce(
-      (sum: number, item: Partial<InterventionActivityItem>) => sum + Number(item[field]),
+      (sum: number, item: Partial<GDDActivityItem>) => sum + Number(item[field]),
       0
     );
 
@@ -347,7 +422,7 @@ export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(Lit
       method: this.isEditDialog ? 'PATCH' : 'POST',
       body: this.isEditDialog ? {id: this.editedData.id, ...dataToSave} : dataToSave
     })
-      .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
+      .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.gdd)))
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
@@ -359,8 +434,8 @@ export class GDDActivityDataDialog extends DataMixin()<InterventionActivity>(Lit
   }
 
   // private getChangedFields() {
-  //   const diff: Partial<InterventionActivity> = getDifference<InterventionActivity>(
-  //     this.isEditDialog ? (this.originalData as InterventionActivity) : {},
+  //   const diff: Partial<GDDActivity> = getDifference<GDDActivity>(
+  //     this.isEditDialog ? (this.originalData as GDDActivity) : {},
   //     this.editedData,
   //     {
   //       toRequest: true,

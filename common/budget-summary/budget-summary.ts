@@ -10,7 +10,7 @@ import get from 'lodash-es/get';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../components/comments/comments-mixin';
-import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
+import {GDDFrsDetails, GDD} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {GDD_TABS} from '../constants';
 import {isUnicefUser} from '../selectors';
@@ -201,7 +201,7 @@ export class GDDBudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(
     </div>`;
   }
 
-  intervention!: Intervention;
+  intervention!: GDD;
 
   @property({type: Object})
   budgetSummary!: GDDBudgetSummary;
@@ -210,7 +210,7 @@ export class GDDBudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(
   _frsConsistencyWarning = '';
 
   @property({type: Object})
-  frsDetails!: FrsDetails;
+  frsDetails!: GDDFrsDetails;
 
   connectedCallback() {
     super.connectedCallback();

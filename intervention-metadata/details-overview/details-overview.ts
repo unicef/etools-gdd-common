@@ -17,7 +17,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate, get as getTranslation, langChanged} from 'lit-translate';
 import {allPartners, currentIntervention, isUnicefUser} from '../../common/selectors';
 import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
-import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
+import {GDD} from '@unicef-polymer/etools-types/dist/models-and-classes/gdd.classes';
 import {GDD_TABS} from '../../common/constants';
 import GDD_CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
@@ -92,7 +92,7 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
   interventionPartner!: AnyObject;
 
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   @property({type: Object})
   interventionOverview!: GDDInterventionOverview;

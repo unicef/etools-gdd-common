@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import './comment';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
+import {GDDComment, GenericObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {GDDCommentsItemsNameMap} from './comments-items-name-map';
@@ -37,9 +37,8 @@ export class GDDCommentsDialog extends EditComments {
     this.relatedTo = relatedTo;
     this.endpoints = endpoints;
     this.relatedToDescription = relatedToDescription;
-    const comments: GenericObject<InterventionComment[]> =
-      getStore().getState().gddCommentsData.collection[interventionId];
-    const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
+    const comments: GenericObject<GDDComment[]> = getStore().getState().gddCommentsData.collection[interventionId];
+    const relatedToComments: GDDComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
     this.updateComplete.then(() => this.scrollDown());
   }

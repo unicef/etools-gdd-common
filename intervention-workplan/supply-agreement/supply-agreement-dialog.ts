@@ -17,7 +17,7 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
-import {EtoolsEndpoint, ExpectedResult} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, GDDExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
@@ -171,7 +171,7 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   interventionId!: number;
 
   @property({type: Object})
-  cpOutputs: ExpectedResult[] = [];
+  cpOutputs: GDDExpectedResult[] = [];
 
   @property({type: Boolean})
   isUnicefUser = false;
@@ -186,7 +186,7 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   ];
 
   set dialogData({data, interventionId, result_links, isUnicefUser, currency}: any) {
-    this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
+    this.cpOutputs = (result_links || []).filter((x: GDDExpectedResult) => !!x.cp_output_name);
     this.data = data;
     this.currency = currency;
     this.isNewRecord = !this.data.id;

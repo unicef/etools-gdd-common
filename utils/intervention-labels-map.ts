@@ -70,7 +70,7 @@ export const gddTranslatesMap: GenericObject = {
   sustainability_narrative: 'SUSTAINABILITY_NARRATIVE',
   unit_price: 'PRICE_UNIT',
   unicef_product_number: 'UNICEF_PRODUCT_NUMBER',
-  key_interventions: 'KEY_INTERVENTION',
+  gdd_key_interventions: 'KEY_INTERVENTION',
   activation_protocol: 'ACTIVATION_PROTOCOL',
   required_in_status: 'REQUIRED_ERROR',
   budget_owner: 'UNICEF_BUDGET_OWNER',

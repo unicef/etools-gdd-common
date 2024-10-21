@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentStyles} from './comment.styles';
-import {InterventionComment} from '@unicef-polymer/etools-types';
+import {GDDComment} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import dayjs from 'dayjs';
 
@@ -15,7 +15,7 @@ export class GDDCommentElement extends LitElement {
   }
 
   @property({type: Boolean, reflect: true, attribute: 'my-comment'}) myComment!: boolean;
-  @property() comment!: InterventionComment & {loadingError?: boolean; created: string};
+  @property() comment!: GDDComment & {loadingError?: boolean; created: string};
   @property() resolving = false;
   @property() deleting = false;
 

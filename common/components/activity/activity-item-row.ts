@@ -1,9 +1,9 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {getTotalCashFormatted, getMultiplyProductCashFormatted} from './get-total.helper';
+import {getTotalCashFormatted, getMultiplyProductCashFormatted, getMultiplyProductCash} from './get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './activity-items-table.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {GDDActivityItem} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
@@ -33,7 +33,7 @@ export class GDDActivityItemRow extends ActivitiesCommonMixin(LitElement) {
     ];
   }
 
-  @property() activityItem: Partial<InterventionActivityItem> = {};
+  @property() activityItem: Partial<GDDActivityItem> = {};
   @property() invalidName = false;
   @property() invalidUnit = false;
   @property() invalidNoUnits = false;
@@ -156,6 +156,10 @@ export class GDDActivityItemRow extends ActivitiesCommonMixin(LitElement) {
   }
 
   onBlur(): void {
+    this.activityItem.unicef_cash = getMultiplyProductCash(
+      this.activityItem.no_units || 0,
+      this.activityItem.unit_price || 0
+    ) as any;
     fireEvent(this, 'item-changed', this.activityItem);
   }
 

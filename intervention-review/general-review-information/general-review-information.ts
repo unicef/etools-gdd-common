@@ -1,6 +1,6 @@
 import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
-import {EtoolsEndpoint, InterventionReview} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, GDDReview} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
@@ -101,8 +101,8 @@ export class GDDGeneralReviewInformation extends LitElement {
       `
     ];
   }
-  @property() currentReview?: InterventionReview;
-  @property() reviews: InterventionReview[] = [];
+  @property() currentReview?: GDDReview;
+  @property() reviews: GDDReview[] = [];
   @property() interventionId!: number;
 
   @property({type: Object})

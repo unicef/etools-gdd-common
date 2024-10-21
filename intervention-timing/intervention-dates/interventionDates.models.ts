@@ -1,8 +1,8 @@
-import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
+import {GDD, GDDPermissionsFields} from '@unicef-polymer/etools-types';
 import {GDDModelsBase} from '../../common/models/models.base';
 
 export class GDDProgrammeDocDates extends GDDModelsBase {
-  constructor(intervention: Intervention) {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }
@@ -13,7 +13,7 @@ export class GDDProgrammeDocDates extends GDDModelsBase {
 }
 
 export class GDDInterventionDatesPermissions extends GDDModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }

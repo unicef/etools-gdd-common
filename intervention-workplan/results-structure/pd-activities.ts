@@ -5,11 +5,10 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
-import '../../intervention-workplan-editor/time-intervals/time-intervals';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
+import {GDDActivity, GDDQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
@@ -37,7 +36,7 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   currency = '';
 
   @property({type: Array})
-  activities: InterventionActivity[] = [];
+  activities: GDDActivity[] = [];
 
   @property({type: Boolean})
   readonly!: boolean;
@@ -49,13 +48,23 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   inAmendmentDate!: string;
 
   @property({type: String})
+  flatLocations: any[] = [];
+
+  @property({type: String})
   interventionStatus!: string;
 
   @property({type: Boolean}) showInactive!: boolean;
 
+  @property({type: Number})
+  ewpKeyIntervention!: number;
+
+  @property({type: Number})
   interventionId!: number;
-  pdOutputId!: number;
-  quarters!: InterventionQuarter[];
+
+  @property({type: Number})
+  keyInterventionId!: number;
+
+  quarters!: GDDQuarter[];
 
   protected render(): TemplateResult {
     // language=HTML
@@ -109,7 +118,7 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
           ${this.activities.length
             ? this.activities.map(
-                (activity: InterventionActivity, index: number) => html`
+                (activity: GDDActivity, index: number) => html`
                   <div
                     class="table-row editable-row"
                     related-to="activity-${activity.id}"
@@ -222,7 +231,7 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                               this.inAmendmentDate
                             )}"
                             @click="${() =>
-                              openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
+                              openActivityDeactivationDialog(activity.id, this.keyInterventionId, this.interventionId)}"
                           >
                             <etools-icon slot="prefix" name="block"></etools-icon>
                             ${translate('DEACTIVATE')}
@@ -237,7 +246,7 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                               this.inAmendmentDate
                             )}"
                             @click="${() =>
-                              openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
+                              openDeleteActivityDialog(activity.id, this.keyInterventionId, this.interventionId)}"
                           >
                             <etools-icon slot="prefix" name="delete"></etools-icon>
                             ${translate('DELETE')}
@@ -305,13 +314,15 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     row.detailsOpened = true;
   }
 
-  openDialog(activity?: InterventionActivity, readonly?: boolean): void {
+  openDialog(activity?: GDDActivity, readonly?: boolean): void {
     openDialog<any>({
       dialog: 'gdd-activity-data-dialog',
       dialogData: {
         activityId: activity && activity.id,
         interventionId: this.interventionId,
-        pdOutputId: this.pdOutputId,
+        keyInterventionId: this.keyInterventionId,
+        ewpKeyIntervention: this.ewpKeyIntervention,
+        flatLocations: this.flatLocations,
         quarters: this.quarters,
         readonly: readonly,
         currency: this.currency

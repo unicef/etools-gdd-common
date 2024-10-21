@@ -1,12 +1,12 @@
-import {Intervention, InterventionPermissionsFields, PlannedBudget} from '@unicef-polymer/etools-types';
+import {GDD, GDDPermissionsFields, GDDPlannedBudget} from '@unicef-polymer/etools-types';
 import {GDDModelsBase} from '../../common/models/models.base';
 
 export class GDDOtherData extends GDDModelsBase {
-  constructor(intervention: Intervention) {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }
-  planned_budget = new PlannedBudget();
+  planned_budget = new GDDPlannedBudget();
   document_type = '';
   humanitarian_flag = false;
   activation_protocol = '';
@@ -15,7 +15,7 @@ export class GDDOtherData extends GDDModelsBase {
 }
 
 export class GDDOtherPermissions extends GDDModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }

@@ -44,7 +44,7 @@ import {
   formatServerErrorAsText
 } from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {AnyObject, EtoolsEndpoint, GenericObject} from '@unicef-polymer/etools-types';
-import {Intervention} from '@unicef-polymer/etools-types';
+import {GDD} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
 import {gddTranslatesMap} from '../utils/intervention-labels-map';
 import {RootState} from '../common/types/store.types';
@@ -75,7 +75,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
   @property() actions: string[] = [];
   @property({type: String}) dir = 'ltr';
   @property({type: Object})
-  interventionPartial!: Partial<Intervention>;
+  interventionPartial!: Partial<GDD>;
 
   @property({type: Boolean})
   userIsBudgetOwner = false;
@@ -273,7 +273,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
       body,
       method: 'PATCH'
     })
-      .then((intervention: Intervention) => {
+      .then((intervention: GDD) => {
         getStore().dispatch(setShouldReGetList(true));
 
         if (action === AMENDMENT_MERGE) {

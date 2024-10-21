@@ -16,7 +16,6 @@ import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './cp-output-level';
-import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
@@ -37,13 +36,12 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {
   AsyncAction,
-  InterventionQuarter,
+  GDDQuarter,
   CpOutput,
   IdAndName,
-  ExpectedResult,
-  Intervention,
-  ResultLinkLowerResult,
-  Indicator,
+  GDDExpectedResult,
+  GDD,
+  GDDResultLinkLowerResult,
   EtoolsEndpoint
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
@@ -52,7 +50,6 @@ import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
 import {GDDPdActivities} from './pd-activities';
-import {GDDPdIndicators} from './pd-indicators';
 import {GDDCpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {_canDelete} from '../../common/mixins/results-structure-common';
@@ -64,10 +61,10 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
  */
 @customElement('gdd-results-structure')
 export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
-  get resultLinks(): ExpectedResult[] {
+  get resultLinks(): GDDExpectedResult[] {
     return this._resultLinks || [];
   }
-  set resultLinks(data: ExpectedResult[]) {
+  set resultLinks(data: GDDExpectedResult[]) {
     this._resultLinks = data.sort(
       (linkA, linkB) => Number(Boolean(linkB.cp_output)) - Number(Boolean(linkA.cp_output))
     );
@@ -75,7 +72,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   @property() interventionId!: number | null;
   @property() interventionStatus!: string;
 
-  quarters: InterventionQuarter[] = [];
+  quarters: GDDQuarter[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = false;
@@ -87,13 +84,12 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     required: {result_links?: boolean};
   };
 
-  @property() private _resultLinks: ExpectedResult[] | null = null;
+  @property() private _resultLinks: GDDExpectedResult[] | null = null;
   @property({type: String}) noOfPdOutputs: string | number = '0';
-  @property({type: Boolean}) thereAreInactiveIndicators = false;
   @property({type: Boolean}) showInactiveIndicatorsActivities = false;
 
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   private cpOutputs: CpOutput[] = [];
   private newCPOutputs: Set<number> = new Set();
@@ -162,7 +158,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
         </div>
         ${repeat(
           this.resultLinks,
-          (result: ExpectedResult) => result.id,
+          (result: GDDExpectedResult) => result.id,
           (result, _index) => html`
             <gdd-cp-output-level
               index="${_index}"
@@ -182,7 +178,9 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
             >
               <div
                 class="no-results"
-                ?hidden="${!this.isUnicefUser || this.permissions.edit.result_links || result.key_interventions.length}"
+                ?hidden="${!this.isUnicefUser ||
+                this.permissions.edit.result_links ||
+                result.gdd_key_interventions.length}"
               >
                 ${translate('NO_PDS_ADDED')}
               </div>
@@ -195,30 +193,29 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
                           name="add-box"
                           slot="custom-icon"
                           class="add"
-                          @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
+                          @click="${() => this.openPdOutputDialog({}, result)}"
                         ></etools-icon-button>
                         <span class="no-wrap" slot="message">${translate('ADD_GDD_OUTPUT')}</span>
                       </etools-info-tooltip>
                     </div>
                   `}
-              ${result.key_interventions.map(
-                (pdOutput: ResultLinkLowerResult, index: number) => html`
+              ${result.gdd_key_interventions.map(
+                (keyIntervention: GDDResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
                     id="pdOutputRow"
                     class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
-                    related-to="pd-output-${pdOutput.id}"
-                    related-to-description="${pdOutput.name}"
+                    related-to="pd-output-${keyIntervention.id}"
+                    related-to-description="${keyIntervention.name}"
                     comments-container
                     secondary-bg-on-hover
-                    .detailsOpened="${this.newPDOutputs.has(pdOutput.id)}"
+                    .detailsOpened="${this.newPDOutputs.has(keyIntervention.id)}"
                     style="z-index: ${99 - index};"
                   >
                     <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
                       <div class="flex-fix">
-                        <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
+                        <div class="data bold-data">${keyIntervention.code}&nbsp;${keyIntervention.name}</div>
                         <div class="count">
-                          <div><b>${pdOutput.activities.length}</b> ${translate('ACTIVITIES')}</div>
-                          <div><b>${pdOutput.applied_indicators.length}</b> ${translate('INDICATORS')}</div>
+                          <div><b>${keyIntervention.activities.length}</b> ${translate('ACTIVITIES')}</div>
                         </div>
                       </div>
 
@@ -226,7 +223,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
                         <div class="heading">${translate('TOTAL_CASH_BUDGET')}</div>
                         <div class="data">
                           <span class="currency">${this.intervention.planned_budget.currency}</span>
-                          ${displayCurrencyAmount(pdOutput.total, '0.00')}
+                          ${displayCurrencyAmount(keyIntervention.total, '0.00')}
                         </div>
                       </div>
 
@@ -236,45 +233,38 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
                       >
                         <etools-icon-button
                           name="create"
-                          @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
+                          @click="${() => this.openPdOutputDialog(keyIntervention, result)}"
                         ></etools-icon-button>
                         <etools-icon-button
                           name="delete"
                           ?hidden="${!_canDelete(
-                            pdOutput,
+                            keyIntervention,
                             !this.permissions.edit.result_links!,
                             this.intervention.status,
                             this.intervention.in_amendment,
-                            this.intervention.in_amendment_date
+                            this.intervention.in_amendment_date as any
                           )}"
-                          @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
+                          @click="${() => this.openDeletePdOutputDialog(keyIntervention.id)}"
                         ></etools-icon-button>
                       </div>
                     </div>
 
                     <div slot="row-data-details">
                       <gdd-pd-activities
-                        .activities="${pdOutput.activities}"
+                        .activities="${keyIntervention.activities}"
                         .interventionId="${this.interventionId}"
                         .interventionStatus="${this.interventionStatus}"
                         .inAmendmentDate="${this.intervention.in_amendment_date}"
+                        .flatLocations="${this.intervention.flat_locations}"
                         .showInactive="${this.showInactiveIndicatorsActivities}"
-                        .pdOutputId="${pdOutput.id}"
+                        .keyInterventionId="${keyIntervention.id}"
+                        .ewpKeyIntervention="${keyIntervention.ewp_key_intervention}"
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
                         .inAmendment="${this.intervention.in_amendment}"
                       ></gdd-pd-activities>
-                      <gdd-pd-indicators
-                        ?hidden="${!this.showIndicators}"
-                        .indicators="${pdOutput.applied_indicators}"
-                        .pdOutputId="${pdOutput.id}"
-                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-                        .showInactiveIndicators="${this.showInactiveIndicatorsActivities}"
-                        .inAmendment="${this.intervention.in_amendment}"
-                        .inAmendmentDate="${this.intervention.in_amendment_date}"
-                      ></gdd-pd-indicators>
                     </div>
                   </etools-data-table-row>
                 `
@@ -319,9 +309,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     cpElement
       .querySelectorAll('etools-data-table-row')
       .forEach((row: Element) => ((row as EtoolsDataTableRow).detailsOpened = true));
-    cpElement
-      .querySelectorAll('pd-activities, pd-indicators')
-      .forEach((row: Element) => (row as GDDPdActivities | GDDPdIndicators).openAllRows());
+    cpElement.querySelectorAll('pd-activities').forEach((row: Element) => (row as GDDPdActivities).openAllRows());
   }
 
   stateChanged(state: RootState) {
@@ -336,12 +324,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     }
     this.commentsModeEnabledFlag = Boolean(state.gddCommentsData?.commentsModeEnabled);
     this.updateResultLinks(state);
-    this.showInactiveToggle = this.resultLinks.some(({key_interventions}: ExpectedResult) =>
-      key_interventions.some(
-        ({applied_indicators, activities}: ResultLinkLowerResult) =>
-          applied_indicators.some(({is_active}: Indicator) => !is_active) || activities.some((a) => !a.is_active)
-      )
-    );
+    this.showInactiveToggle = false;
     this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
     this.interventionStatus = selectInterventionStatus(state);
@@ -355,7 +338,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
 
   getTotal(): string {
     const total: number = this.resultLinks.reduce(
-      (sum: number, result: ExpectedResult) => sum + Number(result.total),
+      (sum: number, result: GDDExpectedResult) => sum + Number(result.total),
       0
     );
     return displayCurrencyAmount(String(total), '0.00');
@@ -369,10 +352,10 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   }
 
   openPdOutputDialog(): void;
-  openPdOutputDialog(pdOutput: Partial<ResultLinkLowerResult>, cpOutput: number): void;
-  openPdOutputDialog(pdOutput?: Partial<ResultLinkLowerResult>, cpOutput?: number): void {
+  openPdOutputDialog(keyIntervention: Partial<GDDResultLinkLowerResult>, result: any): void;
+  openPdOutputDialog(keyIntervention?: Partial<GDDResultLinkLowerResult>, result?: any): void {
     const cpOutputs: IdAndName<number>[] = this.intervention.result_links
-      .map(({cp_output: id, cp_output_name: name}: ExpectedResult) => ({
+      .map(({cp_output: id, cp_output_name: name}: GDDExpectedResult) => ({
         id,
         name
       }))
@@ -380,7 +363,9 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     openDialog<any>({
       dialog: 'gdd-pd-output-dialog',
       dialogData: {
-        pdOutput: pdOutput ? {...pdOutput, cp_output: cpOutput} : undefined,
+        keyIntervention: keyIntervention ? {...keyIntervention, cp_output: result?.cp_output} : undefined,
+        cpOutput: result?.cp_output,
+        resultId: result.id,
         cpOutputs,
         hideCpOutputs: !this.isUnicefUser,
         interventionId: this.interventionId
@@ -426,14 +411,13 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       );
   }
 
-  openCpOutputDialog(resultLink?: ExpectedResult): void {
+  openCpOutputDialog(resultLink?: GDDExpectedResult): void {
     const canChangeCpOp =
       !this.intervention.in_amendment && ['draft', 'development'].includes(this.intervention.status);
     openDialog({
       dialog: 'gdd-cp-output-dialog',
       dialogData: {
         resultLink,
-        cpOutputs: this.filterOutAlreadySelectedAndByCPStructure(canChangeCpOp),
         interventionId: this.interventionId,
         canChangeCpOp: canChangeCpOp
       }
@@ -444,13 +428,13 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   filterOutAlreadySelectedAndByCPStructure(canChangeCpOp: boolean) {
     const alreadyUsedCpOs = canChangeCpOp
       ? new Set()
-      : new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
-    const cpStructures = this.intervention.country_programmes?.map((c: string) => Number(c));
+      : new Set(this.resultLinks.map(({cp_output}: GDDExpectedResult) => cp_output));
+    const cpStructure = Number(this.intervention.country_programme);
 
     return this.cpOutputs.filter(({id, country_programme}: CpOutput) => {
       let conditionFulfilled = !alreadyUsedCpOs.has(id);
-      if (cpStructures && cpStructures.length) {
-        conditionFulfilled = conditionFulfilled && cpStructures.includes(Number(country_programme));
+      if (cpStructure) {
+        conditionFulfilled = conditionFulfilled && cpStructure === Number(country_programme);
       }
       return conditionFulfilled;
     });
@@ -496,30 +480,11 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   _updateNoOfPdOutputs() {
     if (!this.resultLinks) {
       this.noOfPdOutputs = 0;
-      this.thereAreInactiveIndicators = false;
       return;
     }
     this.noOfPdOutputs = this.resultLinks
-      .map((rl: ExpectedResult) => {
-        return rl.key_interventions.length;
-      })
-      .reduce((a: number, b: number) => a + b, 0);
-
-    if (!this.noOfPdOutputs) {
-      this.thereAreInactiveIndicators = false;
-    } else {
-      this.thereAreInactiveIndicators = !!this._getNoOfInactiveIndicators();
-    }
-  }
-
-  _getNoOfInactiveIndicators() {
-    return this.resultLinks
-      .map((rl: ExpectedResult) => {
-        return rl.key_interventions
-          .map((key_intervention) => {
-            return key_intervention.applied_indicators.filter((i) => !i.is_active).length;
-          })
-          .reduce((a: number, b: number) => a + b, 0);
+      .map((rl: GDDExpectedResult) => {
+        return rl.gdd_key_interventions.length;
       })
       .reduce((a: number, b: number) => a + b, 0);
   }
@@ -540,9 +505,9 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       // if we found new CP output - add it to track to open it on first render
       created.forEach(({id}) => this.newCPOutputs.add(id));
       // the same thing for PD
-      const existingPD = this.resultLinks.flatMap(({key_interventions}) => key_interventions.map(({id}) => id));
+      const existingPD = this.resultLinks.flatMap(({gdd_key_interventions}) => gdd_key_interventions.map(({id}) => id));
       const createdPD = newResults
-        .flatMap(({key_interventions}) => key_interventions)
+        .flatMap(({gdd_key_interventions}) => gdd_key_interventions)
         .filter(({id}) => !existingPD.includes(id));
       createdPD.forEach(({id}) => this.newPDOutputs.add(id));
     }
@@ -550,7 +515,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     this.resultLinks = newResults;
   }
 
-  _getCPNeededInterventionInfo(intervention: Intervention) {
+  _getCPNeededInterventionInfo(intervention: GDD) {
     return {
       status: intervention.status,
       in_amendment: intervention.in_amendment,

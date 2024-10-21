@@ -4,7 +4,7 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
-import {InterventionReview} from '@unicef-polymer/etools-types';
+import {GDDReview} from '@unicef-polymer/etools-types';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -60,7 +60,7 @@ export class GDDOverallApproval extends LitElement {
     ];
   }
 
-  @property() review!: InterventionReview;
+  @property() review!: GDDReview;
   @property() readonly = false;
 
   render(): TemplateResult {
@@ -102,7 +102,7 @@ export class GDDOverallApproval extends LitElement {
                   <label class="col-12 label">Q${index + 1}: ${translateValue(field, 'REVIEW_QUESTIONS')}</label>
                   <div class="col-12 answer">
                     ${translateValue(
-                      REVIEW_ANSVERS.get(String(this.review[field as keyof InterventionReview])) || '-',
+                      REVIEW_ANSVERS.get(String(this.review[field as keyof GDDReview])) || '-',
                       'REVIEW_ANSWERS'
                     )}
                   </div>

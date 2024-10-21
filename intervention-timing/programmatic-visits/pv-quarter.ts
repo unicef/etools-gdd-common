@@ -2,7 +2,7 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {AnyObject, PlannedVisit, Site} from '@unicef-polymer/etools-types';
+import {AnyObject, GDDPlannedVisit, Site} from '@unicef-polymer/etools-types';
 import {css, html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {langChanged, translate} from 'lit-translate';
@@ -131,7 +131,7 @@ export class GDDPvQuarter extends LitElement {
   }
 
   @property({type: Object})
-  item!: PlannedVisit;
+  item!: GDDPlannedVisit;
 
   @property({type: Number})
   qIndex!: number;

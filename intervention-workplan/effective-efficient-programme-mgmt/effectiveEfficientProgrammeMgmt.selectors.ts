@@ -5,15 +5,15 @@ import {
   GDDProgrammeManagementActivityPermissions
 } from './effectiveEfficientProgrammeMgmt.models';
 import {Permission} from '@unicef-polymer/etools-types';
-import {InterventionPermissionsFields, Intervention} from '@unicef-polymer/etools-types';
+import {GDDPermissionsFields, GDD} from '@unicef-polymer/etools-types';
 
-export const selectProgrammeManagement = createSelector(currentIntervention, (intervention: Intervention) => {
+export const selectProgrammeManagement = createSelector(currentIntervention, (intervention: GDD) => {
   return new GDDProgrammeManagement(intervention);
 });
 
 export const selectProgrammeManagementActivityPermissions = createSelector(
   currentInterventionPermissions,
-  (permissions: Permission<InterventionPermissionsFields>) => {
+  (permissions: Permission<GDDPermissionsFields>) => {
     return {
       edit: new GDDProgrammeManagementActivityPermissions(permissions!.edit),
       required: new GDDProgrammeManagementActivityPermissions(permissions!.required)

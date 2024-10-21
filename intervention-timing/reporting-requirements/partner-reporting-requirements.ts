@@ -20,7 +20,7 @@ import {selectReportingRequirementsPermissions} from './reportingRequirementsPer
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {AnyObject, Intervention, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, GDD, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
@@ -229,7 +229,7 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
                 .interventionId="${this.interventionId}"
                 .interventionStart="${this.interventionStart}"
                 .requirementsCount="${this.hrUnicefRequirementsCount}"
-                .expectedResults="${this.expectedResults}"
+                .GDDExpectedResults="${this.GDDExpectedResults}"
                 .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateHRUCount(e.detail)}
               >
@@ -240,7 +240,7 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
                 name="humanitarianCluster"
                 .interventionId="${this.interventionId}"
                 .requirementsCount="${this.hrClusterRequirementsCount}"
-                .expectedResults="${this.expectedResults}"
+                .GDDExpectedResults="${this.GDDExpectedResults}"
                 @count-changed=${(e: CustomEvent) => this.updateHRCCount(e.detail)}
               >
               </gdd-humanitarian-reporting-req-cluster>
@@ -280,7 +280,7 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
   interventionEnd!: string;
 
   @property({type: Array})
-  expectedResults!: [];
+  GDDExpectedResults!: [];
 
   // count properties
   @property({type: Number})
@@ -320,11 +320,11 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
     this.isUnicefUser = isUnicefUser(state);
     this.reportingRequirementsPermissions = selectReportingRequirementsPermissions(state);
     const currentIntervention = get(state, 'gddInterventions.current');
-    this.intervention = cloneDeep(currentIntervention) as Intervention;
+    this.intervention = cloneDeep(currentIntervention) as GDD;
     this.interventionId = this.intervention.id;
     this.interventionStart = this.intervention.start;
     this.interventionEnd = this.intervention.end;
-    this.expectedResults = this.intervention.result_links;
+    this.GDDExpectedResults = this.intervention.result_links;
     this.isReadonly = this._isReadOnly();
   }
 

@@ -16,7 +16,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import {EtoolsEndpoint, LabelAndValue} from '@unicef-polymer/etools-types';
-import {Intervention} from '@unicef-polymer/etools-types';
+import {GDD} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
@@ -153,7 +153,7 @@ export class GDDRiskDialog extends ComponentBaseMixin(LitElement) {
       .catch((error: any) => {
         parseRequestErrorsAndShowAsToastMsgs(error, this);
       })
-      .then((intervention: Intervention) => {
+      .then((intervention: GDD) => {
         getStore().dispatch(updateCurrentIntervention(intervention));
         this.onClose();
       })

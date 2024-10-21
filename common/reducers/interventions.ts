@@ -4,12 +4,12 @@ import {
   UPDATE_CURRENT_INTERVENTION,
   UPDATE_PARTNER_REPORTING_REQUIREMENTS
 } from '../actionsConstants';
-import {Intervention} from '@unicef-polymer/etools-types';
+import {GDD} from '@unicef-polymer/etools-types';
 import {PartnerReportingRequirements} from '../types/store.types';
 import {RESET_CURRENT_ITEM} from '../actions/actionsContants';
 
 export interface GDDInterventionsState {
-  current: Intervention | null;
+  current: GDD | null;
   interventionLoading: number | null;
   partnerReportingRequirements: PartnerReportingRequirements;
   shouldReGetList: boolean;

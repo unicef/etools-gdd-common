@@ -17,7 +17,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, EtoolsEndpoint, FrsDetails, Intervention, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, EtoolsEndpoint, GDDFrsDetails, GDD, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
@@ -193,7 +193,7 @@ export class GDDInterventionDates extends CommentsMixin(
     super.stateChanged(state);
   }
 
-  checkIntervDateConsistency(data: GDDProgrammeDocDates, frs_details: FrsDetails) {
+  checkIntervDateConsistency(data: GDDProgrammeDocDates, frs_details: GDDFrsDetails) {
     this._frsStartConsistencyWarning = this.checkFrsAndIntervDateConsistency(
       data.start,
       frs_details.earliest_start_date,
@@ -244,7 +244,7 @@ export class GDDInterventionDates extends CommentsMixin(
     return false;
   }
 
-  private thereAreProgrammaticVisits(intervention: Intervention | null) {
+  private thereAreProgrammaticVisits(intervention: GDD | null) {
     return !!intervention?.planned_visits && intervention.planned_visits.length > 0;
   }
 

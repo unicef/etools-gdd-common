@@ -1,4 +1,4 @@
-import {InterventionComment} from '@unicef-polymer/etools-types';
+import {GDDComment} from '@unicef-polymer/etools-types';
 import {LitElement, PropertyValues} from 'lit';
 import {property} from 'lit/decorators.js';
 import {GDDCommentsEndpoints} from './comments-types';
@@ -12,7 +12,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {get as getTranslation} from 'lit-translate';
 
 export abstract class EditComments extends connectStore(LitElement) {
-  @property() comments: (InterventionComment & {loadingError?: boolean})[] = [];
+  @property() comments: (GDDComment & {loadingError?: boolean})[] = [];
   @property() endpoints!: GDDCommentsEndpoints;
   newMessageText = '';
   currentUser: any;
@@ -58,7 +58,7 @@ export abstract class EditComments extends connectStore(LitElement) {
       endpoint: getEndpoint(this.endpoints.resolveComment, {interventionId: this.interventionId, commentId: id}),
       method: 'POST'
     })
-      .then((updatedComment: InterventionComment) => {
+      .then((updatedComment: GDDComment) => {
         this.resolvingCollection.delete(id);
         this.comments[index] = updatedComment;
         getStore().dispatch(updateComment(this.relatedTo, updatedComment, this.interventionId));
@@ -82,7 +82,7 @@ export abstract class EditComments extends connectStore(LitElement) {
       endpoint: getEndpoint(this.endpoints.deleteComment, {interventionId: this.interventionId, commentId: id}),
       method: 'POST'
     })
-      .then((updatedComment: InterventionComment) => {
+      .then((updatedComment: GDDComment) => {
         this.deletingCollection.delete(id);
         this.comments[index] = updatedComment;
         getStore().dispatch(updateComment(this.relatedTo, updatedComment, this.interventionId));
@@ -122,7 +122,7 @@ export abstract class EditComments extends connectStore(LitElement) {
       method: 'POST',
       body
     })
-      .then((newComment: InterventionComment) => {
+      .then((newComment: GDDComment) => {
         // remove old comment
         const index: number = this.comments.indexOf(body);
         this.comments.splice(index, 1);

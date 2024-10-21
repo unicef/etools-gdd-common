@@ -1,16 +1,16 @@
-import {InterventionPermissionsFields, Intervention, PlannedVisit} from '@unicef-polymer/etools-types';
+import {GDDPermissionsFields, GDD, GDDPlannedVisit} from '@unicef-polymer/etools-types';
 import {GDDModelsBase} from '../../common/models/models.base';
 
 export class GDDPlannedVisits extends GDDModelsBase {
-  constructor(intervention: Intervention) {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }
-  planned_visits: PlannedVisit[] = [];
+  planned_visits: GDDPlannedVisit[] = [];
 }
 
 export class GDDPlannedVisitsPermissions extends GDDModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }

@@ -8,7 +8,7 @@ import {
   Site,
   MinimalAgreement,
   RouteDetails,
-  Intervention,
+  GDD,
   CpOutput,
   Section,
   GenericObject,
@@ -28,7 +28,7 @@ export interface AppState {
 }
 
 export interface GDDInterventionsState {
-  current: Intervention | null;
+  current: GDD | null;
   interventionLoading: number | null;
   partnerReportingRequirements: PartnerReportingRequirements;
   shouldReGetList: boolean;

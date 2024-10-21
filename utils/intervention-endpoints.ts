@@ -16,10 +16,10 @@ export interface EtoolsEndpoints {
   resultLinks: EtoolsEndpoint;
   ramIndicators: EtoolsEndpoint;
   resultLinkGetDelete: EtoolsEndpoint;
-  pdOutputDetails: EtoolsEndpoint;
-  createPdOutput: EtoolsEndpoint;
-  pdActivityDetails: EtoolsEndpoint;
-  pdActivities: EtoolsEndpoint;
+  keyInterventionDetails: EtoolsEndpoint;
+  createKeyIntervention: EtoolsEndpoint;
+  gddActivityDetails: EtoolsEndpoint;
+  gddActivities: EtoolsEndpoint;
   interventionBudgetUpdate: EtoolsEndpoint;
   supplyAgreementAdd: EtoolsEndpoint;
   supplyAgreementEdit: EtoolsEndpoint;
@@ -37,7 +37,7 @@ export interface EtoolsEndpoints {
   interventionProgress: EtoolsEndpoint;
   prpToken: EtoolsEndpoint;
   reports: EtoolsEndpoint;
-  expectedResultsExport: EtoolsEndpoint;
+  GDDExpectedResultsExport: EtoolsEndpoint;
   riskDelete: EtoolsEndpoint;
   pdAttachments: EtoolsEndpoint;
   updatePdAttachment: EtoolsEndpoint;
@@ -56,9 +56,25 @@ export interface EtoolsEndpoints {
   officerReviewData: EtoolsEndpoint;
   interventionPVDelete: EtoolsEndpoint;
   exportReviewPdf: EtoolsEndpoint;
+  eWorkPlans: EtoolsEndpoint;
+  ewpOutputs: EtoolsEndpoint;
+  ewpKeyInterventions: EtoolsEndpoint;
+  ewpActivities: EtoolsEndpoint;
 }
 
 export const gddEndpoints: EtoolsEndpoints = {
+  eWorkPlans: {
+    template: '/api/gdd/dropdown-options/e-workplans/?country_programme_id=<%=countryProgrameId%>'
+  },
+  ewpOutputs: {
+    template: '/api/gdd/dropdown-options/ewp-outputs/?gdd_id=<%=gddId%>'
+  },
+  ewpKeyInterventions: {
+    template: '/api/gdd/dropdown-options/ewp-key-interventions/?ewp_output_id=<%=ewpOutputId%>'
+  },
+  ewpActivities: {
+    template: '/api/gdd/dropdown-options/ewp-activities/?ewp_key_intervention_id=<%=keyInterventionId%>'
+  },
   intervention: {
     template: '/api/gdd/gdds/<%=interventionId%>/'
   },
@@ -98,28 +114,28 @@ export const gddEndpoints: EtoolsEndpoints = {
     template: '/api/gdd/gdds/<%=id%>/results-structure/'
   },
   resultLinks: {
-    template: '/api/v2/interventions/<%=id%>/result-links/'
+    template: '/api/gdd/gdds/<%=id%>/result-links/'
   },
   resultLinkGetDelete: {
-    template: '/api/v2/interventions/result-links/<%=result_link%>/'
+    template: '/api/gdd/gdds/result-links/<%=result_link%>/'
   },
   ramIndicators: {
     template: '/api/v2/reports/results/<%=id%>/indicators/'
   },
-  pdOutputDetails: {
-    template: '/api/gdd/gdds/<%=intervention_id%>/pd-outputs/<%=pd_id%>/'
+  keyInterventionDetails: {
+    template: '/api/gdd/gdds/<%=intervention_id%>/key-interventions/<%=pd_id%>/'
   },
-  createPdOutput: {
-    template: '/api/gdd/gdds/<%=intervention_id%>/pd-outputs/'
+  createKeyIntervention: {
+    template: '/api/gdd/gdds/<%=intervention_id%>/key-interventions/'
   },
-  pdActivities: {
-    template: '/api/gdd/gdds/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/'
+  gddActivities: {
+    template: '/api/gdd/gdds/<%=interventionId%>/key-interventions/<%=keyInterventionId%>/activities/'
+  },
+  gddActivityDetails: {
+    template: '/api/gdd/gdds/<%=interventionId%>/key-interventions/<%=keyInterventionId%>/activities/<%=activityId%>/'
   },
   interventionBudgetUpdate: {
     template: '/api/gdd/gdds/<%=interventionId%>/budget/'
-  },
-  pdActivityDetails: {
-    template: '/api/gdd/gdds/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/<%=activityId%>/'
   },
   supplyAgreementAdd: {
     template: '/api/gdd/gdds/<%=interventionId%>/supply/'
@@ -155,7 +171,7 @@ export const gddEndpoints: EtoolsEndpoints = {
     template: '/api/comments/v1/governments/gdd/<%=interventionId%>/csv/'
   },
   lowerResultsDelete: {
-    template: '/api/gdd/gdds/<%=intervention_id%>/pd-outputs/<%=lower_result_id%>/'
+    template: '/api/gdd/gdds/<%=intervention_id%>/key-interventions/<%=lower_result_id%>/'
   },
   createIndicator: {
     template: '/api/gdd/gdds/lower-results/<%=id%>/indicators/'
@@ -177,7 +193,7 @@ export const gddEndpoints: EtoolsEndpoints = {
     template: '/api/unicef/<%=countryId%>/progress-reports/',
     token: 'prp'
   },
-  expectedResultsExport: {
+  GDDExpectedResultsExport: {
     template: '/api/reports/v3/interventions/results/<%=intervention_id%>/?format=docx_table'
   },
   riskDelete: {

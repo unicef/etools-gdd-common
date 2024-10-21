@@ -4,7 +4,7 @@ import {ActivityItemsTableStyles} from './activity-items-table.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {GDDActivityItemRow} from './activity-item-row';
 import './activity-item-row';
-import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {AnyObject, GDDActivityItem} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gddTranslatesMap} from '../../../utils/intervention-labels-map';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -33,7 +33,7 @@ export class GDDActivityItemsTable extends LitElement {
     ];
   }
 
-  @property() activityItems: Partial<InterventionActivityItem>[] = [];
+  @property() activityItems: Partial<GDDActivityItem>[] = [];
   @property() readonly: boolean | undefined = false;
   @property() dialogElement!: EtoolsDialog;
   @property({type: String})
@@ -55,7 +55,7 @@ export class GDDActivityItemsTable extends LitElement {
       </div>
 
       ${this.activityItems.map(
-        (item: Partial<InterventionActivityItem>, index: number) =>
+        (item: Partial<GDDActivityItem>, index: number) =>
           html`<gdd-activity-item-row
             .activityItem="${item}"
             @item-changed="${({detail}: CustomEvent) => this.updateActivityItem(index, detail)}"
@@ -109,7 +109,7 @@ export class GDDActivityItemsTable extends LitElement {
     }, 200);
   }
 
-  updateActivityItem(index: number, item: Partial<InterventionActivityItem> | null): void {
+  updateActivityItem(index: number, item: Partial<GDDActivityItem> | null): void {
     if (item === null) {
       this.activityItems.splice(index, 1);
       this.setFocusOnActivityRow(false);

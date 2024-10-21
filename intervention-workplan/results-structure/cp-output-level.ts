@@ -8,7 +8,7 @@ import './modals/cp-output-dialog';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
-import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
+import {GDDExpectedResult, GDD} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
@@ -19,8 +19,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
   @property() interventionId!: number;
   @property() currency!: string | undefined;
-  @property() resultLink!: ExpectedResult;
-  @property() interventionInfo!: Partial<Intervention>;
+  @property() resultLink!: GDDExpectedResult;
+  @property() interventionInfo!: Partial<GDD>;
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
   @property({type: Boolean}) showIndicators = false;
   @property({type: Boolean}) showActivities = true;
@@ -89,7 +89,7 @@ export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
                       `}
                 </div>
                 <div class="outputs-count">
-                  <b>${this.resultLink.key_interventions.length}</b> ${translate('GDD_OUTPUT_S')}
+                  <b>${this.resultLink.gdd_key_interventions.length}</b> ${translate('GDD_OUTPUT_S')}
                 </div>
               </div>
 

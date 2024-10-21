@@ -58,7 +58,7 @@ export class GDDExportInterventionData extends LitElement {
       return;
     }
     if (_type == 'export_results') {
-      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.expectedResultsExport, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.GDDExpectedResultsExport, {
         intervention_id: this.interventionId
       }).url;
       window.open(url, '_blank');

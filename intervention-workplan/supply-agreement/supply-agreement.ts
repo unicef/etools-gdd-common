@@ -33,7 +33,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
 import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {AnyObject, AsyncAction, EtoolsEndpoint, InterventionSupplyItem} from '@unicef-polymer/etools-types';
-import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
+import {GDD, GDDExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {GDD_TABS} from '../../common/constants';
@@ -200,7 +200,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
   supply_items!: AnyObject[];
 
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
@@ -261,7 +261,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
     childRow.showExpanded = false;
-    const resultLink = this.intervention.result_links.find((result: ExpectedResult) => result.id === item.result);
+    const resultLink = this.intervention.result_links.find((result: GDDExpectedResult) => result.id === item.result);
     const output = resultLink ? resultLink.cp_output_name : '';
     // hide CP Output for Partner User, and preserve layout
     childRow.rowHTML = html`
@@ -317,7 +317,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
     }
     if (get(state, 'gddInterventions.current')) {
       const currentIntervention = get(state, 'gddInterventions.current');
-      this.intervention = cloneDeep(currentIntervention) as Intervention;
+      this.intervention = cloneDeep(currentIntervention) as GDD;
       this.currencyDisplayForTotal();
     }
     this.supply_items = selectSupplyAgreement(state);

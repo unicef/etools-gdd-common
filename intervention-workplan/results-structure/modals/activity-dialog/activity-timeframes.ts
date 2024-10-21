@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} f
 import {property, customElement} from 'lit/decorators.js';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
+import {GDDActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
@@ -99,7 +99,7 @@ export class GDDActivityTimeFrames extends LitElement {
     ];
   }
 
-  set quarters(frames: InterventionActivityTimeframe[]) {
+  set quarters(frames: GDDActivityTimeframe[]) {
     const activityTimes: ActivityTime[] = serializeTimeFrameData(frames);
     this._timeFrames = groupByYear(activityTimes);
   }

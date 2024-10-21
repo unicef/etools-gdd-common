@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
+import {GDD, GDDFrsDetails} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
@@ -335,9 +335,9 @@ export class GDDFundReservationsDisplay extends FrNumbersConsistencyMixin(LitEle
     `;
   }
 
-  _intervention: Intervention | null = null;
+  _intervention: GDD | null = null;
 
-  set intervention(intervention: Intervention | null) {
+  set intervention(intervention: GDD | null) {
     this._intervention = intervention;
     this._checkFrsAmountConsistency();
   }
@@ -347,9 +347,9 @@ export class GDDFundReservationsDisplay extends FrNumbersConsistencyMixin(LitEle
     return this._intervention;
   }
 
-  _frsDetails: FrsDetails | null = null;
+  _frsDetails: GDDFrsDetails | null = null;
 
-  set frsDetails(frsDetails: FrsDetails | null) {
+  set frsDetails(frsDetails: GDDFrsDetails | null) {
     this._frsDetails = frsDetails;
     this._checkFrsAmountConsistency();
   }
@@ -365,7 +365,7 @@ export class GDDFundReservationsDisplay extends FrNumbersConsistencyMixin(LitEle
   @property({type: Boolean})
   lowResolutionLayout = false;
 
-  _noFrs(frsDetails: FrsDetails) {
+  _noFrs(frsDetails: GDDFrsDetails) {
     return !frsDetails || !frsDetails.frs || !frsDetails.frs.length;
   }
 

@@ -7,8 +7,8 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {RootState} from '../common/types/store.types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-polymer/etools-types';
-import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
+import {AnyObject, CpOutput, StaticPartner, GDDManagementBudget} from '@unicef-polymer/etools-types';
+import {GDDExpectedResult, MinimalAgreement, GDD} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
@@ -237,7 +237,7 @@ export class GDDInterventionSummary extends connectStore(LitElement) {
     `;
   }
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   @property({type: Object})
   interventionAgreement!: MinimalAgreement;
@@ -258,7 +258,7 @@ export class GDDInterventionSummary extends connectStore(LitElement) {
   inteventionSections = '';
 
   @property({type: Array})
-  resultLinks!: ExpectedResult[];
+  resultLinks!: GDDExpectedResult[];
 
   @property({type: Array})
   interventionPartner!: AnyObject;
@@ -273,7 +273,7 @@ export class GDDInterventionSummary extends connectStore(LitElement) {
 
     if (get(state, 'gddInterventions.current')) {
       const currentIntervention = get(state, 'gddInterventions.current');
-      this.intervention = cloneDeep(currentIntervention) as Intervention;
+      this.intervention = cloneDeep(currentIntervention) as GDD;
       this.resultLinks = this.intervention.result_links;
     }
 
@@ -345,7 +345,7 @@ export class GDDInterventionSummary extends connectStore(LitElement) {
     );
   }
 
-  private getUnicefEEContrib(management_budgets?: ManagementBudget) {
+  private getUnicefEEContrib(management_budgets?: GDDManagementBudget) {
     if (!management_budgets) {
       return 0;
     }

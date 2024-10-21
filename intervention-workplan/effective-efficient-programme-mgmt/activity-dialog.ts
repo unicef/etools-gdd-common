@@ -17,7 +17,7 @@ import {translate, get as getTranslation} from 'lit-translate';
 import '../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
-import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
+import {AnyObject, GDDManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {GDDActivityItemsTable} from '../../common/components/activity/activity-items-table';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
@@ -192,14 +192,14 @@ export class GDDActivityDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
     const {activity, interventionId, readonly}: any = data;
-    this.items = (activity.items || []).filter((row: ManagementBudgetItem) => row.kind === activity.kind);
+    this.items = (activity.items || []).filter((row: GDDManagementBudgetItem) => row.kind === activity.kind);
     this.useInputLevel = Boolean((this.items || []).length);
     this.readonly = readonly;
 
     setTimeout(() => {
       // timeout to avoid inputLevelChange method reseting totals to 0
       this.data = activity;
-      this.data.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind !== this.data.kind);
+      this.data.items = (this.data.items || []).filter((row: GDDManagementBudgetItem) => row.kind !== this.data.kind);
       this.originalData = cloneDeep(this.data);
       this.data[this.getPropertyName('partner')] = this.data.partner_contribution; // ?
       this.data[this.getPropertyName('unicef')] = this.data.unicef_cash; // ?
@@ -214,7 +214,7 @@ export class GDDActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() dialogOpened = true;
   @property() useInputLevel = false;
   @property({type: String}) currency = '';
-  @property({type: Array}) items: ManagementBudgetItem[] = [];
+  @property({type: Array}) items: GDDManagementBudgetItem[] = [];
   @property({type: Boolean}) readonly = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
   @query('activity-items-table') private activityItemsTable!: GDDActivityItemsTable;
@@ -250,7 +250,7 @@ export class GDDActivityDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
 
-    this.items.forEach((row: ManagementBudgetItem) => {
+    this.items.forEach((row: GDDManagementBudgetItem) => {
       row.kind = this.data.kind;
     });
     this.loadingInProcess = true;

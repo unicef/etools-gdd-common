@@ -1,9 +1,9 @@
 import {Reducer} from 'redux';
 import {SET_ENDPOINT, ADD_COMMENT, ENABLE_COMMENT_MODE, SET_COMMENTS, UPDATE_COMMENT} from './comments.actions';
-import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
+import {GDDComment, GenericObject} from '@unicef-polymer/etools-types';
 import {GDDCommentsEndpoints} from './comments-types';
 
-export type GDDCommentsCollection = GenericObject<InterventionComment[]>;
+export type GDDCommentsCollection = GenericObject<GDDComment[]>;
 export type GDDCommentsState = {
   commentsModeEnabled: boolean;
   collection: GenericObject<GDDCommentsCollection>;
@@ -53,7 +53,7 @@ export const gddCommentsData: Reducer<GDDCommentsState, any> = (state = INITIAL,
 function setCommentsToCollection(
   collection: GenericObject<GDDCommentsCollection>,
   id: number,
-  comments: GenericObject<InterventionComment[]>
+  comments: GenericObject<GDDComment[]>
 ): GenericObject<GDDCommentsCollection> {
   collection[id] = comments;
   return collection;
@@ -63,7 +63,7 @@ function addCommentToCollection(
   collection: GenericObject<GDDCommentsCollection>,
   id: number,
   relatedTo: string,
-  comment: InterventionComment
+  comment: GDDComment
 ): GenericObject<GDDCommentsCollection> {
   if (!collection[id]) {
     collection[id] = {};
@@ -77,15 +77,15 @@ function updateComment(
   collection: GenericObject<GDDCommentsCollection>,
   id: number,
   relatedTo: string,
-  comment: InterventionComment
+  comment: GDDComment
 ): GenericObject<GDDCommentsCollection> {
   const currentComments = collection[id][relatedTo] || [];
-  const index: number = currentComments.findIndex(({id}: InterventionComment) => id === comment.id);
+  const index: number = currentComments.findIndex(({id}: GDDComment) => id === comment.id);
   if (index === -1) {
     console.warn("Comment which you want to update doesn't exists");
     return collection;
   }
-  const updatedComments: InterventionComment[] = [...currentComments];
+  const updatedComments: GDDComment[] = [...currentComments];
   updatedComments.splice(index, 1, comment);
   collection[id][relatedTo] = updatedComments;
   return collection;

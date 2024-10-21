@@ -1,21 +1,21 @@
-import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
+import {GDD, GDDPermissionsFields, AnyObject} from '@unicef-polymer/etools-types';
 import {GDDModelsBase} from '../../common/models/models.base';
-import {AnyObject} from '@unicef-polymer/etools-types';
 
 export class GDDPdUnicefDetails extends GDDModelsBase {
-  constructor(intervention: Intervention) {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }
   offices: AnyObject[] = [];
   sections: AnyObject[] = [];
+  e_workplans: AnyObject[] = [];
   unicef_focal_points: AnyObject[] = [];
   budget_owner: AnyObject = {};
-  country_programmes: [] = [];
+  country_programme: number | null = null;
 }
 
 export class GDDPdUnicefDetailsPermissions extends GDDModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }
@@ -23,5 +23,6 @@ export class GDDPdUnicefDetailsPermissions extends GDDModelsBase {
   sections = true;
   unicef_focal_points = true;
   budget_owner = true;
-  country_programmes = true;
+  country_programme = true;
+  e_workplans = true;
 }

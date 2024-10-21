@@ -1,6 +1,6 @@
 import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {EtoolsEndpoint, InterventionReview, User} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, GDDReview, User} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -57,7 +57,7 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
       `
     ];
   }
-  @property() set review(review: InterventionReview) {
+  @property() set review(review: GDDReview) {
     this.originalData = review;
     this.data = cloneDeep(review);
     addItemToListIfMissing(this.data?.overall_approver, this.users, 'id');

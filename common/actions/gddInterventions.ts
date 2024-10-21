@@ -1,7 +1,7 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {INTERVENTION_LOADING, SHOULD_REGET_LIST, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
-import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
+import {AnyObject, GDDPlannedBudget, GDD} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {PartnerReportingRequirements} from '../types/store.types';
 import pick from 'lodash-es/pick';
@@ -11,7 +11,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
   if (intervention && !intervention.planned_budget) {
-    intervention.planned_budget = new PlannedBudget();
+    intervention.planned_budget = new GDDPlannedBudget();
   }
   return {
     type: UPDATE_CURRENT_INTERVENTION,
@@ -46,7 +46,7 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
   return sendRequest({
     endpoint: getEndpoint(gddEndpoints.intervention, {interventionId: interventionId})
   })
-    .then((intervention: Intervention) => {
+    .then((intervention: GDD) => {
       dispatch(updateCurrentIntervention(intervention));
     })
     .catch((err: any) => {
@@ -88,7 +88,7 @@ export const patchIntervention =
       endpoint: getEndpoint(gddEndpoints.intervention, {interventionId: interventionId}),
       body: interventionChunck,
       method: 'PATCH'
-    }).then((intervention: Intervention) => {
+    }).then((intervention: GDD) => {
       dispatch(updateCurrentIntervention(intervention));
 
       if (shouldReGetList(prevInterventionState, intervention)) {
@@ -97,7 +97,7 @@ export const patchIntervention =
     });
   };
 
-function shouldReGetList(prevInterventionState: Intervention, currentInterventionState: Intervention) {
+function shouldReGetList(prevInterventionState: GDD, currentInterventionState: GDD) {
   const fieldsDisplayedOnList = [
     'number',
     'partner_name',

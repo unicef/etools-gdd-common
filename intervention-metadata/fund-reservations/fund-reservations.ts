@@ -17,7 +17,7 @@ import {GDDFundReservationsPermissions} from './fund-reservations.models';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
 import {AnyObject, AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polymer/etools-types';
-import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
+import {GDD, GDDFrsDetails, GDDFr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate, get as getTranslation} from 'lit-translate';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
@@ -120,13 +120,13 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
   permissions!: Permission<GDDFundReservationsPermissions>;
 
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   @property({type: Object})
   frsDialogEl!: GDDUpdateFrNumbers;
 
   @property({type: Object})
-  _lastFrsDetailsReceived!: FrsDetails | null;
+  _lastGDDFrsDetailsReceived!: GDDFrsDetails | null;
 
   @property({type: String})
   _frsConsistencyWarning!: string | boolean;
@@ -145,7 +145,7 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
     const currentIntervention = get(state, 'gddInterventions.current');
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
-      this._frsDetailsChanged(this.intervention.frs_details);
+      this._GDDFrsDetailsChanged(this.intervention.frs_details);
     }
 
     this.sePermissions(state);
@@ -162,7 +162,7 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
   constructor() {
     super();
     listenForLangChanged(() => {
-      this._frsDetailsChanged(this.intervention?.frs_details);
+      this._GDDFrsDetailsChanged(this.intervention?.frs_details);
     });
   }
 
@@ -199,7 +199,7 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
   _openFrsDialog() {
     // populate dialog with current frs numbers deep copy
     const currentFrs = this._getCurrentFrs();
-    const frs = currentFrs.map((fr: Fr) => {
+    const frs = currentFrs.map((fr: GDDFr) => {
       return {fr_number: fr.fr_number};
     });
 
@@ -210,7 +210,7 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
   }
 
   // get original/initial intervention frs numbers
-  _getCurrentFrs(): Fr[] {
+  _getCurrentFrs(): GDDFr[] {
     return this.intervention.frs_details && this.intervention.frs_details.frs instanceof Array
       ? this.intervention.frs_details.frs
       : [];
@@ -235,7 +235,7 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
     const frsBeforeUpdate = this._getCurrentFrs();
     if (frsBeforeUpdate.length !== 0) {
       // all FR Numbers have been deleted
-      this._triggerPdFrsUpdate(new FrsDetails());
+      this._triggerPdFrsUpdate(new GDDFrsDetails());
     }
   }
 
@@ -249,7 +249,7 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
       this.frsDialogEl.closeDialog();
     } else {
       // request FR Numbers details from server
-      this._triggerFrsDetailsRequest(frNumbers);
+      this._triggerGDDFrsDetailsRequest(frNumbers);
     }
   }
 
@@ -257,19 +257,19 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
   _frsInconsistenciesConfirmationHandler(confirmed: boolean) {
     if (confirmed) {
       // confirmed, add numbers to intervention
-      this._triggerPdFrsUpdate(Object.assign({}, this._lastFrsDetailsReceived));
-      this._lastFrsDetailsReceived = null;
+      this._triggerPdFrsUpdate(Object.assign({}, this._lastGDDFrsDetailsReceived));
+      this._lastGDDFrsDetailsReceived = null;
     } else {
       // frs warning not confirmed/cancelled, frs update is canceled
       // re-check frs warning on initial data
-      this._frsDetailsChanged(this.intervention.frs_details);
+      this._GDDFrsDetailsChanged(this.intervention.frs_details);
     }
   }
 
   /**
    * Get FR Numbers details from server
    */
-  _triggerFrsDetailsRequest(frNumbers: string[]) {
+  _triggerGDDFrsDetailsRequest(frNumbers: string[]) {
     (this.frsDialogEl as GDDUpdateFrNumbers).startSpinner();
 
     let url =
@@ -281,38 +281,38 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
     }
 
     sendRequest({endpoint: {url: url}})
-      .then((resp: FrsDetails) => {
-        this._frsDetailsSuccessHandler(resp);
+      .then((resp: GDDFrsDetails) => {
+        this._GDDFrsDetailsSuccessHandler(resp);
       })
       .catch((error: any) => {
-        this._frsDetailsErrorHandler(error.response);
+        this._GDDFrsDetailsErrorHandler(error.response);
       });
   }
 
   /*
    * Frs details received, check frs consistency
    */
-  _frsDetailsSuccessHandler(frsDetails: FrsDetails) {
-    frsDetails.currencies_match = this._frsCurrenciesMatch(frsDetails.frs);
+  _GDDFrsDetailsSuccessHandler(GDDFrsDetails: GDDFrsDetails) {
+    GDDFrsDetails.currencies_match = this._frsCurrenciesMatch(GDDFrsDetails.frs);
 
-    const inconsistencyMsg = this.checkFrsConsistency(frsDetails, this.intervention, true);
+    const inconsistencyMsg = this.checkFrsConsistency(GDDFrsDetails, this.intervention, true);
     this._frsConsistencyWarning = inconsistencyMsg;
 
     if (inconsistencyMsg) {
       // there are inconsistencies
-      this._lastFrsDetailsReceived = frsDetails;
+      this._lastGDDFrsDetailsReceived = GDDFrsDetails;
 
       this._openFrsInconsistenciesDialog(inconsistencyMsg);
     } else {
       // append FR numbers to intervention
-      this._triggerPdFrsUpdate(frsDetails);
+      this._triggerPdFrsUpdate(GDDFrsDetails);
     }
   }
 
   /**
    * frs details request failed
    */
-  _frsDetailsErrorHandler(responseErr: any) {
+  _GDDFrsDetailsErrorHandler(responseErr: any) {
     this.frsDialogEl.stopSpinner();
     let toastMsg =
       responseErr && responseErr.error
@@ -329,13 +329,13 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
   }
 
   // trigger FR Numbers update on main intervention
-  _triggerPdFrsUpdate(newFrsDetails: FrsDetails) {
-    const frsIDs = (newFrsDetails.frs || []).map((fr) => fr.id);
+  _triggerPdFrsUpdate(newGDDFrsDetails: GDDFrsDetails) {
+    const frsIDs = (newGDDFrsDetails.frs || []).map((fr) => fr.id);
     this.frsDialogEl.closeDialog();
     getStore().dispatch<AsyncAction>(patchIntervention({frs: frsIDs}));
   }
 
-  thereAreFrs(_frsDetails: any) {
+  thereAreFrs(_GDDFrsDetails: any) {
     const frs = this._getCurrentFrs();
     return !!frs.length;
   }
@@ -362,12 +362,12 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
     return msg;
   }
 
-  _frsDetailsChanged(frsDetails: FrsDetails) {
-    if (!frsDetails) {
+  _GDDFrsDetailsChanged(GDDFrsDetails: GDDFrsDetails) {
+    if (!GDDFrsDetails) {
       return;
     }
     setTimeout(() => {
-      this._frsConsistencyWarning = this.checkFrsConsistency(frsDetails, this.intervention);
+      this._frsConsistencyWarning = this.checkFrsConsistency(GDDFrsDetails, this.intervention);
     }, 100);
   }
 }

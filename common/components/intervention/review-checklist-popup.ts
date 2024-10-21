@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, GenericObject, GDDReview} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate, get as getTranslation} from 'lit-translate';
 
@@ -60,13 +60,13 @@ export class GDDReviewChecklistPopup extends LitElement {
     ];
   }
 
-  @property() review: Partial<InterventionReview> = {};
+  @property() review: Partial<GDDReview> = {};
   @property() isOverallReview = false;
   @property() approvePopup = false;
   @property() rejectPopup = false;
   @property() requestInProcess = false;
-  originalReview!: Partial<InterventionReview>;
-  overallReview!: Partial<InterventionReview>;
+  originalReview!: Partial<GDDReview>;
+  overallReview!: Partial<GDDReview>;
 
   questions: Readonly<GenericObject<string>> = REVIEW_QUESTIONS;
 
@@ -115,7 +115,7 @@ export class GDDReviewChecklistPopup extends LitElement {
                 `
               : ''}
             ${Object.entries(this.questions).map(([field]: [string, string], index: number) =>
-              this.generateLikertScale(field as keyof InterventionReview, index)
+              this.generateLikertScale(field as keyof GDDReview, index)
             )}
             <div class="col-12">
               <etools-textarea
@@ -168,7 +168,7 @@ export class GDDReviewChecklistPopup extends LitElement {
     `;
   }
 
-  generateLikertScale(field: keyof InterventionReview, index: number): TemplateResult {
+  generateLikertScale(field: keyof GDDReview, index: number): TemplateResult {
     return html`
       <div class="likert-scale pb-20">
         <div class="w100">
@@ -187,7 +187,7 @@ export class GDDReviewChecklistPopup extends LitElement {
     `;
   }
 
-  valueChanged(value: any, field: keyof InterventionReview): void {
+  valueChanged(value: any, field: keyof GDDReview): void {
     this.review[field] = value;
     this.requestUpdate();
   }

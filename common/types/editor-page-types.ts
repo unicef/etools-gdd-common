@@ -1,26 +1,25 @@
-import {InterventionActivityItem, ManagementBudgetItem} from '@unicef-polymer/etools-types/dist/intervention.types';
-import {Indicator} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
+import {GDDActivityItem, GDDManagementBudgetItem} from '@unicef-polymer/etools-types/dist/gdd.types';
 
-export interface GDDExpectedResultExtended {
+export interface GDDGDDExpectedResultExtended {
   id: number;
   code: string;
   created: string;
   cp_output: number;
   cp_output_name: string;
   intervention: number;
-  key_interventions: GDDResultLinkLowerResultExtended[];
+  gdd_key_interventions: GDDResultLinkLowerResultExtended[];
   ram_indicators: number[];
   ram_indicator_names: string[];
   total: string;
 }
 
-export declare type GDDInterventionActivity = {
+export declare type GDDActivity = {
   id: number;
   code: string;
   context_details: string;
   cso_cash: string;
   cso_supplies: string;
-  items: GDDInterventionActivityItemExtended[];
+  items: GDDActivityItemExtended[];
   name: string;
   time_frames: number[];
   unicef_cash: string;
@@ -32,8 +31,7 @@ export declare type GDDInterventionActivity = {
 export interface GDDResultLinkLowerResult {
   id: number;
   name: string;
-  applied_indicators: Indicator[];
-  activities: GDDInterventionActivityExtended[];
+  activities: GDDActivityExtended[];
   code?: string;
   created?: string;
   result_link?: number;
@@ -41,7 +39,7 @@ export interface GDDResultLinkLowerResult {
   total: string;
 }
 
-export type GDDInterventionActivityItemExtended = InterventionActivityItem & {
+export type GDDActivityItemExtended = GDDActivityItem & {
   id: number;
   code: string;
   inEditMode: boolean;
@@ -63,7 +61,7 @@ type GDDInvalidItem = {
   unicef_cash: boolean;
 };
 
-export type GDDInterventionActivityExtended = GDDInterventionActivity & {
+export type GDDActivityExtended = GDDActivity & {
   inEditMode: boolean;
   itemsInEditMode: boolean;
   invalid: Partial<GDDItemInvalid>;
@@ -84,7 +82,7 @@ export enum GDDProgrammeManagementKindChoices {
   planning = 'planning'
 }
 
-export type GDDProgrammeManagementRowItemExtended = ManagementBudgetItem & {
+export type GDDProgrammeManagementRowItemExtended = GDDManagementBudgetItem & {
   id?: number;
   code: string;
   inEditMode: boolean;

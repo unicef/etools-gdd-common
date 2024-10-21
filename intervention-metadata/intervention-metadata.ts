@@ -9,7 +9,7 @@ import './review-and-sign/review-and-sign';
 import './other/other';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
-import {InterventionPermissionsFields, Permission} from '@unicef-polymer/etools-types';
+import {GDDPermissionsFields, Permission} from '@unicef-polymer/etools-types';
 import {currentInterventionPermissions, currentPage, currentSubpage} from '../common/selectors';
 import {selectDatesAndSignaturesPermissions} from '../common/managementDocument.selectors';
 import './financial/financial-component';
@@ -20,7 +20,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
  */
 export class GDDInterventionMetadata extends connectStore(LitElement) {
   @property({type: Object})
-  permissions!: Permission<InterventionPermissionsFields>;
+  permissions!: Permission<GDDPermissionsFields>;
 
   @property() showSignatureAndDates = false;
 

@@ -6,12 +6,7 @@ import {CommentPanelsStyles} from './common-comments.styles';
 import {GDDCommentsCollection} from '../comments/comments.reducer';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {RootState} from '../../types/store.types';
-import {
-  ExpectedResult,
-  InterventionActivity,
-  InterventionComment,
-  ResultLinkLowerResult
-} from '@unicef-polymer/etools-types';
+import {GDDExpectedResult, GDDActivity, GDDComment, GDDResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {GDDCommentItemData, GDDCommentRelatedItem, GDDCommentsEndpoints} from '../comments/comments-types';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {buildUrlQueryString} from '@unicef-polymer/etools-utils/dist/general.util';
@@ -26,7 +21,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 export class GDDCommentsPanels extends connectStore(LitElement) {
   @property() messagesOpened = false;
   @property() commentsCollection?: GDDCommentsCollection;
-  @property() comments: InterventionComment[] = [];
+  @property() comments: GDDComment[] = [];
   @property() minimized = false;
 
   interventionId?: number;
@@ -65,11 +60,11 @@ export class GDDCommentsPanels extends connectStore(LitElement) {
   }
 
   mapToOpjectType(array: any[], type: string): GDDCommentRelatedItem[] {
-    return array.map(({id, code, name, indicator}: any) => ({
+    return array.map(({id, code, name}: any) => ({
       type,
-      id: indicator?.id || id,
-      name: indicator?.title || name,
-      code: indicator?.code || code
+      id: id,
+      name: name,
+      code: code
     }));
   }
 
@@ -96,15 +91,13 @@ export class GDDCommentsPanels extends connectStore(LitElement) {
       sendRequest({
         endpoint: getEndpoint(gddEndpoints.resultLinksDetails, {id: intervention.id})
       }).then((response: any) => {
-        const pds = response?.result_links.map(({key_interventions: pds}: ExpectedResult) => pds).flat();
-        const activities = pds.map(({activities}: ResultLinkLowerResult) => activities).flat();
-        const indicators = pds.map(({applied_indicators}: ResultLinkLowerResult) => applied_indicators).flat();
-        const activity_items = activities.map(({items}: InterventionActivity) => items).flat();
+        const pds = response?.result_links.map(({gdd_key_interventions: pds}: GDDExpectedResult) => pds).flat();
+        const activities = pds.map(({activities}: GDDResultLinkLowerResult) => activities).flat();
+        const activity_items = activities.map(({items}: GDDActivity) => items).flat();
 
         this.relatedItems = [
-          ...this.mapToOpjectType(pds, 'pd-output'),
+          ...this.mapToOpjectType(pds, 'key-intervention'),
           ...this.mapToOpjectType(activities, 'activity'),
-          ...this.mapToOpjectType(indicators, 'indicator'),
           ...this.mapToOpjectType(activity_items, 'activity-item')
         ];
 

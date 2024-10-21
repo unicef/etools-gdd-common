@@ -1,8 +1,8 @@
-import {Intervention} from '@unicef-polymer/etools-types';
+import {GDD} from '@unicef-polymer/etools-types';
 import {GDDModelsBase} from '../models/models.base';
 
 export class GDDBudgetSummary extends GDDModelsBase {
-  constructor(intervention: Intervention) {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention.planned_budget);
     this.hq_support_cost = intervention.hq_support_cost!;

@@ -22,11 +22,14 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
-import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
+import {AnyObject, CountryProgram, Permission, AsyncAction, User, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
 import {translate} from 'lit-translate';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -106,22 +109,24 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
             </etools-dropdown-multi>
           </div>
           <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
-            <etools-dropdown-multi
+            <etools-dropdown
               id="cpStructures"
               label=${translate('CP_STRUCTURES')}
               .options="${this.cpStructures}"
               class="w100"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.data.country_programmes}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes) ? -1 : undefined}"
-              ?required="${this.permissions?.required.country_programmes}"
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedItemsChanged(detail, 'country_programmes')}"
+              .selected="${this.data.country_programme}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.country_programme)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programme) ? -1 : undefined}"
+              ?required="${this.permissions?.required.country_programme}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                this.selectedItemChanged(detail, 'country_programme');
+                this.populateEWorkplans();
+              }}"
               trigger-value-change-event
             >
-            </etools-dropdown-multi>
+            </etools-dropdown>
           </div>
           ${this.permissions?.view!.unicef_focal_points
             ? html`<div class="col-xl-4 col-md-6 col-12">
@@ -132,7 +137,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
                   .options="${this.users_list}"
                   option-label="name"
                   option-value="id"
-                  .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id)}"
+                  .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id) || []}"
                   ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
                   ?required="${this.permissions?.required.unicef_focal_points}"
                   @etools-selected-items-changed="${({detail}: CustomEvent) =>
@@ -166,7 +171,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
               .selected="${this.data.budget_owner?.id}"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.budget_owner)}"
               ?required="${this.permissions?.required.budget_owner}"
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedUserChanged(detail, 'budget_owner')}"
               trigger-value-change-event
             >
@@ -180,6 +185,25 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
                 )}
               </div>
             </div>
+          </div>
+
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
+            <etools-dropdown-multi
+              id="e_workplans"
+              label=${translate('E_WORKPLANS')}
+              .options="${this.e_workplans}"
+              class="w100"
+              option-label="name"
+              option-value="id"
+              .selectedValues="${this.e_workplans.length ? this.data.e_workplans : null}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.e_workplans)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.e_workplans) ? -1 : undefined}"
+              ?required="${this.permissions?.required.e_workplans}"
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.selectedItemsChanged(detail, 'e_workplans')}"
+              trigger-value-change-event
+            >
+            </etools-dropdown-multi>
           </div>
         </div>
 
@@ -212,6 +236,9 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
 
   @property({type: Array})
   section_list!: AnyObject[];
+
+  @property({type: Array})
+  e_workplans: AnyObject[] = [];
 
   stateChanged(state: RootState) {
     if (
@@ -250,18 +277,20 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
   }
 
   populateDropdownOptions(state: any) {
-    if (get(state, 'commonData.unicefUsersData.length')) {
+    if (state.commonData!.unicefUsersData?.length) {
       this.users_list = [...state.commonData!.unicefUsersData];
     }
-    if (get(state, 'commonData.sections.length')) {
+    if (state.commonData!.sections?.length) {
       this.section_list = [...state.commonData!.sections];
     }
-    if (get(state, 'commonData.offices.length')) {
+    if (state.commonData!.offices?.length) {
       this.office_list = [...state.commonData!.offices];
     }
     if (!isJsonStrMatch(this.cpStructures, state.commonData!.countryProgrammes)) {
       this.cpStructures = [...state.commonData!.countryProgrammes];
     }
+
+    this.populateEWorkplans();
 
     const pdUsers = this.getUsersAssignedToCurrentPD();
     if (this.isUnicefUser) {
@@ -272,6 +301,22 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
       }
     } else {
       this.users_list = pdUsers;
+    }
+  }
+
+  populateEWorkplans() {
+    if (this.data.country_programme) {
+      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.eWorkPlans, {
+        countryProgrameId: this.data.country_programme
+      });
+
+      sendRequest({
+        endpoint
+      }).then((eWorkplans: any[]) => {
+        this.e_workplans = [...eWorkplans];
+      });
+    } else {
+      this.e_workplans = [];
     }
   }
 

@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
-import {InterventionReview, PrcOfficerReview} from '@unicef-polymer/etools-types';
+import {GDDReview, GDDPrcOfficerReview} from '@unicef-polymer/etools-types';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {loadPrcMembersIndividualReviews} from '../../common/actions/officers-reviews';
 import isEqual from 'lodash-es/isEqual';
@@ -48,8 +48,8 @@ export class GDDReviewsList extends connectStore(LitElement) {
     ];
   }
 
-  private _review!: InterventionReview;
-  set review(review: InterventionReview) {
+  private _review!: GDDReview;
+  set review(review: GDDReview) {
     // Info: this._review is not persisted on nav to list and back to pd review (component is removed from DOM)
     const oldOfficers: number[] | undefined = this._review ? this._review.prc_officers : undefined;
 
@@ -60,11 +60,11 @@ export class GDDReviewsList extends connectStore(LitElement) {
   }
 
   @property({type: Object})
-  get review(): InterventionReview {
+  get review(): GDDReview {
     return this._review;
   }
 
-  @property() approvals: PrcOfficerReview[] = [];
+  @property() approvals: GDDPrcOfficerReview[] = [];
   @property() readonly = false;
   @property() currentUserId!: number;
   @property({type: Boolean})
