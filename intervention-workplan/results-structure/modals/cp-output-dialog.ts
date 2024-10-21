@@ -174,6 +174,7 @@ export class GDDCpOutputDialog extends LitElement {
     this.loadingInProcess = true;
     const endpoint = this.cpOutputId
       ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.resultLinkGetDelete, {
+          interventionId: this.interventionId,
           result_link: this.resultLinkId
         })
       : getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.resultLinks, {

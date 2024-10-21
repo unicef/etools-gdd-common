@@ -462,6 +462,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       loadingSource: 'gdd-interv-cp-remove'
     });
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.resultLinkGetDelete, {
+      interventionId: this.interventionId,
       result_link: resultLinkId
     });
     _sendRequest({

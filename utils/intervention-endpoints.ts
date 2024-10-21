@@ -117,7 +117,7 @@ export const gddEndpoints: EtoolsEndpoints = {
     template: '/api/gdd/gdds/<%=id%>/result-links/'
   },
   resultLinkGetDelete: {
-    template: '/api/gdd/gdds/result-links/<%=result_link%>/'
+    template: '/api/gdd/gdds/<%=interventionId%>/result-links/<%=result_link%>/'
   },
   ramIndicators: {
     template: '/api/v2/reports/results/<%=id%>/indicators/'

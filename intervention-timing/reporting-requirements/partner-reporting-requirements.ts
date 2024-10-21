@@ -167,45 +167,6 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
                   ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
                 ></etools-icon-button>
               </div>
-              <div
-                name="humanitarianUnicef"
-                title=${translate('HUMANITARIAN_REPORTS_UNICEF')}
-                class="nav-menu-item"
-                ?selected="${this.isSelected('humanitarianUnicef')}"
-                @click="${this.selectType}"
-                tabindex="0"
-                id="clickable"
-              >
-                <info-icon-tooltip
-                  id="iit-hrr"
-                  ?hidden="${this.isReadonly}"
-                  .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
-                ></info-icon-tooltip>
-                <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
-                <etools-icon-button
-                  class="edit-rep-req"
-                  name="create"
-                  @click="${this._openHruEditDialog}"
-                  ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
-                ></etools-icon-button>
-              </div>
-              ${this.getHumanitarianLink(this.hrClusterRequirementsCount)}
-              <div
-                name="special"
-                title=${translate('SPECIAL_REPORT')}
-                class="nav-menu-item"
-                ?selected="${this.isSelected('special')}"
-                @click="${this.selectType}"
-                tabindex="0"
-                id="clickable"
-              >
-                <info-icon-tooltip
-                  id="iit-sp"
-                  ?hidden="${this.isReadonly}"
-                  .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"
-                ></info-icon-tooltip>
-                ${translate('SPECIAL_REPORT')} (${this.specialRequirementsCount})
-              </div>
             </div>
             <div class="reporting-req-data">
               <gdd-quarterly-reporting-requirements
@@ -221,39 +182,6 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
                 @count-changed=${(e: CustomEvent) => this.updateQPRCount(e.detail)}
               >
               </gdd-quarterly-reporting-requirements>
-
-              <gdd-humanitarian-reporting-req-unicef
-                ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianUnicef')}"
-                id="hru"
-                name="humanitarianUnicef"
-                .interventionId="${this.interventionId}"
-                .interventionStart="${this.interventionStart}"
-                .requirementsCount="${this.hrUnicefRequirementsCount}"
-                .GDDExpectedResults="${this.GDDExpectedResults}"
-                .editMode="${!this.isReadonly}"
-                @count-changed=${(e: CustomEvent) => this.updateHRUCount(e.detail)}
-              >
-              </gdd-humanitarian-reporting-req-unicef>
-
-              <gdd-humanitarian-reporting-req-cluster
-                ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianCluster')}"
-                name="humanitarianCluster"
-                .interventionId="${this.interventionId}"
-                .requirementsCount="${this.hrClusterRequirementsCount}"
-                .GDDExpectedResults="${this.GDDExpectedResults}"
-                @count-changed=${(e: CustomEvent) => this.updateHRCCount(e.detail)}
-              >
-              </gdd-humanitarian-reporting-req-cluster>
-
-              <gdd-special-reporting-requirements
-                ?hidden="${!isActiveTab(this.selectedReportType, 'special')}"
-                name="special"
-                .interventionId="${this.interventionId}"
-                .requirementsCount="${this.specialRequirementsCount}"
-                .editMode="${!this.isReadonly}"
-                @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
-              >
-              </gdd-special-reporting-requirements>
             </div>
           </div>
         </div>
