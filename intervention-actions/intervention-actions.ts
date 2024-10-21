@@ -112,7 +112,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
   private renderExport(actions: string[]): TemplateResult {
     // for ePD app must add ePD text on Export links
     const preparedExportActions = actions.map((action: string) => ({
-      name: this.actionsNamesMap[this.isGDDApp ? `${action}_epd` : action],
+      name: this.actionsNamesMap[this.isGDDApp ? `${action}_gdd` : action],
       type: action
     }));
     return actions.length
