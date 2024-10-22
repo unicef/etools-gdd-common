@@ -62,7 +62,7 @@ export const gddTranslatesMap: GenericObject = {
   technical_guidance: 'TECHNICAL_GUIDANCE',
   capacity_development: 'CAPACITY_DEVELOPMENT',
   sustainability_rating: 'SUSTAINABILITY_RATING',
-  implementation_strategy: 'IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE',
+  implementation_strategy: 'STRATEGY_AND_TECHNICAL_GUIDANCE',
   ip_program_contribution: 'OTHER_NON_FINANCIAL_CONTRIBUTION',
   other_partners_involved: 'OTHER_PARTNERS_INVOLVED',
   other_details: 'OTHER',

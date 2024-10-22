@@ -6,7 +6,6 @@ import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/gddInterventions';
@@ -20,7 +19,6 @@ import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-typ
 import {listenForLangChanged, translate} from 'lit-translate';
 import {GDDOtherData, GDDOtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
-import GDD_CONSTANTS from '../../common/constants';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
@@ -92,48 +90,6 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row">
-          <!--   Document Type   -->
-          <div class="col-md-4 col-12">
-            <etools-dropdown
-              id="documentType"
-              label=${translate('DOC_TYPE')}
-              placeholder="&#8212;"
-              ?readonly="${!this.documentTypes.length ||
-              this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
-              tabindex="${!this.documentTypes.length ||
-              this.isReadonly(this.editMode, this.permissions?.edit.document_type)
-                ? -1
-                : undefined}"
-              required
-              .options="${this.documentTypes}"
-              .selected="${this.data.document_type}"
-              @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                if (!detail.selectedItem) {
-                  return;
-                }
-                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value);
-              }}"
-              trigger-value-change-event
-              hide-search
-              @focus="${() => resetRequiredFields(this)}"
-              @click="${() => resetRequiredFields(this)}"
-            >
-            </etools-dropdown>
-          </div>
-          <!--   SPD is Humanitarian   -->
-          <div class="col-md-8 col-12">
-            <sl-switch
-              ?hidden="${!this.isSPD}"
-              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
-              ?checked="${this.data.humanitarian_flag}"
-              @sl-change="${(e: CustomEvent) => {
-                this.valueChanged({value: (e.target as SlSwitch).checked}, 'humanitarian_flag');
-              }}"
-            >
-              ${translate('SGDD_HUMANITARIAN')}
-            </sl-switch>
-          </div>
-
           <div class="col-md-4 col-12">
             <etools-dropdown
               id="currencyDd"
@@ -156,20 +112,7 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             >
             </etools-dropdown>
           </div>
-          <div class="col-md-6 col-12">
-            <etools-input
-              id="unppNumber"
-              pattern="CEF/[a-zA-Z]{3}/\\d{4}/\\d{3}"
-              label=${translate('UNPP_CFEI_DSR_REF_NUM')}
-              placeholder="CEF/___/____/___"
-              .value="${this.data.cfei_number}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.cfei_number)}"
-              error-message="${translate('CFEI_EXPECTED_FORMAT')}"
-              @blur="${(ev: CustomEvent) => this.validateCFEI(ev)}"
-              @value-changed="${({detail}: CustomEvent) => this.cfeiValueChanged(detail, 'cfei_number')}"
-            ></etools-input>
-          </div>
-          <div class="col-12" ?hidden="${!this.permissions?.view?.confidential}">
+          <div class="col-md-4 col-12" ?hidden="${!this.permissions?.view?.confidential}">
             <sl-switch
               id="confidential"
               ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
@@ -214,10 +157,6 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
   @property({type: Boolean})
   autoValidateProtocol = false;
-
-  get isSPD(): boolean {
-    return this.data.document_type === GDD_CONSTANTS.DOCUMENT_TYPES.SPD;
-  }
 
   constructor() {
     super();
@@ -273,29 +212,8 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
-  documentTypeChanged(type: string) {
-    if (type !== GDD_CONSTANTS.DOCUMENT_TYPES.SPD) {
-      this.data.humanitarian_flag = false;
-      this.data.activation_protocol = '';
-    }
-    this.data.document_type = type;
-    this.requestUpdate();
-  }
-
-  validateCFEI(e?: CustomEvent) {
-    const elem = e ? (e.currentTarget as EtoolsInput) : this.shadowRoot?.querySelector<EtoolsInput>('#unppNumber')!;
-    return elem.validate();
-  }
-
-  cfeiValueChanged(detail: any, field: string) {
-    this.valueChanged(detail, field);
-    if (detail.value && detail.value.length === 16) {
-      this.validateCFEI();
-    }
-  }
-
   saveData() {
-    if (!this.validate() || !this.validateCFEI()) {
+    if (!this.validate()) {
       return Promise.resolve(false);
     }
 

@@ -72,7 +72,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row">
-          <div class="col-xl-4 col-md-6 col-12">
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown-multi
               id="officeInput"
               label=${translate(gddTranslatesMap.offices)}
@@ -90,7 +90,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
             >
             </etools-dropdown-multi>
           </div>
-          <div class="col-xl-4 col-md-6 col-12">
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown-multi
               id="sectionInput"
               label=${translate(gddTranslatesMap.sections)}

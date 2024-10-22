@@ -7,11 +7,8 @@ export class GDDOtherData extends GDDModelsBase {
     this.setObjProperties(intervention);
   }
   planned_budget = new GDDPlannedBudget();
-  document_type = '';
-  humanitarian_flag = false;
   activation_protocol = '';
   confidential = false;
-  cfei_number = '';
 }
 
 export class GDDOtherPermissions extends GDDModelsBase {
@@ -19,8 +16,6 @@ export class GDDOtherPermissions extends GDDModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  document_type = true;
   document_currency = true;
   confidential = true;
-  cfei_number = false;
 }
