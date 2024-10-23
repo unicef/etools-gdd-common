@@ -182,8 +182,8 @@ export class GDDInterventionAttachmentDialog extends connectStore(LitElement) {
       method: id ? 'PATCH' : 'POST',
       body
     })
-      .then(({intervention}: any) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+      .then(({response}: any) => {
+        getStore().dispatch(updateCurrentIntervention(response.gdd));
         this.onClose();
       })
       .catch((error: any) => {
