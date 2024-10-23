@@ -14,7 +14,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {GDDPdUnicefDetailsPermissions, GDDPdUnicefDetails} from './pdUnicefDetails.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {patchIntervention} from '../../common/actions/gddInterventions';
+import {getEWorkPlan, patchIntervention} from '../../common/actions/gddInterventions';
 import {RootState} from '../../common/types/store.types';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -22,7 +22,15 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
-import {AnyObject, CountryProgram, Permission, AsyncAction, User, EtoolsEndpoint} from '@unicef-polymer/etools-types';
+import {
+  AnyObject,
+  CountryProgram,
+  Permission,
+  AsyncAction,
+  User,
+  EtoolsEndpoint,
+  EWorkPlan
+} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
 import {translate} from 'lit-translate';
@@ -30,6 +38,7 @@ import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
+import {store} from '../../../../../../../redux/store';
 
 /**
  * @customElement
@@ -121,8 +130,10 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
               tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programme) ? -1 : undefined}"
               ?required="${this.permissions?.required.country_programme}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                this.selectedItemChanged(detail, 'country_programme');
-                this.populateEWorkplans();
+                if (detail.selectedItem?.id !== this.data.country_programme) {
+                  this.selectedItemChanged(detail, 'country_programme');
+                  this.populateEWorkplans();
+                }
               }}"
               trigger-value-change-event
             >
@@ -240,6 +251,9 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
   @property({type: Array})
   e_workplans: AnyObject[] = [];
 
+  @property({type: Array})
+  allEWorkplans!: EWorkPlan[];
+
   stateChanged(state: RootState) {
     if (
       EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'metadata') ||
@@ -289,8 +303,11 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
     if (!isJsonStrMatch(this.cpStructures, state.commonData!.countryProgrammes)) {
       this.cpStructures = [...state.commonData!.countryProgrammes];
     }
+    if (!isJsonStrMatch(this.allEWorkplans, state.gddInterventions?.eWorkPlans)) {
+      this.allEWorkplans = [...state.gddInterventions?.eWorkPlans];
 
-    this.populateEWorkplans();
+      this.populateEWorkplans();
+    }
 
     const pdUsers = this.getUsersAssignedToCurrentPD();
     if (this.isUnicefUser) {
@@ -306,15 +323,12 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
 
   populateEWorkplans() {
     if (this.data.country_programme) {
-      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.eWorkPlans, {
-        countryProgrameId: this.data.country_programme
-      });
-
-      sendRequest({
-        endpoint
-      }).then((eWorkplans: any[]) => {
-        this.e_workplans = [...eWorkplans];
-      });
+      const foundWorkPlan = (this.allEWorkplans || [])[this.data.country_programme];
+      if (foundWorkPlan) {
+        this.e_workplans = [...foundWorkPlan];
+        return;
+      }
+      getStore().dispatch<AsyncAction>(getEWorkPlan(this.data.country_programme));
     } else {
       this.e_workplans = [];
     }

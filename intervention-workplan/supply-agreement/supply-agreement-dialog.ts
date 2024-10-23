@@ -228,14 +228,13 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           interventionId: this.interventionId,
           supplyId: this.data.id
         });
-
     sendRequest({
       endpoint: endpoint,
       method: this.isNewRecord ? 'POST' : 'PATCH',
       body: this.cleanUpData(this.data)
     })
       .then((response: any) => {
-        getStore().dispatch(updateCurrentIntervention(response.intervention));
+        getStore().dispatch(updateCurrentIntervention(response.gdd));
         this.onClose();
       })
       .catch((err: any) => {

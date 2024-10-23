@@ -251,15 +251,6 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
                 ? html`
                     <div class="col-md-3 col-6">
                       <etools-currency
-                        label=${translate(gddTranslatesMap.cso_cash)}
-                        ?readonly="${this.readonly}"
-                        .value="${this.editedData.cso_cash}"
-                        @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
-                        required
-                      ></etools-currency>
-                    </div>
-                    <div class="col-md-3 col-6">
-                      <etools-currency
                         label=${translate('UNICEF_CASH_BUDGET')}
                         ?readonly="${this.readonly}"
                         required
@@ -270,15 +261,6 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
                     </div>
                   `
                 : html`
-                    <div class="col-md-3 col-6">
-                      <etools-input
-                        readonly
-                        tabindex="-1"
-                        class="total-input"
-                        label=${translate('PARTNER_CASH_BUDGET')}
-                        .value="${this.getSumValue('cso_cash')}"
-                      ></etools-input>
-                    </div>
                     <div class="col-md-3 col-6">
                       <etools-input
                         readonly
@@ -340,7 +322,7 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
-  getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
+  getSumValue(field: 'unicef_cash'): string {
     const columnTotal = (this.editedData.items || []).reduce(
       (sum: number, item: Partial<GDDActivityItem>) => sum + Number(item[field]),
       0
@@ -351,11 +333,10 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
 
   getTotalValue(): string {
     if (!this.useInputLevel) {
-      return getTotalCashFormatted(this.editedData.cso_cash || 0, this.editedData.unicef_cash || 0);
+      return getTotalCashFormatted(0, this.editedData.unicef_cash || 0);
     } else {
-      const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
-      return getTotalCashFormatted(cso, unicef);
+      return getTotalCashFormatted(0, unicef);
     }
   }
 
@@ -368,7 +349,6 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
     this.editedData = {
       ...this.editedData,
       items: this.useInputLevel ? this.editedData.items : [],
-      cso_cash: '0',
       unicef_cash: '0'
     };
 
@@ -415,7 +395,6 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
     if (dataToSave.items?.length) {
       // Let backend calculate these
       delete dataToSave.unicef_cash;
-      delete dataToSave.cso_cash;
     }
     sendRequest({
       endpoint: this.endpoint,

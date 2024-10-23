@@ -96,15 +96,15 @@ export class GDDTimingOverview extends CommentsMixin(LitElement) {
 
           <div class="data-column">
             <label class="label">${translate('DAYS_SUBMISSION_SIGNED')}</label>
-            <div class="input-label" ?empty="${!this.timingOverview.days_from_submission_to_signed}">
-              ${translateValue(this.timingOverview.days_from_submission_to_signed)}
+            <div class="input-label" ?empty="${!this.timingOverview.days_from_submission_to_approved}">
+              ${translateValue(this.timingOverview.days_from_submission_to_approved)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="label">${translate('DAYS_REVIEW_SIGNED')}</label>
-            <div class="input-label" ?empty="${!this.timingOverview.days_from_review_to_signed}">
-              ${translateValue(this.timingOverview.days_from_review_to_signed)}
+            <div class="input-label" ?empty="${!this.timingOverview.days_from_review_to_approved}">
+              ${translateValue(this.timingOverview.days_from_review_to_approved)}
             </div>
           </div>
         </div>

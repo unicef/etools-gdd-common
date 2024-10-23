@@ -20,8 +20,8 @@ export class GDDReviewData extends GDDModelsBase {
   signed_by_partner_date = '';
   signed_by_unicef_date = '';
   unicef_signatory: MinimalUser | null = null;
-  days_from_submission_to_signed = '';
-  days_from_review_to_signed = '';
+  days_from_submission_to_approved = '';
+  days_from_review_to_approved = '';
   termination_doc_attachment = '';
 }
 

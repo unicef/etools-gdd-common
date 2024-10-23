@@ -118,6 +118,14 @@ export class GDDReviewChecklistPopup extends LitElement {
               this.generateLikertScale(field as keyof GDDReview, index)
             )}
             <div class="col-12">
+              <etools-checkbox
+                ?checked="${this.review.is_recommended_for_approval}"
+                @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'is_recommended_for_approval')}"
+              >
+                ${translate('SIGN_BUDGET_OWNER')}
+              </etools-checkbox>
+            </div>
+            <div class="col-12">
               <etools-textarea
                 label=${translate('APPROVAL_COMMENT')}
                 always-float-label

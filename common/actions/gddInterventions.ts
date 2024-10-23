@@ -1,9 +1,15 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {gddEndpoints} from '../../utils/intervention-endpoints';
-import {INTERVENTION_LOADING, SHOULD_REGET_LIST, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
+import {
+  INTERVENTION_LOADING,
+  SHOULD_REGET_LIST,
+  SHOW_TOAST,
+  UPDATE_CURRENT_INTERVENTION,
+  UPDATE_E_WORK_PLAN
+} from '../actionsConstants';
 import {AnyObject, GDDPlannedBudget, GDD} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {PartnerReportingRequirements} from '../types/store.types';
+import {EWorkPlan, PartnerReportingRequirements} from '../types/store.types';
 import pick from 'lodash-es/pick';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
@@ -30,6 +36,14 @@ export const setShouldReGetList = (reGet: boolean) => {
   return {
     type: SHOULD_REGET_LIST,
     shouldReGetList: reGet
+  };
+};
+
+export const setEworkPlan = (countryProgrameId: number, eWorkPlans: EWorkPlan[]) => {
+  return {
+    type: UPDATE_E_WORK_PLAN,
+    countryProgrameId: countryProgrameId,
+    eWorkPlans: eWorkPlans
   };
 };
 
@@ -60,6 +74,19 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
         active: false,
         loadingSource: 'gdd-interv-get'
       });
+    });
+};
+
+export const getEWorkPlan = (countryProgrameId: number) => (dispatch: any) => {
+  return sendRequest({
+    endpoint: getEndpoint(gddEndpoints.eWorkPlans, {countryProgrameId: countryProgrameId})
+  })
+    .then((eWorkplans: any[]) => {
+      dispatch(setEworkPlan(countryProgrameId, eWorkplans));
+    })
+    .catch((err: any) => {
+      console.log(err);
+      throw err;
     });
 };
 

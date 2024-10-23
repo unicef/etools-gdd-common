@@ -17,7 +17,7 @@ export class GDDTimingOverviewData extends GDDModelsBase {
   review_date_prc = '';
   signed_by_partner_date = '';
   signed_by_unicef_date = '';
-  days_from_submission_to_signed = '';
-  days_from_review_to_signed = '';
+  days_from_submission_to_approved = '';
+  days_from_review_to_approved = '';
   date_last_amended = '';
 }

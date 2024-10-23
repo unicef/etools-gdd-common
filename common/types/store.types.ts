@@ -32,6 +32,12 @@ export interface GDDInterventionsState {
   interventionLoading: number | null;
   partnerReportingRequirements: PartnerReportingRequirements;
   shouldReGetList: boolean;
+  eWorkPlans: EWorkPlan[];
+}
+
+export interface EWorkPlan {
+  countryProgrameId: number;
+  data: any[];
 }
 
 export interface AgreementsState {
@@ -66,6 +72,7 @@ export interface CommonDataState {
   countryProgrammes: CountryProgram[];
   loadedTimestamp: number;
   providedBy: LabelAndValue[];
+  eWorkPlans: any[];
 }
 
 export interface RootState {
