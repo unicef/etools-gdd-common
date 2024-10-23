@@ -182,7 +182,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
               .selected="${this.data.budget_owner?.id}"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.budget_owner)}"
               ?required="${this.permissions?.required.budget_owner}"
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedUserChanged(detail, 'budget_owner')}"
               trigger-value-change-event
             >

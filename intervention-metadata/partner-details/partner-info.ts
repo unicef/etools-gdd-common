@@ -199,8 +199,6 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
       });
   }
   private formatUsersData(data: GDDPartnerInfo) {
-    const dataToSave: AnyObject = cloneDeep(data);
-    dataToSave.partner_focal_points = data.partner_focal_points.map((u: any) => u.id);
-    return dataToSave;
+    return {partner_focal_points: (data.partner_focal_points || []).map((u: any) => u.id)};
   }
 }

@@ -172,8 +172,8 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
         meeting_date: this.data.meeting_date || null
       }
     })
-      .then(({intervention}: any) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+      .then(({response}: any) => {
+        getStore().dispatch(updateCurrentIntervention(response.gdd));
         this.editMode = false;
       })
       .catch((err: any) => {
