@@ -396,7 +396,6 @@ export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMix
   validate() {
     let valid = true;
     const fieldSelectors = [
-      '#ckbSignatureRequired',
       '#signedByAuthorizedOfficer',
       '#signedByPartnerDateField',
       '#signedByUnicefDateField',

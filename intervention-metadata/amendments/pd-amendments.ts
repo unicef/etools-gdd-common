@@ -246,10 +246,9 @@ export class GDDPdAmendments extends CommentsMixin(LitElement) {
     ) {
       return;
     }
-
-    const amendmentTypes = get(state, 'commonData.interventionAmendmentTypes');
+    const amendmentTypes = get(state, 'commonData.gddAmendmentTypes');
     if (amendmentTypes && !isJsonStrMatch(this.amendmentTypes, amendmentTypes)) {
-      this.amendmentTypes = [...state.commonData!.interventionAmendmentTypes];
+      this.amendmentTypes = [...state.commonData!.gddAmendmentTypes];
     }
     const currentIntervention = get(state, 'gddInterventions.current');
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {

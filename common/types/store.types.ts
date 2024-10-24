@@ -73,6 +73,7 @@ export interface CommonDataState {
   loadedTimestamp: number;
   providedBy: LabelAndValue[];
   eWorkPlans: any[];
+  gddAmendmentTypes: LabelAndValue[];
 }
 
 export interface RootState {

@@ -65,7 +65,7 @@ export class GDDAddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             id="amendment-types"
             label="${translate('AMENDMENT_TYPES')}"
             placeholder="&#8212;"
-            .options="${this.filteredAmendmentTypes}"
+            .options="${this.amendmentTypes}"
             .selectedValues="${this.data.types}"
             hide-search
             required
@@ -125,9 +125,6 @@ export class GDDAddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   //   }
   // ];
 
-  @property({type: Array})
-  filteredAmendmentTypes!: LabelAndValue[];
-
   @property({type: Boolean})
   showOtherInput = false;
 
@@ -142,22 +139,6 @@ export class GDDAddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     const {intervention, amendmentTypes} = data;
     this.intervention = intervention;
     this.amendmentTypes = amendmentTypes;
-    this._filterAmendmentTypes(this.amendmentTypes, this.intervention.document_type);
-  }
-
-  _filterAmendmentTypes(amendmentTypes: AnyObject[], interventionDocumentType: string) {
-    if (!amendmentTypes || !interventionDocumentType) {
-      return;
-    }
-
-    this.filteredAmendmentTypes = JSON.parse(
-      JSON.stringify(
-        this.amendmentTypes.map((x) => ({
-          ...x,
-          label: getTranslatedValue(x.label, 'AMENDMENT_TYPES_ITEMS')
-        }))
-      )
-    );
   }
 
   onTypesChanged() {
