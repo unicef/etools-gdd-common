@@ -91,22 +91,14 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             </etools-currency>
           </div>
           <div class="col col-md-4 col-12">
-            <etools-dropdown
-              label=${translate(gddTranslatesMap.provided_by)}
-              placeholder="&#8212;"
-              .options="${this.providers}"
-              option-label="label"
-              option-value="id"
-              .selected="${this.data.provided_by}"
-              required
-              hide-search
-              auto-validate
-              trigger-value-change-event
-              @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                this.selectedItemChanged(detail, 'provided_by');
-              }}"
+            <etools-input
+              id="unicefProductNumber"
+              label=${translate(gddTranslatesMap.unicef_product_number)}
+              placeholder="—"
+              .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
             >
-            </etools-dropdown>
+            </etools-input>
           </div>
           ${this.isUnicefUser
             ? html` <div class="col col-md-8 col-12">
@@ -126,17 +118,6 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
                 </etools-dropdown>
               </div>`
             : html``}
-
-          <div class="col col-md-4 col-12" ?hidden="${this.data.provided_by == 'partner'}">
-            <etools-input
-              id="unicefProductNumber"
-              label=${translate(gddTranslatesMap.unicef_product_number)}
-              placeholder="—"
-              .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
-            >
-            </etools-input>
-          </div>
           <div class="col col-12">
             <etools-textarea
               id="otherMentions"
@@ -246,10 +227,6 @@ export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   }
 
   cleanUpData(data: any) {
-    const dataToSave = cloneDeep(data);
-    if (dataToSave.provided_by == 'partner') {
-      dataToSave.unicef_product_number = '';
-    }
-    return dataToSave;
+    return cloneDeep(data);
   }
 }

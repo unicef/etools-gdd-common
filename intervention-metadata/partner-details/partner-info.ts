@@ -23,7 +23,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
+import {AsyncAction, Permission, PartnerStaffMember, AnyObject, MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation, langChanged} from 'lit-translate';
 
 /**
@@ -71,6 +71,19 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
               tabindex="-1"
             >
             </etools-input>
+          </div>
+          <div class="col-md-4 col-12">
+            <etools-dropdown
+              id="agreements"
+              label=${translate('AGREEMENTS')}
+              .options="${this.partnerAgreements}"
+              .selected="${this.data?.agreement}"
+              option-value="id"
+              option-label="agreement_number_status"
+              readonly
+              auto-validate
+            >
+            </etools-dropdown>
           </div>
           <div class="col-md-8 col-12">
             <etools-input
@@ -125,6 +138,9 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
   @property({type: Array})
   partnerStaffMembers!: PartnerStaffMember[];
 
+  @property({type: Array})
+  partnerAgreements!: MinimalAgreement[];
+
   get formattedPartnerStaffMembers() {
     return this.partnerStaffMembers?.map((member: PartnerStaffMember) => ({
       name: `${
@@ -169,6 +185,15 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
       this.data = cloneDeep(newPartnerDetails);
       this.originalData = cloneDeep(this.data);
     }
+
+    const agreements = get(state, 'agreements.list');
+    if (agreements) {
+      this.partnerAgreements = this.filterAgreementsByPartner(agreements, newPartnerDetails.partner_id!);
+    }
+  }
+
+  filterAgreementsByPartner(agreements: MinimalAgreement[], partnerId: number) {
+    return agreements.filter((a: any) => String(a.partner) === String(partnerId));
   }
 
   partnerIdHasChanged(newPartnerDetails: GDDPartnerInfo) {
