@@ -83,8 +83,8 @@ export class GDDInterventionAttachmentDialog extends connectStore(LitElement) {
               allow-outside-scroll
               dynamic-align
               required
-              ?invalid="${this.errors.type}"
-              .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
+              ?invalid="${this.errors?.type}"
+              .errorMessage="${(this.errors?.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
               @focus="${() => this.resetFieldError('type', this)}"
               @click="${() => this.resetFieldError('type', this)}"
             ></etools-dropdown>
@@ -100,8 +100,8 @@ export class GDDInterventionAttachmentDialog extends connectStore(LitElement) {
               .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
               .uploadEndpoint="${gddEndpoints.attachmentsUpload.url!}"
               @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
-              ?invalid="${this.errors.attachment_document}"
-              .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
+              ?invalid="${this.errors?.attachment_document}"
+              .errorMessage="${this.errors?.attachment_document && this.errors.attachment_document[0]}"
               @focus="${() => this.resetFieldError('attachment_document', this)}"
               @click="${() => this.resetFieldError('attachment_document', this)}"
             ></etools-upload>
@@ -182,7 +182,7 @@ export class GDDInterventionAttachmentDialog extends connectStore(LitElement) {
       method: id ? 'PATCH' : 'POST',
       body
     })
-      .then(({response}: any) => {
+      .then((response: any) => {
         getStore().dispatch(updateCurrentIntervention(response.gdd));
         this.onClose();
       })
