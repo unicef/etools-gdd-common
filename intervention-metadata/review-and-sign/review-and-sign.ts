@@ -99,7 +99,21 @@ export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMix
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
-        <div class="row">
+        <div class="row padding-v">
+            <div class="col-12">
+              <etools-checkbox
+                id="ckbSignatureRequired"
+                ?checked="${this.data?.signature_required}"
+                ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.signature_required)}"
+                @sl-change="${(e: any) => {
+                  this.valueChanged({value: e.target.checked}, 'signature_required');
+                }}"
+              >
+                ${translate('SIGNATURE_REQUIRED')}
+              </etools-checkbox>
+            </div>
+        </div>
+        <div class="row" ?hidden="${!this.data?.signature_required}">
           <div class="col-md-6 col-12">
             <!-- Signed By Partner Authorized Officer -->
             <etools-dropdown
@@ -382,6 +396,7 @@ export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMix
   validate() {
     let valid = true;
     const fieldSelectors = [
+      '#ckbSignatureRequired',
       '#signedByAuthorizedOfficer',
       '#signedByPartnerDateField',
       '#signedByUnicefDateField',
@@ -425,7 +440,6 @@ export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMix
     if (!this.validate()) {
       return Promise.resolve(false);
     }
-
     return getStore()
       .dispatch<AsyncAction>(
         // @ts-ignore

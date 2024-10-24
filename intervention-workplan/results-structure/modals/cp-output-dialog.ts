@@ -38,7 +38,6 @@ export class GDDCpOutputDialog extends LitElement {
     if (!data) {
       return;
     }
-
     const {resultLink, interventionId, canChangeCpOp}: any = data;
     if (resultLink) {
       this.cpOutputId = resultLink.cp_output;
@@ -99,6 +98,7 @@ export class GDDCpOutputDialog extends LitElement {
                       this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
                     ?trigger-value-change-event="${!this.loadingInProcess}"
                     .selected="${this.selectedCpOutput}"
+                    ?readonly="${!!this.cpOutputId}"
                     label=${translate('CP_OUTPUT')}
                     placeholder="&#8212;"
                     .options="${this.cpOutputs}"

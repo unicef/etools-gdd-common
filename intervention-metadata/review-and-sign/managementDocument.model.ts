@@ -23,6 +23,7 @@ export class GDDReviewData extends GDDModelsBase {
   days_from_submission_to_approved = '';
   days_from_review_to_approved = '';
   termination_doc_attachment = '';
+  signature_required = false;
 }
 
 export class GDDReviewDataPermission extends GDDModelsBase {
@@ -35,4 +36,5 @@ export class GDDReviewDataPermission extends GDDModelsBase {
   signed_by_unicef_date = true;
   unicef_signatory = true;
   signed_pd_attachment = true;
+  signature_required = true;
 }

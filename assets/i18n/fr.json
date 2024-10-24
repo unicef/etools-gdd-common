@@ -769,5 +769,6 @@
   "VISITS": "Visites",
   "UNPP_CFEI_DSR_REF_NUM": "Numéro de référence UNPP CFEI/DSR",
   "CFEI_EXPECTED_FORMAT": "Format attendu: CEF/code pays à 3 lettres/année à 4 chiffres/numéro à 3 chiffres",
-  "NO_ACCESS": "Pas d'accès"
+  "NO_ACCESS": "Pas d'accès",
+  "SIGNATURE_REQUIRED": "Signature requise"
 }
