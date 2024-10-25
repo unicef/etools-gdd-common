@@ -23,7 +23,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission, PartnerStaffMember, AnyObject, MinimalAgreement} from '@unicef-polymer/etools-types';
+import {AsyncAction, Permission, PartnerStaffMember, MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation, langChanged} from 'lit-translate';
 
 /**

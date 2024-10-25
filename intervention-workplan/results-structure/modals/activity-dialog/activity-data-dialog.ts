@@ -18,7 +18,6 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, EtoolsEndpoint, GDDActivity, GDDActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {gddTranslatesMap} from '../../../../utils/intervention-labels-map';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -26,9 +25,9 @@ import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
-import {RootState} from '../../../../../../../../../redux/store';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {RootState} from '../../../../../../../../redux/store';
 
 @customElement('gdd-activity-data-dialog')
 export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore(LitElement)) {

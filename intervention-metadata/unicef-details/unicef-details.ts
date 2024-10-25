@@ -22,23 +22,11 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
-import {
-  AnyObject,
-  CountryProgram,
-  Permission,
-  AsyncAction,
-  User,
-  EtoolsEndpoint,
-  EWorkPlan
-} from '@unicef-polymer/etools-types';
+import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
 import {translate} from 'lit-translate';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
-import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
-import {gddEndpoints} from '../../utils/intervention-endpoints';
-import {store} from '../../../../../../../redux/store';
 
 /**
  * @customElement
