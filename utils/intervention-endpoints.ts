@@ -156,7 +156,7 @@ export const gddEndpoints: EtoolsEndpoints = {
     template: '/api/gdd/gdds/interventions/amendments/<%=amendmentId%>/'
   },
   frNumbersDetails: {
-    url: '/api/v2/funds/frs'
+    url: '/api/gdd/frs'
   },
   comments: {
     template: '/api/comments/v1/governments/gdd/<%=interventionId%>/'

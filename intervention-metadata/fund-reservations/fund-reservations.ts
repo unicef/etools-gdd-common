@@ -277,7 +277,7 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
       '?values=' +
       frNumbers.join(',');
     if (this.intervention.id) {
-      url += '&intervention=' + this.intervention.id;
+      url += '&gdd=' + this.intervention.id;
     }
 
     sendRequest({endpoint: {url: url}})
