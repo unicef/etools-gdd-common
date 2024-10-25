@@ -209,7 +209,7 @@ export class GDDAddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   }
 
   _handleResponse(_response: GDDAmendment) {
-    this.onClose({id: _response.amended_intervention});
+    this.onClose({id: _response.amended_gdd});
   }
 
   _handleErrorResponse(error: any) {

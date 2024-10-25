@@ -161,7 +161,7 @@ export class GDDPdAmendments extends CommentsMixin(LitElement) {
                       ? html`
                           <a
                             class="layout-horizontal align-items-center"
-                            href="${Environment.basePath}gdd-interventions/${item.amended_intervention}/metadata"
+                            href="${Environment.basePath}gdd-interventions/${item.amended_gdd}/metadata"
                           >
                             ${translate('ACTIVE')} <etools-icon name="launch"></etools-icon>
                           </a>

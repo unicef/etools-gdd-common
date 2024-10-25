@@ -153,7 +153,7 @@ export const gddEndpoints: EtoolsEndpoints = {
     template: '/api/gdd/gdds/<%=intervId%>/amendments/'
   },
   interventionAmendmentDelete: {
-    template: '/api/gdd/gdds/interventions/amendments/<%=amendmentId%>/'
+    template: '/api/gdd/gdds/amendments/<%=amendmentId%>/'
   },
   frNumbersDetails: {
     url: '/api/gdd/frs'
