@@ -12,7 +12,6 @@ export class GDDBudgetSummary extends GDDModelsBase {
   programme_effectiveness = '';
   partner_contribution_local = '';
   unicef_cash_local = '';
-  in_kind_amount_local = 0;
   total_supply = 0;
   partner_contribution_percent = 0;
   total_local = 0;

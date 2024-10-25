@@ -180,7 +180,6 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                         : html` <gdd-time-intervals
                             .quarters="${this.quarters}"
                             .selectedTimeFrames="${activity.time_frames}"
-                            without-popup
                           ></gdd-time-intervals>`}
                     </div>
 

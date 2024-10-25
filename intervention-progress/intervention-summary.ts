@@ -194,7 +194,7 @@ export class GDDInterventionSummary extends connectStore(LitElement) {
           <div>
             <label class="label-secondary-color">${translate('UNICEF_SUPPLY_CONTRIB')}</label>
             <etools-currency
-              .value="${this.intervention.planned_budget.in_kind_amount_local}"
+              .value="${this.intervention.planned_budget.total_supply}"
               type="number"
               placeholder="&#8212;"
               no-label-float

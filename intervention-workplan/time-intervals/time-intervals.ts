@@ -1,9 +1,6 @@
 import {LitElement, TemplateResult, html, css, CSSResultArray} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {InterventionQuarter} from '@unicef-polymer/etools-types';
-import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import './time-intervals-dialog';
-import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
@@ -13,9 +10,7 @@ export class GDDTimeIntervals extends LitElement {
   @property() quarters: InterventionQuarter[] = [];
   @property() selectedTimeFrames: number[] = [];
   @property({type: Boolean, reflect: true, attribute: true}) readonly: boolean | undefined = false;
-  @property({type: Boolean, reflect: true, attribute: 'without-popup'}) withoutPopup: boolean | undefined = false;
-  @property({type: Boolean})
-  invalid = false;
+  @property({type: Boolean}) invalid = false;
 
   protected render(): TemplateResult | TemplateResult[] {
     return this.quarters.length
@@ -46,32 +41,6 @@ export class GDDTimeIntervals extends LitElement {
             <div slot="message">${translate('ACTIVITY_TIMES_MSG')}</div>
           </etools-info-tooltip>
         `;
-  }
-
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.addEventListener('click', () => this.openDialog());
-  }
-
-  openDialog(): void {
-    if (!this.quarters.length || this.withoutPopup) {
-      return;
-    }
-    openDialog<any>({
-      dialog: 'gdd-time-intervals-dialog',
-      dialogData: {
-        selectedTimeFrames: this.selectedTimeFrames,
-        quarters: this.quarters,
-        readonly: this.readonly
-      }
-    }).then(({confirmed, response}) => {
-      if (confirmed) {
-        if (response && response.length) {
-          this.invalid = false;
-        }
-        fireEvent(this, 'intervals-changed', response);
-      }
-    });
   }
 
   private isSelected(quater: InterventionQuarter): boolean {

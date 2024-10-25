@@ -183,8 +183,8 @@ export class GDDBudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(
 
         <div class="data-column">
           <label class="label">${translate('TOTAL_UNICEF_SUPPLY')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.in_kind_amount_local)}">
-            ${displayCurrencyAmount(String(this.budgetSummary.in_kind_amount_local), '0.00')}
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_supply)}">
+            ${displayCurrencyAmount(String(this.budgetSummary.total_supply), '0.00')}
           </div>
         </div>
       </div>
