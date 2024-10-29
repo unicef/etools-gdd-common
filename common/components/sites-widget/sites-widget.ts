@@ -114,7 +114,7 @@ export class GDDLocationSitesWidgetComponent extends connectStore(LitElement) {
               type="search"
               .value="${this.locationSearch}"
               @value-changed="${({detail}: CustomEvent<{value: string}>) => this.search(detail)}"
-              placeholder="${translate('INTERVENTIONS_LIST.SEARCH_RECORDS')}"
+              placeholder="${translate('GDD_LIST.SEARCH_RECORDS')}"
               inline
             >
               <etools-icon name="search" slot="prefix"></etools-icon>

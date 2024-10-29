@@ -120,7 +120,7 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
 
         <etools-data-table-header id="listHeader" .lowResolutionLayout="${this.lowResolutionLayout}" no-title>
           <etools-data-table-column class="col-5" field="title">
-            ${translate('ITEM_PD_CURRENCY')}
+            ${translate('ITEM_GDD_CURRENCY')}
           </etools-data-table-column>
           <etools-data-table-column class="col-2 text-right" field="partner_contribution">
           <etools-data-table-column class="col-2 text-right" field="total">
@@ -133,7 +133,9 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
           (item: any) => html` <div comment-element="eepm-${item.index}">
             <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
               <div slot="row-data" class="layout-horizontal editable-row">
-                <div class="col-data col-5" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">${item.title}</div>
+                <div class="col-data col-5" data-col-header-label="${translate('ITEM_GDD_CURRENCY')}">
+                  ${item.title}
+                </div>
                 <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
                   ${item.partner_contribution}
                 </div>

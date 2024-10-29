@@ -108,7 +108,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
           <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
               id="cpStructures"
-              label=${translate('CP_STRUCTURES')}
+              label=${translate('CP_STRUCTURE')}
               .options="${this.cpStructures}"
               class="w100"
               option-label="name"
