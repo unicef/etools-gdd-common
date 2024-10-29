@@ -78,6 +78,7 @@ export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement
         .p-20 {
           overflow: hidden;
           padding: 20px;
+          padding-inline-start: 42px;
         }
         info-icon-tooltip {
           --iit-margin: 0 0 0 4px;

@@ -152,12 +152,14 @@ export class GDDReviewChecklistPopup extends LitElement {
                     </etools-textarea>
                   </div>
                 `
-              : html` <etools-checkbox
-                  ?checked="${this.review?.overall_approval}"
-                  @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
-                >
-                  ${translate('APPROVED_BY_PRC')}
-                </etools-checkbox>`}
+              : html`<div class="col-12">
+                  <etools-checkbox
+                    ?checked="${this.review?.overall_approval}"
+                    @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
+                  >
+                    ${translate('APPROVED_BY_PRC')}
+                  </etools-checkbox>
+                </div>`}
           </div>
         </div>
         <div slot="buttons">
@@ -222,7 +224,7 @@ export class GDDReviewChecklistPopup extends LitElement {
       }),
       body
     })
-      .then(({intervention}: any) => getStore().dispatch(updateCurrentIntervention(intervention)))
+      .then(({gdd}: any) => getStore().dispatch(updateCurrentIntervention(gdd)))
       .then(() =>
         !this.isOverallReview ? getStore().dispatch<AsyncAction>(loadPrcMembersIndividualReviews(reviewId)) : null
       )

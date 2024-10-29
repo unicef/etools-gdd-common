@@ -265,8 +265,8 @@ export class GDDActivityDialog extends ComponentBaseMixin(LitElement) {
       method: 'PATCH',
       body: patchData
     })
-      .then(({intervention}) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+      .then(({gdd}) => {
+        getStore().dispatch(updateCurrentIntervention(gdd));
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch((error: any) => {
