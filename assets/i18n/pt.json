@@ -1,5 +1,9 @@
 {
   "TERMINATE_GDD_SPD": "Encerrar GDD",
+  "GDD_REVIEW": "Revisão do GDD",
+  "GDD_TOOLTIP": "O GDD é utilizado para intervenções programáticas em que o programa planeado da UNICEF <br> a contribuição em dinheiro e suprimentos é ≥$100.000 e não apoia a resposta humanitária.",
+  "GDD_DATES": "Datas GDD",
+  "GDD_DATES_DESCRIPTION": "Datas de início e término",
   "EXPORT_EGDD_COMMENTS": "Exportar comentários do ePD",
   "EXPORT_EGDD_PDF": "Exportar PDF ePD",
   "EXPORT_EGDD_XLS": "Exportar ePD Excel",

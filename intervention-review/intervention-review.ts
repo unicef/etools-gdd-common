@@ -21,14 +21,7 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
   @property() currentReview: GDDReview | null = null;
   @property() reviews: GDDReview[] = [];
   @property() unicefUsers: User[] = [];
-  @property() cfeiNumber = '';
   @property() interventionStatus = '';
-
-  get linkUrl(): string {
-    return `https://www.unpartnerportal.org/cfei/open?agency=1&displayID=${encodeURIComponent(
-      this.cfeiNumber
-    )}&page=1&page_size=10`;
-  }
 
   private interventionId: number | null = null;
 
@@ -38,14 +31,6 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
       ${this.currentReview?.sent_back_comment && ['draft', 'development'].includes(this.interventionStatus)
         ? html`<reason-display .title="${translate('SECRETARY_COMMENT')}">
             <div class="text">${this.currentReview?.sent_back_comment}</div>
-          </reason-display>`
-        : ''}
-      ${this.cfeiNumber
-        ? html`<reason-display .title="${translate('CFEI_NOTIFICATION')}" .cfeiNumber="${this.cfeiNumber}">
-            <div class="text">
-              ${translate('GDD_COMPLETED_AFTER_UNPP')}
-              <a href="${this.linkUrl}" target="_blank">${translate('GO_TO_UNPP')}</a>
-            </div>
           </reason-display>`
         : ''}
 
@@ -108,7 +93,6 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
     this.canEditPRCReviews = state.gddInterventions.current.permissions!.edit.prc_reviews || false;
     this.interventionId = state.gddInterventions.current.id;
     this.interventionStatus = state.gddInterventions.current.status;
-    this.cfeiNumber = state.gddInterventions.current.cfei_number || '';
   }
 
   reviewChanged(ev: CustomEvent) {

@@ -365,7 +365,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
       dialogData: {
         keyIntervention: keyIntervention ? {...keyIntervention, cp_output: result?.cp_output} : undefined,
         cpOutput: result?.cp_output,
-        resultId: result.id,
+        resultId: result?.id,
         cpOutputs,
         hideCpOutputs: !this.isUnicefUser,
         interventionId: this.interventionId

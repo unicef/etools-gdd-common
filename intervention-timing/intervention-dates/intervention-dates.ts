@@ -65,7 +65,7 @@ export class GDDInterventionDates extends CommentsMixin(
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('PROGRAMME_DOC_DATES')}
+        panel-title=${translate('GDD_DATES')}
         comment-element="programme-document-dates"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
@@ -208,9 +208,9 @@ export class GDDInterventionDates extends CommentsMixin(
     );
   }
 
-  private hideActivationLetter(interventionStatus: string) {
-    return ['draft', 'development', ''].includes(interventionStatus);
-  }
+  // private hideActivationLetter(interventionStatus: string) {
+  //   return ['draft', 'development', ''].includes(interventionStatus);
+  // }
 
   private activationLetterUploadFinished(e: CustomEvent) {
     this._onUploadFinished(e.detail.success);

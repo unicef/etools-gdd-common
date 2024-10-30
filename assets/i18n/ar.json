@@ -1,5 +1,9 @@
 {
   "TERMINATE_GDD_SPD": "إنهاء GDD",
+  "GDD_REVIEW": "مراجعة GDD",
+  "GDD_TOOLTIP": "يتم استخدام وثيقة التوزيع العالمية (GDD) للتدخلات البرنامجية التي خططت لها اليونيسف <br> تبلغ المساهمة النقدية والإمدادات ≥100,000 دولار ولا تدعم الاستجابة الإنسانية.",
+  "GDD_DATES": "تواريخ GDD",
+  "GDD_DATES_DESCRIPTION": "تواريخ البدء والانتهاء",
   "EXPORT_EGDD_COMMENTS": "تصدير تعليقات ePD",
   "EXPORT_EGDD_PDF": "تصدير ملف ePD PDF",
   "EXPORT_EGDD_XLS": "تصدير إي بي دي إكسيل",
