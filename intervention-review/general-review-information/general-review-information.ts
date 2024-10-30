@@ -120,7 +120,7 @@ export class GDDGeneralReviewInformation extends LitElement {
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-content-panel class="content-section" panel-title="${translate('INTERVENTION_REVIEW')}">
+      <etools-content-panel class="content-section" panel-title="${translate('GDD_REVIEW')}">
         <div slot="panel-btns" class="layout-horizontal">
           <div class="layout-horizontal align-items-center" ?hidden="${!(this.reviews || []).length}">
             <sl-dropdown

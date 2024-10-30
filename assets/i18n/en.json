@@ -1,5 +1,9 @@
 {
     "TERMINATE_GDD_SPD": "Terminate GDD",
+    "GDD_REVIEW":"GDD Review",
+    "GDD_TOOLTIP": "The GDD is used for programme interventions where the planned UNICEF <br> cash and supply contribution is ≥$100,000 and is not in support of humanitarian response.",
+    "GDD_DATES": "GDD Dates",
+    "GDD_DATES_DESCRIPTION": "Start and End Dates",
     "EXPORT_EGDD_COMMENTS": "Export ePD Comments",
     "EXPORT_EGDD_PDF": "Export ePD PDF",
     "EXPORT_EGDD_XLS": "Export ePD Excel",
