@@ -8,7 +8,7 @@ export class GDDProgrammeDocDates extends GDDModelsBase {
   }
   start = '';
   end = '';
-  activation_letter_attachment = '';
+  // activation_letter_attachment = '';
   status = ''; // intervention status
 }
 
@@ -19,5 +19,5 @@ export class GDDInterventionDatesPermissions extends GDDModelsBase {
   }
   start = false;
   end = false;
-  activation_letter_attachment = false;
+  // activation_letter_attachment = false;
 }
