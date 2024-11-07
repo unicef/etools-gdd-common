@@ -125,7 +125,7 @@ export class GDDOther extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             <info-icon-tooltip
               id="iit-confidential"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
-              .tooltipText="${translate('CONFIDENTIAL_INFO')}"
+              .tooltipText="${translate('GDD_CONFIDENTIAL_INFO')}"
             ></info-icon-tooltip>
           </div>
         </div>

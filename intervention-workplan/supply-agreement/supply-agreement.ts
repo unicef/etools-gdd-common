@@ -300,7 +300,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
   getUploadHelpText() {
     const link1 = 'https://supply.unicef.org/all-materials.html';
     const link2 = 'https://unpartnerportalcso.zendesk.com/hc/en-us/articles/12669187044631-Creating-a-supply-plan';
-    return getTranslation('UPLOAD_SUPPLY_HELPER')
+    return getTranslation('GDD_UPLOAD_SUPPLY_HELPER')
       .replace('{0}', `<a target='_blank' href=${link1}>${link1}</a>`)
       .replace('{1}', `<a target='_blank' href=${link2}>${getTranslation('GUIDE')}</a>`);
   }

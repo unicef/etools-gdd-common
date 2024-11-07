@@ -75,7 +75,7 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
         </div>
         <div class="icon-tooltip-div">
           <info-icon-tooltip
-            .tooltipText="${translate('METADATA_TOOLTIP')}"
+            .tooltipText="${translate('GDD_METADATA_TOOLTIP')}"
             position="${this.dir == 'rtl' ? 'right' : 'left'}"
           >
           </info-icon-tooltip>

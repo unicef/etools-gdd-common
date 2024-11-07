@@ -194,7 +194,7 @@ export class GDDBudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(
   getIconTooltip(): TemplateResult {
     return html`<div class="icon-tooltip-div">
       <info-icon-tooltip
-        .tooltipText="${translate('BUDGET_TOOLTIP')}"
+        .tooltipText="${translate('GDD_BUDGET_TOOLTIP')}"
         position="${this.dir == 'rtl' ? 'right' : 'left'}"
       >
       </info-icon-tooltip>

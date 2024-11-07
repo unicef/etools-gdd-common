@@ -237,6 +237,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
                 slot="nav"
                 panel="${t.tab}"
                 ?active="${this.activeTab === t.tab}"
+                ?hidden="${t.hidden}"
                 >${t.tabLabel}</sl-tab
               >`
           )}
@@ -278,8 +279,8 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
       </div>
 
       <div class="amendment-info" ?hidden="${!this.isInAmendment}">
-        ${translate('AMENDMENT_MODE_TEXT')}
-        <a href="${Environment.basePath}gdd-interventions/${this.intervention?.original_intervention}/metadata">
+        ${translate('GDD_AMENDMENT_MODE_TEXT')}
+        <a href="${Environment.basePath}gdd-interventions/${this.intervention?.original_gdd}/metadata">
           ${translate('ORIGINAL_VERSION')}
         </a>
       </div>
@@ -588,7 +589,6 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
     if (!progressTabs) {
       this.pageTabs.push(...cloneDeep(this.progressTabTemplate));
     }
-
     if (envFlags && !envFlags.prp_mode_off && !this.pageTabs?.find((t: any) => t.tab === GDD_TABS.ResultsReported)) {
       // @ts-ignore
       this.pageTabs.push(
@@ -601,7 +601,12 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
         {tabLabel: translate('REPORTS'), tabLabelKey: 'REPORTS', tab: GDD_TABS.Reports, hidden: false}
       );
     }
-
+    const tabsToHideInAmendment = [GDD_TABS.MonitoringActivities, GDD_TABS.ResultsReported, GDD_TABS.Reports];
+    this.pageTabs.forEach((item) => {
+      if (tabsToHideInAmendment.includes(item.tab)) {
+        item.hidden = this.isInAmendment;
+      }
+    });
     // this.toggleSubtabs(progressTab, envFlags);
   }
 
