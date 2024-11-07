@@ -105,7 +105,7 @@
   "SGDD_HUMANITARIAN": "Ce SPD est humanitaire",
   "THERE_ARE_NO_WORKPLAN_INDICATORS": "Il n'y a pas d'indicateurs de plan de travail",
   "FRNUMBERSCONSISTENCY.GDD_UNICEF_CASH_CONTRIBUTION": "Contribution en espèces de l'UNICEF",
-  "GDD_BUDGET_TOOLTIP": "Il s’agit des TOTAUX en lecture seule des valeurs saisies pour les activités du Produit du GDD Gestion efficace et efficiente du programme, des fournitures ",
+  "GDD_BUDGET_TOOLTIP": "Il s'agit des TOTAUX en lecture seule des valeurs saisies ci-dessous pour les activités de sortie GDD et les fournitures.",
   "GDD_METADATA_TOOLTIP": "Affichage en lecture seule des valeurs saisies sur le GDD.",
   "GDD_CONFIDENTIAL_INFO": "Cette bascule empêchera ce GDD d’être utilisée dans des tableaux de bord extérieurs à l’UNICEF",
   "GDD_TIMING_TOOLTIP": "Ce sont les dates centralisées et en lecture seule du moment où lesdites mesures ont été prises sur le GDD",

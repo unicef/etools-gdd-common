@@ -105,7 +105,7 @@
   "SGDD_HUMANITARIAN": "Este SPD é humanitário",
   "THERE_ARE_NO_WORKPLAN_INDICATORS": "Não há Indicadores do Plano de Trabalho",
   "FRNUMBERSCONSISTENCY.GDD_UNICEF_CASH_CONTRIBUTION": "Contribuição em dinheiro do UNICEF",
-  "GDD_BUDGET_TOOLTIP": "Estes são os TOTAIS dos valores inseridos abaixo para atividades de produção de GDD, gerenciamento eficaz e eficiente de programas, suprimentos. (somente leitura de campo) ",
+  "GDD_BUDGET_TOOLTIP": "Estes são os TOTAIS dos valores inseridos abaixo para atividades de produção de GDD, suprimentos. (somente leitura de campo) ",
   "GDD_METADATA_TOOLTIP": "Exibição somente leitura dos valores inseridos no GDD",
   "GDD_CONFIDENTIAL_INFO": "Esta alternância impedirá que este GDD seja usado em painéis externos ao UNICEF",
   "GDD_TIMING_TOOLTIP": "Estas são as datas centralizadas e somente de leitura de quando as referidas ações foram feitas no GDD",

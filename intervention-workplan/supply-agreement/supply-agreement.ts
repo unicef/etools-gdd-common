@@ -205,7 +205,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: translate('ITEM_ALL_PRICES') as unknown as string,
+      label: translate('ITEM_GDD_CURRENCY') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       cssClass: 'col_title word-break'
