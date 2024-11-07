@@ -22,9 +22,9 @@ import {get as getTranslation} from 'lit-translate';
  */
 @customElement('gdd-start-review')
 export class GDDStartReview extends connectStore(LitElement) {
-  @property() type = '';
+  @property() type = NON_PRC_REVIEW;
 
-  @property() reviewTypes: LabelAndValue[] = [];
+  @property() reviewTypes: LabelAndValue[] = [{label: getTranslation('NON_PRC_REVIEW'), value: NON_PRC_REVIEW}];
 
   PRC = {label: getTranslation('PRC_REVIEW'), value: PRC_REVIEW};
   NON_PRC = {label: getTranslation('NON_PRC_REVIEW'), value: NON_PRC_REVIEW};
@@ -55,6 +55,7 @@ export class GDDStartReview extends connectStore(LitElement) {
             label="${translate('REVIEW_TYPE')}"
             .selected="${this.type}"
             placeholder="&#8212;"
+            readonly
             .options="${this.reviewTypes}"
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) => (this.type = detail.selectedItem?.value)}"
@@ -65,12 +66,6 @@ export class GDDStartReview extends connectStore(LitElement) {
         </div>
       </etools-dialog>
     `;
-  }
-
-  stateChanged(state: RootState) {
-    this.reviewTypes = state.gddInterventions?.current?.in_amendment
-      ? [this.PRC, this.NON_PRC, this.WITHOUT]
-      : [this.PRC, this.NON_PRC];
   }
 
   startReview(): void {
