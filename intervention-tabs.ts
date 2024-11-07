@@ -279,8 +279,8 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
       </div>
 
       <div class="amendment-info" ?hidden="${!this.isInAmendment}">
-        ${translate('AMENDMENT_MODE_TEXT')}
-        <a href="${Environment.basePath}gdd-interventions/${this.intervention?.original_intervention}/metadata">
+        ${translate('GDD_AMENDMENT_MODE_TEXT')}
+        <a href="${Environment.basePath}gdd-interventions/${this.intervention?.original_gdd}/metadata">
           ${translate('ORIGINAL_VERSION')}
         </a>
       </div>

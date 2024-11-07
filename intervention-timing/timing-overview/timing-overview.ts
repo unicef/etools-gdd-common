@@ -111,7 +111,7 @@ export class GDDTimingOverview extends CommentsMixin(LitElement) {
 
         <div class="icon-tooltip-div">
           <info-icon-tooltip
-            .tooltipText="${translate('TIMING_TOOLTIP')}"
+            .tooltipText="${translate('GDD_TIMING_TOOLTIP')}"
             position="${this.dir == 'rtl' ? 'right' : 'left'}"
           >
           </info-icon-tooltip>
