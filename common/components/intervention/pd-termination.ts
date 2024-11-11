@@ -42,6 +42,9 @@ export class GDDPdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(L
         #pdTerminationConfirmation {
           --etools-dialog-confirm-btn-bg: var(--primary-color);
         }
+        .p-static {
+          position: static !important;
+        }
       </style>
       <etools-dialog
         no-padding
@@ -57,9 +60,10 @@ export class GDDPdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(L
         ?disable-dismiss-btn="${this.uploadInProgress}"
         ?show-spinner="${this.savingInProcess}"
       >
+      <div class="container-dialog">
         <div class="row">
           <datepicker-lite
-            class="col-12"
+            class="col-12 p-static"
             id="terminationDate"
             label="${translate('TERMINATION_DATE')}"
             .value="${this.termination.date}"
@@ -73,7 +77,7 @@ export class GDDPdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(L
           >
           </datepicker-lite>
         </div>
-        <div class="row">
+        <div class="row padding-v">
           <etools-upload
             class="col-12"
             id="terminationNotice"
@@ -87,13 +91,14 @@ export class GDDPdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(L
             error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
           >
         </div>
-        <div class="row">
+        <div class="row padding-v">
           <etools-warn-message-lit
             class="col-12"
             .messages="${this.warnMessages}"
           >
           </etools-warn-message-lit>
 
+        </div>
         </div>
       </etools-dialog>
     `;
