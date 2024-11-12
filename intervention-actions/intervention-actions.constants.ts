@@ -30,7 +30,7 @@ export const SEND_BACK_REVIEW = 'send_back_review';
 export const SUSPEND = 'suspend';
 export const UNSUSPEND = 'unsuspend';
 
-export const EXPORT_ACTIONS = [EXPORT_PDF, EXPORT_XLS, EXPORT_COMMENTS, EXPORT_RESULTS];
+export const EXPORT_ACTIONS = [EXPORT_PDF, EXPORT_XLS, EXPORT_COMMENTS];
 export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK, REJECT_REVIEW, SEND_BACK_REVIEW];
 export const ACTIONS_WITH_INPUT = [
   CANCEL,

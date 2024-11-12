@@ -57,13 +57,6 @@ export class GDDExportInterventionData extends LitElement {
       window.open(url, '_blank');
       return;
     }
-    if (_type == 'export_results') {
-      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.GDDExpectedResultsExport, {
-        intervention_id: this.interventionId
-      }).url;
-      window.open(url, '_blank');
-      return;
-    }
     if (_type == 'export_pdf') {
       url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.exportPdf, {
         interventionId: this.interventionId
