@@ -45,14 +45,13 @@ const customStyles = html`
       width: 99%;
       min-width: 70px;
     }
-    .col_nowrap {
-      width: 1%;
-      white-space: nowrap;
+    .col_2 {
+      width: 16.6%;
     }
     .word-break {
       word-break: break-word;
     }
-    @media (min-width: 760px) and (max-width: 1000px) {
+    @media (min-width: 760px) and (max-width: 1080px) {
       .row-actions .actions {
         left: 0;
       }
@@ -214,24 +213,24 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
       label: translate('NUMBER_UNITS') as unknown as string,
       name: 'unit_number',
       type: EtoolsTableColumnType.Number,
-      cssClass: 'col_nowrap'
+      cssClass: 'col_2'
     },
     {
       label: translate('PRICE_UNIT') as unknown as string,
       name: 'unit_price',
       type: EtoolsTableColumnType.Number,
-      cssClass: 'col_nowrap'
+      cssClass: 'col_2'
     },
     {
       label: '',
       name: 'total_price',
-      cssClass: 'col_nowrap',
+      cssClass: 'col_2',
       type: EtoolsTableColumnType.Number
     },
     {
       label: translate('PROVIDED_BY') as unknown as string,
       name: 'provided_by',
-      cssClass: 'col_nowrap',
+      cssClass: 'col_2',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
       customMethod: (item: any, _key: string, customData: AnyObject) => {
