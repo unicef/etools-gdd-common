@@ -41,15 +41,18 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 
 const customStyles = html`
   <style>
-    .col_title {
-      width: 99%;
-      min-width: 70px;
+    .col_3 {
+      max-width: 25%;
+      width: 25%;
+      word-break: break-word;
     }
     .col_2 {
-      width: 16.6%;
-    }
-    .word-break {
+      max-width: 18%;
+      width: 18%;
       word-break: break-word;
+    }
+    .row-actions {
+      min-width: 94px !important;
     }
     @media (min-width: 760px) and (max-width: 1080px) {
       .row-actions .actions {
@@ -207,7 +210,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
       label: translate('ITEM_GDD_CURRENCY') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      cssClass: 'col_title word-break'
+      cssClass: 'col_3'
     },
     {
       label: translate('NUMBER_UNITS') as unknown as string,
