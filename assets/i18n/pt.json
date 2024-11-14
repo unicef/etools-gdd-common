@@ -66,7 +66,7 @@
   "GDD_DELETE_SUCCCESS": "Sucesso na exclusão do GPD",
   "CP_STRUCTURE": "Estrutura do CP",
   "GDD_LIST": {
-    "NAME": "GPD",
+    "NAME": "Documento do Programa Governamental",
     "ADD_GDD": "Adicionar GPD",
     "ADD_NEW_GDD": "Adicionar novo GPD",
     "GOVERNMENT_ORG_NAME": "Nome da organização governamental",

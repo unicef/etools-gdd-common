@@ -66,7 +66,7 @@
   "GDD_DELETE_SUCCCESS": "Succès de la suppression de GPD",
   "CP_STRUCTURE": "Structure du PC",
   "GDD_LIST": {
-    "NAME": "GPD",
+    "NAME": "Document de programme du gouvernement",
     "ADD_GDD": "Ajouter un GPD",
     "ADD_NEW_GDD": "Ajouter un nouveau GPD",
     "GOVERNMENT_ORG_NAME": "Nom de l'organisation gouvernementale",
