@@ -110,5 +110,15 @@
   "GDD_CONFIDENTIAL_INFO": "Esta alternância impedirá que este GPD seja usado em painéis externos ao UNICEF",
   "GDD_TIMING_TOOLTIP": "Estas são as datas centralizadas e somente de leitura de quando as referidas ações foram feitas no GPD",
   "GDD_AMENDMENT_MODE_TEXT": "Este GPD é um aditivo. Ver",
-  "GDD_UPLOAD_SUPPLY_HELPER": "Para carregar a partir do catálogo de suprimentos, visite {0} para selecionar itens e exportar para o Excel, depois faça o upload no GPD. Os preços do catálogo de suprimentos são definidos em USD, ajuste o preço indicativo para a moeda do GPD. Veja {1} para mais detalhes."
+  "GDD_UPLOAD_SUPPLY_HELPER": "Para carregar a partir do catálogo de suprimentos, visite {0} para selecionar itens e exportar para o Excel, depois faça o upload no GPD. Os preços do catálogo de suprimentos são definidos em USD, ajuste o preço indicativo para a moeda do GPD. Veja {1} para mais detalhes.",
+  "GDD_REVIEW_QUESTIONS": {
+    "BUDGET_IS_ALIGNED": "O orçamento do GPD proposto está alinhado com os princípios da relação custo-benefício com os custos de gestão do programa eficaz e eficiente aderindo aos limites definidos pelo escritório",
+    "GES_CONSIDERED": "Gênero, equidade e sustentabilidade foram considerados no processo de concepção do programa",
+    "PARTNER_COMPARATIVE_ADVANTAGE": "A seleção de parceiros evidencia a vantagem comparativa e o custo-benefício da OSC em relação aos resultados planejados",
+    "PD_IS_GUIDED": "A estrutura de resultados do GPD proposto foi guiada pelo feedback de M&A durante o processo de redação",
+    "PD_IS_RELEVANT": "O GPD proposto é relevante para alcançar resultados no documento do programa do país, no plano de trabalho do setor relevante e ou no plano de resposta humanitária",
+    "RELATIONSHIPS_ARE_POSITIVE": "As relações anteriores do UNICEF/ONU com a OSC proposta foram positivas",
+    "RELATIONSHIP_IS_REPRESENTED": "A relação proposta é melhor representada e regulada pela parceria (em oposição à aquisição), com o UNICEF e a OSC fazendo contribuições claras para o GPD",
+    "SUPPLY_ISSUES_CONSIDERED": "As questões de abastecimento relevantes foram devidamente consideradas"
+  }
 }
