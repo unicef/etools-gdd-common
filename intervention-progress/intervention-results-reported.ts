@@ -303,7 +303,7 @@ export class GDDInterventionResultsReported extends connectStore(
                   <div slot="row-data-details">
                     <div class="row-details-content">
                       <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
-                        ${translate('NO_INDICATORS')}
+                        ${translate('GDD_NO_INDICATORS')}
                       </div>
                       ${this._getIndicatorsReports(lowerResult.id).map(
                         (indicatorReport: any) => html`<div class="row indicator-report">
