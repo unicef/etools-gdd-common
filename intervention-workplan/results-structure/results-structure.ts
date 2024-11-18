@@ -137,32 +137,13 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
           <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
           <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
         </div>
-
-        <!--    PD output ADD button for non Unicef users     -->
-        <div
-          class="pd-add-section"
-          ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-        >
-          <div class="pd-title layout-horizontal align-items-center">
-            ${translate('KEY_INTERVENTIONS_TITLE')}
-            <etools-info-tooltip position="top" custom-icon offset="0">
-              <etools-icon-button
-                name="add-box"
-                slot="custom-icon"
-                class="add"
-                @click="${() => this.openKeyInterventionDialog()}"
-              ></etools-icon-button>
-              <span class="no-wrap" slot="message">${translate('ADD_KEY_INTERVENTION')}</span>
-            </etools-info-tooltip>
-          </div>
-        </div>
         ${repeat(
           this.resultLinks,
           (result: GDDExpectedResult) => result.id,
           (result, _index) => html`
             <gdd-cp-output-level
               index="${_index}"
-              ?show-cpo-level="${this.isUnicefUser}"
+              ?isUnicefUser="${this.isUnicefUser}"
               .resultLink="${result}"
               .interventionId="${this.interventionId}"
               .showIndicators="${this.showIndicators}"
@@ -184,7 +165,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
               >
                 ${translate('NO_PDS_ADDED')}
               </div>
-              ${!this.isUnicefUser || !result.cp_output || !this.permissions.edit.result_links || this.commentMode
+              ${!result.cp_output || !this.permissions.edit.result_links || this.commentMode
                 ? ''
                 : html`
                     <div class="pd-title layout-horizontal align-items-center">
