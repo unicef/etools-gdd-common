@@ -21,7 +21,7 @@ export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
   @property() currency!: string | undefined;
   @property() resultLink!: GDDExpectedResult;
   @property() interventionInfo!: Partial<GDD>;
-  @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
+  @property({type: Boolean}) isUnicefUser = false;
   @property({type: Boolean}) showIndicators = false;
   @property({type: Boolean}) showActivities = true;
   @property({type: Boolean}) readonly = true;
@@ -30,7 +30,7 @@ export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
   protected render(): TemplateResult {
     return html`
       ${sharedStyles}
-      ${this.showCPOLevel && this.resultLink
+      ${this.resultLink
         ? html`
             <div class="divider"></div>
             <etools-data-table-row secondary-bg-on-hover .detailsOpened="${this.opened}">
@@ -68,7 +68,7 @@ export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
                             )}
                           </div>
                         </div>
-                        <div class="hover-block" ?hidden="${this.readonly}">
+                        <div class="hover-block" ?hidden="${this.readonly || !this.isUnicefUser}">
                           <etools-icon-button name="create" @click="${this.openEditCpOutputPopup}"></etools-icon-button>
                           <etools-icon-button
                             name="delete"
