@@ -239,7 +239,7 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
   isReadonly!: boolean;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'timing')) {
       return;
     }
     if (!get(state, 'gddInterventions.current')) {

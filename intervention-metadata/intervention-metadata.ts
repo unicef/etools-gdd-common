@@ -51,7 +51,7 @@ export class GDDInterventionMetadata extends connectStore(LitElement) {
 
   stateChanged(state: RootState): void {
     if (
-      currentPage(state) !== 'gdd-interventions' ||
+      currentPage(state) !== 'gpd-interventions' ||
       currentSubpage(state) !== 'metadata' ||
       !state.gddInterventions.current
     ) {

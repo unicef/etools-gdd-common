@@ -197,7 +197,7 @@ export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(C
     if (!state.gddInterventions.current) {
       return;
     }
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Workplan)) {
       return;
     }
     this.interventionId = state.gddInterventions.current.id!;

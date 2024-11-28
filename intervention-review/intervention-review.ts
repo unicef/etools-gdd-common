@@ -75,7 +75,7 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'gdd-interventions', 'review') ||
+      EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'gpd-interventions', 'review') ||
       !state.gddInterventions.current
     ) {
       return;

@@ -280,7 +280,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
       <div class="amendment-info" ?hidden="${!this.isInAmendment}">
         ${translate('GDD_AMENDMENT_MODE_TEXT')}
-        <a href="${Environment.basePath}gdd-interventions/${this.intervention?.original_gdd}/metadata">
+        <a href="${Environment.basePath}gpd-interventions/${this.intervention?.original_gdd}/metadata">
           ${translate('ORIGINAL_VERSION')}
         </a>
       </div>
@@ -409,7 +409,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   public stateChanged(state: RootState) {
     const notInterventionTabs: boolean =
-      currentPage(state) !== 'gdd-interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
+      currentPage(state) !== 'gpd-interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
     const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
     const commentsState = Boolean(state.app?.routeDetails?.queryParams?.comment_mode);
     this.checkCommentsMode(commentsState);
@@ -764,7 +764,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
       delete this._routeDetails?.queryParams?.size;
     }
     const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
-    let newPath = `gdd-interventions/${this.intervention!.id}/${newTabName}`;
+    let newPath = `gpd-interventions/${this.intervention!.id}/${newTabName}`;
     if (newSubTab) {
       newPath += `/${newSubTab}`;
     } else {

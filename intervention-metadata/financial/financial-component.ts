@@ -108,7 +108,7 @@ export class GDDFinancialComponent extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Metadata)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Metadata)) {
       return;
     }
 

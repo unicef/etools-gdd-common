@@ -138,7 +138,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
   autoValidate = false;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'strategy')) {
       return;
     }
 

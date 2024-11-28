@@ -295,7 +295,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Workplan) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Workplan) ||
       !state.gddInterventions.current
     ) {
       return;
