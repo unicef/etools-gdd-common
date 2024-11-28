@@ -101,7 +101,7 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
   }
 
   public stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Metadata)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Metadata)) {
       return;
     }
 

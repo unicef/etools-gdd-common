@@ -139,7 +139,7 @@ export class GDDReviewsList extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'gdd-interventions', 'review')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'gpd-interventions', 'review')) {
       return;
     }
     this.approvals = state.prcIndividualReviews || [];

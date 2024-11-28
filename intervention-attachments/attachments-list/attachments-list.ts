@@ -147,7 +147,7 @@ export class GDDAttachmentsList extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: any): void {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'attachments')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'attachments')) {
       return;
     }
     if (!state.gddInterventions.current) {

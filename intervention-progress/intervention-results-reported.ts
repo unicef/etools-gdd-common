@@ -405,7 +405,7 @@ export class GDDInterventionResultsReported extends connectStore(
     if (
       EtoolsRouter.pageIsNotCurrentlyActive(
         get(state, 'app.routeDetails'),
-        'gdd-interventions',
+        'gpd-interventions',
         GDD_TABS.ResultsReported
       ) ||
       !state.gddInterventions.current

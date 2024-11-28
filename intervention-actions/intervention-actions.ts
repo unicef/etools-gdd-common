@@ -319,7 +319,7 @@ export class GDDInterventionActions extends connectStore(LitElement) {
   }
 
   private redirectToTabPage(id: number | null, tabName: string) {
-    history.pushState(window.history.state, '', `${Environment.basePath}gdd-interventions/${id}/${tabName}`);
+    history.pushState(window.history.state, '', `${Environment.basePath}gpd-interventions/${id}/${tabName}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 

@@ -177,7 +177,7 @@ export class GDDInterventionDates extends CommentsMixin(
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'timing')) {
       return;
     }
     if (!state.gddInterventions.current) {

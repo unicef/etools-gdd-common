@@ -314,7 +314,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
   }
 
   stateChanged(state: RootState): void {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Workplan)) {
       return;
     }
     if (get(state, 'gddInterventions.current')) {

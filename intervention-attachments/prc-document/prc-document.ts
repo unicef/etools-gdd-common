@@ -91,7 +91,7 @@ export class GDDPrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixi
   permissions!: Permission<GDDPrcDocumentPermissions>;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'attachments')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'attachments')) {
       return;
     }
 

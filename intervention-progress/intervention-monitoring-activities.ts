@@ -42,7 +42,7 @@ export class GDDInterventionMonitoringActivities extends connectStore(LitElement
     if (
       EtoolsRouter.pageIsNotCurrentlyActive(
         get(state, 'app.routeDetails'),
-        'gdd-interventions',
+        'gpd-interventions',
         GDD_TABS.MonitoringActivities
       )
     ) {

@@ -136,7 +136,7 @@ export class GDDFundReservations extends CommentsMixin(ContentPanelMixin(FrNumbe
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'metadata') ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'metadata') ||
       !state.gddInterventions.current
     ) {
       return;

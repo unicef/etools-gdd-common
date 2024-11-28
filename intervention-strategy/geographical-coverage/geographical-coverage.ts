@@ -245,7 +245,7 @@ export class GDDGeographicalCoverage extends CommentsMixin(ComponentBaseMixin(Li
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', GDD_TABS.Strategy)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Strategy)) {
       return;
     }
     if (!state.gddInterventions.current) {

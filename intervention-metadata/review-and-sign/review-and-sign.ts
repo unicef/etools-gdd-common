@@ -295,7 +295,7 @@ export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMix
   private justUploaded = false;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gdd-interventions', 'metadata')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'metadata')) {
       return;
     }
 
