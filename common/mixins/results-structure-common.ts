@@ -9,7 +9,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {EtoolsEndpoint, GDDExpectedResult, GDDActivity, GDDResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {convertDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {GDDActivityExtended} from '../types/editor-page-types';
 
 function deactivateActivity(activityId: number, keyInterventionId: number, interventionId: number) {

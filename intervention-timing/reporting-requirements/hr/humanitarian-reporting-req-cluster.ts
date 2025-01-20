@@ -7,7 +7,7 @@ import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {gddEndpoints} from '../../../utils/intervention-endpoints';
@@ -45,12 +45,13 @@ export class GDDHumanitarianReportingReqCluster extends EndpointsLitMixin(
           <etools-data-table-column class="col-10">${translate('DUE_DATES')}</etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
-          (item: any) => html` <etools-data-table-row no-collapse>
-            <div slot="row-data">
-              <span class="col-data col-2">${this.getFrequencyForDisplay(item.frequency)}</span>
-              <span class="col-data col-10">${this.getDatesForDisplay(item.cs_dates)}</span>
-            </div>
-          </etools-data-table-row>`
+          (item: any) =>
+            html` <etools-data-table-row no-collapse>
+              <div slot="row-data">
+                <span class="col-data col-2">${this.getFrequencyForDisplay(item.frequency)}</span>
+                <span class="col-data col-10">${this.getDatesForDisplay(item.cs_dates)}</span>
+              </div>
+            </etools-data-table-row>`
         )}
         </div>
 

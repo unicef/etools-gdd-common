@@ -24,7 +24,7 @@ import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-compari
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, MinimalAgreement} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation, langChanged} from 'lit-translate';
+import {translate, get as getTranslation, langChanged} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 /**
  * @customElement
@@ -147,8 +147,8 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
         !member.active
           ? `[${getTranslation('INACTIVE')}]`
           : member.has_active_realm
-          ? ''
-          : `[${getTranslation('NO_ACCESS')}]`
+            ? ''
+            : `[${getTranslation('NO_ACCESS')}]`
       } ${member.first_name} ${member.last_name} (${member.email})`,
       id: member.id
     }));

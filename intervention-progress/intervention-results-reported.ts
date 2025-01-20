@@ -23,7 +23,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils
 import get from 'lodash-es/get';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {currentIntervention} from '../common/selectors';
 import {GDD_TABS} from '../common/constants';
@@ -288,65 +288,67 @@ export class GDDInterventionResultsReported extends connectStore(
               </etools-data-table-header>
 
               ${item.ll_outputs.map(
-                (lowerResult: any) => html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
-                  <div slot="row-data">
-                    <span class="col-data col-9" data-col-header-label="${translate('KEY_INTERVENTIONS')}">
-                      ${lowerResult.title}
-                    </span>
-                    <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
-                      <gdd-intervention-report-status
-                        status="${this._getLowerResultStatus(lowerResult.id)}"
-                      ></gdd-intervention-report-status>
-                      <span class="lower-result-status-date">${this._getLowerResultStatusDate(lowerResult.id)}</span>
-                    </span>
-                  </div>
-                  <div slot="row-data-details">
-                    <div class="row-details-content">
-                      <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
-                        ${translate('GDD_NO_INDICATORS')}
-                      </div>
-                      ${this._getIndicatorsReports(lowerResult.id).map(
-                        (indicatorReport: any) => html`<div class="row indicator-report">
-                            <div class="col-data col-12 col-md-9">
-                              ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
-                              ${indicatorReport.reportable.blueprint.title}
-                            </div>
-                            <div class="col-data col-12 col-md-3 progress-bar">
-                              <gdd-etools-progress-bar
-                                class="report-progress-bar"
-                                value="${this.getProgressPercentage(
-                                  indicatorReport.reportable.total_against_target,
-                                  indicatorReport.reportable.blueprint.display_type
-                                )}"
-                              >
-                              </gdd-etools-progress-bar>
-                            </div>
-                          </div>
-                          <div class="row progress-details">
-                            <div class="layout-vertical col-12 col-md-5 target-details">
-                              <gdd-indicator-report-target
-                                class="print-inline"
-                                .displayType="${indicatorReport.reportable.blueprint.display_type}"
-                                .target="${indicatorReport.reportable.target}"
-                                .cumulativeProgress="${this._ternary(
-                                  indicatorReport.reportable.blueprint.display_type,
-                                  'number',
-                                  indicatorReport.reportable.achieved.v,
-                                  indicatorReport.reportable.achieved.c
-                                )}"
-                                .achievement="${this._ternary(
-                                  indicatorReport.reportable.blueprint.display_type,
-                                  'number',
-                                  indicatorReport.total.v,
-                                  indicatorReport.total.c
-                                )}"
-                              ></gdd-indicator-report-target>
-                            </div>
-                          </div>`
-                      )}
+                (lowerResult: any) =>
+                  html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
+                    <div slot="row-data">
+                      <span class="col-data col-9" data-col-header-label="${translate('KEY_INTERVENTIONS')}">
+                        ${lowerResult.title}
+                      </span>
+                      <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
+                        <gdd-intervention-report-status
+                          status="${this._getLowerResultStatus(lowerResult.id)}"
+                        ></gdd-intervention-report-status>
+                        <span class="lower-result-status-date">${this._getLowerResultStatusDate(lowerResult.id)}</span>
+                      </span>
                     </div>
-                  </div>
-                </etools-data-table-row>`
+                    <div slot="row-data-details">
+                      <div class="row-details-content">
+                        <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
+                          ${translate('GDD_NO_INDICATORS')}
+                        </div>
+                        ${this._getIndicatorsReports(lowerResult.id).map(
+                          (indicatorReport: any) =>
+                            html`<div class="row indicator-report">
+                                <div class="col-data col-12 col-md-9">
+                                  ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
+                                  ${indicatorReport.reportable.blueprint.title}
+                                </div>
+                                <div class="col-data col-12 col-md-3 progress-bar">
+                                  <gdd-etools-progress-bar
+                                    class="report-progress-bar"
+                                    value="${this.getProgressPercentage(
+                                      indicatorReport.reportable.total_against_target,
+                                      indicatorReport.reportable.blueprint.display_type
+                                    )}"
+                                  >
+                                  </gdd-etools-progress-bar>
+                                </div>
+                              </div>
+                              <div class="row progress-details">
+                                <div class="layout-vertical col-12 col-md-5 target-details">
+                                  <gdd-indicator-report-target
+                                    class="print-inline"
+                                    .displayType="${indicatorReport.reportable.blueprint.display_type}"
+                                    .target="${indicatorReport.reportable.target}"
+                                    .cumulativeProgress="${this._ternary(
+                                      indicatorReport.reportable.blueprint.display_type,
+                                      'number',
+                                      indicatorReport.reportable.achieved.v,
+                                      indicatorReport.reportable.achieved.c
+                                    )}"
+                                    .achievement="${this._ternary(
+                                      indicatorReport.reportable.blueprint.display_type,
+                                      'number',
+                                      indicatorReport.total.v,
+                                      indicatorReport.total.c
+                                    )}"
+                                  ></gdd-indicator-report-target>
+                                </div>
+                              </div>`
+                        )}
+                      </div>
+                    </div>
+                  </etools-data-table-row>`
               )}
             </div>
           `

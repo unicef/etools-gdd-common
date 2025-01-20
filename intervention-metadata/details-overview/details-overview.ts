@@ -14,7 +14,7 @@ import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/ut
 import get from 'lodash-es/get';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {translate, get as getTranslation, langChanged} from 'lit-translate';
+import {translate, get as getTranslation, langChanged} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {allPartners, currentIntervention, isUnicefUser} from '../../common/selectors';
 import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
 import {GDD} from '@unicef-polymer/etools-types/dist/models-and-classes/gdd.classes';
@@ -135,7 +135,7 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
     if (!this.interventionPartner?.sea_risk_rating_name) {
       return html`${translate('NA')}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
       <strong class="blue">${translateValue(this.interventionPartner.sea_risk_rating_name, 'RISK_RATINGS')}</strong></a
     >`;
@@ -145,7 +145,7 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
     if (!this.interventionPartner?.rating) {
       return html`${translate('NA')}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
       <strong class="blue">${translateValue(this.interventionPartner.rating, 'RISK_RATINGS')}</strong></a
     >`;

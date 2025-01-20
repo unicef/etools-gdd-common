@@ -34,7 +34,7 @@ import {isUnicefUser} from '../../common/selectors';
 import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {AnyObject, AsyncAction, EtoolsEndpoint, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {GDD, GDDExpectedResult} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {GDD_TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
@@ -422,7 +422,7 @@ export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement
     try {
       const response: AnyObject = JSON.parse(errorResponse);
       return Object.values(response).join('; ');
-    } catch (e) {
+    } catch {
       return defaultMessage;
     }
   }

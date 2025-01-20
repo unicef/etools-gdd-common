@@ -16,7 +16,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
-import {listenForLangChanged, translate} from 'lit-translate';
+import {listenForLangChanged, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {GDDOtherData, GDDOtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';

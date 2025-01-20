@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {GDDComment} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import dayjs from 'dayjs';
 @customElement('gdd-message-item')
 export class GDDMessageItem extends LitElement {

@@ -26,7 +26,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {EnvFlags, EtoolsEndpoint, GDDExpectedResult, GDD} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {gddInterventions} from './common/reducers/interventions';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {prcIndividualReviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
 import GDD_CONSTANTS, {GDD_TABS} from './common/constants';

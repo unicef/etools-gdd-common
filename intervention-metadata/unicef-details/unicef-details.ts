@@ -15,7 +15,7 @@ import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnice
 import {GDDPdUnicefDetailsPermissions, GDDPdUnicefDetails} from './pdUnicefDetails.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getEWorkPlan, patchIntervention} from '../../common/actions/gddInterventions';
-import {RootState} from '../../common/types/store.types';
+import {EWorkPlan, RootState} from '../../common/types/store.types';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -25,7 +25,7 @@ import orderBy from 'lodash-es/orderBy';
 import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 
 /**
@@ -292,7 +292,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
       this.cpStructures = [...state.commonData!.countryProgrammes];
     }
     if (!isJsonStrMatch(this.allEWorkplans, state.gddInterventions?.eWorkPlans)) {
-      this.allEWorkplans = [...state.gddInterventions?.eWorkPlans];
+      this.allEWorkplans = [...(state.gddInterventions?.eWorkPlans || [])];
 
       this.populateEWorkplans();
     }
@@ -311,7 +311,7 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
 
   populateEWorkplans() {
     if (this.data.country_programme) {
-      const foundWorkPlan = (this.allEWorkplans || [])[this.data.country_programme];
+      const foundWorkPlan = (this.allEWorkplans || [])[this.data.country_programme] as any;
       if (foundWorkPlan) {
         this.e_workplans = [...foundWorkPlan];
         return;
