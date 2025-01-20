@@ -41,10 +41,11 @@
   "IMPORT_ECN": "Importar ECN",
   "TOTAL_BUDGET": "Presupuesto total",
   "NEW_GDD": {
-    "GOVERNMENT": "Gobierno",
+    "GOVERNMENT": "Entidad Gubernamental",
     "COUNTRY_PROGRAMME": "Programa de país",
     "E_WORKPLANS": "Planes de trabajo electrónicos",
-    "AGREEMENT_REQUIRED": "Se requiere acuerdo",
+    "AGREEMENT": "Términos y condiciones generales",
+    "AGREEMENT_REQUIRED": "Términos y condiciones generales requeridos",
     "DOCUMENT_CURRENCY": "Moneda del documento",
     "DOC_PARTNER_FOCAL_POINTS": "Puntos focales de socios de documentos",
     "DOC_TITLE": "Título del documento",
@@ -52,7 +53,7 @@
     "INITIAL_DETAILS": "Introduce los datos iniciales",
     "ON_SAVE_VALIDATION": "Complete todos los campos obligatorios y corrija los errores de formato de datos.",
     "PARTNER_FOCAL_POINTS_TOOLTIP": "A los usuarios seleccionados aquí se les otorgará acceso de edición a este GPD una vez que se envíe al socio.",
-    "PARTNER_REQUIRED": "Se requiere socio",
+    "PARTNER_REQUIRED": "Se requiere entidad gubernamental",
     "PARTNER_VENDOR_NUMBER": "Número de proveedor asociado",
     "REF_NUM_YEAR": "Número de referencia Año",
     "START_DATE_ESTIMATED": "Fecha de inicio (estimada)",
@@ -120,5 +121,6 @@
     "RELATIONSHIPS_ARE_POSITIVE": "Las relaciones previas de UNICEF/ONU con la OSC propuesta han sido positivas",
     "RELATIONSHIP_IS_REPRESENTED": "La relación propuesta está mejor representada y regulada por la asociación (en contraposición a la adquisición), en la que tanto UNICEF como la OSC realizan contribuciones claras al GPD.",
     "SUPPLY_ISSUES_CONSIDERED": "Se han tenido debidamente en cuenta las cuestiones de suministro pertinentes"
-  }
+  },
+  "BACKGROUND_TAB": "Fondo"
 }

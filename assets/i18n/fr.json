@@ -41,10 +41,11 @@
   "IMPORT_ECN": "Importer ECN",
   "TOTAL_BUDGET": "Budget total",
   "NEW_GDD": {
-    "GOVERNMENT": "Gouvernement",
+    "GOVERNMENT": "Entité gouvernementale",
     "COUNTRY_PROGRAMME": "Programme pays",
     "E_WORKPLANS": "Plans de travail électroniques",
-    "AGREEMENT_REQUIRED": "Accord requis",
+    "AGREEMENT": "Conditions générales",
+    "AGREEMENT_REQUIRED": "Conditions générales requises",
     "DOCUMENT_CURRENCY": "Devise du document",
     "DOC_PARTNER_FOCAL_POINTS": "Points focaux des partenaires de documents",
     "DOC_TITLE": "Titre du document",
@@ -52,7 +53,7 @@
     "INITIAL_DETAILS": "Entrez les détails initiaux",
     "ON_SAVE_VALIDATION": "Veuillez remplir tous les champs obligatoires et corriger toute erreur de format de données.",
     "PARTNER_FOCAL_POINTS_TOOLTIP": "Les utilisateurs sélectionnés ici se verront accorder un accès en modification à cette DP une fois qu'elle sera envoyée au partenaire.",
-    "PARTNER_REQUIRED": "Le partenaire est requis",
+    "PARTNER_REQUIRED": "Une entité gouvernementale est requise",
     "PARTNER_VENDOR_NUMBER": "Numéro de fournisseur partenaire",
     "REF_NUM_YEAR": "Numéro de référence Année",
     "START_DATE_ESTIMATED": "Date de début (estimée)",
@@ -120,5 +121,6 @@
     "RELATIONSHIPS_ARE_POSITIVE": "Les relations antérieures de l'UNICEF/ONU avec l'OSC proposée ont été positives",
     "RELATIONSHIP_IS_REPRESENTED": "La relation proposée est mieux représentée et réglementée par le partenariat (par opposition à l'approvisionnement), l'UNICEF et l'OSC apportant des contributions claires au GPD",
     "SUPPLY_ISSUES_CONSIDERED": "Les questions d'approvisionnement pertinentes ont été dûment prises en compte"
-  }
+  },
+  "BACKGROUND_TAB": "Arrière-plan"
 }

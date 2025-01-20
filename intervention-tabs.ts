@@ -297,8 +297,8 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
     },
     {
       tab: GDD_TABS.Strategy,
-      tabLabel: translate('STRATEGY_TAB'),
-      tabLabelKey: 'STRATEGY_TAB',
+      tabLabel: translate('BACKGROUND_TAB'),
+      tabLabelKey: 'BACKGROUND_TAB',
       hidden: false
     },
     {

@@ -41,9 +41,10 @@
   "IMPORT_ECN": "Importar ECN",
   "TOTAL_BUDGET": "Orçamento total",
   "NEW_GDD": {
-    "GOVERNMENT": "Governo",
+    "GOVERNMENT": "Entidade Governamental",
     "COUNTRY_PROGRAMME": "Programa Nacional",
     "E_WORKPLANS": "Planos de trabalho eletrônico",
+    "AGREEMENT": "Termos e Condições Gerais",
     "AGREEMENT_REQUIRED": "Acordo necessário",
     "DOCUMENT_CURRENCY": "Moeda do Documento",
     "DOC_PARTNER_FOCAL_POINTS": "Documentar pontos focais de parceiros",
@@ -52,7 +53,7 @@
     "INITIAL_DETAILS": "Insira os detalhes iniciais",
     "ON_SAVE_VALIDATION": "Preencha todos os campos obrigatórios e corrija quaisquer erros de formato de dados.",
     "PARTNER_FOCAL_POINTS_TOOLTIP": "Os usuários selecionados aqui terão acesso de edição a este GPD assim que ele for enviado ao parceiro",
-    "PARTNER_REQUIRED": "O parceiro é obrigatório",
+    "PARTNER_REQUIRED": "Entidade governamental é obrigatória",
     "PARTNER_VENDOR_NUMBER": "Número do fornecedor parceiro",
     "REF_NUM_YEAR": "Número de Referência Ano",
     "START_DATE_ESTIMATED": "Data de início (estimada)",
@@ -120,5 +121,6 @@
     "RELATIONSHIPS_ARE_POSITIVE": "As relações anteriores do UNICEF/ONU com a OSC proposta foram positivas",
     "RELATIONSHIP_IS_REPRESENTED": "A relação proposta é melhor representada e regulada pela parceria (em oposição à aquisição), com o UNICEF e a OSC fazendo contribuições claras para o GPD",
     "SUPPLY_ISSUES_CONSIDERED": "As questões de abastecimento relevantes foram devidamente consideradas"
-  }
+  },
+  "BACKGROUND_TAB": "Fundo"
 }

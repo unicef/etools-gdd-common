@@ -41,10 +41,11 @@
   "IMPORT_ECN": "استيراد ECN",
   "TOTAL_BUDGET": "الميزانية الإجمالية",
   "NEW_GDD": {
-    "GOVERNMENT": "حكومة",
+    "GOVERNMENT": "الجهة الحكومية",
     "COUNTRY_PROGRAMME": "البرنامج القطري",
     "E_WORKPLANS": "خطط العمل الإلكترونية",
-    "AGREEMENT_REQUIRED": "الاتفاق مطلوب",
+    "AGREEMENT": "الشروط والأحكام العامة",
+    "AGREEMENT_REQUIRED": "الشروط والأحكام العامة المطلوبة",
     "DOCUMENT_CURRENCY": "عملة الوثيقة",
     "DOC_PARTNER_FOCAL_POINTS": "وثيقة نقاط الاتصال الشريكة",
     "DOC_TITLE": "عنوان الوثيقة",
@@ -52,7 +53,7 @@
     "INITIAL_DETAILS": "أدخل التفاصيل الأولية",
     "ON_SAVE_VALIDATION": "يرجى ملء جميع الحقول المطلوبة وإصلاح أي أخطاء في تنسيق البيانات.",
     "PARTNER_FOCAL_POINTS_TOOLTIP": "سيتم منح المستخدمين المحددين هنا حق الوصول للتعديل إلى GPD هذا بمجرد إرساله إلى الشريك",
-    "PARTNER_REQUIRED": "مطلوب شريك",
+    "PARTNER_REQUIRED": "مطلوب جهة حكومية",
     "PARTNER_VENDOR_NUMBER": "رقم البائع الشريك",
     "REF_NUM_YEAR": "الرقم المرجعي السنة",
     "START_DATE_ESTIMATED": "تاريخ البدء (تقديري)",
@@ -120,5 +121,6 @@
     "RELATIONSHIPS_ARE_POSITIVE": "كانت العلاقات السابقة بين اليونيسف والأمم المتحدة مع منظمات المجتمع المدني المقترحة إيجابية",
     "RELATIONSHIP_IS_REPRESENTED": "أفضل تمثيل للعلاقة المقترحة وتنظيمها من خلال الشراكة (على عكس المشتريات) ، حيث تقدم كل من اليونيسف ومنظمة المجتمع المدني مساهمات واضحة في GPD",
     "SUPPLY_ISSUES_CONSIDERED": "تم النظر على النحو الواجب في قضايا التوريد ذات الصلة"
-  }
+  },
+  "BACKGROUND_TAB": "خلفية"
 }

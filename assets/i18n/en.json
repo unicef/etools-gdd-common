@@ -41,10 +41,11 @@
   "IMPORT_ECN": "Import ECN",
   "TOTAL_BUDGET": "Total Budget",
   "NEW_GDD": {
-    "GOVERNMENT": "Government",
+    "GOVERNMENT": "Government Entity",
     "COUNTRY_PROGRAMME": "Country Programme",
     "E_WORKPLANS": "eWorkplans",
-    "AGREEMENT_REQUIRED": "Agreement required",
+    "AGREEMENT": "General Terms and Conditions",
+    "AGREEMENT_REQUIRED": "General Terms and Conditions required",
     "DOCUMENT_CURRENCY": "Document Currency",
     "DOC_PARTNER_FOCAL_POINTS": "Document Partner Focal Points",
     "DOC_TITLE": "Document Title",
@@ -52,7 +53,7 @@
     "INITIAL_DETAILS": "Enter initial details",
     "ON_SAVE_VALIDATION": "Please fill all required fields and fix any data format errors.",
     "PARTNER_FOCAL_POINTS_TOOLTIP": "The users selected here will be granted edit access to this GPD once it is sent to the partner",
-    "PARTNER_REQUIRED": "Partner is required",
+    "PARTNER_REQUIRED": "Government Entity is required",
     "PARTNER_VENDOR_NUMBER": "Partner Vendor Number",
     "REF_NUM_YEAR": "Reference Number Year",
     "START_DATE_ESTIMATED": "Start Date (Estimated)",
@@ -120,5 +121,6 @@
     "RELATIONSHIPS_ARE_POSITIVE": "Previous UNICEF/UN relationships with the proposed CSO have been positive",
     "RELATIONSHIP_IS_REPRESENTED": "The proposed relationship is best represented and regulated by partnership (as opposed to procurement), with both UNICEF and the CSO making clear contributions to the GPD",
     "SUPPLY_ISSUES_CONSIDERED": "The relevant supply issues have been duly considered"
-  }
+  },
+  "BACKGROUND_TAB": "Background"
 }
