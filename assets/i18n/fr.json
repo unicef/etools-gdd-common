@@ -114,13 +114,9 @@
   "GDD_UPLOAD_SUPPLY_HELPER": "Pour télécharger à partir du catalogue de fournitures, veuillez visiter {0} pour sélectionner des éléments et les exporter vers Excel, puis les télécharger dans le GPD. Les prix du catalogue de fournitures sont fixés en USD, ajustez le prix indicatif à la devise du GPD. Voir {1} pour plus de détails.",
   "GDD_REVIEW_QUESTIONS": {
     "BUDGET_IS_ALIGNED": "Le budget du GPD proposé est aligné sur les principes d'optimisation des ressources, les coûts de gestion de programme efficaces et efficients respectant les limites définies par le bureau",
-    "GES_CONSIDERED": "Le genre, l'équité et la durabilité ont été pris en compte dans le processus de conception du programme",
-    "PARTNER_COMPARATIVE_ADVANTAGE": "La sélection des partenaires met en évidence l'avantage comparatif et le rapport qualité-prix de l'OSC par rapport aux résultats prévus",
-    "PD_IS_GUIDED": "Le cadre de résultats du GPD proposé a été guidé par les commentaires du S&E au cours du processus de rédaction",
     "PD_IS_RELEVANT": "Le GPD proposé est pertinent pour obtenir des résultats dans le document de programme de pays, le plan de travail sectoriel pertinent et/ou le plan de réponse humanitaire",
-    "RELATIONSHIPS_ARE_POSITIVE": "Les relations antérieures de l'UNICEF/ONU avec l'OSC proposée ont été positives",
-    "RELATIONSHIP_IS_REPRESENTED": "La relation proposée est mieux représentée et réglementée par le partenariat (par opposition à l'approvisionnement), l'UNICEF et l'OSC apportant des contributions claires au GPD",
-    "SUPPLY_ISSUES_CONSIDERED": "Les questions d'approvisionnement pertinentes ont été dûment prises en compte"
+    "SUPPLY_ISSUES_CONSIDERED": "Les problèmes d'approvisionnement pertinents ont été dûment pris en compte dans le GPD"
   },
-  "BACKGROUND_TAB": "Arrière-plan"
+  "BACKGROUND_TAB": "Arrière-plan",
+  "GDD_REVIEW_MEMBERS": "Examen et approbation du partenariat"
 }

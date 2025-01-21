@@ -114,13 +114,9 @@
   "GDD_UPLOAD_SUPPLY_HELPER": "Para cargar desde el catálogo de suministros, por favor visite {0} para seleccionar elementos y exportar a Excel, luego cárguelos en el GPD. Los precios del catálogo de suministros están establecidos en USD, ajuste el precio indicativo a la moneda del GPD. Consulte {1} para más detalles.",
   "GDD_REVIEW_QUESTIONS": {
     "BUDGET_IS_ALIGNED": "El presupuesto del GPD propuesto se ajusta a los principios de rentabilidad, con unos costes de gestión del programa eficaces y eficientes que se ajustan a los límites definidos por la oficina.",
-    "GES_CONSIDERED": "El género, la equidad y la sostenibilidad se han tenido en cuenta en el proceso de diseño del programa",
-    "PARTNER_COMPARATIVE_ADVANTAGE": "La selección del socio pone de manifiesto la ventaja comparativa y la rentabilidad de la OSC en relación con los resultados previstos.",
-    "PD_IS_GUIDED": "El marco de resultados del GPD propuesto se ha guiado por la información de seguimiento y evaluación durante el proceso de redacción.",
     "PD_IS_RELEVANT": "El GPD propuesto es pertinente para alcanzar los resultados del documento del programa nacional, el plan de trabajo sectorial pertinente y/o el plan de respuesta humanitaria.",
-    "RELATIONSHIPS_ARE_POSITIVE": "Las relaciones previas de UNICEF/ONU con la OSC propuesta han sido positivas",
-    "RELATIONSHIP_IS_REPRESENTED": "La relación propuesta está mejor representada y regulada por la asociación (en contraposición a la adquisición), en la que tanto UNICEF como la OSC realizan contribuciones claras al GPD.",
-    "SUPPLY_ISSUES_CONSIDERED": "Se han tenido debidamente en cuenta las cuestiones de suministro pertinentes"
+    "SUPPLY_ISSUES_CONSIDERED": "Las cuestiones de suministro relevantes han sido debidamente consideradas en el GPD"
   },
-  "BACKGROUND_TAB": "Fondo"
+  "BACKGROUND_TAB": "Fondo",
+  "GDD_REVIEW_MEMBERS": "Revisión y aprobación de la asociación"
 }

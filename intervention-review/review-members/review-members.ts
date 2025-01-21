@@ -79,7 +79,7 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-content-panel class="content-section" panel-title="${translate('REVIEW_MEMBERS')}">
+      <etools-content-panel class="content-section" panel-title="${translate('GDD_REVIEW_MEMBERS')}">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
