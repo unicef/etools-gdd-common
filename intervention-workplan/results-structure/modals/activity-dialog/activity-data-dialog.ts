@@ -27,7 +27,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {RootState} from '../../../../../../../../redux/store';
+import {RootState} from '../../../../../../../../../redux/store';
 
 @customElement('gdd-activity-data-dialog')
 export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore(LitElement)) {
@@ -48,6 +48,7 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
   quarters: GDDActivityTimeFrames[] = [];
 
   @state() availableLocations: any[] = [];
+  @state() activitiesLoaded = false;
 
   private ewpKeyIntervention!: number;
   private flatLocations: any[] = [];
@@ -108,6 +109,8 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
   }
 
   loadEWPActivities(id: number) {
+    this.activitiesLoaded = false;
+
     if (id) {
       const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.ewpActivities, {
         keyInterventionId: id
@@ -117,6 +120,7 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
         endpoint
       }).then((ewpActivities: any[]) => {
         this.ewpActivities = [...ewpActivities];
+        this.activitiesLoaded = true;
       });
     } else {
       this.ewpActivities = [];
@@ -156,6 +160,13 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
           margin: 8px 0;
           width: min-content;
           white-space: nowrap;
+        }
+        .error-msg {
+          color: var(--error-color);
+          font-size: var(--etools-font-size-12, 12px);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
         etools-dialog etools-textarea::part(textarea) {
           max-height: 96px;
@@ -206,6 +217,7 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
               @focus="${() => this.resetFieldError('ewp_activity')}"
               @click="${() => this.resetFieldError('ewp_activity')}"
             ></etools-dropdown>
+            ${this.activitiesLoaded && !this.ewpActivities?.length ? html`<div class="error-msg">${translate('MISSING_EWP_ACTIVITIES')}</div>` : html``}
           </div>
            <div class="col-6">
             <etools-dropdown-multi

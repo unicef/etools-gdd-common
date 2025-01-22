@@ -26,7 +26,7 @@
   "THERE_ARE_NO_WORKPLAN_ACTIVITIES": "Não há atividades no plano de trabalho",
   "KEY_INTERVENTIONS_TITLE": "Principais intervenções",
   "ADD_KEY_INTERVENTION": "Adicionar intervenção principal",
-  "REMOVE_GDD_MSG": "Tem certeza de que deseja remover esta saída GPD?",
+  "REMOVE_GDD_MSG": "Tem certeza de que deseja remover esta intervenção principal?",
   "KEY_INTERVENTION": "Intervenção Chave",
   "ONCE_YOU_HIT_SAVE_THE_GDD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Depois de clicar em salvar, o GPD será encerrado e esta ação não poderá ser revertida",
   "EWP_ACTIVITY": "Atividade eWP",
@@ -121,5 +121,15 @@
   "GDD_REVIEW_MEMBERS": "Revisão e aprovação da parceria",
   "CONFIRM_REVIEW_START": "Por favor, confirme que deseja iniciar a revisão",
   "CONTRIBUTING_SECTIONS": "Seção de contribuição",
-  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "O Proprietário do Orçamento do UNICEF não pode ser o mesmo que o Ponto Focal do UNICEF"
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "O Proprietário do Orçamento do UNICEF não pode ser o mesmo que o Ponto Focal do UNICEF",
+  "GDD_ADD_CP_OUTPUT": "Adicionar saída CP manualmente",
+  "GDD_EDIT_QPR_REQUIREMENTS": "Editar requisitos de relatórios de progresso",
+  "GDD_EDIT_STANDARD_REPORT_REQUIREMENTS": "Editar requisitos de relatório padrão",
+  "NO_GDD_REPORTING_REQUIREMENTS": "Não há requisitos de relatórios definidos.",
+  "GDD_PROGRESS_REPORTS": "Relatórios de progresso",
+  "GDD_PROGRESS_REPORT_TOOLTIP": "O UNICEF exige que os parceiros apresentem relatórios de progresso de três em três meses durante a implementação do programa. ",
+  "GDD_REPORT_PROMPT": "Você deve preencher a data de início e a data de término do PD primeiro!",
+  "GDD_ADD_EWORKPLANS": "Adicionar planos de trabalho eletrônico",
+  "QUANTITY": "Quantidade",
+  "MISSING_EWP_ACTIVITIES": "Atividades eWP ausentes para a intervenção principal selecionada, corrija no eWP e sincronize novamente."
 }

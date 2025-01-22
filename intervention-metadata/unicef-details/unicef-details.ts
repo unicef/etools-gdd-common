@@ -121,43 +121,44 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 if (detail.selectedItem?.id !== this.data.country_programme) {
                   this.selectedItemChanged(detail, 'country_programme');
-                  this.populateEWorkplans();
                 }
               }}"
               trigger-value-change-event
             >
             </etools-dropdown>
           </div>
-          ${this.permissions?.view!.unicef_focal_points
-            ? html`<div class="col-xl-4 col-md-6 col-12">
-                <etools-dropdown-multi
-                  id="focalPointInput"
-                  label=${translate('UNICEF_FOCAL_POINTS')}
-                  class="w100"
-                  .options="${this.users_list}"
-                  option-label="name"
-                  option-value="id"
-                  .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id) || []}"
-                  ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
-                  ?required="${this.permissions?.required.unicef_focal_points}"
-                  @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                    this.selectedUsersChanged(detail, 'unicef_focal_points')}"
-                  trigger-value-change-event
-                >
-                </etools-dropdown-multi>
-                <div
-                  class="padd-top"
-                  ?hidden="${!this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
-                >
-                  <label for="focalPointInput" class="label">${translate('UNICEF_FOCAL_POINTS')}</label>
-                  <div id="focalPointDetails">
-                    ${this.renderReadonlyUserDetails(
-                      this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
-                    )}
+          ${
+            this.permissions?.view!.unicef_focal_points
+              ? html`<div class="col-xl-4 col-md-6 col-12">
+                  <etools-dropdown-multi
+                    id="focalPointInput"
+                    label=${translate('UNICEF_FOCAL_POINTS')}
+                    class="w100"
+                    .options="${this.users_list}"
+                    option-label="name"
+                    option-value="id"
+                    .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id) || []}"
+                    ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
+                    ?required="${this.permissions?.required.unicef_focal_points}"
+                    @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                      this.selectedUsersChanged(detail, 'unicef_focal_points')}"
+                    trigger-value-change-event
+                  >
+                  </etools-dropdown-multi>
+                  <div
+                    class="padd-top"
+                    ?hidden="${!this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
+                  >
+                    <label for="focalPointInput" class="label">${translate('UNICEF_FOCAL_POINTS')}</label>
+                    <div id="focalPointDetails">
+                      ${this.renderReadonlyUserDetails(
+                        this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
+                      )}
+                    </div>
                   </div>
-                </div>
-              </div>`
-            : ''}
+                </div>`
+              : ''
+          }
 
           <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
@@ -186,24 +187,6 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
               </div>
             </div>
           </div>
-
-          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
-            <etools-dropdown-multi
-              id="e_workplans"
-              label=${translate('E_WORKPLANS')}
-              .options="${this.e_workplans}"
-              class="w100"
-              option-label="name"
-              option-value="id"
-              .selectedValues="${this.e_workplans.length ? this.data.e_workplans : null}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.e_workplans)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.e_workplans) ? -1 : undefined}"
-              ?required="${this.permissions?.required.e_workplans}"
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedItemsChanged(detail, 'e_workplans')}"
-              trigger-value-change-event
-            >
-            </etools-dropdown-multi>
           </div>
         </div>
 
@@ -236,12 +219,6 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
 
   @property({type: Array})
   section_list!: AnyObject[];
-
-  @property({type: Array})
-  e_workplans: AnyObject[] = [];
-
-  @property({type: Array})
-  allEWorkplans!: EWorkPlan[];
 
   stateChanged(state: RootState) {
     if (
@@ -292,11 +269,6 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
     if (!isJsonStrMatch(this.cpStructures, state.commonData!.countryProgrammes)) {
       this.cpStructures = [...state.commonData!.countryProgrammes];
     }
-    if (!isJsonStrMatch(this.allEWorkplans, state.gddInterventions?.eWorkPlans)) {
-      this.allEWorkplans = [...(state.gddInterventions?.eWorkPlans || [])];
-
-      this.populateEWorkplans();
-    }
 
     const pdUsers = this.getUsersAssignedToCurrentPD();
     if (this.isUnicefUser) {
@@ -307,19 +279,6 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
       }
     } else {
       this.users_list = pdUsers;
-    }
-  }
-
-  populateEWorkplans() {
-    if (this.data.country_programme) {
-      const foundWorkPlan = (this.allEWorkplans || [])[this.data.country_programme] as any;
-      if (foundWorkPlan) {
-        this.e_workplans = [...foundWorkPlan];
-        return;
-      }
-      getStore().dispatch<AsyncAction>(getEWorkPlan(this.data.country_programme));
-    } else {
-      this.e_workplans = [];
     }
   }
 

@@ -26,7 +26,7 @@
   "THERE_ARE_NO_WORKPLAN_ACTIVITIES": "لا توجد أنشطة خطة العمل",
   "KEY_INTERVENTIONS_TITLE": "التدخلات الرئيسية",
   "ADD_KEY_INTERVENTION": "إضافة التدخل الرئيسي",
-  "REMOVE_GDD_MSG": "هل أنت متأكد أنك تريد إزالة مخرجات GPD هذه؟",
+  "REMOVE_GDD_MSG": "هل أنت متأكد أنك تريد إزالة هذا التدخل الرئيسي؟",
   "KEY_INTERVENTION": "التدخل الرئيسي",
   "ONCE_YOU_HIT_SAVE_THE_GDD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "بمجرد الضغط على حفظ، سيتم إنهاء GPD ولا يمكن التراجع عن هذا الإجراء",
   "EWP_ACTIVITY": "نشاط eWP",
@@ -121,5 +121,15 @@
   "GDD_REVIEW_MEMBERS": "مراجعة الشراكة والموافقة عليها",
   "CONFIRM_REVIEW_START": "يرجى تأكيد رغبتك في بدء المراجعة",
   "CONTRIBUTING_SECTIONS": "قسم المساهمة",
-  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "لا يمكن أن يكون مسؤول ميزانية اليونيسف هو نفسه مسؤول التنسيق في اليونيسف"
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "لا يمكن أن يكون مسؤول ميزانية اليونيسف هو نفسه مسؤول التنسيق في اليونيسف",
+  "GDD_ADD_CP_OUTPUT": "إضافة إخراج CP يدوياً",
+  "GDD_EDIT_QPR_REQUIREMENTS": "تحرير متطلبات إعداد التقارير المرحلية",
+  "GDD_EDIT_STANDARD_REPORT_REQUIREMENTS": "تحرير متطلبات التقرير القياسية",
+  "NO_GDD_REPORTING_REQUIREMENTS": "لم يتم تحديد متطلبات إعداد التقارير.",
+  "GDD_PROGRESS_REPORTS": "تقارير التقدم",
+  "GDD_PROGRESS_REPORT_TOOLTIP": "تطلب اليونيسف من الشركاء تقديم تقارير مرحلية كل ثلاثة أشهر أثناء تنفيذ البرنامج. ",
+  "GDD_REPORT_PROMPT": "يجب عليك ملء تاريخ بدء PD وتاريخ الانتهاء أولاً!",
+  "GDD_ADD_EWORKPLANS": "إضافة خطط العمل الإلكترونية",
+  "QUANTITY": "كمية",
+  "MISSING_EWP_ACTIVITIES": "أنشطة eWP المفقودة للتدخل الرئيسي المحدد، يرجى التصحيح في eWP وإعادة المزامنة."
 }

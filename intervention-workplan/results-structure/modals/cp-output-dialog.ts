@@ -95,7 +95,7 @@ export class GDDCpOutputDialog extends LitElement {
                   <etools-dropdown
                     class="validate-input"
                     @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                      this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
+                      this.onCpOutputSelected(detail.selectedItem)}"
                     ?trigger-value-change-event="${!this.loadingInProcess}"
                     .selected="${this.selectedCpOutput}"
                     ?readonly="${!!this.cpOutputId}"
@@ -148,11 +148,11 @@ export class GDDCpOutputDialog extends LitElement {
     }
   }
 
-  onCpOutputSelected(id: number) {
-    if (this.selectedCpOutput !== Number(id)) {
-      this.selectedCpOutput = Number(id);
+  onCpOutputSelected(cpOutput: any) {
+    if (this.selectedCpOutput !== Number(cpOutput.id)) {
+      this.selectedCpOutput = Number(cpOutput.id);
       this.selectedIndicators = [];
-      this.loadRamIndicators(id);
+      this.loadRamIndicators(cpOutput.cp_output_id);
     }
   }
 

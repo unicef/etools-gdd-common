@@ -26,7 +26,7 @@
   "THERE_ARE_NO_WORKPLAN_ACTIVITIES": "Il n'y a aucune activité du plan de travail",
   "KEY_INTERVENTIONS_TITLE": "Interventions clés",
   "ADD_KEY_INTERVENTION": "Ajouter une intervention clé",
-  "REMOVE_GDD_MSG": "Êtes-vous sûr de vouloir supprimer cette sortie GPD?",
+  "REMOVE_GDD_MSG": "Êtes-vous sûr de vouloir supprimer cette intervention clé ?",
   "KEY_INTERVENTION": "Intervention clé",
   "ONCE_YOU_HIT_SAVE_THE_GDD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Une fois que vous avez cliqué sur Enregistrer, le GPD sera terminé et cette action ne pourra pas être annulée.",
   "EWP_ACTIVITY": "Activité eWP",
@@ -121,5 +121,15 @@
   "GDD_REVIEW_MEMBERS": "Examen et approbation du partenariat",
   "CONFIRM_REVIEW_START": "Veuillez confirmer que vous souhaitez lancer l'examen",
   "CONTRIBUTING_SECTIONS": "Section contributrice",
-  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "Le responsable du budget de l'UNICEF ne peut pas être le même que le point focal de l'UNICEF."
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "Le responsable du budget de l'UNICEF ne peut pas être le même que le point focal de l'UNICEF.",
+  "GDD_ADD_CP_OUTPUT": "Ajouter manuellement une sortie CP",
+  "GDD_EDIT_QPR_REQUIREMENTS": "Modifier les exigences en matière de rapport d'avancement",
+  "GDD_EDIT_STANDARD_REPORT_REQUIREMENTS": "Modifier les exigences du rapport standard",
+  "NO_GDD_REPORTING_REQUIREMENTS": "Aucune exigence de déclaration n’est définie.",
+  "GDD_PROGRESS_REPORTS": "Rapports d'avancement",
+  "GDD_PROGRESS_REPORT_TOOLTIP": "L'UNICEF demande à ses partenaires de soumettre des rapports d'avancement tous les trois mois pendant la mise en œuvre du programme. ",
+  "GDD_REPORT_PROMPT": "Vous devez d’abord remplir la date de début et la date de fin du PD !",
+  "GDD_ADD_EWORKPLANS": "Ajouter des plans de travail électroniques",
+  "QUANTITY": "Quantité",
+  "MISSING_EWP_ACTIVITIES": "Activités eWP manquantes pour l'intervention clé sélectionnée, veuillez les corriger dans eWP et resynchroniser."
 }

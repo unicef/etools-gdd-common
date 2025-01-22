@@ -26,7 +26,7 @@
   "THERE_ARE_NO_WORKPLAN_ACTIVITIES": "There are no Workplan Activities",
   "KEY_INTERVENTIONS_TITLE": "Key Interventions",
   "ADD_KEY_INTERVENTION": "Add Key Intervention",
-  "REMOVE_GDD_MSG": "Are you sure you want to remove this GPD Output?",
+  "REMOVE_GDD_MSG": "Are you sure you want to remove this Key Intervention?",
   "KEY_INTERVENTION": "Key Intervention",
   "ONCE_YOU_HIT_SAVE_THE_GDD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Once you hit save, the GPD will be Terminated and this action can not be reversed",
   "EWP_ACTIVITY": "eWP Activity",
@@ -121,5 +121,15 @@
   "GDD_REVIEW_MEMBERS": "Partnership Review and Approval",
   "CONFIRM_REVIEW_START": "Please confirm you want to start the review",
   "CONTRIBUTING_SECTIONS": "Contributing Section",
-  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "UNICEF Budget Owner cannot be the same as UNICEF Focal Point"
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "UNICEF Budget Owner cannot be the same as UNICEF Focal Point",
+  "GDD_ADD_CP_OUTPUT":"Add CP Output Manually",
+  "GDD_EDIT_QPR_REQUIREMENTS": "Edit Progress Reporting Requirements",
+  "GDD_EDIT_STANDARD_REPORT_REQUIREMENTS": "Edit Standard Report Requirements",
+  "NO_GDD_REPORTING_REQUIREMENTS": "There are no reporting requirements set.",
+  "GDD_PROGRESS_REPORTS": "Progress Reports",
+  "GDD_PROGRESS_REPORT_TOOLTIP": "UNICEF requires partners to submit Progress Reports every three months during programme implementation. Quarterly Progress Reports allow partners to report back against the agreed upon indicators and targets, as well as provide narrative updates.",
+  "GDD_REPORT_PROMPT": "You have to fill PD Start Date and End Date first!",
+  "GDD_ADD_EWORKPLANS": "Add eWorkplans",
+  "QUANTITY": "Quantity",
+  "MISSING_EWP_ACTIVITIES": "Missing eWP Activities for selected Key Intervention please correct in eWP and re-sync."
 }

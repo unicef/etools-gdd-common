@@ -30,6 +30,7 @@ export const gddTranslatesMap: GenericObject = {
   cso_cash: 'PARTNER_CASH_BUDGET',
   unicef_cash: 'UNICEF_CASH',
   target: 'TARGET',
+  quantity: 'QUANTITY',
   reporting_requirements: 'PARTNER_REPORTING_REQUIREMENTS',
   special_reporting_requirements: 'SPECIAL_REPORTING_REQUIREMENTS',
   start_date: 'START_DATE',

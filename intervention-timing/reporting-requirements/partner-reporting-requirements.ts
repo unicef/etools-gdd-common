@@ -149,7 +149,7 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
             <div class="reports-menu nav-menu">
               <div
                 name="qtyProgress"
-                title=${translate('QUARTERLY_PROGRESS_REPORTS')}
+                title=${translate('GDD_PROGRESS_REPORTS')}
                 class="nav-menu-item qpr"
                 ?selected="${this.isSelected('qtyProgress')}"
                 @click="${this.selectType}"
@@ -159,9 +159,9 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
                 <info-icon-tooltip
                   id="iit-qpr"
                   ?hidden="${this.isReadonly}"
-                  .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
+                  .tooltipText="${translate('GDD_PROGRESS_REPORT_TOOLTIP')}"
                 ></info-icon-tooltip>
-                <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
+                <span>${translate('GDD_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
                 <etools-icon-button
                   class="edit-rep-req"
                   name="create"

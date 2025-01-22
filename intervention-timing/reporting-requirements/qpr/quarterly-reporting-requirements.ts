@@ -45,7 +45,7 @@ export class GDDQuarterlyReportingRequirements extends GenerateQuarterlyReportin
       </div>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="col-12">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
+        <div class="col-12">${translate('NO_GDD_REPORTING_REQUIREMENTS')}</div>
         <div class="col-12" ?hidden="${!this.editMode}">
           <etools-button
             variant="text"
@@ -76,7 +76,7 @@ export class GDDQuarterlyReportingRequirements extends GenerateQuarterlyReportin
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
       fireEvent(this, 'toast', {
-        text: getTranslation('QUARTERLY_REPORT_PROMPT')
+        text: getTranslation('GDD_REPORT_PROMPT')
       });
       return;
     }

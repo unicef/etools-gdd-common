@@ -89,7 +89,7 @@ export class GDDEditQprDialog extends GenerateQuarterlyReportingRequirementsMixi
       <etools-dialog
         id="editQprDialog"
         size="lg"
-        dialog-title=${translate('EDIT_QPR_REQUIREMENTS')}
+        dialog-title=${translate('GDD_EDIT_QPR_REQUIREMENTS')}
         ?opened="${this.editQprDialogOpened}"
         @confirm-btn-clicked="${() => this._saveModifiedQprData()}"
         @close="${() => this.handleEditQprDialogClosed()}"
@@ -133,7 +133,7 @@ export class GDDEditQprDialog extends GenerateQuarterlyReportingRequirementsMixi
       <etools-dialog
         id="addOrModifyQprDialog"
         size="lg"
-        dialog-title=${translate('EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS')}
+        dialog-title=${translate('GDD_EDIT_STANDARD_REPORT_REQUIREMENTS')}
         ?opened="${this.addOrModifyQprDialogOpened}"
         @confirm-btn-clicked="${() => this._updateQprData()}"
         @close="${() => this.handleAddOrModifyQprDialogClosed()}"

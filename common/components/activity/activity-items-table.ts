@@ -47,8 +47,10 @@ export class GDDActivityItemsTable extends LitElement {
         <div class="grid-cell header-cell left">
           <label required>${translate('ITEM_DESCRIPTION')}</label>
         </div>
-        <div class="grid-cell header-cell left"><label required>${translate(gddTranslatesMap.unit)}</label></div>
-        <div class="grid-cell header-cell end"><label required>${translate(gddTranslatesMap.no_units)}</label></div>
+        <div class="grid-cell header-cell left">
+          <label required>${translate(gddTranslatesMap.unit)}</label>
+        </div>
+        <div class="grid-cell header-cell end"><label required>${translate(gddTranslatesMap.quantity)}</label></div>
         <div class="grid-cell header-cell end">${translate('PRICE_UNIT')}</div>
         <div class="grid-cell header-cell end">${translate('TOTAL_CASH')} (${this.currency})</div>
         <div class="grid-cell header-cell"></div>

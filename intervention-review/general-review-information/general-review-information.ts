@@ -178,10 +178,6 @@ export class GDDGeneralReviewInformation extends LitElement {
               <div class="value">${this.reviewCreatedDate}</div>
             </div>
             <div class="info-block">
-              <div class="label">${translate('REVIEW_TYPE')}</div>
-              <div class="value">${this.reviewTypes.get(this.currentReview?.review_type || '-')}</div>
-            </div>
-            <div class="info-block">
               <div class="label">${translate('SUBMITTED_BY')}</div>
               <div class="value">${this.currentReview?.submitted_by?.name || '-'}</div>
             </div>

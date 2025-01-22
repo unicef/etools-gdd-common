@@ -19,6 +19,7 @@ import './cp-output-level';
 import './pd-activities';
 import './modals/key-intervention-dialog';
 import './modals/cp-output-dialog';
+import './modals/add-results-structure-manually-dialog';
 import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RootState} from '../../common/types/store.types';
@@ -129,13 +130,26 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
         </div>
 
         <!--    CP output ADD button     -->
-        <div
-          class="add-button"
-          @click="${() => this.openCpOutputDialog()}"
-          ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-        >
-          <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
-          <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
+        <div class="result-structure-buttons">
+          <div
+            class="add-button"
+            @click="${() => this.openAddResultsStructureManually()}"
+            ?hidden="${!this.isUnicefUser}"
+          >
+            <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
+            <span class="no-wrap">${translate('GDD_ADD_EWORKPLANS')}</span>
+          </div>
+          <div
+            class="add-button"
+            @click="${() => this.openCpOutputDialog()}"
+            ?hidden="${!this.isUnicefUser ||
+            !this.permissions.edit.result_links ||
+            this.commentMode ||
+            !this.intervention?.e_workplans?.length}"
+          >
+            <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
+            <span class="no-wrap">${translate('GDD_ADD_CP_OUTPUT')}</span>
+          </div>
         </div>
         ${repeat(
           this.resultLinks,
@@ -401,6 +415,16 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
         resultLink,
         interventionId: this.interventionId,
         canChangeCpOp: canChangeCpOp
+      }
+    });
+    this.openContentPanel();
+  }
+
+  openAddResultsStructureManually(): void {
+    openDialog({
+      dialog: 'gdd-add-results-structure-manually-dialog',
+      dialogData: {
+        interventionId: this.interventionId
       }
     });
     this.openContentPanel();

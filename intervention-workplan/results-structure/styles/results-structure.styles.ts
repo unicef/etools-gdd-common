@@ -117,6 +117,11 @@ export const ResultStructureStyles: CSSResult = css`
   div[slot='panel-btns'] {
     opacity: 1;
   }
+  .result-structure-buttons {
+    margin-inline: 13px;
+    display: flex;
+    justify-content: end;
+  }
   .add-button {
     display: flex;
     width: min-content;
