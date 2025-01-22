@@ -118,5 +118,6 @@
     "SUPPLY_ISSUES_CONSIDERED": "وقد تم النظر في قضايا العرض ذات الصلة على النحو الواجب في GPD"
   },
   "BACKGROUND_TAB": "خلفية",
-  "GDD_REVIEW_MEMBERS": "مراجعة الشراكة والموافقة عليها"
+  "GDD_REVIEW_MEMBERS": "مراجعة الشراكة والموافقة عليها",
+  "CONFIRM_REVIEW_START": "يرجى تأكيد رغبتك في بدء المراجعة"
 }

@@ -118,5 +118,6 @@
     "SUPPLY_ISSUES_CONSIDERED": "Las cuestiones de suministro relevantes han sido debidamente consideradas en el GPD"
   },
   "BACKGROUND_TAB": "Fondo",
-  "GDD_REVIEW_MEMBERS": "Revisión y aprobación de la asociación"
+  "GDD_REVIEW_MEMBERS": "Revisión y aprobación de la asociación",
+  "CONFIRM_REVIEW_START": "Por favor confirma que deseas iniciar la revisión."
 }

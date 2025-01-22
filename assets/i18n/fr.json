@@ -118,5 +118,6 @@
     "SUPPLY_ISSUES_CONSIDERED": "Les problèmes d'approvisionnement pertinents ont été dûment pris en compte dans le GPD"
   },
   "BACKGROUND_TAB": "Arrière-plan",
-  "GDD_REVIEW_MEMBERS": "Examen et approbation du partenariat"
+  "GDD_REVIEW_MEMBERS": "Examen et approbation du partenariat",
+  "CONFIRM_REVIEW_START": "Veuillez confirmer que vous souhaitez lancer l'examen"
 }

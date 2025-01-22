@@ -12,7 +12,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
-import '../common/components/intervention/start-review';
+// import '../common/components/intervention/start-review';
 import '../common/components/intervention/review-checklist-popup';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {
@@ -55,6 +55,8 @@ import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import {NON_PRC_REVIEW} from '../common/components/intervention/review.const';
 
 @customElement('gdd-intervention-actions')
 export class GDDInterventionActions extends connectStore(LitElement) {
@@ -377,12 +379,16 @@ export class GDDInterventionActions extends connectStore(LitElement) {
 
   private openStartReviewDialog() {
     return openDialog({
-      dialog: 'gdd-start-review'
-    }).then(({confirmed, response}) => {
-      if (!confirmed) {
-        return null;
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: getTranslation('CONFIRM_REVIEW_START'),
+        confirmBtnText: getTranslation('START')
       }
-      return {review_type: response};
+    }).then(({confirmed}) => {
+      if (confirmed) {
+        return {review_type: NON_PRC_REVIEW};
+      }
+      return null;
     });
   }
 
