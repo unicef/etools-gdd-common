@@ -120,5 +120,6 @@
   "BACKGROUND_TAB": "Fondo",
   "GDD_REVIEW_MEMBERS": "Revisión y aprobación de la asociación",
   "CONFIRM_REVIEW_START": "Por favor confirma que deseas iniciar la revisión.",
-  "CONTRIBUTING_SECTIONS": "Sección colaboradora"
+  "CONTRIBUTING_SECTIONS": "Sección colaboradora",
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "El responsable del presupuesto de UNICEF no puede ser el mismo que el punto focal de UNICEF"
 }

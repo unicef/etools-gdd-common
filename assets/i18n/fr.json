@@ -120,5 +120,6 @@
   "BACKGROUND_TAB": "Arrière-plan",
   "GDD_REVIEW_MEMBERS": "Examen et approbation du partenariat",
   "CONFIRM_REVIEW_START": "Veuillez confirmer que vous souhaitez lancer l'examen",
-  "CONTRIBUTING_SECTIONS": "Section contributrice"
+  "CONTRIBUTING_SECTIONS": "Section contributrice",
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "Le responsable du budget de l'UNICEF ne peut pas être le même que le point focal de l'UNICEF."
 }

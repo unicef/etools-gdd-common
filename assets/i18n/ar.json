@@ -120,5 +120,6 @@
   "BACKGROUND_TAB": "خلفية",
   "GDD_REVIEW_MEMBERS": "مراجعة الشراكة والموافقة عليها",
   "CONFIRM_REVIEW_START": "يرجى تأكيد رغبتك في بدء المراجعة",
-  "CONTRIBUTING_SECTIONS": "قسم المساهمة"
+  "CONTRIBUTING_SECTIONS": "قسم المساهمة",
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "لا يمكن أن يكون مسؤول ميزانية اليونيسف هو نفسه مسؤول التنسيق في اليونيسف"
 }

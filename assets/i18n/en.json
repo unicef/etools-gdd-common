@@ -120,5 +120,6 @@
   "BACKGROUND_TAB": "Background",
   "GDD_REVIEW_MEMBERS": "Partnership Review and Approval",
   "CONFIRM_REVIEW_START": "Please confirm you want to start the review",
-  "CONTRIBUTING_SECTIONS": "Contributing Section"
+  "CONTRIBUTING_SECTIONS": "Contributing Section",
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "UNICEF Budget Owner cannot be the same as UNICEF Focal Point"
 }

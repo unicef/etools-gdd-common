@@ -120,5 +120,6 @@
   "BACKGROUND_TAB": "Фон",
   "GDD_REVIEW_MEMBERS": "Обзор и утверждение партнерства",
   "CONFIRM_REVIEW_START": "Пожалуйста, подтвердите, что хотите начать проверку.",
-  "CONTRIBUTING_SECTIONS": "Раздел вклада"
+  "CONTRIBUTING_SECTIONS": "Раздел вклада",
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "Владелец бюджета ЮНИСЕФ не может совпадать с координатором ЮНИСЕФ."
 }

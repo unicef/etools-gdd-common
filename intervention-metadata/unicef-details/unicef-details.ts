@@ -25,8 +25,9 @@ import orderBy from 'lodash-es/orderBy';
 import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
-import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 /**
  * @customElement
@@ -333,8 +334,17 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
     return uniqBy(savedUsers.flat(), 'id');
   }
 
+  customValidation() {
+    const focalPoints = (this.data.unicef_focal_points || []).map((x: any) => Number(x.id));
+    if (this.data.budget_owner && focalPoints.includes(this.data.budget_owner.id)) {
+      fireEvent(this, 'toast', {text: getTranslation('BUDGET_OWNER_DIFFERENT_FOCAL_POINT')});
+      return false;
+    }
+    return true;
+  }
+
   saveData() {
-    if (!this.validate()) {
+    if (!this.validate() || !this.customValidation()) {
       return Promise.resolve(false);
     }
 

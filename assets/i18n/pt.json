@@ -120,5 +120,6 @@
   "BACKGROUND_TAB": "Fundo",
   "GDD_REVIEW_MEMBERS": "Revisão e aprovação da parceria",
   "CONFIRM_REVIEW_START": "Por favor, confirme que deseja iniciar a revisão",
-  "CONTRIBUTING_SECTIONS": "Seção de contribuição"
+  "CONTRIBUTING_SECTIONS": "Seção de contribuição",
+  "BUDGET_OWNER_DIFFERENT_FOCAL_POINT": "O Proprietário do Orçamento do UNICEF não pode ser o mesmo que o Ponto Focal do UNICEF"
 }
