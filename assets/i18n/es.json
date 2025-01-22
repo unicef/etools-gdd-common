@@ -18,7 +18,7 @@
   "NO_KEY_INTERVENTIONS": "No hay intervención clave.",
   "KEY_INTERVENTIONS": "Intervenciones clave",
   "GDD_COMPLETED_AFTER_UNPP": "Este GPD se completó después de una selección en UNPP donde un comité lo aprobó. Revise el trabajo realizado en UNPP haciendo clic en este enlace:",
-  "STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP": "Esta sección explica cómo se implementará la intervención del programa para abordar el planteamiento del problema. ",
+  "GDD_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP": "Esta sección explica cómo se implementará la intervención del programa para abordar el planteamiento del problema. Puede hacer referencia a estándares y principios globales, políticas nacionales y/o orientación técnica específica de UNICEF y/o el socio. También explica el contexto del programa, la estrategia de implementación, el desarrollo de capacidades y otra información importante.",
   "LOCATIONS_GDD_COVERS": "Ubicaciones Cubiertas GPD",
   "GDD_START_END_DATE_CHANGED": "Las fechas de inicio/finalización de GPD difieren ",
   "KEY_INTERVENTION_S": "Intervenciones clave",

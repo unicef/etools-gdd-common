@@ -97,7 +97,7 @@ export class GDDDocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(
                 id="iit-implemen-strat"
                 slot="after-label"
                 ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
-                .tooltipText="${translate('STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
+                .tooltipText="${translate('GDD_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
               ></info-icon-tooltip>
             </div>
             <etools-textarea

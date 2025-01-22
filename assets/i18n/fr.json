@@ -18,7 +18,7 @@
   "NO_KEY_INTERVENTIONS": "Il n’y a pas d’intervention clé.",
   "KEY_INTERVENTIONS": "Interventions clés",
   "GDD_COMPLETED_AFTER_UNPP": "Ce GPD a été réalisé après une sélection à l'UNPP où un comité a approuvé, veuillez consulter le travail effectué à l'UNPP en cliquant sur ce lien :",
-  "STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP": "Cette section explique comment l'intervention du programme sera mise en œuvre pour résoudre l'énoncé du problème. ",
+  "GDD_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP": "Cette section explique comment l'intervention du programme sera mise en œuvre pour résoudre l'énoncé du problème. Il peut faire référence à des normes et principes mondiaux, à des politiques nationales et/ou à des conseils techniques spécifiques de l'UNICEF et/ou du partenaire. Explique également le contexte du programme, la stratégie de mise en œuvre, le développement des capacités et d'autres informations importantes.",
   "LOCATIONS_GDD_COVERS": "Emplacements Couvertures GPD",
   "GDD_START_END_DATE_CHANGED": "Les dates de début/fin du GPD diffèrent ",
   "KEY_INTERVENTION_S": "Intervention(s) clé(s)",
