@@ -6,7 +6,7 @@ export const gddTranslatesMap: GenericObject = {
   start: 'START_DATE',
   context: 'CONTEXT',
   confidential: 'CONFIDENTIAL',
-  sections: 'UNICEF_SECTIONS',
+  sections: 'CONTRIBUTING_SECTIONS',
   other_info: 'OTHER_INFORMATION',
   result_links: 'RESULTS_STRUCTURE',
   supply_items: 'SUPPLY_CONTRIBUTION',

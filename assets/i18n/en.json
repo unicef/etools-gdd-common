@@ -119,5 +119,6 @@
   },
   "BACKGROUND_TAB": "Background",
   "GDD_REVIEW_MEMBERS": "Partnership Review and Approval",
-  "CONFIRM_REVIEW_START": "Please confirm you want to start the review"
+  "CONFIRM_REVIEW_START": "Please confirm you want to start the review",
+  "CONTRIBUTING_SECTIONS": "Contributing Section"
 }
