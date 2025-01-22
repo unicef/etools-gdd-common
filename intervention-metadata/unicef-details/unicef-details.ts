@@ -14,8 +14,8 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {GDDPdUnicefDetailsPermissions, GDDPdUnicefDetails} from './pdUnicefDetails.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {getEWorkPlan, patchIntervention} from '../../common/actions/gddInterventions';
-import {EWorkPlan, RootState} from '../../common/types/store.types';
+import {patchIntervention} from '../../common/actions/gddInterventions';
+import {RootState} from '../../common/types/store.types';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import cloneDeep from 'lodash-es/cloneDeep';

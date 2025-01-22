@@ -1,15 +1,12 @@
 import {LitElement, html, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getEWorkPlan, getIntervention, patchIntervention} from '../../../common/actions/gddInterventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
-import {AsyncAction, GDDResultIndicator, GenericObject, EtoolsEndpoint, AnyObject} from '@unicef-polymer/etools-types';
+import {AsyncAction, GenericObject, AnyObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';

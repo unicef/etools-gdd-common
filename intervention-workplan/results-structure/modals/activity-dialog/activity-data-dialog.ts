@@ -217,7 +217,11 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
               @focus="${() => this.resetFieldError('ewp_activity')}"
               @click="${() => this.resetFieldError('ewp_activity')}"
             ></etools-dropdown>
-            ${this.activitiesLoaded && !this.ewpActivities?.length ? html`<div class="error-msg">${translate('MISSING_EWP_ACTIVITIES')}</div>` : html``}
+            ${
+              this.activitiesLoaded && !this.ewpActivities?.length
+                ? html`<div class="error-msg">${translate('MISSING_EWP_ACTIVITIES')}</div>`
+                : html``
+            }
           </div>
            <div class="col-6">
             <etools-dropdown-multi
