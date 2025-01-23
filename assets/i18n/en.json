@@ -131,5 +131,6 @@
   "GDD_REPORT_PROMPT": "You have to fill PD Start Date and End Date first!",
   "GDD_ADD_EWORKPLANS": "Add eWorkplans",
   "QUANTITY": "Quantity",
-  "MISSING_EWP_ACTIVITIES": "Missing eWP Activities for selected Key Intervention please correct in eWP and re-sync."
+  "MISSING_EWP_ACTIVITIES": "Missing eWP Activities for selected Key Intervention please correct in eWP and re-sync.",
+  "LEAD_SECTION": "Lead Section"
 }

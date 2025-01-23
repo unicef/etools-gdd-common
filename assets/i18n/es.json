@@ -131,5 +131,6 @@
   "GDD_REPORT_PROMPT": "¡Primero debe completar la Fecha de inicio y la Fecha de finalización de PD!",
   "GDD_ADD_EWORKPLANS": "Agregar planes de trabajo electrónicos",
   "QUANTITY": "Cantidad",
-  "MISSING_EWP_ACTIVITIES": "Faltan actividades de eWP para la intervención clave seleccionada, corríjalas en eWP y vuelva a sincronizarlas."
+  "MISSING_EWP_ACTIVITIES": "Faltan actividades de eWP para la intervención clave seleccionada, corríjalas en eWP y vuelva a sincronizarlas.",
+  "LEAD_SECTION": "Sección principal"
 }
