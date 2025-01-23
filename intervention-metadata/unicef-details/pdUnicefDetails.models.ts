@@ -12,6 +12,7 @@ export class GDDPdUnicefDetails extends GDDModelsBase {
   unicef_focal_points: AnyObject[] = [];
   budget_owner: AnyObject = {};
   country_programme: number | null = null;
+  lead_section: number | null = null;
 }
 
 export class GDDPdUnicefDetailsPermissions extends GDDModelsBase {
