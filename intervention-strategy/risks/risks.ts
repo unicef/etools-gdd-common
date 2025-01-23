@@ -163,9 +163,8 @@ export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'strategy')) {
       return;
     }
-
     this.interventionId = state.gddInterventions.current.id!;
-    this.riskTypes = (state.commonData && state.commonData.riskTypes) || [];
+    this.riskTypes = (state.commonData && state.commonData.gpdRiskTypes) || [];
     this.data = selectRisks(state);
     this.set_canEditAtLeastOneField({risks: currentInterventionPermissions(state)?.edit.risks});
     super.stateChanged(state);

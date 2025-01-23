@@ -66,6 +66,7 @@ export interface CommonDataState {
   currencies: LabelAndValue[];
   envFlags: EnvFlags | null;
   riskTypes: LabelAndValue[];
+  gpdRiskTypes: LabelAndValue[];
   fileTypes: any[];
   cashTransferModalities: any[];
   PRPCountryData: any[];
