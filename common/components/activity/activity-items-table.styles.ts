@@ -10,7 +10,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
   }
   .grid-row {
     display: grid;
-    grid-template-columns: auto 108px 130px 120px 140px 120px 120px 140px 16px;
+    grid-template-columns: auto 108px 130px 120px 140px 16px;
     min-height: 47px;
     padding: 0 2px 0 2px;
   }
@@ -91,6 +91,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
   }
   label[required] {
     padding-inline-end: 20px;
+    background: url('./assets/images/required.svg') no-repeat 99% 20%/5px;
   }
   etools-input,
   etools-textarea {
