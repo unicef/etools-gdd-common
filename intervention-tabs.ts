@@ -493,13 +493,13 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
     this.commentMode = newState;
 
-     if (!this.commentMode && this.commentsPanel) {
-       this.commentsPanel.remove();
-       this.commentsPanel = null;
-     } else if (this.commentMode && !this.commentsPanel && !notInterventionTabs) {
-       this.commentsPanel = document.createElement('gdd-comments-panels') as GDDCommentsPanels;
-       document.body.append(this.commentsPanel);
-     }
+    if (!this.commentMode && this.commentsPanel) {
+      this.commentsPanel.remove();
+      this.commentsPanel = null;
+    } else if (this.commentMode && !this.commentsPanel && !notInterventionTabs) {
+      this.commentsPanel = document.createElement('gdd-comments-panels') as GDDCommentsPanels;
+      document.body.append(this.commentsPanel);
+    }
 
     if (!notInterventionTabs) {
       setTimeout(() => {
