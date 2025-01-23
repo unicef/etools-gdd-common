@@ -27,7 +27,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {RootState} from '../../../../../../../../redux/store';
+import {RootState} from '../../../../common/types/store.types';
 
 @customElement('gdd-activity-data-dialog')
 export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore(LitElement)) {

@@ -11,15 +11,14 @@ import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/sr
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
-import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 import {EWorkPlan, RootState} from '../../../common/types/store.types';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectPdUnicefDetails} from '../../../intervention-metadata/unicef-details/pdUnicefDetails.selectors';
-import {store} from '../../../../../../../redux/store';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 
 @customElement('gdd-add-results-structure-manually-dialog')
-export class GDDAddResultsStructureManuallyDialog extends connect(store)(LitElement) {
+export class GDDAddResultsStructureManuallyDialog extends connectStore(LitElement) {
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
 
