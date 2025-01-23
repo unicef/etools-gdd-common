@@ -412,7 +412,7 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
       currentPage(state) !== 'gpd-interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
     const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
     const commentsState = Boolean(state.app?.routeDetails?.queryParams?.comment_mode);
-    this.checkCommentsMode(commentsState);
+    this.checkCommentsMode(commentsState, notInterventionTabs);
     if (needToReset) {
       this.resetPageData();
     }
@@ -487,23 +487,25 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
     setTimeout(() => this.shadowRoot?.querySelector('sl-tab-group')?.syncIndicator());
   }
 
-  checkCommentsMode(newState: boolean): void {
+  checkCommentsMode(newState: boolean, notInterventionTabs: boolean): void {
     if (this.commentMode === newState) {
       return;
     }
     this.commentMode = newState;
 
-    if (!this.commentMode && this.commentsPanel) {
-      this.commentsPanel.remove();
-      this.commentsPanel = null;
-    } else if (this.commentMode && !this.commentsPanel) {
-      this.commentsPanel = document.createElement('gdd-comments-panels') as GDDCommentsPanels;
-      document.body.append(this.commentsPanel);
-    }
+     if (!this.commentMode && this.commentsPanel) {
+       this.commentsPanel.remove();
+       this.commentsPanel = null;
+     } else if (this.commentMode && !this.commentsPanel && !notInterventionTabs) {
+       this.commentsPanel = document.createElement('gdd-comments-panels') as GDDCommentsPanels;
+       document.body.append(this.commentsPanel);
+     }
 
-    setTimeout(() => {
-      getStore().dispatch(enableCommentMode(this.commentMode));
-    }, 10);
+    if (!notInterventionTabs) {
+      setTimeout(() => {
+        getStore().dispatch(enableCommentMode(this.commentMode));
+      }, 10);
+    }
   }
 
   applyTabsTitleTranslation(pageTabs: any[]): any[] {
