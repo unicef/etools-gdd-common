@@ -108,6 +108,27 @@ export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(Li
           </div>
           <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
+              id="leadSection"
+              label=${translate('LEAD_SECTION')}
+              .options="${this.section_list}"
+              class="w100"
+              option-label="name"
+              option-value="id"
+              .selected="${this.data.lead_section}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.lead_section)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.lead_section) ? -1 : undefined}"
+              ?required="${this.permissions?.required.lead_section}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (detail.selectedItem?.id !== this.data.lead_section) {
+                  this.selectedItemChanged(detail, 'lead_section');
+                }
+              }}"
+              trigger-value-change-event
+            >
+            </etools-dropdown>
+          </div>
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
+            <etools-dropdown
               id="cpStructures"
               label=${translate('CP_STRUCTURE')}
               .options="${this.cpStructures}"

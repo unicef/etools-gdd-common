@@ -25,4 +25,5 @@ export class GDDPdUnicefDetailsPermissions extends GDDModelsBase {
   budget_owner = true;
   country_programme = true;
   e_workplans = true;
+  lead_section = true;
 }
