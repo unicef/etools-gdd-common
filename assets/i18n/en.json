@@ -133,5 +133,7 @@
   "QUANTITY": "Quantity",
   "MISSING_EWP_ACTIVITIES": "Missing eWP Activities for selected Key Intervention please correct in eWP and re-sync.",
   "LEAD_SECTION": "Lead Section",
-  "DIFFERENT_PARTNER_INVOLVED": "Different partner is involved in this activity, you might need to create gPDs, etc. for this type of activity."
+  "DIFFERENT_PARTNER_INVOLVED": "Different partner is involved in this activity, you might need to create gPDs, etc. for this type of activity.",
+  "FOCALPOINT_ADD_PARTNER_INFO": "If the partner focal point is not listed in the dropdown, please add it via the Access Management Portal.",
+  "COMMENT_MODE_USAGE_DESCRIPTION": "To add a comment, click or select the desired section while Comment Mode is active.<br/>Comments can only be added to specific sections, not globally.<br/>Sections with unresolved comments are highlighted with a red border"
 }

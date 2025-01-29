@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {customElement, property, state} from 'lit/decorators.js';
 import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerInfo.selectors';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
@@ -23,8 +23,9 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission, PartnerStaffMember, MinimalAgreement} from '@unicef-polymer/etools-types';
+import {AsyncAction, Permission, PartnerStaffMember, MinimalAgreement, EtoolsUser} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation, langChanged} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 /**
  * @customElement
@@ -49,6 +50,12 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
 
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
+        }
+
+        .focalpoint-label {
+          z-index: 90;
+          margin-bottom: -6px;
+          padding-bottom: 0 !important;
         }
       </style>
 
@@ -97,8 +104,21 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
             </etools-input>
           </div>
           <div class="col-md-8 col-12" ?hidden="${!this.permissions?.view!.partner_focal_points}">
+            <div
+              class="focalpoint-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)}"
+            >
+              <label class="label"> ${translate('PARTNER_FOCAL_POINTS')}</label>
+              <info-icon-tooltip
+                ?hidden="${Environment.basePath === '/government/'}"
+                id="iit-locations"
+                class="iit"
+                position="right"
+                .tooltipHtml="${this.partnerFocalPointInfoText}"
+              ></info-icon-tooltip>
+            </div>
             <etools-dropdown-multi
-              label=${translate('PARTNER_FOCAL_POINTS')}
+              no-label-float
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
               .options="${langChanged(() => this.formattedPartnerStaffMembers)}"
               option-label="name"
@@ -141,6 +161,9 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
   @property({type: Array})
   partnerAgreements!: MinimalAgreement[];
 
+  @state()
+  ampLink = '';
+
   get formattedPartnerStaffMembers() {
     return this.partnerStaffMembers?.map((member: PartnerStaffMember) => ({
       name: `${
@@ -152,6 +175,19 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
       } ${member.first_name} ${member.last_name} (${member.email})`,
       id: member.id
     }));
+  }
+
+  get partnerFocalPointInfoText() {
+    return html` <style>
+        .amp-link {
+          color: var(--primary-color);
+          cursor: pointer;
+        }
+      </style>
+      ${translate('FOCALPOINT_ADD_PARTNER_INFO')}
+      <a class="amp-link" href="${this.ampLink}" target="_blank">
+        <etools-icon id="information-icon" name="open-in-new"></etools-icon>
+      </a>`;
   }
 
   connectedCallback() {
@@ -190,6 +226,8 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
     if (agreements) {
       this.partnerAgreements = this.filterAgreementsByPartner(agreements, newPartnerDetails.partner_id!);
     }
+
+    this.ampLink = this.getAMPLink(state?.user.data);
   }
 
   filterAgreementsByPartner(agreements: MinimalAgreement[], partnerId: number) {
@@ -210,6 +248,15 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
           `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`)
       );
     });
+  }
+
+  getAMPLink(user: EtoolsUser): string {
+    let url = `/amp/users/`;
+    console.log(this.data?.partner, this.data?.partner_id);
+    if (user && user.is_unicef_user) {
+      url += `list?organization_type=partner&organization_id=${this.data.partner_id}`;
+    }
+    return url;
   }
 
   saveData() {

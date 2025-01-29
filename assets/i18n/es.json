@@ -133,5 +133,7 @@
   "QUANTITY": "Cantidad",
   "MISSING_EWP_ACTIVITIES": "Faltan actividades de eWP para la intervención clave seleccionada, corríjalas en eWP y vuelva a sincronizarlas.",
   "LEAD_SECTION": "Sección principal",
-  "DIFFERENT_PARTNER_INVOLVED": "En esta actividad participan diferentes socios; es posible que necesite crear gPD, etc. para este tipo de actividad."
+  "DIFFERENT_PARTNER_INVOLVED": "En esta actividad participan diferentes socios; es posible que necesite crear gPD, etc. para este tipo de actividad.",
+  "FOCALPOINT_ADD_PARTNER_INFO": "Si el punto focal del socio no figura en el menú desplegable, agrégalo a través del portal de gestión de acceso.",
+  "COMMENT_MODE_USAGE_DESCRIPTION": "Para agregar un comentario, haga clic o seleccione la sección deseada mientras el modo de comentarios esté activo.<br/>Los comentarios solo se pueden agregar a secciones específicas, no a nivel mundial.<br/>Las secciones con comentarios no resueltos se destacan con un borde rojo"
 }

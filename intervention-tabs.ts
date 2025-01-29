@@ -200,8 +200,14 @@ export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
         <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
           <sl-switch id="commentMode" ?checked="${this.commentMode}" @sl-change="${this.commentModeChange}"
-            >${translate('GENERAL.COMMENT_MODE')}</sl-switch
-          >
+            >${translate('GENERAL.COMMENT_MODE')}
+          </sl-switch>
+          <info-icon-tooltip
+            id="iit-locations"
+            class="iit"
+            position="right"
+            .tooltipText="${translate('COMMENT_MODE_USAGE_DESCRIPTION')}"
+          ></info-icon-tooltip>
         </div>
 
         <div slot="statusFlag" ?hidden="${!this.showPerformedActionsStatus()}">
