@@ -65,6 +65,9 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: Number})
   keyInterventionId!: number;
 
+  @property({type: Number})
+  partnerId!: number;
+
   quarters!: GDDQuarter[];
 
   protected render(): TemplateResult {
@@ -84,6 +87,9 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         }
         .word-break {
           word-break: break-word;
+        }
+        #iit-dfp {
+          --iit-margin: 0 0 4px 4px;
         }
       </style>
 
@@ -147,6 +153,12 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                                 >${activity.is_active ? '' : html`(<u>${translate('INACTIVE')}</u>) `}${activity.name ||
                                 '-'}</b
                               >
+                              <info-icon-tooltip
+                                ?hidden="${!this.activityHasDifferentPartnerThanGpd(activity)}"
+                                id="iit-dfp"
+                                .tooltipText="${translate('DIFFERENT_PARTNER_INVOLVED')}"
+                              >
+                              </info-icon-tooltip>
                             </div>
                             <div class="details word-break" ?hidden="${!activity.context_details}">
                               ${this.truncateString(activity.context_details)}
@@ -314,6 +326,14 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     row.detailsOpened = true;
   }
 
+  activityHasDifferentPartnerThanGpd(activity?: GDDActivity) {
+    const partners = activity?.ewp_activity?.partners;
+    if (!partners) {
+      return false;
+    }
+    return partners.length && (partners.length > 1 || !partners.includes(Number(this.partnerId)));
+  }
+
   openDialog(activity?: GDDActivity, readonly?: boolean): void {
     openDialog<any>({
       dialog: 'gdd-activity-data-dialog',
@@ -323,6 +343,7 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         keyInterventionId: this.keyInterventionId,
         ewpKeyIntervention: this.ewpKeyIntervention,
         flatLocations: this.flatLocations,
+        partnerId: this.partnerId,
         quarters: this.quarters,
         readonly: readonly,
         currency: this.currency

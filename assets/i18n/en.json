@@ -132,5 +132,6 @@
   "GDD_ADD_EWORKPLANS": "Add eWorkplans",
   "QUANTITY": "Quantity",
   "MISSING_EWP_ACTIVITIES": "Missing eWP Activities for selected Key Intervention please correct in eWP and re-sync.",
-  "LEAD_SECTION": "Lead Section"
+  "LEAD_SECTION": "Lead Section",
+  "DIFFERENT_PARTNER_INVOLVED": "Different partner is involved in this activity, you might need to create gPDs, etc. for this type of activity."
 }

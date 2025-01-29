@@ -132,5 +132,6 @@
   "GDD_ADD_EWORKPLANS": "Ajouter des plans de travail électroniques",
   "QUANTITY": "Quantité",
   "MISSING_EWP_ACTIVITIES": "Activités eWP manquantes pour l'intervention clé sélectionnée, veuillez les corriger dans eWP et resynchroniser.",
-  "LEAD_SECTION": "Section principale"
+  "LEAD_SECTION": "Section principale",
+  "DIFFERENT_PARTNER_INVOLVED": "Different partner is involved in these activity, you might need to create gPDs etc for these types of activity."
 }

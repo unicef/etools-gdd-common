@@ -12,11 +12,11 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './activity-timeframes';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {GDDActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
-import {updateCurrentIntervention} from '../../../../common/actions/gddInterventions';
+import {updateCurrentIntervention, patchIntervention} from '../../../../common/actions/gddInterventions';
 import {GDDActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {AnyObject, EtoolsEndpoint, GDDActivity, GDDActivityItem} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, EtoolsEndpoint, GDDActivity, GDDActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
@@ -47,17 +47,16 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
   @query('activity-items-table') private activityItemsTable!: GDDActivityItemsTable;
   quarters: GDDActivityTimeFrames[] = [];
 
-  @state() availableLocations: any[] = [];
+  @state() allLocations: any[] = [];
   @state() activitiesLoaded = false;
+  @state() showDifferentPartnerWarning = false;
 
   private ewpKeyIntervention!: number;
-  private flatLocations: any[] = [];
+  private partnerId!: number;
 
   stateChanged(state: RootState) {
-    if (!isJsonStrMatch(this.availableLocations, state.commonData!.locations)) {
-      this.availableLocations = [...state.commonData!.locations].filter((x: any) =>
-        this.flatLocations.includes(Number(x.id))
-      );
+    if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
+      this.allLocations = [...state.commonData!.locations];
     }
   }
 
@@ -69,13 +68,13 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
     readonly,
     currency,
     ewpKeyIntervention,
-    flatLocations
+    partnerId
   }: any) {
     this.quarters = quarters;
     this.readonly = readonly;
     this.currency = currency;
-    this.flatLocations = flatLocations;
     this.ewpKeyIntervention = ewpKeyIntervention;
+    this.partnerId = Number(partnerId);
 
     this.loadEWPActivities(this.ewpKeyIntervention);
 
@@ -163,7 +162,7 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
         }
         .error-msg {
           color: var(--error-color);
-          font-size: var(--etools-font-size-12, 12px);
+          font-size: var(--etools-font-size-14, 14px);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -196,11 +195,17 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
         .hideConfirmBtn="${this.readonly}"
       >
         <div class="row">
+          <div ?hidden="${!this.showDifferentPartnerWarning}" class="col-12 error-msg">
+              ${translate('DIFFERENT_PARTNER_INVOLVED')}
+          </div>
           <div class="col-6">
             <etools-dropdown
               class="validate-input"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                this.editedData.ewp_activity = detail.selectedItem && detail.selectedItem.id;
+                if (detail.selectedItem && detail.selectedItem.id !== this.editedData.ewp_activity) {
+                  this.editedData.ewp_activity = detail.selectedItem.id;
+                  this.setSelectedLocationsByActivity(this.editedData.ewp_activity);
+                }
               }}"
               ?trigger-value-change-event="${!this.loadingInProcess}"
               .selected="${this.editedData.ewp_activity}"
@@ -221,19 +226,19 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
               this.activitiesLoaded && !this.ewpActivities?.length
                 ? html`<div class="error-msg">${translate('MISSING_EWP_ACTIVITIES')}</div>`
                 : html``
-            }
+            }          
           </div>
            <div class="col-6">
             <etools-dropdown-multi
               class="validate-input"
               @etools-selected-items-changed="${({detail}: CustomEvent) => {
-                this.editedData.locations = detail.selectedItems.map((x: any) => x.id);
+                this.editedData.locations = detail.selectedItems.map((x: any) => Number(x.id));
               }}"
               ?trigger-value-change-event="${!this.loadingInProcess}"
               .selectedValues="${this.editedData.locations}"
               label=${translate('LOCATIONS')}
               placeholder="&#8212;"
-              .options="${this.availableLocations}"
+              .options="${this.allLocations}"
               option-label="name"
               option-value="id"
               allow-outside-scroll
@@ -355,6 +360,23 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
     }
   }
 
+  setSelectedLocationsByActivity(ewp_activity: number | undefined) {
+    if (ewp_activity) {
+      const currentActivity = this.ewpActivities.find((x) => Number(x.id) === Number(ewp_activity));
+      this.editedData = {
+        ...this.editedData,
+        locations: currentActivity?.locations || [],
+        unicef_cash: currentActivity.total_budget
+      };
+      this.showDifferentPartnerWarning =
+        currentActivity.partners?.length &&
+        (currentActivity.partners?.length > 1 || !currentActivity.partners.includes(this.partnerId));
+    } else {
+      this.editedData = {...this.editedData, locations: []};
+      this.showDifferentPartnerWarning = false;
+    }
+  }
+
   inputLevelChange(e: CustomEvent): void {
     if (!e.target) {
       return;
@@ -404,7 +426,6 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
     }
 
     this.loadingInProcess = true;
-    // const dataToSave = this.getChangedFields();
 
     const dataToSave = cloneDeep(this.editedData);
     if (dataToSave.items?.length) {
@@ -426,19 +447,6 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
         fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
       });
   }
-
-  // private getChangedFields() {
-  //   const diff: Partial<GDDActivity> = getDifference<GDDActivity>(
-  //     this.isEditDialog ? (this.originalData as GDDActivity) : {},
-  //     this.editedData,
-  //     {
-  //       toRequest: true,
-  //       nestedFields: ['items']
-  //     }
-  //   );
-
-  //   return diff;
-  // }
 
   validateActivityItems(): AnyObject | undefined {
     const itemsTable: GDDActivityItemsTable | null = this.shadowRoot!.querySelector('gdd-activity-items-table');

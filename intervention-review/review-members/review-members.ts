@@ -1,6 +1,6 @@
 import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {EtoolsEndpoint, GDDReview, User} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, GDD, GDDReview, User} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -58,6 +58,8 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
       `
     ];
   }
+
+  @property({type: Object}) intervention: Partial<GDD> = {};
   @property() set review(review: GDDReview) {
     this.originalData = review;
     this.data = cloneDeep(review);
@@ -94,38 +96,13 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
           >
           </datepicker-lite>
         </div>
-        <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
-          <div class="col-12 layout-horizontal align-items-center">
-            <div class="flex-1">
-              <etools-dropdown-multi
-                label=${translate('REVIEWERS')}
-                placeholder="&#8212;"
-                .options="${this.users}"
-                .selectedValues="${this.data?.prc_officers}"
-                ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
-                option-label="name"
-                option-value="id"
-                ?trigger-value-change-event="${this.users.length}"
-                @etools-selected-items-changed="${({detail}: CustomEvent) => {
-                  this.selectedItemsChanged(detail, 'prc_officers', 'id');
-                }}"
-              >
-              </etools-dropdown-multi>
-            </div>
-            <div>
-              <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
-                ${translate('SEND_NOTIFICATIONS')}
-              </etools-button>
-            </div>
-          </div>
-        </div>
         <div class="row">
           <etools-dropdown
             class="col-md-4 col-sm-12"
             label=${translate('OVERALL_APPROVER')}
             placeholder="&#8212;"
             .options="${this.users}"
-            .selected="${this.data?.overall_approver?.id}"
+            .selected="${this.getDefaultApprover(this.data?.overall_approver?.id)}"
             ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
             option-label="name"
             option-value="id"
@@ -140,7 +117,7 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
             label=${translate('AUTH_OFFICER')}
             placeholder="&#8212;"
             .options="${this.users}"
-            .selected="${this.data?.authorized_officer?.id}"
+            .selected="${this.getDefaultAuthOfficer(this.data?.authorized_officer?.id)}"
             ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
             option-label="name"
             option-value="id"
@@ -155,6 +132,20 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
         ${this.renderActions(this.editMode, true)}
       </etools-content-panel>
     `;
+  }
+
+  getDefaultApprover(id?: number) {
+    if (!id) {
+      return this.intervention?.unicef_focal_points?.length ? this.intervention?.unicef_focal_points[0].id : id;
+    }
+    return id;
+  }
+
+  getDefaultAuthOfficer(id?: number) {
+    if (!id) {
+      return this.intervention?.budget_owner ? this.intervention?.budget_owner.id : id;
+    }
+    return id;
   }
 
   saveData(): Promise<void> {

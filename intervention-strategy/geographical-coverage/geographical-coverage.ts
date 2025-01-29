@@ -154,16 +154,12 @@ export class GDDGeographicalCoverage extends CommentsMixin(ComponentBaseMixin(Li
               placeholder="&#8212;"
               .options="${this.allLocations}"
               .selectedValues="${cloneDeep(this.data.flat_locations)}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations) ? -1 : undefined}"
-              ?required="${this.permissions?.required.flat_locations}"
+              readonly
+              tabindex="-1"
               option-label="name"
               option-value="id"
               error-message=${translate('LOCATIONS_ERR')}
-              trigger-value-change-event
               horizontal-align
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedItemsChanged(detail, 'flat_locations')}"
             >
             </etools-dropdown-multi>
             <div class="locations-btn">

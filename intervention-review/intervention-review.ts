@@ -2,7 +2,7 @@ import {LitElement, html, CSSResult, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
-import {GDDReview, User} from '@unicef-polymer/etools-types';
+import {GDD, GDDReview, User} from '@unicef-polymer/etools-types';
 import './general-review-information/general-review-information';
 import './review-members/review-members';
 import './reviews-list/reviews-list';
@@ -13,6 +13,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {cloneDeep} from 'lodash-es';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 
 @customElement('gdd-intervention-review')
 export class GDDInterventionReviewTab extends connectStore(LitElement) {
@@ -22,6 +23,7 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
   @property() reviews: GDDReview[] = [];
   @property() unicefUsers: User[] = [];
   @property() interventionStatus = '';
+  @property({type: Object}) intervention: Partial<GDD> = {};
 
   private interventionId: number | null = null;
 
@@ -46,6 +48,7 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
         ? html`<gdd-review-members
               .review="${this.currentReview}"
               .interventionId="${this.interventionId}"
+              .intervention="${this.intervention}"
               .usersList="${this.unicefUsers}"
               .canEditAtLeastOneField="${this.canEditReview}"
             ></gdd-review-members>
@@ -81,6 +84,10 @@ export class GDDInterventionReviewTab extends connectStore(LitElement) {
       return;
     }
 
+    const currentPD = state.gddInterventions?.current;
+    if (!isJsonStrMatch(this.intervention, currentPD) && currentPD) {
+      this.intervention = currentPD;
+    }
     this.reviews = state.gddInterventions.current.reviews;
     if (this.currentReview?.id) {
       this.currentReview = state.gddInterventions.current.reviews.find((x) => x.id === this.currentReview!.id) || null;
