@@ -133,5 +133,5 @@
   "QUANTITY": "Cantidad",
   "MISSING_EWP_ACTIVITIES": "Faltan actividades de eWP para la intervención clave seleccionada, corríjalas en eWP y vuelva a sincronizarlas.",
   "LEAD_SECTION": "Sección principal",
-  "DIFFERENT_PARTNER_INVOLVED": "Different partners are involved in these activities, you might need to create gPDs etc for these types of activities."
+  "DIFFERENT_PARTNER_INVOLVED": "En esta actividad participan diferentes socios; es posible que necesite crear gPD, etc. para este tipo de actividad."
 }

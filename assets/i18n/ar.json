@@ -133,5 +133,5 @@
   "QUANTITY": "كمية",
   "MISSING_EWP_ACTIVITIES": "أنشطة eWP المفقودة للتدخل الرئيسي المحدد، يرجى التصحيح في eWP وإعادة المزامنة.",
   "LEAD_SECTION": "قسم الرصاص",
-  "DIFFERENT_PARTNER_INVOLVED": "Different partner is involved in these activity, you might need to create gPDs etc for these types of activity."
+  "DIFFERENT_PARTNER_INVOLVED": "يشارك شريك مختلف في هذا النشاط، وقد تحتاج إلى إنشاء gPDs وما إلى ذلك لهذا النوع من النشاط."
 }
