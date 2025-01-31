@@ -186,7 +186,7 @@ export class GDDAmendmentDifference extends LitElement {
         collectionKey = 'genderEquityRatings';
         break;
       case 'risk_type':
-        collectionKey = 'riskTypes';
+        collectionKey = 'gpdRiskTypes';
         break;
       case 'supply_item_provided_by':
         collectionKey = 'providedBy';
