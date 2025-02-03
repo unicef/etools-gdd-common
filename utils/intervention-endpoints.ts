@@ -60,6 +60,7 @@ export interface EtoolsEndpoints {
   ewpOutputs: EtoolsEndpoint;
   ewpKeyInterventions: EtoolsEndpoint;
   ewpActivities: EtoolsEndpoint;
+  getSyncResultsStructure: EtoolsEndpoint;
 }
 
 export const gddEndpoints: EtoolsEndpoints = {
@@ -77,6 +78,9 @@ export const gddEndpoints: EtoolsEndpoints = {
   },
   intervention: {
     template: '/api/gdd/gdds/<%=interventionId%>/'
+  },
+  getSyncResultsStructure: {
+    template: '/api/gdd/gdds/<%=interventionId%>/sync-results-structure/'
   },
   interventionAction: {
     template: '/api/gdd/gdds/<%=interventionId%>/<%=action%>/'

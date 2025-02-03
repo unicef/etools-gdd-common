@@ -20,6 +20,7 @@ import './pd-activities';
 import './modals/key-intervention-dialog';
 import './modals/cp-output-dialog';
 import './modals/add-results-structure-manually-dialog';
+import './modals/sync-results-structure-dialog';
 import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RootState} from '../../common/types/store.types';
@@ -131,6 +132,10 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
 
         <!--    CP output ADD button     -->
         <div class="result-structure-buttons">
+          <div class="add-button" @click="${() => this.openSyncResultsStructure()}" ?hidden="${!this.isUnicefUser}">
+            <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
+            <span class="no-wrap">${translate('GDD_SYNC_RESULTS_STRUCTURE')}</span>
+          </div>
           <div
             class="add-button"
             @click="${() => this.openAddResultsStructureManually()}"
@@ -415,6 +420,16 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
         resultLink,
         interventionId: this.interventionId,
         canChangeCpOp: canChangeCpOp
+      }
+    });
+    this.openContentPanel();
+  }
+
+  openSyncResultsStructure() {
+    openDialog({
+      dialog: 'gdd-sync-results-structure-dialog',
+      dialogData: {
+        interventionId: this.interventionId
       }
     });
     this.openContentPanel();
