@@ -102,7 +102,7 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
             label=${translate('OVERALL_APPROVER')}
             placeholder="&#8212;"
             .options="${this.users}"
-            .selected="${this.getDefaultApprover(this.data?.overall_approver?.id)}"
+            .selected="${this.getDefaultApprover(this.editMode, this.data?.overall_approver?.id)}"
             ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
             option-label="name"
             option-value="id"
@@ -117,7 +117,7 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
             label=${translate('AUTH_OFFICER')}
             placeholder="&#8212;"
             .options="${this.users}"
-            .selected="${this.getDefaultAuthOfficer(this.data?.authorized_officer?.id)}"
+            .selected="${this.getDefaultAuthOfficer(this.editMode, this.data?.authorized_officer?.id)}"
             ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
             option-label="name"
             option-value="id"
@@ -134,15 +134,15 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
     `;
   }
 
-  getDefaultApprover(id?: number) {
-    if (!id) {
+  getDefaultApprover(editMode: boolean, id?: number) {
+    if (!id && editMode) {
       return this.intervention?.unicef_focal_points?.length ? this.intervention?.unicef_focal_points[0].id : id;
     }
     return id;
   }
 
-  getDefaultAuthOfficer(id?: number) {
-    if (!id) {
+  getDefaultAuthOfficer(editMode: boolean, id?: number) {
+    if (!id && editMode) {
       return this.intervention?.budget_owner ? this.intervention?.budget_owner.id : id;
     }
     return id;
