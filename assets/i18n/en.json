@@ -135,5 +135,7 @@
   "LEAD_SECTION": "Lead Section",
   "DIFFERENT_PARTNER_INVOLVED": "Different partner is involved in this activity, you might need to create gPDs, etc. for this type of activity.",
   "FOCALPOINT_ADD_PARTNER_INFO": "If the partner focal point is not listed in the dropdown, please add it via the Access Management Portal.",
-  "COMMENT_MODE_USAGE_DESCRIPTION": "To add a comment, click or select the desired section while Comment Mode is active.<br/>Comments can only be added to specific sections, not globally.<br/>Sections with unresolved comments are highlighted with a red border"
+  "COMMENT_MODE_USAGE_DESCRIPTION": "To add a comment, click or select the desired section while Comment Mode is active.<br/>Comments can only be added to specific sections, not globally.<br/>Sections with unresolved comments are highlighted with a red border",
+  "GDD_SYNC_RESULTS_STRUCTURE": "Sync Results Structure from eWP",
+  "SYNC":"Sync"
 }

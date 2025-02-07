@@ -49,7 +49,6 @@ export class GDDCpOutputDialog extends LitElement {
     this.interventionId = interventionId;
     this.canChangeCPOutput = canChangeCpOp;
     this.loadEWPOutputs(this.interventionId);
-    this.loadRamIndicators(this.cpOutputId);
   }
 
   get dialogTitle(): string {
@@ -152,6 +151,7 @@ export class GDDCpOutputDialog extends LitElement {
     if (this.selectedCpOutput !== Number(cpOutput.id)) {
       this.selectedCpOutput = Number(cpOutput.id);
       this.selectedIndicators = [];
+      console.log(cpOutput);
       this.loadRamIndicators(cpOutput.cp_output_id);
     }
   }
@@ -234,6 +234,12 @@ export class GDDCpOutputDialog extends LitElement {
         endpoint
       }).then((cpOutputs: any[]) => {
         this.cpOutputs = [...cpOutputs];
+        // temporary until we refactor cp_output object on gdd response to ewp_output_id, cp_output_id.
+        // Now cp_output is actually ewp_output_id
+        const selectedCpOuputObject = this.cpOutputs.find((x: any) => x.id === this.cpOutputId);
+        if (selectedCpOuputObject) {
+          this.loadRamIndicators(selectedCpOuputObject.cp_output_id);
+        }
       });
     } else {
       this.cpOutputs = [];

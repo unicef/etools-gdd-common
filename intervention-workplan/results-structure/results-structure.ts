@@ -3,7 +3,6 @@ import {css, html, CSSResultArray, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
-
 import {
   selectInterventionId,
   selectInterventionStatus,
@@ -19,7 +18,6 @@ import './cp-output-level';
 import './pd-activities';
 import './modals/key-intervention-dialog';
 import './modals/cp-output-dialog';
-import './modals/add-results-structure-manually-dialog';
 import './modals/sync-results-structure-dialog';
 import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -77,7 +75,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   quarters: GDDQuarter[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
-  @property({type: Boolean}) showIndicators = false;
+  @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
   @property({type: Boolean}) showInactiveToggle = false;
   @property({type: Object})
@@ -135,14 +133,6 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
           <div class="add-button" @click="${() => this.openSyncResultsStructure()}" ?hidden="${!this.isUnicefUser}">
             <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
             <span class="no-wrap">${translate('GDD_SYNC_RESULTS_STRUCTURE')}</span>
-          </div>
-          <div
-            class="add-button"
-            @click="${() => this.openAddResultsStructureManually()}"
-            ?hidden="${!this.isUnicefUser}"
-          >
-            <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
-            <span class="no-wrap">${translate('GDD_ADD_EWORKPLANS')}</span>
           </div>
           <div
             class="add-button"
@@ -428,16 +418,6 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   openSyncResultsStructure() {
     openDialog({
       dialog: 'gdd-sync-results-structure-dialog',
-      dialogData: {
-        interventionId: this.interventionId
-      }
-    });
-    this.openContentPanel();
-  }
-
-  openAddResultsStructureManually(): void {
-    openDialog({
-      dialog: 'gdd-add-results-structure-manually-dialog',
       dialogData: {
         interventionId: this.interventionId
       }

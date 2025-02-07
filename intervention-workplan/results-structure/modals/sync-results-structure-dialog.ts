@@ -2,10 +2,12 @@ import {LitElement, html, TemplateResult} from 'lit';
 import {property, customElement, state} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {getIntervention, patchIntervention} from '../../../common/actions/gddInterventions';
+import {getIntervention} from '../../../common/actions/gddInterventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
+import '@unicef-polymer/etools-unicef/src/etools-tree/etools-tree';
+import '@unicef-polymer/etools-unicef/src/etools-tree/etools-tree-item';
 import {AsyncAction, GenericObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -15,12 +17,9 @@ import {RootState} from '../../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectPdUnicefDetails} from '../../../intervention-metadata/unicef-details/pdUnicefDetails.selectors';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import '@shoelace-style/shoelace/dist/components/tree/tree.js';
-import '@shoelace-style/shoelace/dist/components/tree-item/tree-item.js';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {gddEndpoints} from '../../../utils/intervention-endpoints';
-import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
 import {repeat} from 'lit/directives/repeat.js';
 
 @customElement('gdd-sync-results-structure-dialog')
@@ -38,6 +37,9 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
 
   @state()
   resultsStructure: any;
+
+  @state()
+  selection: any;
 
   set dialogData(data: any) {
     if (!data) {
@@ -90,21 +92,21 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
         @close="${this.onClose}"
         ?show-spinner="${this.loadingInProcess}"
         spinner-text="${this.spinnerText}"
-        ok-btn-text=${translate('GENERAL.SYNC')}
+        ok-btn-text=${translate('SYNC')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
       >
         <div>
-           <sl-tree class="tree-selectable" selection="multiple" @sl-selection-change="${this.selectionChange.bind(this)}">
+           <etools-tree class="tree-selectable" selection="multiple" @sl-selection-change="${this.selectionChange.bind(this)}">
             ${repeat(
               this.resultsStructure || [],
               (cpoutput: any) => cpoutput.id,
               (cpoutput, cpoutputIndex) =>
-                html`<sl-tree-item ?selected=${cpoutput.selected} class="tree-item-cpoutput" .value="${cpoutput}">
+                html`<etools-tree-item ?selected=${cpoutput.selected} class="tree-item-cpoutput" .value="${cpoutput}">
                   <div>
                     <div class="heading">Country Programme Output</div>
-                    <strong>${cpoutputIndex + 1}</strong>. ${cpoutput.cp_output_name} - ${cpoutput.id}
+                    <strong>${cpoutputIndex + 1}</strong>. ${cpoutput.cp_output_name}
                   </div>
-                  <sl-tree-item
+                  <etools-tree-item
                     ?hidden="${!cpoutput.ewp_key_interventions?.length}"
                     ?selected=${cpoutput.selected}
                     class="tree-item-keyintervention"
@@ -114,7 +116,7 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
                       cpoutput.ewp_key_interventions || [],
                       (keyintervention: any) => keyintervention.id,
                       (keyintervention, keyinterventionIndex) =>
-                        html`<sl-tree-item
+                        html`<etools-tree-item
                           ?selected=${keyintervention.selected}
                           class="tree-item-keyintervention"
                           .value="${keyintervention}"
@@ -122,13 +124,13 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
                           <div>
                             <div class="heading">Key Intervention</div>
                             <strong>${cpoutputIndex + 1}</strong>.<strong>${keyinterventionIndex + 1}</strong>.
-                            ${keyintervention.name} - ${keyintervention.id}
+                            ${keyintervention.name}
                           </div>
                           ${repeat(
                             keyintervention.ewp_activities || [],
                             (activity: any) => activity.id,
                             (activity, activityIndex) =>
-                              html`<sl-tree-item
+                              html`<etools-tree-item
                                 ?selected=${activity.selected}
                                 class="tree-item-activity"
                                 .value="${activity}"
@@ -137,16 +139,16 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
                                   <div>
                                     <strong>${cpoutputIndex + 1}</strong>.<strong>${keyinterventionIndex +
                                     1}</strong>.<strong>${activityIndex + 1}</strong>.
-                                    ${activity.title} - ${activity.id}
+                                    ${activity.title}
                                   </div>
                                   <div><small>${activity.description}</small></div>
-                                </div></sl-tree-item
+                                </div></etools-tree-item
                               >`
                           )}
-                        </sl-tree-item>`
+                        </etools-tree-item>`
                     )}
-                  </sl-tree-item>
-                  <sl-tree-item
+                  </etools-tree-item>
+                  <etools-tree-item
                     ?hidden="${!cpoutput.ram_indicators?.length}"
                     ?selected=${cpoutput.selected}
                     class="tree-item-keyintervention"
@@ -156,18 +158,18 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
                       cpoutput.ram_indicators || [],
                       (ram_indicator: any) => ram_indicator.id,
                       (ram_indicator, _ramIndicatorIndex) =>
-                        html`<sl-tree-item
+                        html`<etools-tree-item
                           ?selected=${ram_indicator.selected}
                           class="tree-item-ramindicator"
                           .value="${ram_indicator}"
                           ><div>
                             <div class="heading">RAM Indicator</div>
-                            <div>${ram_indicator.name} - ${ram_indicator.id}</div>
-                          </div></sl-tree-item
+                            <div>${ram_indicator.name}</div>
+                          </div></etools-tree-item
                         >`
                     )}
-                  </sl-tree-item>
-                </sl-tree-item>`
+                  </etools-tree-item>
+                </etools-tree-item>`
             )}
         </div>
       </etools-dialog>
@@ -176,6 +178,17 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
 
   stateChanged(state: RootState) {
     this.data = cloneDeep(selectPdUnicefDetails(state));
+  }
+
+  initSelectedData() {
+    this.selection = this.resultsStructure.map((x: any) => ({
+      id: x.id,
+      ram_indicators: (x.ram_indicators || []).map((y: any) => y.id),
+      ewp_key_interventions: (x.ewp_key_interventions || []).map((y: any) => ({
+        id: y.id,
+        ewp_activities: (y.ewp_activities || []).map((z: any) => z.id)
+      }))
+    }));
   }
 
   selectionChange(e: any) {
@@ -208,7 +221,7 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
           cp_output = {id: x.cp_output, ewp_key_interventions: [], ram_indicators: []};
           acc.push(cp_output);
         }
-        cp_output.ewp_key_interventions.push({id: x.id, ewp_activites: []});
+        cp_output.ewp_key_interventions.push({id: x.id, ewp_activities: []});
       }
 
       if (x.isActivity) {
@@ -223,13 +236,13 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
           key_intervention = {id: x.key_intervention, ewp_activities: []};
           cp_output.ewp_key_interventions.push(key_intervention);
         }
-        key_intervention.ewp_activites.push(x.id);
+        key_intervention.ewp_activities.push(x.id);
       }
 
       return acc;
     }, []);
 
-    console.log(selection);
+    this.selection = selection;
   }
 
   getResultsStructureToSync() {
@@ -237,7 +250,7 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.getSyncResultsStructure, {
       interventionId: this.interventionId
     });
-    _sendRequest({
+    sendRequest({
       method: 'GET',
       endpoint: endpoint
     })
@@ -271,6 +284,7 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
             }))
           }))
         }));
+        this.initSelectedData();
         this.loadingInProcess = false;
       })
       .finally(() =>
@@ -285,12 +299,16 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
     this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
     this.loadingInProcess = true;
 
-    return getStore()
-      .dispatch<AsyncAction>(
-        patchIntervention({
-          e_workplans: this.data.e_workplans
-        })
-      )
+    console.log('selected', this.selection);
+
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.syncResultsStructure, {
+      interventionId: this.interventionId
+    });
+    sendRequest({
+      method: 'PATCH',
+      endpoint: endpoint,
+      body: this.selection
+    })
       .then(() =>
         getStore()
           .dispatch<AsyncAction>(getIntervention(String(this.interventionId)))
