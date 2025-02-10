@@ -135,5 +135,8 @@
   "LEAD_SECTION": "Section principale",
   "DIFFERENT_PARTNER_INVOLVED": "Différents partenaires sont impliqués dans cette activité, vous devrez peut-être créer des gPD, etc. pour ce type d'activité.",
   "FOCALPOINT_ADD_PARTNER_INFO": "Si le point focal du partenaire n'est pas répertorié dans la liste déroulante, veuillez l'ajouter via le portail de gestion d'accès.",
-  "COMMENT_MODE_USAGE_DESCRIPTION": "Pour ajouter un commentaire, cliquez ou sélectionnez la section souhaitée pendant que le mode de commentaire est actif.<br/>Les commentaires ne peuvent être ajoutés qu'aux sections spécifiques, pas dans le monde.<br/>Les sections avec des commentaires non résolus sont mises en évidence avec une bordure rouge"
+  "COMMENT_MODE_USAGE_DESCRIPTION": "Pour ajouter un commentaire, cliquez ou sélectionnez la section souhaitée pendant que le mode de commentaire est actif.<br/>Les commentaires ne peuvent être ajoutés qu'aux sections spécifiques, pas dans le monde.<br/>Les sections avec des commentaires non résolus sont mises en évidence avec une bordure rouge",
+  "GDD_SYNC_RESULTS_STRUCTURE": "Synchronisation des résultats de la structure de EWP",
+  "SYNC": "Synchronisation",
+  "NO_EWORKPLANS_ADDED": "Aucun Eworkplans n'a encore été ajouté. Ajoutez des eworkplans avant de modifier la structure des résultats."
 }

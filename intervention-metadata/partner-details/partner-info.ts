@@ -252,7 +252,6 @@ export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitE
 
   getAMPLink(user: EtoolsUser): string {
     let url = `/amp/users/`;
-    console.log(this.data?.partner, this.data?.partner_id);
     if (user && user.is_unicef_user) {
       url += `list?organization_type=partner&organization_id=${this.data.partner_id}`;
     }

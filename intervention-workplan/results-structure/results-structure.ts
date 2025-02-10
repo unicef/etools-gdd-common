@@ -3,7 +3,6 @@ import {css, html, CSSResultArray, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
-
 import {
   selectInterventionId,
   selectInterventionStatus,
@@ -19,7 +18,7 @@ import './cp-output-level';
 import './pd-activities';
 import './modals/key-intervention-dialog';
 import './modals/cp-output-dialog';
-import './modals/add-results-structure-manually-dialog';
+import './modals/sync-results-structure-dialog';
 import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RootState} from '../../common/types/store.types';
@@ -76,7 +75,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
   quarters: GDDQuarter[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
-  @property({type: Boolean}) showIndicators = false;
+  @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
   @property({type: Boolean}) showInactiveToggle = false;
   @property({type: Object})
@@ -123,34 +122,37 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
           ></gdd-display-controls>
         </div>
         <div slot="panel-btns">
+          <!--    CP output ADD button     -->
+          <div class="result-structure-buttons">
+            <div
+              class="add-button"
+              @click="${() => this.openSyncResultsStructure()}"
+              ?hidden="${!this.isUnicefUser ||
+              !this.permissions.edit.result_links ||
+              this.commentMode ||
+              !this.intervention?.e_workplans?.length}"
+            >
+              <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
+              <span class="no-wrap">${translate('GDD_SYNC_RESULTS_STRUCTURE')}</span>
+            </div>
+            <div
+              class="add-button"
+              @click="${() => this.openCpOutputDialog()}"
+              ?hidden="${!this.isUnicefUser ||
+              !this.permissions.edit.result_links ||
+              this.commentMode ||
+              !this.intervention?.e_workplans?.length}"
+            >
+              <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
+              <span class="no-wrap">${translate('GDD_ADD_CP_OUTPUT')}</span>
+            </div>
+          </div>
           <div class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
             <div class="heading">${translate('TOTAL')}:</div>
             <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
           </div>
         </div>
 
-        <!--    CP output ADD button     -->
-        <div class="result-structure-buttons">
-          <div
-            class="add-button"
-            @click="${() => this.openAddResultsStructureManually()}"
-            ?hidden="${!this.isUnicefUser}"
-          >
-            <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
-            <span class="no-wrap">${translate('GDD_ADD_EWORKPLANS')}</span>
-          </div>
-          <div
-            class="add-button"
-            @click="${() => this.openCpOutputDialog()}"
-            ?hidden="${!this.isUnicefUser ||
-            !this.permissions.edit.result_links ||
-            this.commentMode ||
-            !this.intervention?.e_workplans?.length}"
-          >
-            <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
-            <span class="no-wrap">${translate('GDD_ADD_CP_OUTPUT')}</span>
-          </div>
-        </div>
         ${repeat(
           this.resultLinks,
           (result: GDDExpectedResult) => result.id,
@@ -267,7 +269,12 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
             </gdd-cp-output-level>
           `
         )}
-        ${!this.resultLinks.length ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> ` : ''}
+        ${!this.intervention?.e_workplans?.length && !this.resultLinks.length
+          ? html` <div class="no-results">${translate('NO_EWORKPLANS_ADDED')}</div> `
+          : ''}
+        ${this.intervention?.e_workplans?.length && !this.resultLinks.length
+          ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> `
+          : ''}
       </etools-content-panel>
     `;
   }
@@ -420,9 +427,9 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
     this.openContentPanel();
   }
 
-  openAddResultsStructureManually(): void {
+  openSyncResultsStructure() {
     openDialog({
-      dialog: 'gdd-add-results-structure-manually-dialog',
+      dialog: 'gdd-sync-results-structure-dialog',
       dialogData: {
         interventionId: this.interventionId
       }

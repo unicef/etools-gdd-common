@@ -6,6 +6,7 @@ import './results-structure/results-structure';
 import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt';
 import './non-financial-contribution/non-financial-contribution';
 import './hq-contribution/hq-contribution';
+import './eworkplans/eworkplans';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 /**
@@ -26,6 +27,7 @@ export class GDDInterventionWorkplan extends LitElement {
       </style>
 
       <gdd-budget-summary></gdd-budget-summary>
+      <gdd-eworkplans></gdd-eworkplans>
       <gdd-results-structure></gdd-results-structure>
       <gdd-supply-agreements></gdd-supply-agreements>
     `;
