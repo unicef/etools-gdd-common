@@ -137,5 +137,6 @@
   "FOCALPOINT_ADD_PARTNER_INFO": "Si el punto focal del socio no figura en el menú desplegable, agrégalo a través del portal de gestión de acceso.",
   "COMMENT_MODE_USAGE_DESCRIPTION": "Para agregar un comentario, haga clic o seleccione la sección deseada mientras el modo de comentarios esté activo.<br/>Los comentarios solo se pueden agregar a secciones específicas, no a nivel mundial.<br/>Las secciones con comentarios no resueltos se destacan con un borde rojo",
   "GDD_SYNC_RESULTS_STRUCTURE": "Sincronización de la estructura de resultados de EWP",
-  "SYNC": "Sincronización"
+  "SYNC": "Sincronización",
+  "NO_EWORKPLANS_ADDED": "Todavía no se han agregado planificadores de Ework. Por favor, agregue los planos de trabajo antes de editar la estructura de resultados."
 }

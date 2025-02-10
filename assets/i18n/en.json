@@ -137,5 +137,6 @@
   "FOCALPOINT_ADD_PARTNER_INFO": "If the partner focal point is not listed in the dropdown, please add it via the Access Management Portal.",
   "COMMENT_MODE_USAGE_DESCRIPTION": "To add a comment, click or select the desired section while Comment Mode is active.<br/>Comments can only be added to specific sections, not globally.<br/>Sections with unresolved comments are highlighted with a red border",
   "GDD_SYNC_RESULTS_STRUCTURE": "Sync Results Structure from eWP",
-  "SYNC":"Sync"
+  "SYNC":"Sync",
+  "NO_EWORKPLANS_ADDED": "No eWorkplans have been added yet. Please add eWorkplans before editing the Results Structure."
 }

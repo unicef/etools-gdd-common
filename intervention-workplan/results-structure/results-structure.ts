@@ -122,30 +122,37 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
           ></gdd-display-controls>
         </div>
         <div slot="panel-btns">
+          <!--    CP output ADD button     -->
+          <div class="result-structure-buttons">
+            <div
+              class="add-button"
+              @click="${() => this.openSyncResultsStructure()}"
+              ?hidden="${!this.isUnicefUser ||
+              !this.permissions.edit.result_links ||
+              this.commentMode ||
+              !this.intervention?.e_workplans?.length}"
+            >
+              <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
+              <span class="no-wrap">${translate('GDD_SYNC_RESULTS_STRUCTURE')}</span>
+            </div>
+            <div
+              class="add-button"
+              @click="${() => this.openCpOutputDialog()}"
+              ?hidden="${!this.isUnicefUser ||
+              !this.permissions.edit.result_links ||
+              this.commentMode ||
+              !this.intervention?.e_workplans?.length}"
+            >
+              <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
+              <span class="no-wrap">${translate('GDD_ADD_CP_OUTPUT')}</span>
+            </div>
+          </div>
           <div class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
             <div class="heading">${translate('TOTAL')}:</div>
             <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
           </div>
         </div>
 
-        <!--    CP output ADD button     -->
-        <div class="result-structure-buttons">
-          <div class="add-button" @click="${() => this.openSyncResultsStructure()}" ?hidden="${!this.isUnicefUser}">
-            <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
-            <span class="no-wrap">${translate('GDD_SYNC_RESULTS_STRUCTURE')}</span>
-          </div>
-          <div
-            class="add-button"
-            @click="${() => this.openCpOutputDialog()}"
-            ?hidden="${!this.isUnicefUser ||
-            !this.permissions.edit.result_links ||
-            this.commentMode ||
-            !this.intervention?.e_workplans?.length}"
-          >
-            <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
-            <span class="no-wrap">${translate('GDD_ADD_CP_OUTPUT')}</span>
-          </div>
-        </div>
         ${repeat(
           this.resultLinks,
           (result: GDDExpectedResult) => result.id,
@@ -262,7 +269,12 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
             </gdd-cp-output-level>
           `
         )}
-        ${!this.resultLinks.length ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> ` : ''}
+        ${!this.intervention?.e_workplans?.length && !this.resultLinks.length
+          ? html` <div class="no-results">${translate('NO_EWORKPLANS_ADDED')}</div> `
+          : ''}
+        ${this.intervention?.e_workplans?.length && !this.resultLinks.length
+          ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> `
+          : ''}
       </etools-content-panel>
     `;
   }
