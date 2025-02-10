@@ -16,6 +16,9 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {selectPdEWorkplans, selectPdEWorkplansPermissions} from './eworkplans.selectors';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {GDDPdEWorkplans} from './eworkplans.models';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import get from 'lodash-es/get';
+import {GDD_TABS} from '../../common/constants';
 
 @customElement('gdd-eworkplans')
 export class GDDEWorkplans extends ComponentBaseMixin(connectStore(LitElement)) {
@@ -86,7 +89,10 @@ export class GDDEWorkplans extends ComponentBaseMixin(connectStore(LitElement)) 
   }
 
   stateChanged(state: RootState) {
-    super.stateChanged(state);
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Workplan)) {
+      return;
+    }
+
     this.data = cloneDeep(selectPdEWorkplans(state));
     this.originalData = cloneDeep(this.data);
 
@@ -98,6 +104,7 @@ export class GDDEWorkplans extends ComponentBaseMixin(connectStore(LitElement)) 
 
     this.permissions = selectPdEWorkplansPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+    super.stateChanged(state);
   }
 
   populateEWorkplans() {

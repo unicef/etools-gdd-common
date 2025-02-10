@@ -12,9 +12,9 @@ export const selectPdEWorkplansPermissions = createSelector(
   currentInterventionPermissions,
   (permissions: Permission<GDDPermissionsFields>) => {
     return {
-      edit: new GDDPdEWorkplansPermissions(permissions!.edit),
-      required: new GDDPdEWorkplansPermissions(permissions!.required),
-      view: new GDDPdEWorkplansPermissions(permissions!.view!)
+      edit: new GDDPdEWorkplansPermissions(permissions?.edit),
+      required: new GDDPdEWorkplansPermissions(permissions?.required),
+      view: new GDDPdEWorkplansPermissions(permissions?.view!)
     };
   }
 );
