@@ -1,4 +1,4 @@
-import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
+import {LitElement, TemplateResult, html, CSSResultArray} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';

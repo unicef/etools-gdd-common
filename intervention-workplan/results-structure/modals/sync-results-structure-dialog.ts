@@ -96,7 +96,10 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
         cancel-btn-text=${translate('GENERAL.CANCEL')}
       >
         <div>
-           <etools-tree class="tree-selectable" selection="multiple" @sl-selection-change="${this.selectionChange.bind(this)}">
+           <etools-tree 
+            class="tree-selectable"
+            selection="multiple"
+            @sl-selection-change="${this.selectionChange.bind(this)}">
             ${repeat(
               this.resultsStructure || [],
               (cpoutput: any) => cpoutput.id,
