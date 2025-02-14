@@ -138,5 +138,12 @@
   "COMMENT_MODE_USAGE_DESCRIPTION": "Pour ajouter un commentaire, cliquez ou sélectionnez la section souhaitée pendant que le mode de commentaire est actif.<br/>Les commentaires ne peuvent être ajoutés qu'aux sections spécifiques, pas dans le monde.<br/>Les sections avec des commentaires non résolus sont mises en évidence avec une bordure rouge",
   "GDD_SYNC_RESULTS_STRUCTURE": "Synchronisation des résultats de la structure de EWP",
   "SYNC": "Synchronisation",
-  "NO_EWORKPLANS_ADDED": "Aucun Eworkplans n'a encore été ajouté. Ajoutez des eworkplans avant de modifier la structure des résultats."
+  "NO_EWORKPLANS_ADDED": "Aucun Eworkplans n'a encore été ajouté. Ajoutez des eworkplans avant de modifier la structure des résultats.",
+  "GDD_ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS": "Ajouter/modifier les exigences relatives à la soumission des liquidations",
+  "GDD_DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT": "Êtes-vous sûr de vouloir supprimer cette exigence relative à la soumission des liquidations ?",
+  "GDD_DEL_SPECIAL_REPORTING_REQUIREMENT": "Supprimer l'exigence relative à la soumission des liquidations",
+  "GDD_NO_SPECIAL_REPORTING_REQUIREMENTS": "Aucune exigence relative à la soumission des liquidations n'est définie.",
+  "GDD_SPECIAL_REPORT": "Lors de la soumission des liquidations",
+  "GDD_SPECIAL_REPORTING_REQUIREMENTS": "Lors de la soumission des liquidations",
+  "GDD_SPECIAL_REPORT_TOOLTIP": "Dans certaines circonstances, l'UNICEF peut demander aux partenaires de soumettre des rapports relatifs à la soumission des liquidations en plus des rapports d'avancement trimestriels standard. Des rapports spéciaux peuvent être Les rapports sont demandés pour diverses raisons, notamment pour satisfaire aux exigences des donateurs, et ne sont pas présentés sous un format standard. L'UNICEF s'efforce de réduire le nombre de rapports demandés."
 }

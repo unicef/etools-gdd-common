@@ -55,7 +55,7 @@ export class GDDAddEditSpecialRepReq extends LitElement {
       <etools-dialog
         id="addEditDialog"
         size="lg"
-        dialog-title=${translate('ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS')}
+        dialog-title=${translate('GDD_ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS')}
         @confirm-btn-clicked="${this._save}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
@@ -114,6 +114,7 @@ export class GDDAddEditSpecialRepReq extends LitElement {
     } else {
       // already saved... update/delete
       return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirementsUpdate, {
+        intervId: this.interventionId,
         reportId: this.item.id
       });
     }

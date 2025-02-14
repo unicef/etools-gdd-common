@@ -96,13 +96,13 @@ export const gddEndpoints: EtoolsEndpoints = {
     template: '/api/pmp/v3/agreements/?partner_id=<%=id%>'
   },
   specialReportingRequirements: {
-    template: '/api/reports/v3/interventions/<%=intervId%>/special-reporting-requirements/'
+    template: '/api/gdd/gdds/<%=intervId%>/special-reporting-requirements/'
   },
   reportingRequirements: {
     template: '/api/gdd/gdds/<%=intervId%>/reporting-requirements/<%=reportType%>/'
   },
   specialReportingRequirementsUpdate: {
-    template: '/api/v2/reports/interventions/special-reporting-requirements/<%=reportId%>/'
+    template: '/api/gdd/gdds/<%=intervId%>/special-reporting-requirements/<%=reportId%>/'
   },
   monitoringVisits: {
     template: '/api/t2f/travels/activities/partnership/<%=id%>/?year=<%=year%>'

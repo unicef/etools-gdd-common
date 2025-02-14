@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit';
-import {property, customElement} from 'lit/decorators.js';
+import {property, customElement, state} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 
 import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
@@ -24,6 +24,11 @@ import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {selectInterventionDates} from '../../intervention-dates/interventionDates.selectors';
+import get from 'lodash-es/get';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {RootState} from '../../../common/types/store.types';
 
 /**
  * @customElement
@@ -32,7 +37,12 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
  * @appliesMixin ReportingRequirementsCommonMixin
  */
 @customElement('gdd-special-reporting-requirements')
-export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
+export class GDDSpecialReportingRequirements extends PaginationMixin(
+  ReportingRequirementsCommonMixin(connectStore(LitElement))
+) {
+  @state()
+  interventionEndDate: any;
+
   static get styles() {
     return [layoutStyles, ReportingRequirementsListStyles];
   }
@@ -58,7 +68,7 @@ export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRe
       ></etools-media-query>
 
       <div class="col-12 mt-10" ?hidden="${!this._empty(this.reportingRequirements)}">
-        ${translate('NO_SPECIAL_REPORTING_REQUIREMENTS')}
+        ${translate('GDD_NO_SPECIAL_REPORTING_REQUIREMENTS')}
       </div>
 
       <div class="col-12 mt-10" ?hidden="${!this.editMode}">
@@ -129,6 +139,17 @@ export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRe
     this._addEventListeners();
   }
 
+  stateChanged(state: RootState) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'timing')) {
+      return;
+    }
+    if (!state.gddInterventions.current) {
+      return;
+    }
+
+    this.interventionEndDate = state.gddInterventions.current.end;
+  }
+
   _addEventListeners() {
     this._onEdit = this._onEdit.bind(this);
     this._onDelete = this._onDelete.bind(this);
@@ -171,7 +192,12 @@ export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRe
     openDialog({
       dialog: 'gdd-add-edit-special-rep-req',
       dialogData: {
-        item: typeof index === 'undefined' ? {} : cloneDeep(this.reportingRequirements[index!]),
+        item:
+          typeof index === 'undefined'
+            ? {
+                due_date: this.interventionEndDate
+              }
+            : cloneDeep(this.reportingRequirements[index!]),
         interventionId: this.interventionId
       }
     }).then(({confirmed, response}) => {
@@ -193,7 +219,7 @@ export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRe
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: getTranslation('DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT'),
+          content: getTranslation('GDD_DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT'),
           confirmBtnText: translate('YES'),
           cancelBtnText: translate('NO')
         }
@@ -214,6 +240,7 @@ export class GDDSpecialReportingRequirements extends PaginationMixin(ReportingRe
     if (this._itemToDeleteIndex > -1) {
       const itemToDelete = this.reportingRequirements[this._itemToDeleteIndex] as any;
       const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirementsUpdate, {
+        intervId: this.interventionId,
         reportId: itemToDelete.id
       });
       sendRequest({

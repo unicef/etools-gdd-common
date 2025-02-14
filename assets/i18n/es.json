@@ -138,5 +138,12 @@
   "COMMENT_MODE_USAGE_DESCRIPTION": "Para agregar un comentario, haga clic o seleccione la sección deseada mientras el modo de comentarios esté activo.<br/>Los comentarios solo se pueden agregar a secciones específicas, no a nivel mundial.<br/>Las secciones con comentarios no resueltos se destacan con un borde rojo",
   "GDD_SYNC_RESULTS_STRUCTURE": "Sincronización de la estructura de resultados de EWP",
   "SYNC": "Sincronización",
-  "NO_EWORKPLANS_ADDED": "Todavía no se han agregado planificadores de Ework. Por favor, agregue los planos de trabajo antes de editar la estructura de resultados."
+  "NO_EWORKPLANS_ADDED": "Todavía no se han agregado planificadores de Ework. Por favor, agregue los planos de trabajo antes de editar la estructura de resultados.",
+  "GDD_ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS": "Agregar/Editar Requisitos Tras la Presentación de Liquidaciones",
+  "GDD_DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT": "¿Está seguro de que desea eliminar este Requisito Tras la Presentación de Liquidaciones?",
+  "GDD_DEL_SPECIAL_REPORTING_REQUIREMENT": "Eliminar Requisito Tras la Presentación de Liquidaciones",
+  "GDD_NO_SPECIAL_REPORTING_REQUIREMENTS": "No hay requisitos Tras la Presentación de Liquidaciones establecidos",
+  "GDD_SPECIAL_REPORT": "Tras la Presentación de Liquidaciones",
+  "GDD_SPECIAL_REPORTING_REQUIREMENTS": "Requisitos Tras la Presentación de Liquidaciones",
+  "GDD_SPECIAL_REPORT_TOOLTIP": "En algunas circunstancias, UNICEF puede solicitar a los socios que envíen informes Tras la Presentación de Liquidaciones además de los Informes de Progreso Trimestrales estándar. Se pueden solicitar informes especiales para varios Por razones diversas, entre ellas, satisfacer las necesidades de los donantes, y no tienen un formato estándar. UNICEF se esfuerza por reducir el número de informes solicitados."
 }

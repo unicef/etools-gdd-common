@@ -127,7 +127,7 @@
   "GDD_EDIT_STANDARD_REPORT_REQUIREMENTS": "Edit Standard Report Requirements",
   "NO_GDD_REPORTING_REQUIREMENTS": "There are no reporting requirements set.",
   "GDD_PROGRESS_REPORTS": "Progress Reports",
-  "GDD_PROGRESS_REPORT_TOOLTIP": "UNICEF requires partners to submit Progress Reports every three months during programme implementation. Quarterly Progress Reports allow partners to report back against the agreed upon indicators and targets, as well as provide narrative updates.",
+  "GDD_PROGRESS_REPORT_TOOLTIP": "UNICEF requires partners to submit Progress Reports every three months during programme implementation. Progress Reports allow partners to report back against the agreed upon indicators and targets, as well as provide narrative updates.",
   "GDD_REPORT_PROMPT": "You have to fill PD Start Date and End Date first!",
   "GDD_ADD_EWORKPLANS": "Add eWorkplans",
   "QUANTITY": "Quantity",
@@ -138,5 +138,13 @@
   "COMMENT_MODE_USAGE_DESCRIPTION": "To add a comment, click or select the desired section while Comment Mode is active.<br/>Comments can only be added to specific sections, not globally.<br/>Sections with unresolved comments are highlighted with a red border",
   "GDD_SYNC_RESULTS_STRUCTURE": "Sync Results Structure from eWP",
   "SYNC":"Sync",
-  "NO_EWORKPLANS_ADDED": "No eWorkplans have been added yet. Please add eWorkplans before editing the Results Structure."
+  "NO_EWORKPLANS_ADDED": "No eWorkplans have been added yet. Please add eWorkplans before editing the Results Structure.",
+  "GDD_ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS": "Add/Edit Upon submission of Liquidations Requirements",
+  "GDD_DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT": "Are you sure you want to delete this Upon submission of Liquidations Requirement?",
+  "GDD_DEL_SPECIAL_REPORTING_REQUIREMENT": "Delete upon submission of Liquidations Requirement",
+  "GDD_NO_SPECIAL_REPORTING_REQUIREMENTS": "There are no upon submission of Liquidations requirements set.",
+  "GDD_SPECIAL_REPORT": "Upon submission of Liquidations",
+  "GDD_SPECIAL_REPORTING_REQUIREMENTS": "Upon submission of Liquidations Requirements",
+  "GDD_SPECIAL_REPORT_TOOLTIP": "In some circumstances, UNICEF may request partners to submit Upon submission of Liquidations reports in addition to the standard Progress Reports. Special reports may be requested for various reasons, including to satisfy donor requirements, and do not have a standard format. UNICEF strives to reduce the number of reports requested."
+  
 }

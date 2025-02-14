@@ -148,6 +148,22 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
           <div class="col-12 d-flex">
             <div class="reports-menu nav-menu">
               <div
+                name="special"
+                title=${translate('GDD_SPECIAL_REPORT')}
+                class="nav-menu-item"
+                ?selected="${this.isSelected('special')}"
+                @click="${this.selectType}"
+                tabindex="0"
+                id="clickable"
+              >
+                <info-icon-tooltip
+                  id="iit-sp"
+                  ?hidden="${this.isReadonly}"
+                  .tooltipText="${translate('GDD_SPECIAL_REPORT_TOOLTIP')}"
+                ></info-icon-tooltip>
+                ${translate('GDD_SPECIAL_REPORT')} (${this.specialRequirementsCount})
+              </div>
+              <div
                 name="qtyProgress"
                 title=${translate('GDD_PROGRESS_REPORTS')}
                 class="nav-menu-item qpr"
@@ -171,6 +187,16 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
               </div>
             </div>
             <div class="reporting-req-data">
+              <gdd-special-reporting-requirements
+                ?hidden="${!isActiveTab(this.selectedReportType, 'special')}"
+                name="special"
+                .interventionId="${this.interventionId}"
+                .requirementsCount="${this.specialRequirementsCount}"
+                .editMode="${!this.isReadonly}"
+                @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
+              >
+              </gdd-special-reporting-requirements>
+
               <gdd-quarterly-reporting-requirements
                 ?hidden="${!isActiveTab(this.selectedReportType, 'qtyProgress')}"
                 id="qpr"
@@ -198,7 +224,7 @@ export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
   }
 
   @property({type: String})
-  selectedReportType = 'qtyProgress';
+  selectedReportType = 'special';
 
   @property({type: Number})
   interventionId!: number;
