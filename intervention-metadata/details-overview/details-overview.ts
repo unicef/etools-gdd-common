@@ -61,12 +61,6 @@ export class GDDDetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElem
             <div class="input-label">${this.getPartnerPseaRiskRatingHtml()}</div>
           </div>
           <div class="data-column">
-            <label class="label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
-            <div class="input-label" ?empty="${!this.interventionPartner?.last_assessment_date}">
-              ${formatDateLocalized(this.interventionPartner?.last_assessment_date)}
-            </div>
-          </div>
-          <div class="data-column">
             <label class="label">${translate('PSEA_ASSESSMENT_DATE')}</label>
             <div class="input-label" ?empty="${!this.interventionPartner?.psea_assessment_date}">
               ${formatDateLocalized(this.interventionPartner?.psea_assessment_date)}
