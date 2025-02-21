@@ -25,7 +25,6 @@ import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import {selectInterventionDates} from '../../intervention-dates/interventionDates.selectors';
 import get from 'lodash-es/get';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {RootState} from '../../../common/types/store.types';
