@@ -102,16 +102,6 @@ export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
       <etools-data-table-row .detailsOpened="${true}" id="activitiesRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(gddTranslatesMap.activities)} (${this.activities.length})</div>
-          <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <etools-icon-button
-              name="add-box"
-              slot="custom-icon"
-              class="add"
-              @click="${() => this.openDialog()}"
-              ?hidden="${this.readonly}"
-            ></etools-icon-button>
-            <span class="no-wrap" slot="message">${translate('ADD_GDD_ACTIVITY')}</span>
-          </etools-info-tooltip>
         </div>
         <div slot="row-data-details">
           <div

@@ -52,6 +52,7 @@ export interface EtoolsEndpoints {
   exportXls: EtoolsEndpoint;
   interventionReview: EtoolsEndpoint;
   sendReviewNotification: EtoolsEndpoint;
+  sendAuthorizedOfficerReviewNotification: EtoolsEndpoint;
   officersReviews: EtoolsEndpoint;
   officerReviewData: EtoolsEndpoint;
   interventionPVDelete: EtoolsEndpoint;
@@ -215,6 +216,9 @@ export const gddEndpoints: EtoolsEndpoints = {
   },
   sendReviewNotification: {
     template: '/api/gdd/gdds/<%=interventionId%>/reviews/<%=id%>/notify/'
+  },
+  sendAuthorizedOfficerReviewNotification: {
+    template: '/api/gdd/gdds/<%=interventionId%>/reviews/<%=id%>/notify-authorized-officer/'
   },
   officersReviews: {
     template: '/api/gdd/gdds/<%=interventionId%>/reviews/<%=id%>/officers-reviews/'

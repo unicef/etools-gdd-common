@@ -145,5 +145,6 @@
   "GDD_NO_SPECIAL_REPORTING_REQUIREMENTS": "Aucune exigence relative à la soumission des liquidations n'est définie.",
   "GDD_SPECIAL_REPORT": "Lors de la soumission des liquidations",
   "GDD_SPECIAL_REPORTING_REQUIREMENTS": "Lors de la soumission des liquidations",
-  "GDD_SPECIAL_REPORT_TOOLTIP": "Dans certaines circonstances, l'UNICEF peut demander aux partenaires de soumettre des rapports relatifs à la soumission des liquidations en plus des rapports d'avancement trimestriels standard. Des rapports spéciaux peuvent être Les rapports sont demandés pour diverses raisons, notamment pour satisfaire aux exigences des donateurs, et ne sont pas présentés sous un format standard. L'UNICEF s'efforce de réduire le nombre de rapports demandés."
+  "GDD_SPECIAL_REPORT_TOOLTIP": "Dans certaines circonstances, l'UNICEF peut demander aux partenaires de soumettre des rapports relatifs à la soumission des liquidations en plus des rapports d'avancement trimestriels standard. Des rapports spéciaux peuvent être Les rapports sont demandés pour diverses raisons, notamment pour satisfaire aux exigences des donateurs, et ne sont pas présentés sous un format standard. L'UNICEF s'efforce de réduire le nombre de rapports demandés.",
+  "NO_RESULTS_STRUCTURE_FOR_THIS_PARTNER": "Aucune structure de résultats n'est disponible pour ce partenaire."
 }

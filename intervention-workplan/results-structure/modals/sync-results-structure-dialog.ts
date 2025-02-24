@@ -66,21 +66,21 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
           --indent-guide-width: 1px;
         }
         .tree-item-cpoutput::part(item) {
-            background-color: #a6dbff;
+          background-color: #a6dbff;
         }
         .tree-item-keyintervention::part(item) {
-            background-color: #ccebff;
+          background-color: #ccebff;
         }
         .tree-item-activity::part(item) {
-            background-color: #fdf0d2;
+          background-color: #fdf0d2;
         }
         etools-dialog::part(body) {
           padding: 0 !important;
         }
         .heading {
-            font-size: var(--etools-font-size-12, 12px);
-            line-height: 16px;
-            color: var(--secondary-text-color);
+          font-size: var(--etools-font-size-12, 12px);
+          line-height: 16px;
+          color: var(--secondary-text-color);
         }
       </style>
       <etools-dialog
@@ -93,20 +93,22 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
         ?show-spinner="${this.loadingInProcess}"
         spinner-text="${this.spinnerText}"
         ok-btn-text=${translate('SYNC')}
+        .disableConfirmBtn="${!this.resultsStructure?.length}"
         cancel-btn-text=${translate('GENERAL.CANCEL')}
       >
         <div>
-           <etools-tree 
+          <etools-tree
             class="tree-selectable"
             selection="multiple"
-            @sl-selection-change="${this.selectionChange.bind(this)}">
+            @sl-selection-change="${this.selectionChange.bind(this)}"
+          >
             ${repeat(
               this.resultsStructure || [],
               (cpoutput: any) => cpoutput.id,
               (cpoutput, cpoutputIndex) =>
                 html`<etools-tree-item ?selected=${cpoutput.selected} class="tree-item-cpoutput" .value="${cpoutput}">
                   <div>
-                    <div class="heading">Country Programme Output</div>
+                    <div class="heading">${cpoutput.workplan_name}</div>
                     <strong>${cpoutputIndex + 1}</strong>. ${cpoutput.cp_output_name}
                   </div>
                   <etools-tree-item
@@ -125,7 +127,6 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
                           .value="${keyintervention}"
                         >
                           <div>
-                            <div class="heading">Key Intervention</div>
                             <strong>${cpoutputIndex + 1}</strong>.<strong>${keyinterventionIndex + 1}</strong>.
                             ${keyintervention.name}
                           </div>
@@ -166,7 +167,6 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
                           class="tree-item-ramindicator"
                           .value="${ram_indicator}"
                           ><div>
-                            <div class="heading">RAM Indicator</div>
                             <div>${ram_indicator.name}</div>
                           </div></etools-tree-item
                         >`
@@ -174,6 +174,10 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
                   </etools-tree-item>
                 </etools-tree-item>`
             )}
+          </etools-tree>
+          <div class="container">
+            ${!this.resultsStructure?.length ? html`${translate('NO_RESULTS_STRUCTURE_FOR_THIS_PARTNER')}` : html``}
+          </div>
         </div>
       </etools-dialog>
     `;
@@ -263,6 +267,7 @@ export class GDDSyncResultsStructureDialog extends connectStore(LitElement) {
           parent: 0,
           isCpOutput: true,
           cp_output_name: x.cp_output_name,
+          workplan_name: x.workplan_name,
           selected: true,
           ram_indicators: x.ram_indicators.map((y: any) => ({
             ...y,

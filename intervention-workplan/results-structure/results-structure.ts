@@ -127,24 +127,10 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
             <div
               class="add-button"
               @click="${() => this.openSyncResultsStructure()}"
-              ?hidden="${!this.isUnicefUser ||
-              !this.permissions.edit.result_links ||
-              this.commentMode ||
-              !this.intervention?.e_workplans?.length}"
+              ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
             >
               <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
               <span class="no-wrap">${translate('GDD_SYNC_RESULTS_STRUCTURE')}</span>
-            </div>
-            <div
-              class="add-button"
-              @click="${() => this.openCpOutputDialog()}"
-              ?hidden="${!this.isUnicefUser ||
-              !this.permissions.edit.result_links ||
-              this.commentMode ||
-              !this.intervention?.e_workplans?.length}"
-            >
-              <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
-              <span class="no-wrap">${translate('GDD_ADD_CP_OUTPUT')}</span>
             </div>
           </div>
           <div class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
@@ -181,21 +167,6 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
               >
                 ${translate('NO_PDS_ADDED')}
               </div>
-              ${!result.cp_output || !this.permissions.edit.result_links || this.commentMode
-                ? ''
-                : html`
-                    <div class="pd-title layout-horizontal align-items-center">
-                      ${translate('KEY_INTERVENTIONS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
-                        <etools-icon-button
-                          name="add-box"
-                          slot="custom-icon"
-                          class="add"
-                          @click="${() => this.openKeyInterventionDialog({}, result)}"
-                        ></etools-icon-button>
-                        <span class="no-wrap" slot="message">${translate('ADD_KEY_INTERVENTION')}</span>
-                      </etools-info-tooltip>
-                    </div>
-                  `}
               ${result.gdd_key_interventions.map(
                 (keyIntervention: GDDResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
@@ -269,12 +240,7 @@ export class GDDResultsStructure extends CommentsMixin(ContentPanelMixin(LitElem
             </gdd-cp-output-level>
           `
         )}
-        ${!this.intervention?.e_workplans?.length && !this.resultLinks.length
-          ? html` <div class="no-results">${translate('NO_EWORKPLANS_ADDED')}</div> `
-          : ''}
-        ${this.intervention?.e_workplans?.length && !this.resultLinks.length
-          ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> `
-          : ''}
+        ${!this.resultLinks.length ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> ` : ''}
       </etools-content-panel>
     `;
   }

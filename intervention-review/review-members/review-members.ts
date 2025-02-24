@@ -73,7 +73,9 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   get showNotifyButton(): boolean {
-    return this.canEditAtLeastOneField && !this.editMode && this.data?.meeting_date && this.data?.prc_officers?.length;
+    return (
+      this.canEditAtLeastOneField && !this.editMode && this.data?.overall_approver && this.data?.authorized_officer
+    );
   }
   private interventionId!: number;
 
@@ -81,6 +83,11 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
     // language=HTML
     return html`
       ${sharedStyles}
+      <style>
+        .ml-auto {
+          margin-left: auto;
+        }
+      </style>
       <etools-content-panel class="content-section" panel-title="${translate('GDD_REVIEW_MEMBERS')}">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -127,6 +134,16 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
             }}"
           >
           </etools-dropdown>
+          <div class="col-md-4 col-sm-12 layout-horizontal align-items-center">
+            <etools-button
+              class="ml-auto"
+              variant="primary"
+              @click="${this.sendNotification}"
+              ?hidden="${!this.showNotifyButton}"
+            >
+              ${translate('SEND_NOTIFICATIONS')}
+            </etools-button>
+          </div>
         </div>
 
         ${this.renderActions(this.editMode, true)}
@@ -157,10 +174,8 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
       endpoint,
       method: 'PATCH',
       body: {
-        prc_officers: this.data.prc_officers || [],
         overall_approver: this.data.overall_approver?.id || null,
-        authorized_officer: this.data.authorized_officer?.id || null,
-        meeting_date: this.data.meeting_date || null
+        authorized_officer: this.data.authorized_officer?.id || null
       }
     })
       .then((response: any) => {
@@ -173,10 +188,13 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   sendNotification(): void {
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.sendReviewNotification, {
-      id: this.data!.id,
-      interventionId: this.interventionId
-    });
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(
+      gddEndpoints.sendAuthorizedOfficerReviewNotification,
+      {
+        id: this.data!.id,
+        interventionId: this.interventionId
+      }
+    );
     sendRequest({
       endpoint,
       method: 'POST'

@@ -27,7 +27,6 @@ export class GDDInterventionWorkplan extends LitElement {
       </style>
 
       <gdd-budget-summary></gdd-budget-summary>
-      <gdd-eworkplans></gdd-eworkplans>
       <gdd-results-structure></gdd-results-structure>
       <gdd-supply-agreements></gdd-supply-agreements>
     `;

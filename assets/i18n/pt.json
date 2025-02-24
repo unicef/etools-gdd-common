@@ -140,10 +140,11 @@
   "SYNC": "Sincronização",
   "NO_EWORKPLANS_ADDED": "Ainda não foram adicionados planos de trabalho. Adicionar eworkplans antes de editar a estrutura de resultados.",
   "GDD_ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS": "Adicionar/editar mediante o envio dos requisitos de liquidação",
- "GDD_DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT": "Tem a certeza de que pretende eliminar isto após o envio do requisito de liquidação?",
- "GDD_DEL_SPECIAL_REPORTING_REQUIREMENT": "Apagar após o envio do Requisito de Liquidações",
- "GDD_NO_SPECIAL_REPORTING_REQUIREMENTS": "Não existem requisitos definidos para a submissão de liquidações.",
- "GDD_SPECIAL_REPORT": "Após a submissão de liquidações",
- "GDD_SPECIAL_REPORTING_REQUIREMENTS": "Após a submissão dos Requisitos de Liquidação",
- "GDD_SPECIAL_REPORT_TOOLTIP": "Em algumas circunstâncias, a UNICEF pode solicitar aos parceiros que enviem relatórios Upon submission of Liquidations para além dos Relatórios de Progresso Trimestrais padrão. Os relatórios especiais podem ser solicitados por vários motivos, incluindo para satisfazer os requisitos dos doadores, e não têm um formato padrão. A UNICEF esforça-se por reduzir o número de relatórios solicitados."
+  "GDD_DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT": "Tem a certeza de que pretende eliminar isto após o envio do requisito de liquidação?",
+  "GDD_DEL_SPECIAL_REPORTING_REQUIREMENT": "Apagar após o envio do Requisito de Liquidações",
+  "GDD_NO_SPECIAL_REPORTING_REQUIREMENTS": "Não existem requisitos definidos para a submissão de liquidações.",
+  "GDD_SPECIAL_REPORT": "Após a submissão de liquidações",
+  "GDD_SPECIAL_REPORTING_REQUIREMENTS": "Após a submissão dos Requisitos de Liquidação",
+  "GDD_SPECIAL_REPORT_TOOLTIP": "Em algumas circunstâncias, a UNICEF pode solicitar aos parceiros que enviem relatórios Upon submission of Liquidations para além dos Relatórios de Progresso Trimestrais padrão. Os relatórios especiais podem ser solicitados por vários motivos, incluindo para satisfazer os requisitos dos doadores, e não têm um formato padrão. A UNICEF esforça-se por reduzir o número de relatórios solicitados.",
+  "NO_RESULTS_STRUCTURE_FOR_THIS_PARTNER": "Nenhuma estrutura de resultados está disponível para este parceiro."
 }

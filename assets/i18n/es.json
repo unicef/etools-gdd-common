@@ -145,5 +145,6 @@
   "GDD_NO_SPECIAL_REPORTING_REQUIREMENTS": "No hay requisitos Tras la Presentación de Liquidaciones establecidos",
   "GDD_SPECIAL_REPORT": "Tras la Presentación de Liquidaciones",
   "GDD_SPECIAL_REPORTING_REQUIREMENTS": "Requisitos Tras la Presentación de Liquidaciones",
-  "GDD_SPECIAL_REPORT_TOOLTIP": "En algunas circunstancias, UNICEF puede solicitar a los socios que envíen informes Tras la Presentación de Liquidaciones además de los Informes de Progreso Trimestrales estándar. Se pueden solicitar informes especiales para varios Por razones diversas, entre ellas, satisfacer las necesidades de los donantes, y no tienen un formato estándar. UNICEF se esfuerza por reducir el número de informes solicitados."
+  "GDD_SPECIAL_REPORT_TOOLTIP": "En algunas circunstancias, UNICEF puede solicitar a los socios que envíen informes Tras la Presentación de Liquidaciones además de los Informes de Progreso Trimestrales estándar. Se pueden solicitar informes especiales para varios Por razones diversas, entre ellas, satisfacer las necesidades de los donantes, y no tienen un formato estándar. UNICEF se esfuerza por reducir el número de informes solicitados.",
+  "NO_RESULTS_STRUCTURE_FOR_THIS_PARTNER": "No hay estructura de resultados disponible para este socio."
 }
