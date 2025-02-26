@@ -47,6 +47,12 @@ export class GDDActivityItemRow extends ActivitiesCommonMixin(LitElement) {
     return this.activityItem
       ? html`
           ${ActivityItemsTableInlineStyles}
+          <style>
+            .grid-cell etools-currency[readonly],
+            .grid-cell etools-input[readonly] {
+              width: auto;
+            }
+          </style>
           <div class="grid-row">
             <div
               class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}"
