@@ -203,6 +203,10 @@ export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
         fireEvent(this, 'toast', {text: getTranslation('NOTIFICATION_SENT_SUCCESS')});
       })
       .catch((err: any) => {
+        if (err.response.already_sent_today) {
+          fireEvent(this, 'toast', {text: `${getTranslation('NOTIFICATION_ALREADY_SENT_TODAY')}`});
+          return;
+        }
         const errorText = err?.response?.detail || getTranslation('TRY_AGAIN_LATER');
         fireEvent(this, 'toast', {text: `${getTranslation('CAN_NOT_SEND_NOTIFICATION')} ${errorText}`});
       });

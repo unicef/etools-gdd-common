@@ -146,5 +146,6 @@
   "GDD_SPECIAL_REPORT": "Upon submission of Liquidations",
   "GDD_SPECIAL_REPORTING_REQUIREMENTS": "Upon submission of Liquidations Requirements",
   "GDD_SPECIAL_REPORT_TOOLTIP": "In some circumstances, UNICEF may request partners to submit Upon submission of Liquidations reports in addition to the standard Progress Reports. Special reports may be requested for various reasons, including to satisfy donor requirements, and do not have a standard format. UNICEF strives to reduce the number of reports requested.",
-  "NO_RESULTS_STRUCTURE_FOR_THIS_PARTNER": "No results structure is available for this partner."
+  "NO_RESULTS_STRUCTURE_FOR_THIS_PARTNER": "No results structure is available for this partner.",
+  "NOTIFICATION_ALREADY_SENT_TODAY": "A notification has already been sent today. You can only send one notification per day."
 }
