@@ -217,6 +217,7 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
               allow-outside-scroll
               dynamic-align
               required
+              readonly="${this.readonly}"
               ?invalid="${this.errors.ewp_activity}"
               .errorMessage="${this.errors.ewp_activity && this.errors.ewp_activity[0]}"
               @focus="${() => this.resetFieldError('ewp_activity')}"
@@ -243,6 +244,7 @@ export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore
               option-value="id"
               allow-outside-scroll
               dynamic-align
+              readonly="${this.readonly}"
               required
               ?invalid="${this.errors.locations}"
               .errorMessage="${this.errors.locations && this.errors.locations[0]}"
