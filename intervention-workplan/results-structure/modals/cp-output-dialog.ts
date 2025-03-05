@@ -3,25 +3,25 @@ import {property, customElement} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {getIntervention} from '../../../common/actions/interventions';
+import {getIntervention} from '../../../common/actions/gddInterventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
-import {AsyncAction, ResultIndicator, GenericObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {AsyncAction, GDDResultIndicator, GenericObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {areEqual} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
-@customElement('cp-output-dialog')
-export class CpOutputDialog extends LitElement {
+@customElement('gdd-cp-output-dialog')
+export class GDDCpOutputDialog extends LitElement {
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
 
-  @property() indicators: ResultIndicator[] = [];
+  @property() indicators: GDDResultIndicator[] = [];
   @property() selectedIndicators: number[] = [];
   @property() selectedCpOutput?: number;
   @property() errors: GenericObject<any> = {};
@@ -38,8 +38,7 @@ export class CpOutputDialog extends LitElement {
     if (!data) {
       return;
     }
-
-    const {cpOutputs, resultLink, interventionId, canChangeCpOp}: any = data;
+    const {resultLink, interventionId, canChangeCpOp}: any = data;
     if (resultLink) {
       this.cpOutputId = resultLink.cp_output;
       this.selectedCpOutput = Number(resultLink.cp_output);
@@ -48,9 +47,8 @@ export class CpOutputDialog extends LitElement {
       this.resultLinkId = resultLink.id;
     }
     this.interventionId = interventionId;
-    this.cpOutputs = cpOutputs;
     this.canChangeCPOutput = canChangeCpOp;
-    this.loadRamIndicators(this.cpOutputId);
+    this.loadEWPOutputs(this.interventionId);
   }
 
   get dialogTitle(): string {
@@ -81,7 +79,7 @@ export class CpOutputDialog extends LitElement {
       <etools-dialog
         size="md"
         keep-dialog-open
-        dialog-title="${this.dialogTitle} "
+        dialog-title="${this.dialogTitle}"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         ?show-spinner="${this.loadingInProcess}"
@@ -96,9 +94,10 @@ export class CpOutputDialog extends LitElement {
                   <etools-dropdown
                     class="validate-input"
                     @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                      this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
+                      this.onCpOutputSelected(detail.selectedItem)}"
                     ?trigger-value-change-event="${!this.loadingInProcess}"
                     .selected="${this.selectedCpOutput}"
+                    ?readonly="${!!this.cpOutputId}"
                     label=${translate('CP_OUTPUT')}
                     placeholder="&#8212;"
                     .options="${this.cpOutputs}"
@@ -141,18 +140,19 @@ export class CpOutputDialog extends LitElement {
     `;
   }
 
-  onIndicatorsSelected(data: ResultIndicator[]) {
-    const newIndicators = data.map(({id}: ResultIndicator) => id);
+  onIndicatorsSelected(data: GDDResultIndicator[]) {
+    const newIndicators = data.map(({id}: GDDResultIndicator) => id);
     if (!areEqual(this.selectedIndicators, newIndicators)) {
       this.selectedIndicators = newIndicators;
     }
   }
 
-  onCpOutputSelected(id: number) {
-    if (this.selectedCpOutput !== Number(id)) {
-      this.selectedCpOutput = Number(id);
+  onCpOutputSelected(cpOutput: any) {
+    if (this.selectedCpOutput !== Number(cpOutput.id)) {
+      this.selectedCpOutput = Number(cpOutput.id);
       this.selectedIndicators = [];
-      this.loadRamIndicators(id);
+      console.log(cpOutput);
+      this.loadRamIndicators(cpOutput.cp_output_id);
     }
   }
 
@@ -173,10 +173,11 @@ export class CpOutputDialog extends LitElement {
     this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
     this.loadingInProcess = true;
     const endpoint = this.cpOutputId
-      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.resultLinkGetDelete, {
+          interventionId: this.interventionId,
           result_link: this.resultLinkId
         })
-      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinks, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.resultLinks, {
           id: this.interventionId
         });
     const method = this.cpOutputId ? 'PATCH' : 'POST';
@@ -208,17 +209,40 @@ export class CpOutputDialog extends LitElement {
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
-  private loadRamIndicators(cpOutputId: number): void {
+  private loadRamIndicators(cpOutputId?: number): void {
     if (!cpOutputId) {
+      this.indicators = [];
       return;
     }
     this.spinnerText = getTranslation('GENERAL.LOADING');
     this.loadingInProcess = true;
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.ramIndicators, {id: cpOutputId})
-    }).then((data: ResultIndicator[]) => {
+      endpoint: getEndpoint(gddEndpoints.ramIndicators, {id: cpOutputId})
+    }).then((data: GDDResultIndicator[]) => {
       this.loadingInProcess = false;
       this.indicators = data;
     });
+  }
+
+  loadEWPOutputs(id: number) {
+    if (id) {
+      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.ewpOutputs, {
+        gddId: id
+      });
+
+      sendRequest({
+        endpoint
+      }).then((cpOutputs: any[]) => {
+        this.cpOutputs = [...cpOutputs];
+        // temporary until we refactor cp_output object on gdd response to ewp_output_id, cp_output_id.
+        // Now cp_output is actually ewp_output_id
+        const selectedCpOuputObject = this.cpOutputs.find((x: any) => x.id === this.cpOutputId);
+        if (selectedCpOuputObject) {
+          this.loadRamIndicators(selectedCpOuputObject.cp_output_id);
+        }
+      });
+    } else {
+      this.cpOutputs = [];
+    }
   }
 }

@@ -1,7 +1,7 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {PrcOfficerReview} from '@unicef-polymer/etools-types';
+import {GDDPrcOfficerReview} from '@unicef-polymer/etools-types';
 
 export const SET_REVIEWS = 'SET_REVIEWS';
 export const RESET_REVIEWS = 'SET_REVIEWS';
@@ -9,7 +9,7 @@ export const RESET_REVIEWS = 'SET_REVIEWS';
 export const loadPrcMembersIndividualReviews = (reviewId: number) => (dispatch: any, getState: any) => {
   const interventionId = getState().app.routeDetails.params.interventionId;
   return sendRequest({
-    endpoint: getEndpoint(interventionEndpoints.officersReviews, {interventionId: interventionId, id: reviewId})
+    endpoint: getEndpoint(gddEndpoints.officersReviews, {interventionId: interventionId, id: reviewId})
   })
     .then((reviews: any) => {
       dispatch({
@@ -24,6 +24,6 @@ export const loadPrcMembersIndividualReviews = (reviewId: number) => (dispatch: 
     });
 };
 
-function checkReviews(reviews: PrcOfficerReview[]) {
-  return reviews.filter((review: PrcOfficerReview) => Boolean(review.review_date));
+function checkReviews(reviews: GDDPrcOfficerReview[]) {
+  return reviews.filter((review: GDDPrcOfficerReview) => Boolean(review.review_date));
 }

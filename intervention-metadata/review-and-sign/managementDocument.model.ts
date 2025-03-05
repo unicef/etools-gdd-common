@@ -1,8 +1,8 @@
-import {Intervention, InterventionPermissionsFields, MinimalUser} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDD, GDDPermissionsFields, MinimalUser} from '@unicef-polymer/etools-types';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class ReviewData extends ModelsBase {
-  constructor(intervention: Intervention) {
+export class GDDReviewData extends GDDModelsBase {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }
@@ -20,13 +20,14 @@ export class ReviewData extends ModelsBase {
   signed_by_partner_date = '';
   signed_by_unicef_date = '';
   unicef_signatory: MinimalUser | null = null;
-  days_from_submission_to_signed = '';
-  days_from_review_to_signed = '';
+  days_from_submission_to_approved = '';
+  days_from_review_to_approved = '';
   termination_doc_attachment = '';
+  signature_required = false;
 }
 
-export class ReviewDataPermission extends ModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+export class GDDReviewDataPermission extends GDDModelsBase {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }
@@ -35,4 +36,5 @@ export class ReviewDataPermission extends ModelsBase {
   signed_by_unicef_date = true;
   unicef_signatory = true;
   signed_pd_attachment = true;
+  signature_required = true;
 }

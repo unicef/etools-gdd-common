@@ -1,32 +1,26 @@
 import {AsyncAction} from '@unicef-polymer/etools-types/dist/global.types';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getIntervention} from '../actions/interventions';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
+import {getIntervention} from '../actions/gddInterventions';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {
-  EtoolsEndpoint,
-  ExpectedResult,
-  Indicator,
-  InterventionActivity,
-  ResultLinkLowerResult
-} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, GDDExpectedResult, GDDActivity, GDDResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {convertDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {translate} from 'lit-translate';
-import {InterventionActivityExtended} from '../types/editor-page-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {GDDActivityExtended} from '../types/editor-page-types';
 
-function deactivateActivity(activityId: number, pdOutputId: number, interventionId: number) {
+function deactivateActivity(activityId: number, keyInterventionId: number, interventionId: number) {
   fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
     active: true,
-    loadingSource: 'interv-activity-deactivate'
+    loadingSource: 'gdd-interv-activity-deactivate'
   });
-  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
-    activityId: activityId,
-    interventionId: interventionId,
-    pdOutputId: pdOutputId
+  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.gddActivityDetails, {
+    interventionId,
+    keyInterventionId,
+    activityId
   });
   sendRequest({
     method: 'PATCH',
@@ -44,21 +38,21 @@ function deactivateActivity(activityId: number, pdOutputId: number, intervention
     .finally(() =>
       fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
         active: false,
-        loadingSource: 'interv-activity-deactivate'
+        loadingSource: 'gdd-interv-activity-deactivate'
       })
     );
 }
 
-function deleteActivity(activityId: number, pdOutputId: number, interventionId: number) {
+function deleteActivity(activityId: number, keyInterventionId: number, interventionId: number) {
   fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
     active: true,
-    loadingSource: 'interv-activity-remove'
+    loadingSource: 'gdd-interv-activity-remove'
   });
 
-  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
-    activityId: activityId,
-    interventionId: interventionId,
-    pdOutputId: pdOutputId
+  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.gddActivityDetails, {
+    interventionId,
+    keyInterventionId,
+    activityId
   });
   sendRequest({
     method: 'DELETE',
@@ -73,13 +67,13 @@ function deleteActivity(activityId: number, pdOutputId: number, interventionId: 
     .finally(() =>
       fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
         active: false,
-        loadingSource: 'interv-activity-remove'
+        loadingSource: 'gdd-interv-activity-remove'
       })
     );
 }
 
 export function _canDeactivate(
-  item: InterventionActivity | InterventionActivityExtended | Indicator,
+  item: GDDActivity | GDDActivityExtended,
   readonly: boolean,
   interventionStatus: string,
   inAmendment: boolean,
@@ -113,7 +107,7 @@ export function _canDeactivate(
 }
 
 export function _canDelete(
-  item: Indicator | InterventionActivity | InterventionActivityExtended | ResultLinkLowerResult | ExpectedResult,
+  item: GDDActivity | GDDActivityExtended | GDDResultLinkLowerResult | GDDExpectedResult,
   readonly: boolean,
   interventionStatus: string,
   inAmendment: boolean,
@@ -124,7 +118,7 @@ export function _canDelete(
   }
   if (inAmendment) {
     // if created during Amedment , it can be deleted, otherwise just deactivated
-    if (convertDate(item.created!, true)! >= convertDate(inAmendmentDate, true)!) {
+    if (convertDate((item as any).created!, true)! >= convertDate(inAmendmentDate, true)!) {
       return true;
     }
     return false;
@@ -135,7 +129,11 @@ export function _canDelete(
   return false;
 }
 
-export async function openActivityDeactivationDialog(activityId: number, pdOutputId: number, interventionId: number) {
+export async function openActivityDeactivationDialog(
+  activityId: number,
+  keyInterventionId: number,
+  interventionId: number
+) {
   const confirmed = await openDialog({
     dialog: 'are-you-sure',
     dialogData: {
@@ -147,11 +145,11 @@ export async function openActivityDeactivationDialog(activityId: number, pdOutpu
   });
 
   if (confirmed) {
-    deactivateActivity(Number(activityId), pdOutputId, interventionId);
+    deactivateActivity(Number(activityId), keyInterventionId, interventionId);
   }
 }
 
-export async function openDeleteActivityDialog(activityId: number, pdOutputId: number, interventionId: number) {
+export async function openDeleteActivityDialog(activityId: number, keyInterventionId: number, interventionId: number) {
   const confirmed = await openDialog({
     dialog: 'are-you-sure',
     dialogData: {
@@ -163,6 +161,6 @@ export async function openDeleteActivityDialog(activityId: number, pdOutputId: n
   });
 
   if (confirmed) {
-    deleteActivity(activityId, pdOutputId, interventionId);
+    deleteActivity(activityId, keyInterventionId, interventionId);
   }
 }

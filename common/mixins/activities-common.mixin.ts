@@ -1,15 +1,11 @@
 import ModelChangedMixin from '@unicef-polymer/etools-modules-common/dist/mixins/model-changed-mixin';
-import {Constructor, InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {Constructor, GDDActivityItem} from '@unicef-polymer/etools-types';
 import {LitElement} from 'lit';
 import {getItemTotal} from '../components/activity/get-total.helper';
 
 export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesCommonClass extends ModelChangedMixin(baseClass) {
-    cashFieldChanged(
-      detail: {value: any},
-      field: 'unicef_cash' | 'cso_cash',
-      item: Partial<InterventionActivityItem>
-    ): void {
+    cashFieldChanged(detail: {value: any}, field: 'unicef_cash' | 'cso_cash', item: Partial<GDDActivityItem>): void {
       this.numberChanged(detail, field, item);
       if (!item.unit_price || !item.no_units) {
         return;

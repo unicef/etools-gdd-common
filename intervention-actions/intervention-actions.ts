@@ -5,14 +5,14 @@ import '../common/layout/export-intervention-data';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
 import './accept-for-partner';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {gddEndpoints} from '../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
-import '../common/components/intervention/start-review';
+// import '../common/components/intervention/start-review';
 import '../common/components/intervention/review-checklist-popup';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {
@@ -37,16 +37,16 @@ import {
   SEND_BACK_REVIEW,
   UNLOCK
 } from './intervention-actions.constants';
-import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
+import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/gddInterventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {
   defaultKeyTranslate,
   formatServerErrorAsText
 } from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {AnyObject, EtoolsEndpoint, GenericObject} from '@unicef-polymer/etools-types';
-import {Intervention} from '@unicef-polymer/etools-types';
-import {get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../utils/intervention-labels-map';
+import {GDD} from '@unicef-polymer/etools-types';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../utils/intervention-labels-map';
 import {RootState} from '../common/types/store.types';
 
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
@@ -55,9 +55,11 @@ import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import {NON_PRC_REVIEW} from '../common/components/intervention/review.const';
 
-@customElement('intervention-actions')
-export class InterventionActions extends connectStore(LitElement) {
+@customElement('gdd-intervention-actions')
+export class GDDInterventionActions extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     return [
       InterventionActionsStyles,
@@ -75,7 +77,7 @@ export class InterventionActions extends connectStore(LitElement) {
   @property() actions: string[] = [];
   @property({type: String}) dir = 'ltr';
   @property({type: Object})
-  interventionPartial!: Partial<Intervention>;
+  interventionPartial!: Partial<GDD>;
 
   @property({type: Boolean})
   userIsBudgetOwner = false;
@@ -83,7 +85,7 @@ export class InterventionActions extends connectStore(LitElement) {
   @property({type: Number})
   commonDataLoadedTimestamp = 0;
 
-  private isEPDApp = Environment.basePath === '/epd/';
+  private isGDDApp = Environment.basePath === '/government/';
 
   connectedCallback() {
     super.connectedCallback();
@@ -112,15 +114,15 @@ export class InterventionActions extends connectStore(LitElement) {
   private renderExport(actions: string[]): TemplateResult {
     // for ePD app must add ePD text on Export links
     const preparedExportActions = actions.map((action: string) => ({
-      name: this.actionsNamesMap[this.isEPDApp ? `${action}_epd` : action],
+      name: this.actionsNamesMap[this.isGDDApp ? `${action}_gdd` : action],
       type: action
     }));
     return actions.length
       ? html`
-          <export-intervention-data
+          <gdd-export-intervention-data
             .exportLinks="${preparedExportActions}"
             .interventionId="${this.interventionPartial.id}"
-          ></export-intervention-data>
+          ></gdd-export-intervention-data>
         `
       : html``;
   }
@@ -259,7 +261,7 @@ export class InterventionActions extends connectStore(LitElement) {
 
     const loadingMessage = getTranslation(action === AMENDMENT_MERGE ? 'AMENDMENT_MERGE_MESSAGE' : 'GENERAL.LOADING');
 
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAction, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.interventionAction, {
       interventionId: this.interventionPartial.id,
       action
     });
@@ -273,13 +275,13 @@ export class InterventionActions extends connectStore(LitElement) {
       body,
       method: 'PATCH'
     })
-      .then((intervention: Intervention) => {
+      .then((intervention: GDD) => {
         getStore().dispatch(setShouldReGetList(true));
 
         if (action === AMENDMENT_MERGE) {
           setTimeout(() => {
             this.redirectToTabPage(intervention.id, 'metadata');
-          });
+          }, 300);
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
         }
@@ -287,7 +289,7 @@ export class InterventionActions extends connectStore(LitElement) {
         if (action === REVIEW) {
           setTimeout(() => {
             this.redirectToTabPage(intervention.id, REVIEW);
-          });
+          }, 300);
         }
       })
       .finally(() => {
@@ -299,7 +301,7 @@ export class InterventionActions extends connectStore(LitElement) {
       .catch((error: any) => {
         fireEvent(this, 'toast', {
           text: formatServerErrorAsText(error, (key) => {
-            const labelKey = translatesMap[key];
+            const labelKey = gddTranslatesMap[key];
             return labelKey ? getTranslation(labelKey) : defaultKeyTranslate(key);
           })
         });
@@ -319,7 +321,7 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   private redirectToTabPage(id: number | null, tabName: string) {
-    history.pushState(window.history.state, '', `${Environment.basePath}interventions/${id}/${tabName}`);
+    history.pushState(window.history.state, '', `${Environment.basePath}gpd-interventions/${id}/${tabName}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 
@@ -359,7 +361,7 @@ export class InterventionActions extends connectStore(LitElement) {
 
   private openTermiantionDialog() {
     return openDialog({
-      dialog: 'pd-termination',
+      dialog: 'gdd-pd-termination',
       dialogData: {
         interventionId: this.interventionPartial.id
       }
@@ -377,18 +379,22 @@ export class InterventionActions extends connectStore(LitElement) {
 
   private openStartReviewDialog() {
     return openDialog({
-      dialog: 'start-review'
-    }).then(({confirmed, response}) => {
-      if (!confirmed) {
-        return null;
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: getTranslation('CONFIRM_REVIEW_START'),
+        confirmBtnText: getTranslation('START')
       }
-      return {review_type: response};
+    }).then(({confirmed}) => {
+      if (confirmed) {
+        return {review_type: NON_PRC_REVIEW};
+      }
+      return null;
     });
   }
 
   private openReviewDialog(additional?: GenericObject) {
     return openDialog({
-      dialog: 'review-checklist-popup',
+      dialog: 'gdd-review-checklist-popup',
       dialogData: {
         isOverall: Boolean(additional),
         ...additional
@@ -404,7 +410,7 @@ export class InterventionActions extends connectStore(LitElement) {
 
   private openAcceptForPartner() {
     return openDialog({
-      dialog: 'accept-for-partner',
+      dialog: 'gdd-accept-for-partner',
       dialogData: {
         interventionId: this.interventionPartial.id
       }

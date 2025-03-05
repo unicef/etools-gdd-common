@@ -1,19 +1,19 @@
 import {createSelector} from 'reselect';
-import {PlannedVisits, PlannedVisitsPermissions} from './programmaticVisits.models';
+import {GDDPlannedVisits, GDDPlannedVisitsPermissions} from './programmaticVisits.models';
 import {currentIntervention, currentInterventionPermissions} from '../../common/selectors';
 import {Permission} from '@unicef-polymer/etools-types';
-import {InterventionPermissionsFields, Intervention} from '@unicef-polymer/etools-types';
+import {GDDPermissionsFields, GDD} from '@unicef-polymer/etools-types';
 
-export const selectPlannedVisits = createSelector(currentIntervention, (intervention: Intervention) => {
-  return new PlannedVisits(intervention);
+export const selectPlannedVisits = createSelector(currentIntervention, (intervention: GDD) => {
+  return new GDDPlannedVisits(intervention);
 });
 
 export const selectPlannedVisitsPermissions = createSelector(
   currentInterventionPermissions,
-  (permissions: Permission<InterventionPermissionsFields>) => {
+  (permissions: Permission<GDDPermissionsFields>) => {
     return {
-      edit: new PlannedVisitsPermissions(permissions!.edit),
-      required: new PlannedVisitsPermissions(permissions!.required)
+      edit: new GDDPlannedVisitsPermissions(permissions!.edit),
+      required: new GDDPlannedVisitsPermissions(permissions!.required)
     };
   }
 );

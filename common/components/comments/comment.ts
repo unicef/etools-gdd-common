@@ -3,19 +3,19 @@ import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentStyles} from './comment.styles';
-import {InterventionComment} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {GDDComment} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import dayjs from 'dayjs';
 
-@customElement('comment-element')
-export class CommentElement extends LitElement {
+@customElement('gdd-comment-element')
+export class GDDCommentElement extends LitElement {
   static get styles(): CSSResultArray {
     // language=css
     return [CommentStyles];
   }
 
   @property({type: Boolean, reflect: true, attribute: 'my-comment'}) myComment!: boolean;
-  @property() comment!: InterventionComment & {loadingError?: boolean; created: string};
+  @property() comment!: GDDComment & {loadingError?: boolean; created: string};
   @property() resolving = false;
   @property() deleting = false;
 

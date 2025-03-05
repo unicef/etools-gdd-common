@@ -1,19 +1,19 @@
 import {createSelector} from 'reselect';
-import {DocumentDetails, DocumentDetailsPermissions} from './documentDetails.models';
+import {GDDDocumentDetails, GDDDocumentDetailsPermissions} from './documentDetails.models';
 import {currentIntervention, currentInterventionPermissions} from '../../common/selectors';
 import {Permission} from '@unicef-polymer/etools-types';
-import {InterventionPermissionsFields, Intervention} from '@unicef-polymer/etools-types';
+import {GDDPermissionsFields, GDD} from '@unicef-polymer/etools-types';
 
-export const selectDocumentDetails = createSelector(currentIntervention, (intervention: Intervention) => {
-  return new DocumentDetails(intervention);
+export const selectDocumentDetails = createSelector(currentIntervention, (intervention: GDD) => {
+  return new GDDDocumentDetails(intervention);
 });
 
 export const selectDocumentDetailsPermissions = createSelector(
   currentInterventionPermissions,
-  (permissions: Permission<InterventionPermissionsFields>) => {
+  (permissions: Permission<GDDPermissionsFields>) => {
     return {
-      edit: new DocumentDetailsPermissions(permissions!.edit),
-      required: new DocumentDetailsPermissions(permissions!.required)
+      edit: new GDDDocumentDetailsPermissions(permissions!.edit),
+      required: new GDDDocumentDetailsPermissions(permissions!.required)
     };
   }
 );

@@ -1,17 +1,17 @@
-import {Intervention, InterventionPermissionsFields, PlannedBudget} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDD, GDDPermissionsFields, GDDPlannedBudget} from '@unicef-polymer/etools-types';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class HqContributionData extends ModelsBase {
-  constructor(intervention: Intervention) {
+export class GDDHqContributionData extends GDDModelsBase {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }
   hq_support_cost = '';
-  planned_budget = new PlannedBudget();
+  planned_budget = new GDDPlannedBudget();
 }
 
-export class HqContributionPermissions extends ModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+export class GDDHqContributionPermissions extends GDDModelsBase {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }

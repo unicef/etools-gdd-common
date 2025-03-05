@@ -1,6 +1,6 @@
 import {css} from 'lit';
 
-export const reportingRequirementsListStyles = css`
+export const ReportingRequirementsListStyles = css`
   *[hidden] {
     display: none !important;
   }

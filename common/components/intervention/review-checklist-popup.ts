@@ -3,17 +3,17 @@ import {customElement, property} from 'lit/decorators.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, GenericObject, GDDReview} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {loadPrcMembersIndividualReviews} from '../../actions/officers-reviews';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from './review.const';
-import {updateCurrentIntervention} from '../../actions/interventions';
+import {updateCurrentIntervention} from '../../actions/gddInterventions';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
@@ -24,8 +24,8 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-radio/etools-radio-group';
 import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 
-@customElement('review-checklist-popup')
-export class ReviewChecklistPopup extends LitElement {
+@customElement('gdd-review-checklist-popup')
+export class GDDReviewChecklistPopup extends LitElement {
   static get styles() {
     return [
       layoutStyles,
@@ -60,13 +60,13 @@ export class ReviewChecklistPopup extends LitElement {
     ];
   }
 
-  @property() review: Partial<InterventionReview> = {};
+  @property() review: Partial<GDDReview> = {};
   @property() isOverallReview = false;
   @property() approvePopup = false;
   @property() rejectPopup = false;
   @property() requestInProcess = false;
-  originalReview!: Partial<InterventionReview>;
-  overallReview!: Partial<InterventionReview>;
+  originalReview!: Partial<GDDReview>;
+  overallReview!: Partial<GDDReview>;
 
   questions: Readonly<GenericObject<string>> = REVIEW_QUESTIONS;
 
@@ -75,7 +75,7 @@ export class ReviewChecklistPopup extends LitElement {
       return;
     }
     this.isOverallReview = data.isOverall;
-    this.overallReview = getStore().getState().interventions.current!.reviews[0];
+    this.overallReview = getStore().getState().gddInterventions.current!.reviews[0];
     const review = this.isOverallReview ? this.overallReview : data.review;
     this.originalReview = review || {};
     this.review = review ? cloneDeep(this.originalReview) : {overall_approval: true};
@@ -115,8 +115,16 @@ export class ReviewChecklistPopup extends LitElement {
                 `
               : ''}
             ${Object.entries(this.questions).map(([field]: [string, string], index: number) =>
-              this.generateLikertScale(field as keyof InterventionReview, index)
+              this.generateLikertScale(field as keyof GDDReview, index)
             )}
+            <div class="col-12">
+              <etools-checkbox
+                ?checked="${this.review.is_recommended_for_approval}"
+                @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'is_recommended_for_approval')}"
+              >
+                ${translate('SIGN_BUDGET_OWNER')}
+              </etools-checkbox>
+            </div>
             <div class="col-12">
               <etools-textarea
                 label=${translate('APPROVAL_COMMENT')}
@@ -144,12 +152,14 @@ export class ReviewChecklistPopup extends LitElement {
                     </etools-textarea>
                   </div>
                 `
-              : html` <etools-checkbox
-                  ?checked="${this.review?.overall_approval}"
-                  @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
-                >
-                  ${translate('APPROVED_BY_PRC')}
-                </etools-checkbox>`}
+              : html`<div class="col-12">
+                  <etools-checkbox
+                    ?checked="${this.review?.overall_approval}"
+                    @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
+                  >
+                    ${translate('APPROVED_BY_PRC')}
+                  </etools-checkbox>
+                </div>`}
           </div>
         </div>
         <div slot="buttons">
@@ -168,26 +178,27 @@ export class ReviewChecklistPopup extends LitElement {
     `;
   }
 
-  generateLikertScale(field: keyof InterventionReview, index: number): TemplateResult {
+  generateLikertScale(field: keyof GDDReview, index: number): TemplateResult {
     return html`
       <div class="likert-scale pb-20">
         <div class="w100">
-          <label class="label">Q${index + 1}: ${translateValue(field, `REVIEW_QUESTIONS`)}</label>
+          <label class="label">Q${index + 1}: ${translateValue(field, `GDD_REVIEW_QUESTIONS`)}</label>
         </div>
         <etools-radio-group
           value="${this.review[field] || ''}"
           @sl-change="${(e: any) => this.valueChanged(e.target.value, field)}"
         >
           ${Array.from(REVIEW_ANSVERS.entries()).map(
-            ([key, text]: [string, string]) =>
-              html` <sl-radio value="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</sl-radio> `
+            ([key, text]: [string, string]) => html`
+              <sl-radio value="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</sl-radio>
+            `
           )}
         </etools-radio-group>
       </div>
     `;
   }
 
-  valueChanged(value: any, field: keyof InterventionReview): void {
+  valueChanged(value: any, field: keyof GDDReview): void {
     this.review[field] = value;
     this.requestUpdate();
   }
@@ -201,9 +212,7 @@ export class ReviewChecklistPopup extends LitElement {
     const interventionId = getStore().getState().app.routeDetails.params!.interventionId;
     const userId = getStore().getState().user.data!.user;
     const reviewId: number = this.overallReview.id as number;
-    const endpoint = this.isOverallReview
-      ? interventionEndpoints.interventionReview
-      : interventionEndpoints.officerReviewData;
+    const endpoint = this.isOverallReview ? gddEndpoints.interventionReview : gddEndpoints.officerReviewData;
 
     const body = getDifference(this.originalReview, this.review);
     this.requestInProcess = true;
@@ -216,7 +225,7 @@ export class ReviewChecklistPopup extends LitElement {
       }),
       body
     })
-      .then(({intervention}: any) => getStore().dispatch(updateCurrentIntervention(intervention)))
+      .then(({gdd}: any) => getStore().dispatch(updateCurrentIntervention(gdd)))
       .then(() =>
         !this.isOverallReview ? getStore().dispatch<AsyncAction>(loadPrcMembersIndividualReviews(reviewId)) : null
       )

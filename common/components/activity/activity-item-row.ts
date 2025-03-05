@@ -1,17 +1,17 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {getTotalCashFormatted, getMultiplyProductCashFormatted} from './get-total.helper';
+import {getTotalCashFormatted, getMultiplyProductCashFormatted, getMultiplyProductCash} from './get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './activity-items-table.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {GDDActivityItem} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {ActivitiesCommonMixin} from '../../mixins/activities-common.mixin';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';
 
-@customElement('activity-item-row')
-export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
+@customElement('gdd-activity-item-row')
+export class GDDActivityItemRow extends ActivitiesCommonMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -33,7 +33,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
     ];
   }
 
-  @property() activityItem: Partial<InterventionActivityItem> = {};
+  @property() activityItem: Partial<GDDActivityItem> = {};
   @property() invalidName = false;
   @property() invalidUnit = false;
   @property() invalidNoUnits = false;
@@ -47,6 +47,12 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
     return this.activityItem
       ? html`
           ${ActivityItemsTableInlineStyles}
+          <style>
+            .grid-cell etools-currency[readonly],
+            .grid-cell etools-input[readonly] {
+              width: auto;
+            }
+          </style>
           <div class="grid-row">
             <div
               class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}"
@@ -125,41 +131,6 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 error-message=""
               ></etools-currency>
             </div>
-
-            <div
-              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('PARTNER_CASH')}"
-            >
-              <etools-currency
-                .value="${this.activityItem.cso_cash || 0}"
-                no-label-float
-                ?readonly="${this.readonly}"
-                @value-changed="${({detail}: CustomEvent) =>
-                  this.cashFieldChanged(detail, 'cso_cash', this.activityItem)}"
-                @blur="${() => this.onBlur()}"
-                ?invalid="${this.invalidSum}"
-                @focus="${() => (this.invalidSum = false)}"
-                @click="${() => (this.invalidSum = false)}"
-                error-message=""
-              ></etools-currency>
-            </div>
-            <div
-              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('UNICEF_CASH')}"
-            >
-              <etools-currency
-                .value="${this.activityItem.unicef_cash || 0}"
-                no-label-float
-                ?readonly="${this.readonly}"
-                @value-changed="${({detail}: CustomEvent) =>
-                  this.cashFieldChanged(detail, 'unicef_cash', this.activityItem)}"
-                @blur="${() => this.onBlur()}"
-                ?invalid="${this.invalidSum}"
-                @focus="${() => (this.invalidSum = false)}"
-                @click="${() => (this.invalidSum = false)}"
-                error-message=""
-              ></etools-currency>
-            </div>
             <div
               class="grid-cell last-cell end ${!this.lastItem && this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('TOTAL_CASH')} (${this.currency})"
@@ -191,6 +162,10 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
   }
 
   onBlur(): void {
+    this.activityItem.unicef_cash = getMultiplyProductCash(
+      this.activityItem.no_units || 0,
+      this.activityItem.unit_price || 0
+    ) as any;
     fireEvent(this, 'item-changed', this.activityItem);
   }
 

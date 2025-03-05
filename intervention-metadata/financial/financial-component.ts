@@ -12,25 +12,25 @@ import {RootState} from '../../common/types/store.types';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './financialComponent.models';
 import './financialComponent.selectors';
-import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.models';
+import {GDDFinancialComponentData, GDDFinancialComponentPermissions} from './financialComponent.models';
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.selectors';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @customElement
  */
-@customElement('financial-component')
-export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-financial-component')
+export class GDDFinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -68,7 +68,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
-            <label class="label">${translate(translatesMap.cash_transfer_modalities)}</label>
+            <label class="label">${translate(gddTranslatesMap.cash_transfer_modalities)}</label>
           </div>
         </div>
         <div class="row">
@@ -92,13 +92,13 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   }
 
   @property({type: Object})
-  originalData!: FinancialComponentData;
+  originalData!: GDDFinancialComponentData;
 
   @property({type: Object})
-  data!: FinancialComponentData;
+  data!: GDDFinancialComponentData;
 
   @property({type: Object})
-  permissions!: Permission<FinancialComponentPermissions>;
+  permissions!: Permission<GDDFinancialComponentPermissions>;
 
   @property({type: Array})
   cashTransferModalities!: LabelAndValue[];
@@ -108,11 +108,11 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Metadata)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Metadata)) {
       return;
     }
 
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
     this.permissions = selectFinancialComponentPermissions(state);
@@ -135,7 +135,10 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     } else if (this.data.cash_transfer_modalities.indexOf(checkValue) === -1) {
       this.data.cash_transfer_modalities.push(checkValue);
     }
-    this.data = {...this.data, cash_transfer_modalities: this.data.cash_transfer_modalities} as FinancialComponentData;
+    this.data = {
+      ...this.data,
+      cash_transfer_modalities: this.data.cash_transfer_modalities
+    } as GDDFinancialComponentData;
   }
 
   saveData() {

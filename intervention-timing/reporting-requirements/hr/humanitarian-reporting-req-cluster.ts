@@ -5,13 +5,12 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
-import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -21,8 +20,10 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
  * @appliesMixin ReportingRequirementsCommonMixin
  */
 
-@customElement('humanitarian-reporting-req-cluster')
-export class HumanitarianReportingReqCluster extends EndpointsLitMixin(ReportingRequirementsCommonMixin(LitElement)) {
+@customElement('gdd-humanitarian-reporting-req-cluster')
+export class GDDHumanitarianReportingReqCluster extends EndpointsLitMixin(
+  ReportingRequirementsCommonMixin(LitElement)
+) {
   static get styles() {
     return [layoutStyles];
   }
@@ -44,12 +45,13 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
           <etools-data-table-column class="col-10">${translate('DUE_DATES')}</etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
-          (item: any) => html` <etools-data-table-row no-collapse>
-            <div slot="row-data">
-              <span class="col-data col-2">${this.getFrequencyForDisplay(item.frequency)}</span>
-              <span class="col-data col-10">${this.getDatesForDisplay(item.cs_dates)}</span>
-            </div>
-          </etools-data-table-row>`
+          (item: any) =>
+            html` <etools-data-table-row no-collapse>
+              <div slot="row-data">
+                <span class="col-data col-2">${this.getFrequencyForDisplay(item.frequency)}</span>
+                <span class="col-data col-10">${this.getDatesForDisplay(item.cs_dates)}</span>
+              </div>
+            </etools-data-table-row>`
         )}
         </div>
 
@@ -89,7 +91,7 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
   requirementsCount = 0;
 
   @property({type: Array})
-  expectedResults!: [];
+  GDDExpectedResults!: [];
 
   connectedCallback() {
     super.connectedCallback();
@@ -108,7 +110,7 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
     }
     let reportingRequirementsOriginal = this.reportingRequirements;
     this.fireRequest(
-      interventionEndpoints,
+      gddEndpoints,
       'hrClusterReportingRequirements',
       {},
       {
@@ -135,20 +137,20 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
   }
 
   _getClusterIndicIds() {
-    if (isEmptyObject(this.expectedResults)) {
-      return [];
-    }
-    const clusterIndicIds: any[] = [];
-    this.expectedResults.forEach((r: ExpectedResult) => {
-      return r.ll_results.forEach((llr: ResultLinkLowerResult) => {
-        return llr.applied_indicators.forEach((i) => {
-          if (i.cluster_indicator_id) {
-            clusterIndicIds.push(i.cluster_indicator_id);
-          }
-        });
-      });
-    });
-    return [...new Set(clusterIndicIds)];
+    // if (isEmptyObject(this.GDDExpectedResults)) {
+    return [];
+    // }
+    // const clusterIndicIds: any[] = [];
+    // this.GDDExpectedResults.forEach((r: GDDExpectedResult) => {
+    //   return r.gdd_key_interventions.forEach((key_intervention: GDDResultLinkLowerResult) => {
+    //     return key_intervention.applied_indicators.forEach((i) => {
+    //       if (i.cluster_indicator_id) {
+    //         clusterIndicIds.push(i.cluster_indicator_id);
+    //       }
+    //     });
+    //   });
+    // });
+    // return [...new Set(clusterIndicIds)];
   }
 
   reportingRequirementsChanged(repReq: any) {

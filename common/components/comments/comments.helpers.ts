@@ -7,12 +7,12 @@ export function extractId(key: string): string {
 }
 
 export function fitCommentsToWindow() {
-  const elem = document.querySelector('comments-panels') as any;
+  const elem = document.querySelector('gdd-comments-panels') as any;
   if (!elem) {
     return;
   }
 
-  const panelOpened = elem.shadowRoot?.querySelector('messages-panel')?.classList.contains('opened');
+  const panelOpened = elem.shadowRoot?.querySelector('gdd-messages-panel')?.classList.contains('opened');
 
   let y = elem.offsetTop;
   let x = elem.offsetLeft;
@@ -34,12 +34,12 @@ export function fitCommentsToWindow() {
 export function makeCommentsDraggable(e: any) {
   e = (e.touches && e.touches[0]) || e || window.event;
   // get the mouse cursor position at startup:
-  const elem = document.querySelector('comments-panels') as any;
+  const elem = document.querySelector('gdd-comments-panels') as any;
   if (!elem) {
     return;
   }
 
-  const panelOpened = elem.shadowRoot?.querySelector('messages-panel')?.classList.contains('opened');
+  const panelOpened = elem.shadowRoot?.querySelector('gdd-messages-panel')?.classList.contains('opened');
   const initX = elem.offsetLeft;
   const initY = elem.offsetTop;
   const firstX = e.clientX;

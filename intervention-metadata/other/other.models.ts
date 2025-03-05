@@ -1,27 +1,21 @@
-import {Intervention, InterventionPermissionsFields, PlannedBudget} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDD, GDDPermissionsFields, GDDPlannedBudget} from '@unicef-polymer/etools-types';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class OtherData extends ModelsBase {
-  constructor(intervention: Intervention) {
+export class GDDOtherData extends GDDModelsBase {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }
-  planned_budget = new PlannedBudget();
-  document_type = '';
-  humanitarian_flag = false;
-  contingency_pd = false;
+  planned_budget = new GDDPlannedBudget();
   activation_protocol = '';
   confidential = false;
-  cfei_number = '';
 }
 
-export class OtherPermissions extends ModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+export class GDDOtherPermissions extends GDDModelsBase {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }
-  document_type = true;
   document_currency = true;
   confidential = true;
-  cfei_number = false;
 }

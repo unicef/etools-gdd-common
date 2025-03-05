@@ -12,9 +12,9 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
-import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.models';
+import {GDDPdUnicefDetailsPermissions, GDDPdUnicefDetails} from './pdUnicefDetails.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {RootState} from '../../common/types/store.types';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -25,14 +25,15 @@ import orderBy from 'lodash-es/orderBy';
 import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
-import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 /**
  * @customElement
  */
-@customElement('unicef-details')
-export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-unicef-details')
+export class GDDUnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -69,10 +70,10 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row">
-          <div class="col-xl-4 col-md-6 col-12">
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown-multi
               id="officeInput"
-              label=${translate(translatesMap.offices)}
+              label=${translate(gddTranslatesMap.offices)}
               class="row-padding-v"
               .options="${this.office_list}"
               option-label="name"
@@ -87,10 +88,10 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             >
             </etools-dropdown-multi>
           </div>
-          <div class="col-xl-4 col-md-6 col-12">
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown-multi
               id="sectionInput"
-              label=${translate(translatesMap.sections)}
+              label=${translate(gddTranslatesMap.sections)}
               class="w100"
               .options="${this.section_list}"
               option-label="name"
@@ -106,53 +107,79 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             </etools-dropdown-multi>
           </div>
           <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
-            <etools-dropdown-multi
+            <etools-dropdown
+              id="leadSection"
+              label=${translate('LEAD_SECTION')}
+              .options="${this.section_list}"
+              class="w100"
+              option-label="name"
+              option-value="id"
+              .selected="${this.data.lead_section}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.lead_section)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.lead_section) ? -1 : undefined}"
+              ?required="${this.permissions?.required.lead_section}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (detail.selectedItem?.id !== this.data.lead_section) {
+                  this.selectedItemChanged(detail, 'lead_section');
+                }
+              }}"
+              trigger-value-change-event
+            >
+            </etools-dropdown>
+          </div>
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
+            <etools-dropdown
               id="cpStructures"
-              label=${translate('CP_STRUCTURES')}
+              label=${translate('CP_STRUCTURE')}
               .options="${this.cpStructures}"
               class="w100"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.data.country_programmes}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes) ? -1 : undefined}"
-              ?required="${this.permissions?.required.country_programmes}"
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedItemsChanged(detail, 'country_programmes')}"
+              .selected="${this.data.country_programme}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.country_programme)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programme) ? -1 : undefined}"
+              ?required="${this.permissions?.required.country_programme}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (detail.selectedItem?.id !== this.data.country_programme) {
+                  this.selectedItemChanged(detail, 'country_programme');
+                }
+              }}"
               trigger-value-change-event
             >
-            </etools-dropdown-multi>
+            </etools-dropdown>
           </div>
-          ${this.permissions?.view!.unicef_focal_points
-            ? html`<div class="col-xl-4 col-md-6 col-12">
-                <etools-dropdown-multi
-                  id="focalPointInput"
-                  label=${translate('UNICEF_FOCAL_POINTS')}
-                  class="w100"
-                  .options="${this.users_list}"
-                  option-label="name"
-                  option-value="id"
-                  .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id)}"
-                  ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
-                  ?required="${this.permissions?.required.unicef_focal_points}"
-                  @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                    this.selectedUsersChanged(detail, 'unicef_focal_points')}"
-                  trigger-value-change-event
-                >
-                </etools-dropdown-multi>
-                <div
-                  class="padd-top"
-                  ?hidden="${!this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
-                >
-                  <label for="focalPointInput" class="label">${translate('UNICEF_FOCAL_POINTS')}</label>
-                  <div id="focalPointDetails">
-                    ${this.renderReadonlyUserDetails(
-                      this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
-                    )}
+          ${
+            this.permissions?.view!.unicef_focal_points
+              ? html`<div class="col-xl-4 col-md-6 col-12">
+                  <etools-dropdown-multi
+                    id="focalPointInput"
+                    label=${translate('UNICEF_FOCAL_POINTS')}
+                    class="w100"
+                    .options="${this.users_list}"
+                    option-label="name"
+                    option-value="id"
+                    .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id) || []}"
+                    ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
+                    ?required="${this.permissions?.required.unicef_focal_points}"
+                    @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                      this.selectedUsersChanged(detail, 'unicef_focal_points')}"
+                    trigger-value-change-event
+                  >
+                  </etools-dropdown-multi>
+                  <div
+                    class="padd-top"
+                    ?hidden="${!this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
+                  >
+                    <label for="focalPointInput" class="label">${translate('UNICEF_FOCAL_POINTS')}</label>
+                    <div id="focalPointDetails">
+                      ${this.renderReadonlyUserDetails(
+                        this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
+                      )}
+                    </div>
                   </div>
-                </div>
-              </div>`
-            : ''}
+                </div>`
+              : ''
+          }
 
           <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
@@ -181,6 +208,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               </div>
             </div>
           </div>
+          </div>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -199,7 +227,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   }
 
   @property({type: Object})
-  permissions!: Permission<PdUnicefDetailsPermissions>;
+  permissions!: Permission<GDDPdUnicefDetailsPermissions>;
 
   @property({type: Boolean})
   isUnicefUser = false;
@@ -215,8 +243,8 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
-      !state.interventions.current
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'metadata') ||
+      !state.gddInterventions.current
     ) {
       return;
     }
@@ -228,7 +256,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     if (state.user && state.user.data) {
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
-    if (state.interventions.current && !isJsonStrMatch(this.originalData, selectPdUnicefDetails(state))) {
+    if (state.gddInterventions.current && !isJsonStrMatch(this.originalData, selectPdUnicefDetails(state))) {
       this.data = cloneDeep(selectPdUnicefDetails(state));
       this.originalData = cloneDeep(this.data);
     }
@@ -250,13 +278,13 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   }
 
   populateDropdownOptions(state: any) {
-    if (get(state, 'commonData.unicefUsersData.length')) {
+    if (state.commonData!.unicefUsersData?.length) {
       this.users_list = [...state.commonData!.unicefUsersData];
     }
-    if (get(state, 'commonData.sections.length')) {
+    if (state.commonData!.sections?.length) {
       this.section_list = [...state.commonData!.sections];
     }
-    if (get(state, 'commonData.offices.length')) {
+    if (state.commonData!.offices?.length) {
       this.office_list = [...state.commonData!.offices];
     }
     if (!isJsonStrMatch(this.cpStructures, state.commonData!.countryProgrammes)) {
@@ -286,8 +314,17 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     return uniqBy(savedUsers.flat(), 'id');
   }
 
+  customValidation() {
+    const focalPoints = (this.data.unicef_focal_points || []).map((x: any) => Number(x.id));
+    if (this.data.budget_owner && focalPoints.includes(this.data.budget_owner.id)) {
+      fireEvent(this, 'toast', {text: getTranslation('BUDGET_OWNER_DIFFERENT_FOCAL_POINT')});
+      return false;
+    }
+    return true;
+  }
+
   saveData() {
-    if (!this.validate()) {
+    if (!this.validate() || !this.customValidation()) {
       return Promise.resolve(false);
     }
 
@@ -298,7 +335,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
       });
   }
 
-  private formatUsersData(data: PdUnicefDetails) {
+  private formatUsersData(data: GDDPdUnicefDetails) {
     const dataToSave: AnyObject = cloneDeep(data);
     dataToSave.budget_owner = data.budget_owner ? data.budget_owner.id : null;
     dataToSave.unicef_focal_points = data.unicef_focal_points.map((u: any) => u.id);

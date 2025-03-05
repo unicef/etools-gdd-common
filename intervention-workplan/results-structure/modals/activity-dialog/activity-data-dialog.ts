@@ -1,5 +1,5 @@
 import {CSSResultArray, html, LitElement, TemplateResult} from 'lit';
-import {property, customElement, query} from 'lit/decorators.js';
+import {property, customElement, query, state} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
@@ -7,18 +7,17 @@ import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../../../common/components/activity/get-total.helper';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './activity-timeframes';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {ActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
-import {updateCurrentIntervention} from '../../../../common/actions/interventions';
-import {ActivityTimeFrames} from './activity-timeframes';
+import {GDDActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
+import {updateCurrentIntervention} from '../../../../common/actions/gddInterventions';
+import {GDDActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {AnyObject, EtoolsEndpoint, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../../../utils/intervention-labels-map';
+import {AnyObject, EtoolsEndpoint, GDDActivity, GDDActivityItem} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -26,9 +25,12 @@ import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {RootState} from '../../../../common/types/store.types';
 
-@customElement('activity-data-dialog')
-export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
+@customElement('gdd-activity-data-dialog')
+export class GDDActivityDataDialog extends DataMixin()<GDDActivity>(connectStore(LitElement)) {
   static get styles(): CSSResultArray {
     return [layoutStyles];
   }
@@ -38,35 +40,63 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
   @property() useInputLevel = false;
+  @property() ewpActivities: any[] = [];
   @property({type: String}) spinnerText = getTranslation('GENERAL.LOADING');
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
-  @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
-  quarters: ActivityTimeFrames[] = [];
+  @query('activity-items-table') private activityItemsTable!: GDDActivityItemsTable;
+  quarters: GDDActivityTimeFrames[] = [];
 
-  set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
+  @state() allLocations: any[] = [];
+  @state() activitiesLoaded = false;
+  @state() showDifferentPartnerWarning = false;
+
+  private ewpKeyIntervention!: number;
+  private partnerId!: number;
+
+  stateChanged(state: RootState) {
+    if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
+      this.allLocations = [...state.commonData!.locations];
+    }
+  }
+
+  set dialogData({
+    activityId,
+    keyInterventionId,
+    interventionId,
+    quarters,
+    readonly,
+    currency,
+    ewpKeyIntervention,
+    partnerId
+  }: any) {
     this.quarters = quarters;
     this.readonly = readonly;
     this.currency = currency;
+    this.ewpKeyIntervention = ewpKeyIntervention;
+    this.partnerId = Number(partnerId);
+
+    this.loadEWPActivities(this.ewpKeyIntervention);
+
     if (!activityId) {
-      this.data = {} as InterventionActivity;
+      this.data = {} as GDDActivity;
       this.isEditDialog = false;
-      this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivities, {
-        pdOutputId,
-        interventionId
+      this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.gddActivities, {
+        interventionId,
+        keyInterventionId
       });
       return;
     }
 
     this.loadingInProcess = true;
-    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
-      activityId,
-      pdOutputId,
-      interventionId
+    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.gddActivityDetails, {
+      interventionId,
+      keyInterventionId,
+      activityId
     });
     sendRequest({
       endpoint: this.endpoint
-    }).then((data: InterventionActivity) => {
+    }).then((data: GDDActivity) => {
       this.useInputLevel = Boolean(data.items.length);
       setTimeout(() => {
         // Avoid reset caused by inputLevelChange method
@@ -75,6 +105,25 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
       }, 100);
     });
+  }
+
+  loadEWPActivities(id: number) {
+    this.activitiesLoaded = false;
+
+    if (id) {
+      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.ewpActivities, {
+        keyInterventionId: id
+      });
+
+      sendRequest({
+        endpoint
+      }).then((ewpActivities: any[]) => {
+        this.ewpActivities = [...ewpActivities];
+        this.activitiesLoaded = true;
+      });
+    } else {
+      this.ewpActivities = [];
+    }
   }
 
   private endpoint!: RequestEndpoint;
@@ -111,6 +160,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           width: min-content;
           white-space: nowrap;
         }
+        .error-msg {
+          color: var(--error-color);
+          font-size: var(--etools-font-size-14, 14px);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
         etools-dialog etools-textarea::part(textarea) {
           max-height: 96px;
           overflow-y: auto;
@@ -139,21 +195,62 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         .hideConfirmBtn="${this.readonly}"
       >
         <div class="row">
-          <div class="col-12">
-            <etools-input
+          <div ?hidden="${!this.showDifferentPartnerWarning}" class="col-12 error-msg">
+              ${translate('DIFFERENT_PARTNER_INVOLVED')}
+          </div>
+          <div class="col-6">
+            <etools-dropdown
               class="validate-input"
-              label=${translate('ACTIVITY_NAME')}
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (detail.selectedItem && detail.selectedItem.id !== this.editedData.ewp_activity) {
+                  this.editedData.ewp_activity = detail.selectedItem.id;
+                  this.setSelectedLocationsByActivity(this.editedData.ewp_activity);
+                }
+              }}"
+              ?trigger-value-change-event="${!this.loadingInProcess}"
+              .selected="${this.editedData.ewp_activity}"
+              label=${translate('EWP_ACTIVITY')}
               placeholder="&#8212;"
-              .value="${this.editedData.name}"
-              @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
+              .options="${this.ewpActivities}"
+              option-label="title"
+              option-value="id"
+              allow-outside-scroll
+              dynamic-align
               required
-              auto-validate
-              ?invalid="${this.errors.name}"
-              .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
               ?readonly="${this.readonly}"
-              @focus="${() => this.resetFieldError('name')}"
-              @click="${() => this.resetFieldError('name')}"
-            ></etools-input>
+              ?invalid="${this.errors.ewp_activity}"
+              .errorMessage="${this.errors.ewp_activity && this.errors.ewp_activity[0]}"
+              @focus="${() => this.resetFieldError('ewp_activity')}"
+              @click="${() => this.resetFieldError('ewp_activity')}"
+            ></etools-dropdown>
+            ${
+              this.activitiesLoaded && !this.ewpActivities?.length
+                ? html`<div class="error-msg">${translate('MISSING_EWP_ACTIVITIES')}</div>`
+                : html``
+            }          
+          </div>
+           <div class="col-6">
+            <etools-dropdown-multi
+              class="validate-input"
+              @etools-selected-items-changed="${({detail}: CustomEvent) => {
+                this.editedData.locations = detail.selectedItems.map((x: any) => Number(x.id));
+              }}"
+              ?trigger-value-change-event="${!this.loadingInProcess}"
+              .selectedValues="${this.editedData.locations}"
+              label=${translate('LOCATIONS')}
+              placeholder="&#8212;"
+              .options="${this.allLocations}"
+              option-label="name"
+              option-value="id"
+              allow-outside-scroll
+              dynamic-align
+              ?readonly="${this.readonly}"
+              required
+              ?invalid="${this.errors.locations}"
+              .errorMessage="${this.errors.locations && this.errors.locations[0]}"
+              @focus="${() => this.resetFieldError('locations')}"
+              @click="${() => this.resetFieldError('locations')}"
+            ></etools-dropdown-multi>
           </div>
           <div class="col-12">
             <etools-textarea
@@ -176,15 +273,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                 ? html`
                     <div class="col-md-3 col-6">
                       <etools-currency
-                        label=${translate(translatesMap.cso_cash)}
-                        ?readonly="${this.readonly}"
-                        .value="${this.editedData.cso_cash}"
-                        @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
-                        required
-                      ></etools-currency>
-                    </div>
-                    <div class="col-md-3 col-6">
-                      <etools-currency
                         label=${translate('UNICEF_CASH_BUDGET')}
                         ?readonly="${this.readonly}"
                         required
@@ -195,15 +283,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                     </div>
                   `
                 : html`
-                    <div class="col-md-3 col-6">
-                      <etools-input
-                        readonly
-                        tabindex="-1"
-                        class="total-input"
-                        label=${translate('PARTNER_CASH_BUDGET')}
-                        .value="${this.getSumValue('cso_cash')}"
-                      ></etools-input>
-                    </div>
                     <div class="col-md-3 col-6">
                       <etools-input
                         readonly
@@ -235,7 +314,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           >
             ${translate('USE_INPUT_LEVEL')}
           </sl-switch>
-          <activity-items-table
+          <gdd-activity-items-table
             .dialogElement=${this.dialogElement}
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
@@ -245,8 +324,8 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               this.editedData.items = detail;
               this.requestUpdate();
             }}"
-          ></activity-items-table>
-          <activity-time-frames
+          ></gdd-activity-items-table>
+          <gdd-activity-time-frames
             tabindex="0"
             .quarters="${this.quarters}"
             .selectedTimeFrames="${this.editedData.time_frames || []}"
@@ -255,7 +334,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               this.editedData.time_frames = detail;
               this.requestUpdate();
             }}"
-          ></activity-time-frames>
+          ></gdd-activity-time-frames>
         </div>
       </etools-dialog>
     `;
@@ -265,9 +344,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
-  getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
+  getSumValue(field: 'unicef_cash'): string {
     const columnTotal = (this.editedData.items || []).reduce(
-      (sum: number, item: Partial<InterventionActivityItem>) => sum + Number(item[field]),
+      (sum: number, item: Partial<GDDActivityItem>) => sum + Number(item[field]),
       0
     );
 
@@ -276,11 +355,27 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
   getTotalValue(): string {
     if (!this.useInputLevel) {
-      return getTotalCashFormatted(this.editedData.cso_cash || 0, this.editedData.unicef_cash || 0);
+      return getTotalCashFormatted(0, this.editedData.unicef_cash || 0);
     } else {
-      const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
-      return getTotalCashFormatted(cso, unicef);
+      return getTotalCashFormatted(0, unicef);
+    }
+  }
+
+  setSelectedLocationsByActivity(ewp_activity: number | undefined) {
+    if (ewp_activity) {
+      const currentActivity = this.ewpActivities.find((x) => Number(x.id) === Number(ewp_activity));
+      this.editedData = {
+        ...this.editedData,
+        locations: currentActivity?.locations || [],
+        unicef_cash: currentActivity.total_budget
+      };
+      this.showDifferentPartnerWarning =
+        currentActivity.partners?.length &&
+        (currentActivity.partners?.length > 1 || !currentActivity.partners.includes(this.partnerId));
+    } else {
+      this.editedData = {...this.editedData, locations: []};
+      this.showDifferentPartnerWarning = false;
     }
   }
 
@@ -293,7 +388,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     this.editedData = {
       ...this.editedData,
       items: this.useInputLevel ? this.editedData.items : [],
-      cso_cash: '0',
       unicef_cash: '0'
     };
 
@@ -334,20 +428,18 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     }
 
     this.loadingInProcess = true;
-    // const dataToSave = this.getChangedFields();
 
     const dataToSave = cloneDeep(this.editedData);
     if (dataToSave.items?.length) {
       // Let backend calculate these
       delete dataToSave.unicef_cash;
-      delete dataToSave.cso_cash;
     }
     sendRequest({
       endpoint: this.endpoint,
       method: this.isEditDialog ? 'PATCH' : 'POST',
       body: this.isEditDialog ? {id: this.editedData.id, ...dataToSave} : dataToSave
     })
-      .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
+      .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.gdd)))
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
@@ -358,26 +450,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       });
   }
 
-  // private getChangedFields() {
-  //   const diff: Partial<InterventionActivity> = getDifference<InterventionActivity>(
-  //     this.isEditDialog ? (this.originalData as InterventionActivity) : {},
-  //     this.editedData,
-  //     {
-  //       toRequest: true,
-  //       nestedFields: ['items']
-  //     }
-  //   );
-
-  //   return diff;
-  // }
-
   validateActivityItems(): AnyObject | undefined {
-    const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
+    const itemsTable: GDDActivityItemsTable | null = this.shadowRoot!.querySelector('gdd-activity-items-table');
     return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 
   validateActivityTimeFrames() {
-    const items: ActivityTimeFrames | null = this.shadowRoot!.querySelector('activity-time-frames');
+    const items: GDDActivityTimeFrames | null = this.shadowRoot!.querySelector('gdd-activity-time-frames');
     return items !== null && items.validate();
   }
 }

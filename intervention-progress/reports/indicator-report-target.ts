@@ -1,8 +1,8 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {GenericObject} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-mixin';
 
@@ -11,8 +11,8 @@ import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-
  * @customElement
  * @appliesMixin UtilsMixin
  */
-@customElement('indicator-report-target')
-export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
+@customElement('gdd-indicator-report-target')
+export class GDDIndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
   // static get is() {
   //   return 'indicator-report-target';
   // }
@@ -73,7 +73,7 @@ export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
       </style>
 
       <div class="target-row">
-        <span>${translate(translatesMap.target)}</span>
+        <span>${translate(gddTranslatesMap.target)}</span>
         <span title="${this._getTargetValue(this.displayType, this.target)}">
           ${this._getTargetValue(this.displayType, this.target)}
         </span>

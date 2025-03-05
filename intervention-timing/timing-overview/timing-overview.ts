@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-toolti
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {TimingOverviewData} from './timingOverview.models';
+import {GDDTimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
 import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {RootState} from '../../common/types/store.types';
@@ -13,7 +13,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
@@ -21,8 +21,8 @@ import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/l
 /**
  * @customElement
  */
-@customElement('timing-overview')
-export class TimingOverview extends CommentsMixin(LitElement) {
+@customElement('gdd-timing-overview')
+export class GDDTimingOverview extends CommentsMixin(LitElement) {
   static get styles() {
     return [layoutStyles, elevationStyles];
   }
@@ -96,22 +96,22 @@ export class TimingOverview extends CommentsMixin(LitElement) {
 
           <div class="data-column">
             <label class="label">${translate('DAYS_SUBMISSION_SIGNED')}</label>
-            <div class="input-label" ?empty="${!this.timingOverview.days_from_submission_to_signed}">
-              ${translateValue(this.timingOverview.days_from_submission_to_signed)}
+            <div class="input-label" ?empty="${!this.timingOverview.days_from_submission_to_approved}">
+              ${translateValue(this.timingOverview.days_from_submission_to_approved)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="label">${translate('DAYS_REVIEW_SIGNED')}</label>
-            <div class="input-label" ?empty="${!this.timingOverview.days_from_review_to_signed}">
-              ${translateValue(this.timingOverview.days_from_review_to_signed)}
+            <div class="input-label" ?empty="${!this.timingOverview.days_from_review_to_approved}">
+              ${translateValue(this.timingOverview.days_from_review_to_approved)}
             </div>
           </div>
         </div>
 
         <div class="icon-tooltip-div">
           <info-icon-tooltip
-            .tooltipText="${translate('TIMING_TOOLTIP')}"
+            .tooltipText="${translate('GDD_TIMING_TOOLTIP')}"
             position="${this.dir == 'rtl' ? 'right' : 'left'}"
           >
           </info-icon-tooltip>
@@ -121,17 +121,17 @@ export class TimingOverview extends CommentsMixin(LitElement) {
   }
 
   @property({type: Object})
-  timingOverview!: TimingOverviewData;
+  timingOverview!: GDDTimingOverviewData;
 
   connectedCallback() {
     super.connectedCallback();
   }
 
   public stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'timing')) {
       return;
     }
-    if (state.interventions.current) {
+    if (state.gddInterventions.current) {
       this.timingOverview = selectTimingOverview(state);
       this.dir = getPageDirection(state);
       super.stateChanged(state);

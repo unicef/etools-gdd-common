@@ -12,35 +12,35 @@ import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from '@unicef-polymer/etools-utils/dist/store.util';
 import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUser} from './common/selectors';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {getIntervention} from './common/actions/interventions';
+import {getIntervention} from './common/actions/gddInterventions';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
+import {PageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {buildUrlQueryString} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {enableCommentMode, getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
-import {commentsData} from './common/components/comments/comments.reducer';
+import {gddCommentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {EnvFlags, EtoolsEndpoint, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
+import {EnvFlags, EtoolsEndpoint, GDDExpectedResult, GDD} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
-import {interventions} from './common/reducers/interventions';
-import {translate, get as getTranslation} from 'lit-translate';
+import {gddInterventions} from './common/reducers/interventions';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {prcIndividualReviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
-import CONSTANTS, {TABS} from './common/constants';
+import GDD_CONSTANTS, {GDD_TABS} from './common/constants';
 import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions/actionsContants';
 import {RootState} from './common/types/store.types';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from './utils/intervention-endpoints';
-import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
-import {CommentsPanels} from './common/components/comments-panels/comments-panels';
+import {gddEndpoints} from './utils/intervention-endpoints';
+import {GDDCommentsEndpoints} from './common/components/comments/comments-types';
+import {GDDCommentsPanels} from './common/components/comments-panels/comments-panels';
 import './unresolved-other-info';
-import {translatesMap} from './utils/intervention-labels-map';
+import {gddTranslatesMap} from './utils/intervention-labels-map';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
@@ -50,13 +50,13 @@ import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environme
  * @LitElement
  * @customElement
  */
-@customElement('intervention-tabs')
-export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
+@customElement('gdd-intervention-tabs')
+export class GDDInterventionTabs extends connectStore(UploadMixin(LitElement)) {
   static get styles() {
     // language=css
     return [
       elevationStyles,
-      pageContentHeaderSlottedStyles,
+      PageContentHeaderSlottedStyles,
       css`
         :host {
           flex: 1;
@@ -69,13 +69,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         :host([is-in-amendment]) {
           border: 5px solid #ffd28b;
           box-sizing: border-box;
-        }
-        :host([data-active-tab='workplan-editor']) intervention-page-content-subheader {
-          display: none;
-        }
-        :host([data-active-tab='workplan-editor']) .page-content {
-          margin: 4px 0 0;
-          margin-top: 0;
         }
         .page-content {
           margin: 24px;
@@ -200,15 +193,21 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       </style>
 
       <!-- Loading PRP country data -->
-      <prp-country-data></prp-country-data>
+      <gdd-prp-country-data></gdd-prp-country-data>
 
-      <intervention-page-content-header ?is-in-amendment="${this.isInAmendment}">
+      <gdd-intervention-page-content-header ?is-in-amendment="${this.isInAmendment}">
         <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
         <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
           <sl-switch id="commentMode" ?checked="${this.commentMode}" @sl-change="${this.commentModeChange}"
-            >${translate('GENERAL.COMMENT_MODE')}</sl-switch
-          >
+            >${translate('GENERAL.COMMENT_MODE')}
+          </sl-switch>
+          <info-icon-tooltip
+            id="iit-locations"
+            class="iit"
+            position="right"
+            .tooltipText="${translate('COMMENT_MODE_USAGE_DESCRIPTION')}"
+          ></info-icon-tooltip>
         </div>
 
         <div slot="statusFlag" ?hidden="${!this.showPerformedActionsStatus()}">
@@ -219,17 +218,17 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         </div>
 
         <div slot="title-row-actions" class="content-header-actions">
-          <intervention-actions
+          <gdd-intervention-actions
             .actions="${this.availableActions}"
             .interventionPartial=${this.getInterventionDetailsForActionsDisplay(this.intervention)}
             .userIsBudgetOwner="${this.userIsBudgetOwner}"
-          ></intervention-actions>
+          ></gdd-intervention-actions>
         </div>
-      </intervention-page-content-header>
+      </gdd-intervention-page-content-header>
 
-      <intervention-page-content-subheader>
+      <gdd-intervention-page-content-subheader>
         <etools-status-lit
-          .statuses="${this.intervention.status_list.map((x) => [
+          .statuses="${this.intervention.status_list.map((x: any) => [
             x[0],
             getTranslatedValue(x[0], 'COMMON_DATA.INTERVENTIONSTATUSES')
           ])}"
@@ -244,51 +243,50 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
                 slot="nav"
                 panel="${t.tab}"
                 ?active="${this.activeTab === t.tab}"
+                ?hidden="${t.hidden}"
                 >${t.tabLabel}</sl-tab
               >`
           )}
         </sl-tab-group>
-      </intervention-page-content-subheader>
+      </gdd-intervention-page-content-subheader>
 
       <div class="page-content">
         ${this.intervention.cancel_justification
           ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
           : ''}
         ${this.intervention.other_info
-          ? html` <unresolved-other-info-review
+          ? html` <gdd-unresolved-other-info-review
               .data="${this.otherInfo}"
               .editPermissions="${this.intervention.permissions?.edit.other_info}"
-            ></unresolved-other-info-review>`
+            ></gdd-unresolved-other-info-review>`
           : html``}
-        <intervention-metadata ?hidden="${!isActiveTab(this.activeTab, TABS.Metadata)}"> </intervention-metadata>
-        <intervention-strategy ?hidden="${!isActiveTab(this.activeTab, TABS.Strategy)}"></intervention-strategy>
-        <intervention-workplan
-          ?hidden="${!isActiveTab(this.activeTab, TABS.Workplan)}"
+        <gdd-intervention-metadata ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Metadata)}">
+        </gdd-intervention-metadata>
+        <gdd-intervention-strategy
+          ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Strategy)}"
+        ></gdd-intervention-strategy>
+        <gdd-intervention-workplan
+          ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Workplan)}"
           .interventionId="${this.interventionId}"
-        ></intervention-workplan>
-        <intervention-workplan-editor
-          ?hidden="${!isActiveTab(this.activeTab, TABS.WorkplanEditor)}"
-          .interventionId="${this.interventionId}"
-        >
-        </intervention-workplan-editor>
-        <intervention-timing ?hidden="${!isActiveTab(this.activeTab, TABS.Timing)}"> </intervention-timing>
-        <intervention-review ?hidden="${!isActiveTab(this.activeTab, TABS.Review)}"></intervention-review>
-        <intervention-attachments ?hidden="${!isActiveTab(this.activeTab, TABS.Attachments)}">
-        </intervention-attachments>
-        <intervention-progress
+        ></gdd-intervention-workplan>
+        <gdd-intervention-timing ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Timing)}"> </gdd-intervention-timing>
+        <gdd-intervention-review ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Review)}"></gdd-intervention-review>
+        <gdd-intervention-attachments ?hidden="${!isActiveTab(this.activeTab, GDD_TABS.Attachments)}">
+        </gdd-intervention-attachments>
+        <gdd-intervention-progress
           .activeSubTab="${this.activeTab}"
           ?hidden="${!(
-            isActiveTab(this.activeTab, TABS.ImplementationStatus) ||
-            isActiveTab(this.activeTab, TABS.MonitoringActivities) ||
-            isActiveTab(this.activeTab, TABS.Reports) ||
-            isActiveTab(this.activeTab, TABS.ResultsReported)
+            isActiveTab(this.activeTab, GDD_TABS.ImplementationStatus) ||
+            isActiveTab(this.activeTab, GDD_TABS.MonitoringActivities) ||
+            isActiveTab(this.activeTab, GDD_TABS.Reports) ||
+            isActiveTab(this.activeTab, GDD_TABS.ResultsReported)
           )}"
-        ></intervention-progress>
+        ></gdd-intervention-progress>
       </div>
 
       <div class="amendment-info" ?hidden="${!this.isInAmendment}">
-        ${translate('AMENDMENT_MODE_TEXT')}
-        <a href="${Environment.basePath}interventions/${this.intervention?.original_intervention}/metadata">
+        ${translate('GDD_AMENDMENT_MODE_TEXT')}
+        <a href="${Environment.basePath}gpd-interventions/${this.intervention?.original_gdd}/metadata">
           ${translate('ORIGINAL_VERSION')}
         </a>
       </div>
@@ -298,25 +296,25 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   @property({type: Array})
   pageTabs = [
     {
-      tab: TABS.Metadata,
+      tab: GDD_TABS.Metadata,
       tabLabel: translate('METADATA_TAB'),
       tabLabelKey: 'METADATA_TAB',
       hidden: false
     },
     {
-      tab: TABS.Strategy,
-      tabLabel: translate('STRATEGY_TAB'),
-      tabLabelKey: 'STRATEGY_TAB',
+      tab: GDD_TABS.Strategy,
+      tabLabel: translate('BACKGROUND_TAB'),
+      tabLabelKey: 'BACKGROUND_TAB',
       hidden: false
     },
     {
-      tab: TABS.Workplan,
+      tab: GDD_TABS.Workplan,
       tabLabel: translate('WORKPLAN_TAB'),
       tabLabelKey: 'WORKPLAN_TAB',
       hidden: false
     },
     {
-      tab: TABS.Timing,
+      tab: GDD_TABS.Timing,
       tabLabel: translate('TIMING_TAB') as unknown as string,
       tabLabelKey: 'TIMING_TAB',
       hidden: false
@@ -325,26 +323,26 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   progressTabTemplate = [
     {
-      tab: TABS.ImplementationStatus,
+      tab: GDD_TABS.ImplementationStatus,
       tabLabel: translate('IMPLEMENTATION_STATUS_SUBTAB'),
       tabLabelKey: 'IMPLEMENTATION_STATUS_SUBTAB',
       hidden: false
     },
     {
-      tab: TABS.MonitoringActivities,
+      tab: GDD_TABS.MonitoringActivities,
       tabLabel: translate('MONITORING_ACTIVITIES_SUBTAB'),
       tabLabelKey: 'MONITORING_ACTIVITIES_SUBTAB',
       hidden: false
     }
   ];
 
-  private commentsPanel: CommentsPanels | null = null;
+  private commentsPanel: GDDCommentsPanels | null = null;
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.attachmentsUpload).url;
 
   @property({type: String})
-  activeTab = TABS.Metadata;
+  activeTab = GDD_TABS.Metadata;
 
   @property({type: String})
   activeSubTab = '';
@@ -353,7 +351,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   currentLanguage!: string;
 
   @property({type: Object})
-  intervention!: Intervention | null;
+  intervention!: GDD | null;
 
   @property({type: Boolean})
   commentMode = false;
@@ -381,7 +379,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   // id from route params
   private interventionId: string | null = null;
 
-  private isEPDApp = Environment.basePath === '/epd/';
+  private isGDDApp = Environment.basePath === '/government/';
 
   connectedCallback() {
     super.connectedCallback();
@@ -391,19 +389,19 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     // for string translation using lit-translate and translatesMap from within
     // interventions-tab-pages
     window.ajaxErrorParserTranslateFunction = (key = '') => {
-      return getTranslatedValue(translatesMap[key] || key);
+      return getTranslatedValue(gddTranslatesMap[key] || key);
     };
 
-    const commentsEndpoints: CommentsEndpoints = {
-      saveComments: interventionEndpoints.comments,
-      deleteComment: interventionEndpoints.deleteComment,
-      resolveComment: interventionEndpoints.resolveComment
+    const commentsEndpoints: GDDCommentsEndpoints = {
+      saveComments: gddEndpoints.comments,
+      deleteComment: gddEndpoints.deleteComment,
+      resolveComment: gddEndpoints.resolveComment
     };
     getStoreAsync().then((store: Store<RootState>) => {
       (store as any).addReducers({
-        commentsData,
-        interventions,
-        prcIndividualReviews,
+        gddCommentsData: gddCommentsData,
+        gddInterventions: gddInterventions,
+        prcIndividualReviews: prcIndividualReviews,
         uploadStatus
       });
       getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
@@ -417,14 +415,14 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   public stateChanged(state: RootState) {
     const notInterventionTabs: boolean =
-      currentPage(state) !== 'interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
+      currentPage(state) !== 'gpd-interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
     const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
     const commentsState = Boolean(state.app?.routeDetails?.queryParams?.comment_mode);
-    this.checkCommentsMode(commentsState);
+    this.checkCommentsMode(commentsState, notInterventionTabs);
     if (needToReset) {
       this.resetPageData();
     }
-    if (notInterventionTabs || state.interventions?.interventionLoading || !currentUser(state)) {
+    if (notInterventionTabs || state.gddInterventions?.interventionLoading || !currentUser(state)) {
       return;
     }
     this.setActiveTab(state);
@@ -435,12 +433,12 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     this.dataset.activeTab = this.activeTab;
 
     // check permissions after intervention was loaded
-    if (state.interventions?.current && !this.hasPermissionsToAccessPage(state)) {
+    if (state.gddInterventions?.current && !this.hasPermissionsToAccessPage(state)) {
       this.goToPageNotFound();
       return;
     }
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
-    const currentIntervention = get(state, 'interventions.current');
+    const currentIntervention = get(state, 'gddInterventions.current');
     this.otherInfo = {other_info: currentIntervention?.other_info as string};
 
     // check if intervention was changed
@@ -495,7 +493,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     setTimeout(() => this.shadowRoot?.querySelector('sl-tab-group')?.syncIndicator());
   }
 
-  checkCommentsMode(newState: boolean): void {
+  checkCommentsMode(newState: boolean, notInterventionTabs: boolean): void {
     if (this.commentMode === newState) {
       return;
     }
@@ -504,14 +502,16 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     if (!this.commentMode && this.commentsPanel) {
       this.commentsPanel.remove();
       this.commentsPanel = null;
-    } else if (this.commentMode && !this.commentsPanel) {
-      this.commentsPanel = document.createElement('comments-panels') as CommentsPanels;
+    } else if (this.commentMode && !this.commentsPanel && !notInterventionTabs) {
+      this.commentsPanel = document.createElement('gdd-comments-panels') as GDDCommentsPanels;
       document.body.append(this.commentsPanel);
     }
 
-    setTimeout(() => {
-      getStore().dispatch(enableCommentMode(this.commentMode));
-    }, 10);
+    if (!notInterventionTabs) {
+      setTimeout(() => {
+        getStore().dispatch(enableCommentMode(this.commentMode));
+      }, 10);
+    }
   }
 
   applyTabsTitleTranslation(pageTabs: any[]): any[] {
@@ -532,7 +532,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
   }
 
-  checkExportOptionsAvailability(availableActions: string[], intervention: Intervention) {
+  checkExportOptionsAvailability(availableActions: string[], intervention: GDD) {
     if (
       availableActions &&
       availableActions.includes('export_results') &&
@@ -543,14 +543,14 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     return availableActions;
   }
 
-  showExportResults(status: string, resultLinks: ExpectedResult[]) {
+  showExportResults(status: string, resultLinks: GDDExpectedResult[]) {
     return (
       [
-        CONSTANTS.STATUSES.Draft.toLowerCase(),
-        CONSTANTS.STATUSES.Review.toLowerCase(),
-        CONSTANTS.STATUSES.Signature.toLowerCase(),
-        CONSTANTS.STATUSES.Signed.toLowerCase(),
-        CONSTANTS.STATUSES.Active.toLowerCase()
+        GDD_CONSTANTS.STATUSES.Draft.toLowerCase(),
+        GDD_CONSTANTS.STATUSES.Review.toLowerCase(),
+        GDD_CONSTANTS.STATUSES.Signature.toLowerCase(),
+        GDD_CONSTANTS.STATUSES.Signed.toLowerCase(),
+        GDD_CONSTANTS.STATUSES.Active.toLowerCase()
       ].indexOf(status) > -1 &&
       resultLinks &&
       resultLinks.length
@@ -563,12 +563,17 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     const subTab = currentSubSubpage(state);
 
     const attachmentRestricted =
-      tab === TABS.Attachments && !state.interventions.current?.permissions?.view!.attachments;
+      tab === GDD_TABS.Attachments && !state.gddInterventions.current?.permissions?.view!.attachments;
 
-    const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view!.reviews;
+    const reviewRestricted = tab === GDD_TABS.Review && !state.gddInterventions.current?.permissions?.view!.reviews;
     const restrictedSubTabs =
-      (!unicefUser || this.isEPDApp) &&
-      [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
+      (!unicefUser || this.isGDDApp) &&
+      [
+        GDD_TABS.ResultsReported,
+        GDD_TABS.Reports,
+        GDD_TABS.ImplementationStatus,
+        GDD_TABS.MonitoringActivities
+      ].includes(subTab);
     return !attachmentRestricted && !reviewRestricted && !restrictedSubTabs;
   }
 
@@ -581,31 +586,35 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   handleProgressTabVisibility(envFlags: EnvFlags | null, isUnicefUser?: boolean) {
-    if (!isUnicefUser || this.isEPDApp) {
+    if (!isUnicefUser || this.isGDDApp) {
       return; // ONLY visible for unicef users
     }
 
     const progressTabs = this.pageTabs.find((x) =>
-      [TABS.ImplementationStatus, TABS.MonitoringActivities].includes(x.tab)
+      [GDD_TABS.ImplementationStatus, GDD_TABS.MonitoringActivities].includes(x.tab)
     );
 
     if (!progressTabs) {
       this.pageTabs.push(...cloneDeep(this.progressTabTemplate));
     }
-
-    if (envFlags && !envFlags.prp_mode_off && !this.pageTabs?.find((t: any) => t.tab === TABS.ResultsReported)) {
+    if (envFlags && !envFlags.prp_mode_off && !this.pageTabs?.find((t: any) => t.tab === GDD_TABS.ResultsReported)) {
       // @ts-ignore
       this.pageTabs.push(
         {
           tabLabel: translate('RESULTS_REPORTED_SUBTAB'),
           tabLabelKey: 'RESULTS_REPORTED_SUBTAB',
-          tab: TABS.ResultsReported,
+          tab: GDD_TABS.ResultsReported,
           hidden: false
         },
-        {tabLabel: translate('REPORTS'), tabLabelKey: 'REPORTS', tab: TABS.Reports, hidden: false}
+        {tabLabel: translate('REPORTS'), tabLabelKey: 'REPORTS', tab: GDD_TABS.Reports, hidden: false}
       );
     }
-
+    const tabsToHideInAmendment = [GDD_TABS.MonitoringActivities, GDD_TABS.ResultsReported, GDD_TABS.Reports];
+    this.pageTabs.forEach((item) => {
+      if (tabsToHideInAmendment.includes(item.tab)) {
+        item.hidden = this.isInAmendment;
+      }
+    });
     // this.toggleSubtabs(progressTab, envFlags);
   }
 
@@ -615,16 +624,16 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     if (
       envFlags &&
       !envFlags.prp_mode_off &&
-      !progressTab?.subtabs?.find((t: any) => t.value === TABS.ResultsReported)
+      !progressTab?.subtabs?.find((t: any) => t.value === GDD_TABS.ResultsReported)
     ) {
       // @ts-ignore
       progressTab?.subtabs?.push(
         {
           label: translate('RESULTS_REPORTED_SUBTAB'),
           labelKey: 'RESULTS_REPORTED_SUBTAB',
-          value: TABS.ResultsReported
+          value: GDD_TABS.ResultsReported
         },
-        {label: translate('REPORTS'), labelKey: 'REPORTS', value: TABS.Reports}
+        {label: translate('REPORTS'), labelKey: 'REPORTS', value: GDD_TABS.Reports}
       );
     }
   }
@@ -633,9 +642,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'review');
     const unicefUser = get(state, 'user.data.is_unicef_user');
     if (tabIndex === -1 && unicefUser) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.ImplementationStatus);
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === GDD_TABS.ImplementationStatus);
       this.pageTabs.splice(pasteTo, 0, {
-        tab: TABS.Review,
+        tab: GDD_TABS.Review,
         tabLabel: translate('REVIEW_TAB'),
         tabLabelKey: 'REVIEW_TAB',
         hidden: false
@@ -645,11 +654,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   checkAttachmentsTab(state: RootState): void {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'attachments');
-    const canView = get(state, 'interventions.current.permissions.view.attachments');
+    const canView = get(state, 'gddInterventions.current.permissions.view.attachments');
     if (tabIndex === -1 && canView) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.ImplementationStatus);
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === GDD_TABS.ImplementationStatus);
       this.pageTabs.splice(pasteTo, 0, {
-        tab: TABS.Attachments,
+        tab: GDD_TABS.Attachments,
         tabLabel: translate('ATTACHMENTS_TAB') as unknown as string,
         tabLabelKey: 'ATTACHMENTS_TAB',
         hidden: false
@@ -763,7 +772,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       delete this._routeDetails?.queryParams?.size;
     }
     const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
-    let newPath = `interventions/${this.intervention!.id}/${newTabName}`;
+    let newPath = `gpd-interventions/${this.intervention!.id}/${newTabName}`;
     if (newSubTab) {
       newPath += `/${newSubTab}`;
     } else {
@@ -806,7 +815,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   _showInterventionPageLoadingMessage() {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 
@@ -821,7 +830,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   private loadInterventionData(currentInterventionId: string | number): void {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'intervention-tabs'
+      loadingSource: 'gdd-intervention-tabs'
     });
     getStore()
       .dispatch<AsyncAction>(getIntervention(String(currentInterventionId)))
@@ -833,13 +842,13 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'intervention-tabs'
+          loadingSource: 'gdd-intervention-tabs'
         })
       );
-    getStore().dispatch<AsyncAction>(getComments(interventionEndpoints.comments, Number(currentInterventionId)));
+    getStore().dispatch<AsyncAction>(getComments(gddEndpoints.comments, Number(currentInterventionId)));
   }
 
-  private getInterventionDetailsForActionsDisplay(intervention: Intervention) {
+  private getInterventionDetailsForActionsDisplay(intervention: GDD) {
     if (!intervention) {
       return {};
     }

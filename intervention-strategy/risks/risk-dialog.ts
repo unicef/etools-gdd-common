@@ -13,19 +13,19 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import {EtoolsEndpoint, LabelAndValue} from '@unicef-polymer/etools-types';
-import {Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {GDD} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 /**
  * @customElement
  */
-@customElement('risk-dialog')
-export class RiskDialog extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-risk-dialog')
+export class GDDRiskDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -48,7 +48,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
           <div class="col-md-4 col-12">
             <etools-dropdown
               id="type"
-              label=${translate(translatesMap.risk_type)}
+              label=${translate(gddTranslatesMap.risk_type)}
               .options="${this.riskTypes}"
               .selected="${this.originalData.risk_type}"
               option-value="value"
@@ -68,7 +68,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
             <etools-textarea
               id="mitigationMeasures"
               class="w100"
-              label=${translate(translatesMap.mitigation_measures)}
+              label=${translate(gddTranslatesMap.mitigation_measures)}
               always-float-label
               type="text"
               .autoValidate="${this.autoValidate}"
@@ -116,7 +116,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
     }
     const {item, interventionId, permissions, riskTypes} = data;
     this.originalData = item;
-    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.intervention, {
+    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.intervention, {
       interventionId
     });
     this.permissions = permissions;
@@ -153,7 +153,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
       .catch((error: any) => {
         parseRequestErrorsAndShowAsToastMsgs(error, this);
       })
-      .then((intervention: Intervention) => {
+      .then((intervention: GDD) => {
         getStore().dispatch(updateCurrentIntervention(intervention));
         this.onClose();
       })

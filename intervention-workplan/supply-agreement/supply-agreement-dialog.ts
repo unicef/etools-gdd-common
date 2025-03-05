@@ -8,26 +8,26 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
-import {EtoolsEndpoint, ExpectedResult} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {EtoolsEndpoint, GDDExpectedResult} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
-import {get as getTranslation} from 'lit-translate';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 /**
  * @customElement
  */
-@customElement('supply-agreement-dialog')
-export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-supply-agreement-dialog')
+export class GDDSupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -55,7 +55,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
               class="w100"
               value="${this.data.title}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-              label=${translate(translatesMap.title)}
+              label=${translate(gddTranslatesMap.title)}
               type="text"
               placeholder="—"
               error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -67,7 +67,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             <etools-input
               value="${this.data.unit_number ? this.data.unit_number : ''}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
-              label=${translate(translatesMap.unit_number)}
+              label=${translate(gddTranslatesMap.unit_number)}
+              maxlength="16"
               allowed-pattern="[0-9]"
               placeholder="—"
               error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -79,7 +80,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-md-4 col-6">
             <etools-currency
               id="unicefCash"
-              label=${translate(translatesMap.unit_price)}
+              label=${translate(gddTranslatesMap.unit_price)}
               placeholder="—"
               required
               .value="${this.data.unit_price ? this.data.unit_price : ''}"
@@ -91,28 +92,20 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             </etools-currency>
           </div>
           <div class="col col-md-4 col-12">
-            <etools-dropdown
-              label=${translate(translatesMap.provided_by)}
-              placeholder="&#8212;"
-              .options="${this.providers}"
-              option-label="label"
-              option-value="id"
-              .selected="${this.data.provided_by}"
-              required
-              hide-search
-              auto-validate
-              trigger-value-change-event
-              @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                this.selectedItemChanged(detail, 'provided_by');
-              }}"
+            <etools-input
+              id="unicefProductNumber"
+              label=${translate(gddTranslatesMap.unicef_product_number)}
+              placeholder="—"
+              .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
             >
-            </etools-dropdown>
+            </etools-input>
           </div>
           ${this.isUnicefUser
             ? html` <div class="col col-md-8 col-12">
                 <etools-dropdown
                   class="cp-out"
-                  label=${translate(translatesMap.result)}
+                  label=${translate(gddTranslatesMap.result)}
                   placeholder="&#8212;"
                   .options="${this.cpOutputs}"
                   option-label="cp_output_name"
@@ -126,21 +119,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
                 </etools-dropdown>
               </div>`
             : html``}
-
-          <div class="col col-md-4 col-12" ?hidden="${this.data.provided_by == 'partner'}">
-            <etools-input
-              id="unicefProductNumber"
-              label=${translate(translatesMap.unicef_product_number)}
-              placeholder="—"
-              .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
-            >
-            </etools-input>
-          </div>
           <div class="col col-12">
             <etools-textarea
               id="otherMentions"
-              label=${translate(translatesMap.other_mentions)}
+              label=${translate(gddTranslatesMap.other_mentions)}
               always-float-label
               placeholder="—"
               .value="${this.data.other_mentions}"
@@ -171,7 +153,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   interventionId!: number;
 
   @property({type: Object})
-  cpOutputs: ExpectedResult[] = [];
+  cpOutputs: GDDExpectedResult[] = [];
 
   @property({type: Boolean})
   isUnicefUser = false;
@@ -186,7 +168,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   ];
 
   set dialogData({data, interventionId, result_links, isUnicefUser, currency}: any) {
-    this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
+    this.cpOutputs = (result_links || []).filter((x: GDDExpectedResult) => !!x.cp_output_name);
     this.data = data;
     this.currency = currency;
     this.isNewRecord = !this.data.id;
@@ -221,21 +203,20 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     }
     this.requestInProcess = true;
     const endpoint = this.isNewRecord
-      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementAdd, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.supplyAgreementAdd, {
           interventionId: this.interventionId
         })
-      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.supplyAgreementEdit, {
           interventionId: this.interventionId,
           supplyId: this.data.id
         });
-
     sendRequest({
       endpoint: endpoint,
       method: this.isNewRecord ? 'POST' : 'PATCH',
       body: this.cleanUpData(this.data)
     })
       .then((response: any) => {
-        getStore().dispatch(updateCurrentIntervention(response.intervention));
+        getStore().dispatch(updateCurrentIntervention(response.gdd));
         this.onClose();
       })
       .catch((err: any) => {
@@ -247,10 +228,6 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   }
 
   cleanUpData(data: any) {
-    const dataToSave = cloneDeep(data);
-    if (dataToSave.provided_by == 'partner') {
-      dataToSave.unicef_product_number = '';
-    }
-    return dataToSave;
+    return cloneDeep(data);
   }
 }

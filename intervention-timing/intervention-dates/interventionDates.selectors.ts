@@ -1,19 +1,19 @@
 import {createSelector} from 'reselect';
-import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
+import {GDDProgrammeDocDates, GDDInterventionDatesPermissions} from './interventionDates.models';
 import {currentInterventionPermissions, currentIntervention} from '../../common/selectors';
 import {Permission} from '@unicef-polymer/etools-types';
-import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
+import {GDD, GDDPermissionsFields} from '@unicef-polymer/etools-types';
 
-export const selectInterventionDates = createSelector(currentIntervention, (intervention: Intervention) => {
-  return new ProgrammeDocDates(intervention);
+export const selectInterventionDates = createSelector(currentIntervention, (intervention: GDD) => {
+  return new GDDProgrammeDocDates(intervention);
 });
 
 export const selectInterventionDatesPermissions = createSelector(
   currentInterventionPermissions,
-  (permissions: Permission<InterventionPermissionsFields>) => {
+  (permissions: Permission<GDDPermissionsFields>) => {
     return {
-      edit: new InterventionDatesPermissions(permissions!.edit),
-      required: new InterventionDatesPermissions(permissions!.required)
+      edit: new GDDInterventionDatesPermissions(permissions!.edit),
+      required: new GDDInterventionDatesPermissions(permissions!.required)
     };
   }
 );

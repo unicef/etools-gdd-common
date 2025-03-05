@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {BudgetSummary} from './budgetSummary.models';
+import {GDDBudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {RootState} from '../types/store.types';
@@ -10,9 +10,9 @@ import get from 'lodash-es/get';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../components/comments/comments-mixin';
-import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import {TABS} from '../constants';
+import {GDDFrsDetails, GDD} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {GDD_TABS} from '../constants';
 import {isUnicefUser} from '../selectors';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
@@ -24,8 +24,8 @@ import {getPageDirection} from '../../utils/utils';
 /**
  * @customElement
  */
-@customElement('budget-summary')
-export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(LitElement)) {
+@customElement('gdd-budget-summary')
+export class GDDBudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(LitElement)) {
   static get styles() {
     return [
       layoutStyles,
@@ -157,26 +157,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="label">${translate('CAPACITY_STRENGTHENING_COST_RATE')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.hq_support_cost)}">
-            ${this.roundPercentage(this.budgetSummary.hq_support_cost)}(${displayCurrencyAmount(
-              String(this.budgetSummary.total_hq_cash_local),
-              '0.00'
-            )})
-          </div>
-        </div>
-
-        <div class="data-column">
-          <div class="icon-wrapper mt-6">
-            <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>
-            <info-icon-tooltip .tooltipText="${translate('PRGM_EFFECTIVENESS_TOOLTIP')}"></info-icon-tooltip>
-          </div>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.programme_effectiveness)}">
-            ${this.roundPercentage(this.budgetSummary.programme_effectiveness)}
-          </div>
-        </div>
-
-        <div class="data-column">
           <label class="label">${translate('TOTAL_UNICEF_CONTRIB')}</label>
           <div class="input-label" ?empty="${!this.budgetSummary.total_unicef_contribution_local}">
             ${displayCurrencyAmount(String(this.budgetSummary.total_unicef_contribution_local), '0.00')}
@@ -203,44 +183,8 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
 
         <div class="data-column">
           <label class="label">${translate('TOTAL_UNICEF_SUPPLY')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.in_kind_amount_local)}">
-            ${displayCurrencyAmount(String(this.budgetSummary.in_kind_amount_local), '0.00')}
-          </div>
-        </div>
-
-        <div class="data-column">
-          <label class="label">${translate('TOTAL_CASH_AMT')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_cash_local)}">
-            ${displayCurrencyAmount(String(this.budgetSummary.total_cash_local))}
-          </div>
-        </div>
-
-        <div class="data-column amt-column">
-          <label class="label">${translate('TOTAL_AMT')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_local)}">
-            ${displayCurrencyAmount(String(this.budgetSummary.total_local))}
-          </div>
-        </div>
-
-        <div class="data-column">
-          <label class="label">${translate('TOTAL_PARTNER_SUPPLY')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_supply_local)}">
-            ${displayCurrencyAmount(String(this.budgetSummary.partner_supply_local))}
-          </div>
-        </div>
-
-        <div class="data-column">
-          <label class="label">${translate('TOTAL_PARTNER_CASH')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
-            ${displayCurrencyAmount(String(this.budgetSummary.partner_contribution_local), '0.00')}
-          </div>
-        </div>
-
-        <div class="data-column">
-          <label class="label">${translate('TOTAL_PARTNER_CONTRIBUTION')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_partner_contribution_local)}">
-            ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
-            (${displayCurrencyAmount(String(this.budgetSummary.total_partner_contribution_local))})
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_supply)}">
+            ${displayCurrencyAmount(String(this.budgetSummary.total_supply), '0.00')}
           </div>
         </div>
       </div>
@@ -250,23 +194,23 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   getIconTooltip(): TemplateResult {
     return html`<div class="icon-tooltip-div">
       <info-icon-tooltip
-        .tooltipText="${translate('BUDGET_TOOLTIP')}"
+        .tooltipText="${translate('GDD_BUDGET_TOOLTIP')}"
         position="${this.dir == 'rtl' ? 'right' : 'left'}"
       >
       </info-icon-tooltip>
     </div>`;
   }
 
-  intervention!: Intervention;
+  intervention!: GDD;
 
   @property({type: Object})
-  budgetSummary!: BudgetSummary;
+  budgetSummary!: GDDBudgetSummary;
 
   @property({type: String})
   _frsConsistencyWarning = '';
 
   @property({type: Object})
-  frsDetails!: FrsDetails;
+  frsDetails!: GDDFrsDetails;
 
   connectedCallback() {
     super.connectedCallback();
@@ -274,14 +218,18 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
 
   public stateChanged(state: RootState) {
     if (
-      (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) &&
-        EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.WorkplanEditor)) ||
-      !state.interventions.current
+      (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Workplan) &&
+        EtoolsRouter.pageIsNotCurrentlyActive(
+          get(state, 'app.routeDetails'),
+          'gpd-interventions',
+          GDD_TABS.WorkplanEditor
+        )) ||
+      !state.gddInterventions.current
     ) {
       return;
     }
     this.budgetSummary = selectBudgetSummary(state);
-    this.intervention = state.interventions.current;
+    this.intervention = state.gddInterventions.current;
     this.frsDetails = this.intervention.frs_details;
     if (isUnicefUser(state)) {
       this.setFrsConsistencyWarning();

@@ -2,7 +2,7 @@ import {LitElement, html, CSSResult, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
-import {InterventionReview, User} from '@unicef-polymer/etools-types';
+import {GDD, GDDReview, User} from '@unicef-polymer/etools-types';
 import './general-review-information/general-review-information';
 import './review-members/review-members';
 import './reviews-list/reviews-list';
@@ -11,24 +11,19 @@ import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-disp
 import {NO_REVIEW, PRC_REVIEW} from '../common/components/intervention/review.const';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {cloneDeep} from 'lodash-es';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 
-@customElement('intervention-review')
-export class InterventionReviewTab extends connectStore(LitElement) {
+@customElement('gdd-intervention-review')
+export class GDDInterventionReviewTab extends connectStore(LitElement) {
   @property() canEditReview = false;
   @property() canEditPRCReviews = false;
-  @property() currentReview: InterventionReview | null = null;
-  @property() reviews: InterventionReview[] = [];
+  @property() currentReview: GDDReview | null = null;
+  @property() reviews: GDDReview[] = [];
   @property() unicefUsers: User[] = [];
-  @property() cfeiNumber = '';
   @property() interventionStatus = '';
-
-  get linkUrl(): string {
-    return `https://www.unpartnerportal.org/cfei/open?agency=1&displayID=${encodeURIComponent(
-      this.cfeiNumber
-    )}&page=1&page_size=10`;
-  }
+  @property({type: Object}) intervention: Partial<GDD> = {};
 
   private interventionId: number | null = null;
 
@@ -40,38 +35,34 @@ export class InterventionReviewTab extends connectStore(LitElement) {
             <div class="text">${this.currentReview?.sent_back_comment}</div>
           </reason-display>`
         : ''}
-      ${this.cfeiNumber
-        ? html`<reason-display .title="${translate('CFEI_NOTIFICATION')}" .cfeiNumber="${this.cfeiNumber}">
-            <div class="text">
-              ${translate('PD_COMPLETED_AFTER_UNPP')}
-              <a href="${this.linkUrl}" target="_blank">${translate('GO_TO_UNPP')}</a>
-            </div>
-          </reason-display>`
-        : ''}
 
-      <general-review-information
+      <gdd-general-review-information
         .reviews="${this.reviews}"
         .currentReview="${this.currentReview}"
         @review-changed="${this.reviewChanged}"
         .interventionId="${this.interventionId}"
       >
-      </general-review-information>
+      </gdd-general-review-information>
 
       ${this.currentReview && this.currentReview.review_type != NO_REVIEW
-        ? html`<review-members
+        ? html`<gdd-review-members
               .review="${this.currentReview}"
               .interventionId="${this.interventionId}"
+              .intervention="${this.intervention}"
               .usersList="${this.unicefUsers}"
               .canEditAtLeastOneField="${this.canEditReview}"
-            ></review-members>
+            ></gdd-review-members>
 
-            <reviews-list
+            <gdd-reviews-list
               .review="${this.currentReview}"
               .readonly="${!this.canEditPRCReviews}"
               ?hidden="${this.currentReview?.review_type !== PRC_REVIEW}"
-            ></reviews-list>
+            ></gdd-reviews-list>
 
-            <overall-approval .review="${this.currentReview}" .readonly="${!this.canEditReview}"></overall-approval>`
+            <gdd-overall-approval
+              .review="${this.currentReview}"
+              .readonly="${!this.canEditReview}"
+            ></gdd-overall-approval>`
         : null}
     `;
   }
@@ -81,31 +72,34 @@ export class InterventionReviewTab extends connectStore(LitElement) {
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review') ||
-      !state.interventions.current
+      EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'gpd-interventions', 'review') ||
+      !state.gddInterventions.current
     ) {
       return;
     }
 
-    this.reviews = state.interventions.current.reviews;
+    const currentPD = state.gddInterventions?.current;
+    if (!isJsonStrMatch(this.intervention, currentPD) && currentPD) {
+      this.intervention = currentPD;
+    }
+    this.reviews = state.gddInterventions.current.reviews;
     if (this.currentReview?.id) {
-      this.currentReview = state.interventions.current.reviews.find((x) => x.id === this.currentReview!.id) || null;
+      this.currentReview = state.gddInterventions.current.reviews.find((x) => x.id === this.currentReview!.id) || null;
     }
     if (!this.currentReview && this.reviews?.length) {
-      this.currentReview = state.interventions.current.reviews[0];
+      this.currentReview = state.gddInterventions.current.reviews[0];
     }
     this.unicefUsers = state.commonData?.unicefUsersData || [];
-    this.canEditReview = state.interventions.current.permissions!.edit.reviews || false;
-    this.canEditPRCReviews = state.interventions.current.permissions!.edit.prc_reviews || false;
-    this.interventionId = state.interventions.current.id;
-    this.interventionStatus = state.interventions.current.status;
-    this.cfeiNumber = state.interventions.current.cfei_number || '';
+    this.canEditReview = state.gddInterventions.current.permissions!.edit.reviews || false;
+    this.canEditPRCReviews = state.gddInterventions.current.permissions!.edit.prc_reviews || false;
+    this.interventionId = state.gddInterventions.current.id;
+    this.interventionStatus = state.gddInterventions.current.status;
   }
 
   reviewChanged(ev: CustomEvent) {

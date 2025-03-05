@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {customElement, property, state} from 'lit/decorators.js';
 import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerInfo.selectors';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
@@ -8,31 +8,30 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
-import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
+import {GDDPartnerInfo, GDDPartnerInfoPermissions} from './partnerInfo.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
-import {MinimalAgreement} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation, langChanged} from 'lit-translate';
+import {AsyncAction, Permission, PartnerStaffMember, MinimalAgreement, EtoolsUser} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation, langChanged} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 /**
  * @customElement
  */
-@customElement('partner-info')
-export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-partner-info')
+export class GDDPartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -52,6 +51,12 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+
+        .focalpoint-label {
+          z-index: 90;
+          margin-bottom: -6px;
+          padding-bottom: 0 !important;
+        }
       </style>
 
       <etools-content-panel
@@ -65,7 +70,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           <div class="col-md-8 col-12">
             <etools-input
               class="w100"
-              label=${translate('PARTNER_ORGANIZATION')}
+              label=${translate('GOVERNMENT_ORGANIZATION')}
               .value="${this.data?.partner}"
               required
               readonly
@@ -82,11 +87,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               .selected="${this.data?.agreement}"
               option-value="id"
               option-label="agreement_number_status"
-              trigger-value-change-event
-              @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.agreement) ? -1 : undefined}"
-              required
+              readonly
               auto-validate
             >
             </etools-dropdown>
@@ -102,13 +103,22 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             >
             </etools-input>
           </div>
-          <div class="col-md-4 col-12">
-            <label for="agreementAuthOff" class="label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
-            <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
-          </div>
           <div class="col-md-8 col-12" ?hidden="${!this.permissions?.view!.partner_focal_points}">
+            <div
+              class="focalpoint-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)}"
+            >
+              <label class="label"> ${translate('PARTNER_FOCAL_POINTS')}</label>
+              <info-icon-tooltip
+                ?hidden="${Environment.basePath === '/government/'}"
+                id="iit-locations"
+                class="iit"
+                position="right"
+                .tooltipHtml="${this.partnerFocalPointInfoText}"
+              ></info-icon-tooltip>
+            </div>
             <etools-dropdown-multi
-              label=${translate('PARTNER_FOCAL_POINTS')}
+              no-label-float
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
               .options="${langChanged(() => this.formattedPartnerStaffMembers)}"
               option-label="name"
@@ -137,22 +147,22 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   }
 
   @property({type: Object})
-  originalData!: PartnerInfo;
+  originalData!: GDDPartnerInfo;
 
   @property({type: Object})
-  data!: PartnerInfo;
+  data!: GDDPartnerInfo;
 
   @property({type: Object})
-  permissions!: Permission<PartnerInfoPermissions>;
+  permissions!: Permission<GDDPartnerInfoPermissions>;
+
+  @property({type: Array})
+  partnerStaffMembers!: PartnerStaffMember[];
 
   @property({type: Array})
   partnerAgreements!: MinimalAgreement[];
 
-  @property({type: Array})
-  agreementAuthorizedOfficers!: PartnerStaffMember[];
-
-  @property({type: Array})
-  partnerStaffMembers!: PartnerStaffMember[];
+  @state()
+  ampLink = '';
 
   get formattedPartnerStaffMembers() {
     return this.partnerStaffMembers?.map((member: PartnerStaffMember) => ({
@@ -160,11 +170,24 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         !member.active
           ? `[${getTranslation('INACTIVE')}]`
           : member.has_active_realm
-          ? ''
-          : `[${getTranslation('NO_ACCESS')}]`
+            ? ''
+            : `[${getTranslation('NO_ACCESS')}]`
       } ${member.first_name} ${member.last_name} (${member.email})`,
       id: member.id
     }));
+  }
+
+  get partnerFocalPointInfoText() {
+    return html` <style>
+        .amp-link {
+          color: var(--primary-color);
+          cursor: pointer;
+        }
+      </style>
+      ${translate('FOCALPOINT_ADD_PARTNER_INFO')}
+      <a class="amp-link" href="${this.ampLink}" target="_blank">
+        <etools-icon id="information-icon" name="open-in-new"></etools-icon>
+      </a>`;
   }
 
   connectedCallback() {
@@ -173,8 +196,8 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
 
   async stateChanged(state: RootState) {
     if (
-      !state.interventions.current ||
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')
+      !state.gddInterventions.current ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'metadata')
     ) {
       return;
     }
@@ -189,11 +212,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   async setPartnerDetailsAndPopulateDropdowns(state: any) {
     const newPartnerDetails = selectPartnerDetails(state);
 
-    const agreements = get(state, 'agreements.list');
-    if (!isEmpty(agreements)) {
-      this.partnerAgreements = this.filterAgreementsByPartner(agreements, newPartnerDetails.partner_id!);
-    }
-
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
       const partnerIdHasChanged = this.partnerIdHasChanged(newPartnerDetails);
       if (partnerIdHasChanged) {
@@ -203,19 +221,26 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
       this.data = cloneDeep(newPartnerDetails);
       this.originalData = cloneDeep(this.data);
     }
+
+    const agreements = get(state, 'agreements.list');
+    if (agreements) {
+      this.partnerAgreements = this.filterAgreementsByPartner(agreements, newPartnerDetails.partner_id!);
+    }
+
+    this.ampLink = this.getAMPLink(state?.user.data);
   }
 
   filterAgreementsByPartner(agreements: MinimalAgreement[], partnerId: number) {
     return agreements.filter((a: any) => String(a.partner) === String(partnerId));
   }
 
-  partnerIdHasChanged(newPartnerDetails: PartnerInfo) {
+  partnerIdHasChanged(newPartnerDetails: GDDPartnerInfo) {
     return get(this.data, 'partner_id') !== newPartnerDetails.partner_id;
   }
 
   getAllPartnerStaffMembers(partnerId: number) {
     return sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.partnerStaffMembers, {id: partnerId})
+      endpoint: getEndpoint(gddEndpoints.partnerStaffMembers, {id: partnerId})
     }).then((resp) => {
       return resp.sort(
         (a: PartnerStaffMember, b: PartnerStaffMember) =>
@@ -225,22 +250,12 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     });
   }
 
-  selectedAgreementChanged(detail: any) {
-    if (!detail || !detail.selectedItem) {
-      return;
+  getAMPLink(user: EtoolsUser): string {
+    let url = `/amp/users/`;
+    if (user && user.is_unicef_user) {
+      url += `list?organization_type=partner&organization_id=${this.data.partner_id}`;
     }
-    this.selectedItemChanged(detail, 'agreement');
-    this.agreementAuthorizedOfficers = detail.selectedItem?.authorized_officers;
-  }
-
-  renderAgreementAuthorizedOfficers(authOfficers: PartnerStaffMember[]) {
-    if (isEmpty(authOfficers)) {
-      return html`—`;
-    } else {
-      return authOfficers.map((authOfficer) => {
-        return html`<div class="w100 padd-between">${this.renderNameEmailPhone(authOfficer)}</div>`;
-      });
-    }
+    return url;
   }
 
   saveData() {
@@ -254,9 +269,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         this.editMode = false;
       });
   }
-  private formatUsersData(data: PartnerInfo) {
-    const dataToSave: AnyObject = cloneDeep(data);
-    dataToSave.partner_focal_points = data.partner_focal_points.map((u: any) => u.id);
-    return dataToSave;
+  private formatUsersData(data: GDDPartnerInfo) {
+    return {partner_focal_points: (data.partner_focal_points || []).map((u: any) => u.id)};
   }
 }

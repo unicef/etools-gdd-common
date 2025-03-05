@@ -10,23 +10,22 @@ import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {AnyObject, EtoolsEndpoint, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {AnyObject, EtoolsEndpoint, GDDAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {AmendmentsKind} from './pd-amendments.models';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin.js';
-import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {resetInvalidElement} from '../../utils/utils';
 
 /**
  * @customElement
  */
-@customElement('add-amendment-dialog')
-export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-add-amendment-dialog')
+export class GDDAddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -65,7 +64,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             id="amendment-types"
             label="${translate('AMENDMENT_TYPES')}"
             placeholder="&#8212;"
-            .options="${this.filteredAmendmentTypes}"
+            .options="${this.amendmentTypes}"
             .selectedValues="${this.data.types}"
             hide-search
             required
@@ -125,9 +124,6 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   //   }
   // ];
 
-  @property({type: Array})
-  filteredAmendmentTypes!: LabelAndValue[];
-
   @property({type: Boolean})
   showOtherInput = false;
 
@@ -142,22 +138,6 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     const {intervention, amendmentTypes} = data;
     this.intervention = intervention;
     this.amendmentTypes = amendmentTypes;
-    this._filterAmendmentTypes(this.amendmentTypes, this.intervention.document_type);
-  }
-
-  _filterAmendmentTypes(amendmentTypes: AnyObject[], interventionDocumentType: string) {
-    if (!amendmentTypes || !interventionDocumentType) {
-      return;
-    }
-
-    this.filteredAmendmentTypes = JSON.parse(
-      JSON.stringify(
-        this.amendmentTypes.map((x) => ({
-          ...x,
-          label: getTranslatedValue(x.label, 'AMENDMENT_TYPES_ITEMS')
-        }))
-      )
-    );
   }
 
   onTypesChanged() {
@@ -202,10 +182,10 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     this._saveAmendment(this.data);
   }
 
-  _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
+  _saveAmendment(newAmendment: Partial<GDDAmendment>) {
     const options = {
       method: 'POST',
-      endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAmendmentAdd, {
+      endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.interventionAmendmentAdd, {
         intervId: this.intervention.id
       }),
       body: {
@@ -216,7 +196,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     };
     this.savingInProcess = true;
     sendRequest(options)
-      .then((resp: InterventionAmendment) => {
+      .then((resp: GDDAmendment) => {
         this._handleResponse(resp);
       })
       .catch((error: any) => {
@@ -227,8 +207,8 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
       });
   }
 
-  _handleResponse(_response: InterventionAmendment) {
-    this.onClose({id: _response.amended_intervention});
+  _handleResponse(_response: GDDAmendment) {
+    this.onClose({id: _response.amended_gdd});
   }
 
   _handleErrorResponse(error: any) {

@@ -1,8 +1,7 @@
-/* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
@@ -14,7 +13,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import dayjs from 'dayjs';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
@@ -23,8 +22,8 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
  * @customElement
  * @mixinFunction
  */
-@customElement('add-edit-special-rep-req')
-export class AddEditSpecialRepReq extends LitElement {
+@customElement('gdd-add-edit-special-rep-req')
+export class GDDAddEditSpecialRepReq extends LitElement {
   static get styles() {
     return [layoutStyles];
   }
@@ -56,7 +55,7 @@ export class AddEditSpecialRepReq extends LitElement {
       <etools-dialog
         id="addEditDialog"
         size="lg"
-        dialog-title=${translate('ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS')}
+        dialog-title=${translate('GDD_ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS')}
         @confirm-btn-clicked="${this._save}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
@@ -109,12 +108,13 @@ export class AddEditSpecialRepReq extends LitElement {
   _getEndpoint() {
     if (this._isNew()) {
       // new/create
-      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirements, {
         intervId: this.interventionId
       });
     } else {
       // already saved... update/delete
-      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirementsUpdate, {
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirementsUpdate, {
+        intervId: this.interventionId,
         reportId: this.item.id
       });
     }
@@ -164,4 +164,4 @@ export class AddEditSpecialRepReq extends LitElement {
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 }
-export {AddEditSpecialRepReq as AddEditSpecialRepReqEl};
+export {GDDAddEditSpecialRepReq as GDDAddEditSpecialRepReqEl};

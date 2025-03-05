@@ -3,17 +3,17 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {patchIntervention} from './common/actions/interventions';
+import {patchIntervention} from './common/actions/gddInterventions';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
-@customElement('unresolved-other-info-review')
-export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-unresolved-other-info-review')
+export class GDDUnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }

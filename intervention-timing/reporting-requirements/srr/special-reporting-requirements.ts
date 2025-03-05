@@ -1,19 +1,19 @@
 import {LitElement, html} from 'lit';
-import {property, customElement} from 'lit/decorators.js';
+import {property, customElement, state} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 
 import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
 import './add-edit-special-rep-req';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import CONSTANTS from '../../../common/constants';
+import {ReportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
+import GDD_CONSTANTS from '../../../common/constants';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
@@ -24,6 +24,10 @@ import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import get from 'lodash-es/get';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {RootState} from '../../../common/types/store.types';
 
 /**
  * @customElement
@@ -31,10 +35,15 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
  * @mixinFunction
  * @appliesMixin ReportingRequirementsCommonMixin
  */
-@customElement('special-reporting-requirements')
-export class SpecialReportingRequirements extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
+@customElement('gdd-special-reporting-requirements')
+export class GDDSpecialReportingRequirements extends PaginationMixin(
+  ReportingRequirementsCommonMixin(connectStore(LitElement))
+) {
+  @state()
+  interventionEndDate: any;
+
   static get styles() {
-    return [layoutStyles, reportingRequirementsListStyles];
+    return [layoutStyles, ReportingRequirementsListStyles];
   }
   render() {
     return html`
@@ -58,7 +67,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
       ></etools-media-query>
 
       <div class="col-12 mt-10" ?hidden="${!this._empty(this.reportingRequirements)}">
-        ${translate('NO_SPECIAL_REPORTING_REQUIREMENTS')}
+        ${translate('GDD_NO_SPECIAL_REPORTING_REQUIREMENTS')}
       </div>
 
       <div class="col-12 mt-10" ?hidden="${!this.editMode}">
@@ -75,27 +84,28 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
           <etools-data-table-column class="col-2"></etools-data-table-column>
         </etools-data-table-header>
         ${(this.paginatedReports || []).map(
-          (item: any, index: number) => html` <etools-data-table-row
-            no-collapse
-            secondary-bg-on-hover
-            .lowResolutionLayout="${this.lowResolutionLayout}"
-          >
-            <div slot="row-data" class="layout-horizontal editable-row">
-              <div class="col-data col-1 index-col" data-col-header-label="${translate('ID')}">
-                ${this._getIndex(index)}
+          (item: any, index: number) =>
+            html` <etools-data-table-row
+              no-collapse
+              secondary-bg-on-hover
+              .lowResolutionLayout="${this.lowResolutionLayout}"
+            >
+              <div slot="row-data" class="layout-horizontal editable-row">
+                <div class="col-data col-1 index-col" data-col-header-label="${translate('ID')}">
+                  ${this._getIndex(index)}
+                </div>
+                <div class="col-data col-3 word-break" data-col-header-label="${translate('DUE_DATE')}">
+                  ${this.getDateDisplayValue(item.due_date)}
+                </div>
+                <div class="col-data col-6 word-break" data-col-header-label="${translate('REPORTING_REQUIREMENT')}">
+                  ${item.description}
+                </div>
+                <div class="col-data col-2 actions">
+                  <etools-icon-button name="create" @click="${() => this._onEdit(index)}"></etools-icon-button>
+                  <etools-icon-button name="delete" @click="${() => this._onDelete(index)}"></etools-icon-button>
+                </div>
               </div>
-              <div class="col-data col-3 word-break" data-col-header-label="${translate('DUE_DATE')}">
-                ${this.getDateDisplayValue(item.due_date)}
-              </div>
-              <div class="col-data col-6 word-break" data-col-header-label="${translate('REPORTING_REQUIREMENT')}">
-                ${item.description}
-              </div>
-              <div class="col-data col-2 actions">
-                <etools-icon-button name="create" @click="${() => this._onEdit(index)}"></etools-icon-button>
-                <etools-icon-button name="delete" @click="${() => this._onDelete(index)}"></etools-icon-button>
-              </div>
-            </div>
-          </etools-data-table-row>`
+            </etools-data-table-row>`
         )}
         <etools-data-table-footer
           .pageSize="${this.paginator.page_size}"
@@ -126,6 +136,17 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
   connectedCallback() {
     super.connectedCallback();
     this._addEventListeners();
+  }
+
+  stateChanged(state: RootState) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'timing')) {
+      return;
+    }
+    if (!state.gddInterventions.current) {
+      return;
+    }
+
+    this.interventionEndDate = state.gddInterventions.current.end;
   }
 
   _addEventListeners() {
@@ -168,9 +189,14 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
 
   _onEdit(index?: number) {
     openDialog({
-      dialog: 'add-edit-special-rep-req',
+      dialog: 'gdd-add-edit-special-rep-req',
       dialogData: {
-        item: typeof index === 'undefined' ? {} : cloneDeep(this.reportingRequirements[index!]),
+        item:
+          typeof index === 'undefined'
+            ? {
+                due_date: this.interventionEndDate
+              }
+            : cloneDeep(this.reportingRequirements[index!]),
         interventionId: this.interventionId
       }
     }).then(({confirmed, response}) => {
@@ -192,7 +218,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: getTranslation('DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT'),
+          content: getTranslation('GDD_DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT'),
           confirmBtnText: translate('YES'),
           cancelBtnText: translate('NO')
         }
@@ -212,12 +238,10 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
     const reportingRequirementsOriginal = this.reportingRequirements;
     if (this._itemToDeleteIndex > -1) {
       const itemToDelete = this.reportingRequirements[this._itemToDeleteIndex] as any;
-      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(
-        interventionEndpoints.specialReportingRequirementsUpdate,
-        {
-          reportId: itemToDelete.id
-        }
-      );
+      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.specialReportingRequirementsUpdate, {
+        intervId: this.interventionId,
+        reportId: itemToDelete.id
+      });
       sendRequest({
         method: 'DELETE',
         endpoint: endpoint
@@ -247,7 +271,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
   }
 
   _getReportType() {
-    return CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL;
+    return GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL;
   }
 
   _getIndexById(id: number) {
@@ -266,7 +290,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
     }
     this.reportingRequirements = [...reportingRequirementsOriginal];
     this.paginator = {...this.paginator, page: 1};
-    this.updateReportingRequirements(this.reportingRequirements, CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR);
+    this.updateReportingRequirements(this.reportingRequirements, GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR);
     this.requestUpdate();
   }
 }

@@ -12,25 +12,25 @@ import {RootState} from '../common/types/store.types';
 /**
  * @customElement
  */
-@customElement('intervention-timing')
-export class InterventionTiming extends CommentsMixin(LitElement) {
+@customElement('gdd-intervention-timing')
+export class GDDInterventionTiming extends CommentsMixin(LitElement) {
   @property() viewPlannedVisits = false;
   @property() viewPartnerReportingRequirements = false;
   render() {
     // language=HTML
     return html`
       <style></style>
-      <timing-overview></timing-overview>
-      <intervention-dates></intervention-dates>
-      <activity-timeframes></activity-timeframes>
+      <gdd-timing-overview></gdd-timing-overview>
+      <gdd-intervention-dates></gdd-intervention-dates>
+      <gdd-activity-timeframes></gdd-activity-timeframes>
       ${this.viewPartnerReportingRequirements
-        ? html`<partner-reporting-requirements
+        ? html`<gdd-partner-reporting-requirements
             class="content-section"
             .commentsMode="${this.commentMode}"
             comments-container
-          ></partner-reporting-requirements>`
+          ></gdd-partner-reporting-requirements>`
         : ''}
-      ${this.viewPlannedVisits ? html`<programmatic-visits></programmatic-visits>` : ''}
+      ${this.viewPlannedVisits ? html`<gdd-programmatic-visits></gdd-programmatic-visits>` : ''}
     `;
   }
 
@@ -39,16 +39,16 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 
   stateChanged(state: RootState) {
     super.stateChanged(state);
 
-    this.viewPlannedVisits = Boolean(state.interventions?.current?.permissions?.view!.planned_visits);
+    this.viewPlannedVisits = Boolean(state.gddInterventions?.current?.permissions?.view!.planned_visits);
     this.viewPartnerReportingRequirements = Boolean(
-      state.interventions?.current?.permissions?.view!.reporting_requirements
+      state.gddInterventions?.current?.permissions?.view!.reporting_requirements
     );
   }
 

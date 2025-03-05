@@ -3,8 +3,8 @@ import {customElement, property} from 'lit/decorators.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {translate} from 'lit-translate';
-import {InterventionReview} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {GDDReview} from '@unicef-polymer/etools-types';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -12,8 +12,8 @@ import '../../common/components/intervention/review-checklist-popup';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('overall-approval')
-export class OverallApproval extends LitElement {
+@customElement('gdd-overall-approval')
+export class GDDOverallApproval extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -60,7 +60,7 @@ export class OverallApproval extends LitElement {
     ];
   }
 
-  @property() review!: InterventionReview;
+  @property() review!: GDDReview;
   @property() readonly = false;
 
   render(): TemplateResult {
@@ -89,6 +89,16 @@ export class OverallApproval extends LitElement {
               </div>
             </div>
             <div class="row row-padding">
+              <div class="col-12 label">${translate('SIGN_BUDGET_OWNER')}</div>
+              <div class="col-12 value">
+                ${typeof this.review.is_recommended_for_approval === 'boolean'
+                  ? html` <etools-icon
+                      name="${this.review.is_recommended_for_approval ? 'check' : 'close'}"
+                    ></etools-icon>`
+                  : '-'}
+              </div>
+            </div>
+            <div class="row row-padding">
               <div class="col-12 label">${translate('APPROVAL_COMMENT')}</div>
               <div class="col-12 value">${this.review?.overall_comment || '-'}</div>
             </div>
@@ -99,10 +109,10 @@ export class OverallApproval extends LitElement {
             <div class="row row-padding">
               ${Object.entries(REVIEW_QUESTIONS).map(
                 ([field]: [string, string], index: number) => html`
-                  <label class="col-12 label">Q${index + 1}: ${translateValue(field, 'REVIEW_QUESTIONS')}</label>
+                  <label class="col-12 label">Q${index + 1}: ${translateValue(field, 'GDD_REVIEW_QUESTIONS')}</label>
                   <div class="col-12 answer">
                     ${translateValue(
-                      REVIEW_ANSVERS.get(String(this.review[field as keyof InterventionReview])) || '-',
+                      REVIEW_ANSVERS.get(String(this.review[field as keyof GDDReview])) || '-',
                       'REVIEW_ANSWERS'
                     )}
                   </div>
@@ -117,7 +127,7 @@ export class OverallApproval extends LitElement {
 
   openReviewPopup() {
     openDialog({
-      dialog: 'review-checklist-popup',
+      dialog: 'gdd-review-checklist-popup',
       dialogData: {
         isOverall: true
       }

@@ -1,7 +1,7 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {InterventionComment, GenericObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
+import {GDDComment, GenericObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
-import {CommentsEndpoints} from './comments-types';
+import {GDDCommentsEndpoints} from './comments-types';
 export const SET_ENDPOINT = 'SET_ENDPOINT';
 export const SET_COMMENTS = 'SET_COMMENTS';
 export const ADD_COMMENT = 'ADD_COMMENT';
@@ -15,14 +15,14 @@ export const enableCommentMode = (state: boolean) => {
   };
 };
 
-export const setCommentsEndpoint = (endpoints: CommentsEndpoints) => {
+export const setCommentsEndpoint = (endpoints: GDDCommentsEndpoints) => {
   return {
     type: SET_ENDPOINT,
     endpoints: endpoints
   };
 };
 
-export const addComment = (relatedTo: string, comment: InterventionComment, interventionId: number) => {
+export const addComment = (relatedTo: string, comment: GDDComment, interventionId: number) => {
   return {
     type: ADD_COMMENT,
     data: comment,
@@ -31,7 +31,7 @@ export const addComment = (relatedTo: string, comment: InterventionComment, inte
   };
 };
 
-export const updateComment = (relatedTo: string, comment: InterventionComment, interventionId: number) => {
+export const updateComment = (relatedTo: string, comment: GDDComment, interventionId: number) => {
   return {
     type: UPDATE_COMMENT,
     data: comment,
@@ -40,7 +40,7 @@ export const updateComment = (relatedTo: string, comment: InterventionComment, i
   };
 };
 
-export const setComments = (comments: GenericObject<InterventionComment[]>, interventionId: number) => {
+export const setComments = (comments: GenericObject<GDDComment[]>, interventionId: number) => {
   return {
     type: SET_COMMENTS,
     data: comments,
@@ -51,13 +51,13 @@ export const setComments = (comments: GenericObject<InterventionComment[]>, inte
 export const getComments = (endpoint: EtoolsEndpoint, interventionId: number) => (dispatch: any) => {
   return _sendRequest({
     endpoint: getEndpoint(endpoint, {interventionId: interventionId})
-  }).then((comments: InterventionComment[]) => {
+  }).then((comments: GDDComment[]) => {
     dispatch(setComments(mapComments(comments), interventionId));
   });
 };
 
-function mapComments(comments: InterventionComment[]): GenericObject<InterventionComment[]> {
-  return comments.reduce((commentsMap: GenericObject<InterventionComment[]>, comment: InterventionComment) => {
+function mapComments(comments: GDDComment[]): GenericObject<GDDComment[]> {
+  return comments.reduce((commentsMap: GenericObject<GDDComment[]>, comment: GDDComment) => {
     if (!commentsMap[comment.related_to]) {
       commentsMap[comment.related_to] = [];
     }

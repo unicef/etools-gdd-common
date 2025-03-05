@@ -5,11 +5,11 @@ import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
+import {ReportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
@@ -23,12 +23,12 @@ import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query.
  * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
-@customElement('qpr-list')
-export class QprList extends PaginationMixin(
+@customElement('gdd-qpr-list')
+export class GDDQprList extends PaginationMixin(
   ReportingRequirementsCommonMixin(ReportingReqPastDatesCheckMixin(LitElement))
 ) {
   static get styles() {
-    return [layoutStyles, reportingRequirementsListStyles];
+    return [layoutStyles, ReportingRequirementsListStyles];
   }
   render() {
     if (!this.qprData) {
@@ -57,41 +57,40 @@ export class QprList extends PaginationMixin(
       </etools-data-table-header>
 
       ${(this.paginatedData || []).map(
-        (item: any, index: number) =>
-          html`
-            <etools-data-table-row
-              no-collapse
-              ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}"
-              .lowResolutionLayout="${this.lowResolutionLayout}"
-            >
-              <div slot="row-data" class="editable-row">
-                <div class="col-data col-1 index-col" data-col-header-label="${translate('ID')}">
-                  ${this.getIndex(index, this.qprData.length)}
-                </div>
-                <div class="col-data col-3" data-col-header-label="${translate('START_DATE')}">
-                  ${formatDateLocalized(item.start_date)}
-                </div>
-                <div class="col-data col-3" data-col-header-label="${translate('END_DATE')}">
-                  ${formatDateLocalized(item.end_date)}
-                </div>
-                <div class="col-data col-3" data-col-header-label="${translate('DUE_DATE')}">
-                  ${formatDateLocalized(item.due_date)}
-                </div>
-                <div class="col-2 actions">
-                  <etools-icon-button
-                    name="create"
-                    @click="${() => this._editQprReq(index)}"
-                    ?hidden="${!this.editMode}"
-                  ></etools-icon-button>
-                  <etools-icon-button
-                    name="delete"
-                    ?hidden="${!this.editMode}"
-                    @click="${() => this._deleteQprReq(index)}"
-                  ></etools-icon-button>
-                </div>
+        (item: any, index: number) => html`
+          <etools-data-table-row
+            no-collapse
+            ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}"
+            .lowResolutionLayout="${this.lowResolutionLayout}"
+          >
+            <div slot="row-data" class="editable-row">
+              <div class="col-data col-1 index-col" data-col-header-label="${translate('ID')}">
+                ${this.getIndex(index, this.qprData.length)}
               </div>
-            </etools-data-table-row>
-          `
+              <div class="col-data col-3" data-col-header-label="${translate('START_DATE')}">
+                ${formatDateLocalized(item.start_date)}
+              </div>
+              <div class="col-data col-3" data-col-header-label="${translate('END_DATE')}">
+                ${formatDateLocalized(item.end_date)}
+              </div>
+              <div class="col-data col-3" data-col-header-label="${translate('DUE_DATE')}">
+                ${formatDateLocalized(item.due_date)}
+              </div>
+              <div class="col-2 actions">
+                <etools-icon-button
+                  name="create"
+                  @click="${() => this._editQprReq(index)}"
+                  ?hidden="${!this.editMode}"
+                ></etools-icon-button>
+                <etools-icon-button
+                  name="delete"
+                  ?hidden="${!this.editMode}"
+                  @click="${() => this._deleteQprReq(index)}"
+                ></etools-icon-button>
+              </div>
+            </div>
+          </etools-data-table-row>
+        `
       )}
 
       <etools-data-table-footer
@@ -189,4 +188,4 @@ export class QprList extends PaginationMixin(
   }
 }
 
-export {QprList as QprListEl};
+export {GDDQprList as GDDQprListEl};

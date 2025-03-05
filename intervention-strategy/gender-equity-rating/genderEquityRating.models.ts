@@ -1,8 +1,8 @@
-import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDD, GDDPermissionsFields} from '@unicef-polymer/etools-types';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class GenderEquityRating extends ModelsBase {
-  constructor(intervention: Intervention) {
+export class GDDGenderEquityRating extends GDDModelsBase {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }
@@ -14,8 +14,8 @@ export class GenderEquityRating extends ModelsBase {
   sustainability_narrative = '';
 }
 
-export class GenderEquityRatingPermissions extends ModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+export class GDDGenderEquityRatingPermissions extends GDDModelsBase {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }

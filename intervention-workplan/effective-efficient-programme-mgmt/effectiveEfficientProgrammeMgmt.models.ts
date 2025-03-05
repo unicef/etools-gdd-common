@@ -1,5 +1,5 @@
-import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDD, GDDPermissionsFields} from '@unicef-polymer/etools-types';
+import {GDDModelsBase} from '../../common/models/models.base';
 
 export enum KindChoices {
   inCountry = 'in_country',
@@ -7,8 +7,8 @@ export enum KindChoices {
   planning = 'planning'
 }
 
-export class ProgrammeManagement extends ModelsBase {
-  constructor(intervention: Intervention) {
+export class GDDProgrammeManagement extends GDDModelsBase {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention.management_budgets!);
     this.currency = intervention.planned_budget.currency!;
@@ -27,8 +27,8 @@ export class ProgrammeManagement extends ModelsBase {
   items = [];
 }
 
-export class ProgrammeManagementActivityPermissions extends ModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+export class GDDProgrammeManagementActivityPermissions extends GDDModelsBase {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }

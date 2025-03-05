@@ -1,4 +1,4 @@
-import {CommentsCollection} from '../components/comments/comments.reducer';
+import {GDDCommentsCollection} from '../components/comments/comments.reducer';
 import {
   AnyObject,
   Disaggregation,
@@ -8,14 +8,14 @@ import {
   Site,
   MinimalAgreement,
   RouteDetails,
-  Intervention,
+  GDD,
   CpOutput,
   Section,
   GenericObject,
   EtoolsUser,
   CountryProgram
 } from '@unicef-polymer/etools-types';
-import {CommentsEndpoints} from '../components/comments/comments-types';
+import {GDDCommentsEndpoints} from '../components/comments/comments-types';
 import {UploadStatusState} from '../reducers/upload-status';
 
 export interface AppState {
@@ -27,11 +27,17 @@ export interface AppState {
   };
 }
 
-export interface InterventionsState {
-  current: Intervention | null;
+export interface GDDInterventionsState {
+  current: GDD | null;
   interventionLoading: number | null;
   partnerReportingRequirements: PartnerReportingRequirements;
   shouldReGetList: boolean;
+  eWorkPlans: EWorkPlan[];
+}
+
+export interface EWorkPlan {
+  countryProgrameId: number;
+  data: any[];
 }
 
 export interface AgreementsState {
@@ -59,26 +65,28 @@ export interface CommonDataState {
   offices: [];
   currencies: LabelAndValue[];
   envFlags: EnvFlags | null;
-  riskTypes: LabelAndValue[];
+  gpdRiskTypes: LabelAndValue[];
   fileTypes: any[];
   cashTransferModalities: any[];
   PRPCountryData: any[];
   countryProgrammes: CountryProgram[];
   loadedTimestamp: number;
   providedBy: LabelAndValue[];
+  eWorkPlans: any[];
+  gddAmendmentTypes: LabelAndValue[];
 }
 
 export interface RootState {
   app: AppState;
-  interventions: InterventionsState;
+  gddInterventions: GDDInterventionsState;
   prcIndividualReviews: any[];
   agreements: AgreementsState;
   user: UserState;
   commonData: CommonDataState;
-  commentsData: {
+  gddCommentsData: {
     commentsModeEnabled: boolean;
-    collection: GenericObject<CommentsCollection>;
-    endpoints: CommentsEndpoints;
+    collection: GenericObject<GDDCommentsCollection>;
+    endpoints: GDDCommentsEndpoints;
   };
   uploadStatus: UploadStatusState;
   activeLanguage: any;

@@ -1,23 +1,23 @@
 import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
-import {EtoolsEndpoint, InterventionReview} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {EtoolsEndpoint, GDDReview} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../../common/components/intervention/review.const';
-import {get as getTranslation} from 'lit-translate';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {SlSelectEvent} from '@shoelace-style/shoelace/dist/events/sl-select';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 
-@customElement('general-review-information')
-export class GeneralReviewInformation extends LitElement {
+@customElement('gdd-general-review-information')
+export class GDDGeneralReviewInformation extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -101,8 +101,8 @@ export class GeneralReviewInformation extends LitElement {
       `
     ];
   }
-  @property() currentReview?: InterventionReview;
-  @property() reviews: InterventionReview[] = [];
+  @property() currentReview?: GDDReview;
+  @property() reviews: GDDReview[] = [];
   @property() interventionId!: number;
 
   @property({type: Object})
@@ -120,7 +120,7 @@ export class GeneralReviewInformation extends LitElement {
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-content-panel class="content-section" panel-title="${translate('INTERVENTION_REVIEW')}">
+      <etools-content-panel class="content-section" panel-title="${translate('GDD_REVIEW')}">
         <div slot="panel-btns" class="layout-horizontal">
           <div class="layout-horizontal align-items-center" ?hidden="${!(this.reviews || []).length}">
             <sl-dropdown
@@ -178,10 +178,6 @@ export class GeneralReviewInformation extends LitElement {
               <div class="value">${this.reviewCreatedDate}</div>
             </div>
             <div class="info-block">
-              <div class="label">${translate('REVIEW_TYPE')}</div>
-              <div class="value">${this.reviewTypes.get(this.currentReview?.review_type || '-')}</div>
-            </div>
-            <div class="info-block">
               <div class="label">${translate('SUBMITTED_BY')}</div>
               <div class="value">${this.currentReview?.submitted_by?.name || '-'}</div>
             </div>
@@ -195,7 +191,7 @@ export class GeneralReviewInformation extends LitElement {
     if (!interventionId || !reviewId) {
       return '';
     }
-    return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.exportReviewPdf, {
+    return getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.exportReviewPdf, {
       interventionId: interventionId,
       reviewId: reviewId
     }).url;

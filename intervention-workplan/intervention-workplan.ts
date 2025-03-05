@@ -6,14 +6,14 @@ import './results-structure/results-structure';
 import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt';
 import './non-financial-contribution/non-financial-contribution';
 import './hq-contribution/hq-contribution';
-import '../intervention-workplan-editor/workplan-editor-link';
+import './eworkplans/eworkplans';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 /**
  * @customElement
  */
-@customElement('intervention-workplan')
-export class InterventionWorkplan extends LitElement {
+@customElement('gdd-intervention-workplan')
+export class GDDInterventionWorkplan extends LitElement {
   @property() interventionId!: number;
   render() {
     // language=HTML
@@ -26,21 +26,24 @@ export class InterventionWorkplan extends LitElement {
         }
       </style>
 
-      <budget-summary></budget-summary>
-      <results-structure></results-structure>
-      <effective-and-efficient-programme-management></effective-and-efficient-programme-management>
-      <hq-contribution></hq-contribution>
-      <supply-agreements></supply-agreements>
-      <non-financial-contribution></non-financial-contribution>
+      <gdd-budget-summary></gdd-budget-summary>
+      <gdd-results-structure></gdd-results-structure>
+      <gdd-supply-agreements></gdd-supply-agreements>
     `;
   }
+
+  /* TODO: Remove
+      <gdd-effective-and-efficient-programme-management></gdd-effective-and-efficient-programme-management>
+      <gdd-hq-contribution></gdd-hq-contribution>
+      <gdd-non-financial-contribution></gdd-non-financial-contribution>
+  */
 
   connectedCallback() {
     super.connectedCallback();
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 }

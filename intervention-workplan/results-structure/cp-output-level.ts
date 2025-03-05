@@ -8,21 +8,21 @@ import './modals/cp-output-dialog';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
-import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {GDDExpectedResult, GDD} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {_canDelete} from '../../common/mixins/results-structure-common';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('cp-output-level')
-export class CpOutputLevel extends TruncateMixin(LitElement) {
+@customElement('gdd-cp-output-level')
+export class GDDCpOutputLevel extends TruncateMixin(LitElement) {
   @property() interventionId!: number;
   @property() currency!: string | undefined;
-  @property() resultLink!: ExpectedResult;
-  @property() interventionInfo!: Partial<Intervention>;
-  @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
-  @property({type: Boolean}) showIndicators = true;
+  @property() resultLink!: GDDExpectedResult;
+  @property() interventionInfo!: Partial<GDD>;
+  @property({type: Boolean}) isUnicefUser = false;
+  @property({type: Boolean}) showIndicators = false;
   @property({type: Boolean}) showActivities = true;
   @property({type: Boolean}) readonly = true;
   @property({type: Boolean}) opened = false;
@@ -30,7 +30,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
   protected render(): TemplateResult {
     return html`
       ${sharedStyles}
-      ${this.showCPOLevel && this.resultLink
+      ${this.resultLink
         ? html`
             <div class="divider"></div>
             <etools-data-table-row secondary-bg-on-hover .detailsOpened="${this.opened}">
@@ -68,7 +68,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                             )}
                           </div>
                         </div>
-                        <div class="hover-block" ?hidden="${this.readonly}">
+                        <div class="hover-block" ?hidden="${this.readonly || !this.isUnicefUser}">
                           <etools-icon-button name="create" @click="${this.openEditCpOutputPopup}"></etools-icon-button>
                           <etools-icon-button
                             name="delete"
@@ -88,7 +88,9 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                         <div class="flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
                       `}
                 </div>
-                <div class="outputs-count"><b>${this.resultLink.ll_results.length}</b> ${translate('PD_OUTPUT_S')}</div>
+                <div class="outputs-count">
+                  <b>${this.resultLink.gdd_key_interventions.length}</b> ${translate('KEY_INTERVENTION_S')}
+                </div>
               </div>
 
               <div slot="row-data-details">
@@ -160,7 +162,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
           color: #212121;
         }
         div[slot='row-data-details'] {
-          background-color: var(--pd-output-background);
+          background-color: var(--key-intervention-background);
         }
         etools-data-table-row {
           overflow: hidden;

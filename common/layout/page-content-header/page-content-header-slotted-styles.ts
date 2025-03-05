@@ -6,7 +6,7 @@ import {css} from 'lit';
  */
 
 // language=CSS
-export const pageContentHeaderSlottedStyles = css`
+export const PageContentHeaderSlottedStyles = css`
   .content-header-actions {
     display: flex;
     flex-direction: row;

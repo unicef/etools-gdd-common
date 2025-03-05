@@ -20,13 +20,13 @@ import {selectRisks} from './risk.selectors';
 import './risk-dialog';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getIntervention} from '../../common/actions/interventions';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
+import {getIntervention} from '../../common/actions/gddInterventions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, GDDRiskData} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
@@ -50,8 +50,8 @@ const customStyles = html`
 /**
  * @customElement
  */
-@customElement('risks-element')
-export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-risks-element')
+export class GDDRisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -75,9 +75,9 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         #mitigationMeasures {
           width: 100%;
         }
-        .p-20 {
+        .m-20 {
           overflow: hidden;
-          padding: 20px;
+          margin-inline-start: 20px !important;
         }
         info-icon-tooltip {
           --iit-margin: 0 0 0 4px;
@@ -92,7 +92,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           }
         }
       </style>
-      <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.risks)} comment-element="risks">
+      <etools-content-panel show-expand-btn panel-title=${translate(gddTranslatesMap.risks)} comment-element="risks">
         <div slot="after-title">
           <info-icon-tooltip
             id="iit-risk"
@@ -120,7 +120,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           .showDelete=${this.canEditAtLeastOneField}
         >
         </etools-table>
-        <div class="row p-20" ?hidden="${this.data?.length}">
+        <div class="row m-20" ?hidden="${this.data?.length}">
           <p>${translate('NO_RISK_ADDED')}</p>
         </div>
       </etools-content-panel>
@@ -128,7 +128,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   @property({type: Object})
-  data!: RiskData[];
+  data!: GDDRiskData[];
 
   @property({type: Array})
   riskTypes!: LabelAndValue[];
@@ -157,15 +157,14 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   ];
 
   stateChanged(state: RootState) {
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'strategy')) {
       return;
     }
-
-    this.interventionId = state.interventions.current.id!;
-    this.riskTypes = (state.commonData && state.commonData.riskTypes) || [];
+    this.interventionId = state.gddInterventions.current.id!;
+    this.riskTypes = (state.commonData && state.commonData.gpdRiskTypes) || [];
     this.data = selectRisks(state);
     this.set_canEditAtLeastOneField({risks: currentInterventionPermissions(state)?.edit.risks});
     super.stateChanged(state);
@@ -177,7 +176,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
 
   openRiskDialog(e?: CustomEvent) {
     openDialog({
-      dialog: 'risk-dialog',
+      dialog: 'gdd-risk-dialog',
       dialogData: {
         item: e ? cloneDeep(e.detail) : {},
         interventionId: this.interventionId,
@@ -206,9 +205,9 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   deleteRiskItem(riskId: string) {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-risk-item-remove'
+      loadingSource: 'gdd-interv-risk-item-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.riskDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.riskDelete, {
       interventionId: this.interventionId,
       riskId: riskId
     });
@@ -222,7 +221,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'interv-risk-item-remove'
+          loadingSource: 'gdd-interv-risk-item-remove'
         })
       );
   }

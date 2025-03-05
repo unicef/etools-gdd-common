@@ -2,7 +2,7 @@ import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {TABS} from '../common/constants';
+import {GDD_TABS} from '../common/constants';
 import {isUnicefUser} from '../common/selectors';
 import {RootState} from '../common/types/store.types';
 import './intervention-implementation-status.js';
@@ -10,8 +10,8 @@ import './intervention-monitoring-activities.js';
 import './intervention-results-reported.js';
 import './intervention-reports.js';
 
-@customElement('intervention-progress')
-export class InterventionProgress extends connectStore(LitElement) {
+@customElement('gdd-intervention-progress')
+export class GDDInterventionProgress extends connectStore(LitElement) {
   render() {
     return html`
       <style>
@@ -21,16 +21,16 @@ export class InterventionProgress extends connectStore(LitElement) {
       </style>
       ${this.isUnicefUser
         ? html`
-            <intervention-implementation-status
-              ?hidden="${this.activeSubTab !== TABS.ImplementationStatus}"
-            ></intervention-implementation-status>
-            <intervention-monitoring-activities
-              ?hidden="${this.activeSubTab !== TABS.MonitoringActivities}"
-            ></intervention-monitoring-activities>
-            <intervention-results-reported
-              ?hidden="${this.activeSubTab !== TABS.ResultsReported}"
-            ></intervention-results-reported>
-            <intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></intervention-reports>
+            <gdd-intervention-implementation-status
+              ?hidden="${this.activeSubTab !== GDD_TABS.ImplementationStatus}"
+            ></gdd-intervention-implementation-status>
+            <gdd-intervention-monitoring-activities
+              ?hidden="${this.activeSubTab !== GDD_TABS.MonitoringActivities}"
+            ></gdd-intervention-monitoring-activities>
+            <gdd-intervention-results-reported
+              ?hidden="${this.activeSubTab !== GDD_TABS.ResultsReported}"
+            ></gdd-intervention-results-reported>
+            <gdd-intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></gdd-intervention-reports>
           `
         : ''}
     `;
@@ -47,15 +47,18 @@ export class InterventionProgress extends connectStore(LitElement) {
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 
   stateChanged(state: RootState) {
     if (
-      ![TABS.ImplementationStatus, TABS.MonitoringActivities, TABS.ResultsReported, TABS.Reports].includes(
-        state.app?.routeDetails?.subRouteName!
-      )
+      ![
+        GDD_TABS.ImplementationStatus,
+        GDD_TABS.MonitoringActivities,
+        GDD_TABS.ResultsReported,
+        GDD_TABS.Reports
+      ].includes(state.app?.routeDetails?.subRouteName!)
     ) {
       return;
     }

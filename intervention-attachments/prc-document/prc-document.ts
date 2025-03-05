@@ -12,25 +12,25 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './prcDocument.models';
 import './prcDocument.selectors';
 import {selectPrcDocumentData, selectPrcDocumentPermissions} from './prcDocument.selectors';
-import {PrcDocumentData, PrcDocumentPermissions} from './prcDocument.models';
+import {GDDPrcDocumentData, GDDPrcDocumentPermissions} from './prcDocument.models';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import CONSTANTS from '../../common/constants';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import GDD_CONSTANTS from '../../common/constants';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {patchIntervention} from '../../common/actions/interventions';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {patchIntervention} from '../../common/actions/gddInterventions';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 
 /**
  * @customElement
  */
-@customElement('prc-document')
-export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(LitElement))) {
+@customElement('gdd-prc-document')
+export class GDDPrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(LitElement))) {
   static get styles() {
     return [layoutStyles];
   }
@@ -82,20 +82,20 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
-  data!: PrcDocumentData;
+  data!: GDDPrcDocumentData;
 
   @property({type: Object})
-  permissions!: Permission<PrcDocumentPermissions>;
+  permissions!: Permission<GDDPrcDocumentPermissions>;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'attachments')) {
       return;
     }
 
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
 
@@ -129,7 +129,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
   }
 
   _isDraft(status: string) {
-    return status === CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
+    return status === GDD_CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
   }
 
   saveData() {

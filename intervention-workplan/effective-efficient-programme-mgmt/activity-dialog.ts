@@ -9,16 +9,16 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {translate, get as getTranslation} from 'lit-translate';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import '../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
-import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
-import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
+import {AnyObject, GDDManagementBudgetItem} from '@unicef-polymer/etools-types';
+import {GDDActivityItemsTable} from '../../common/components/activity/activity-items-table';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {removeCurrencyAmountDelimiter} from '../../utils/utils';
@@ -29,8 +29,8 @@ import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 /**
  * @customElement
  */
-@customElement('activity-dialog')
-export class ActivityDialog extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-activity-dialog')
+export class GDDActivityDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -172,7 +172,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             </sl-switch>
           </div>
         </div>
-        <activity-items-table
+        <gdd-activity-items-table
           .dialogElement=${this.dialogElement}
           ?hidden="${!this.useInputLevel}"
           .activityItems="${this.items || []}"
@@ -182,7 +182,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             this.items = detail;
             this.requestUpdate();
           }}"
-        ></activity-items-table>
+        ></gdd-activity-items-table>
       </etools-dialog>
     `;
   }
@@ -192,14 +192,14 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
     const {activity, interventionId, readonly}: any = data;
-    this.items = (activity.items || []).filter((row: ManagementBudgetItem) => row.kind === activity.kind);
+    this.items = (activity.items || []).filter((row: GDDManagementBudgetItem) => row.kind === activity.kind);
     this.useInputLevel = Boolean((this.items || []).length);
     this.readonly = readonly;
 
     setTimeout(() => {
       // timeout to avoid inputLevelChange method reseting totals to 0
       this.data = activity;
-      this.data.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind !== this.data.kind);
+      this.data.items = (this.data.items || []).filter((row: GDDManagementBudgetItem) => row.kind !== this.data.kind);
       this.originalData = cloneDeep(this.data);
       this.data[this.getPropertyName('partner')] = this.data.partner_contribution; // ?
       this.data[this.getPropertyName('unicef')] = this.data.unicef_cash; // ?
@@ -214,10 +214,10 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() dialogOpened = true;
   @property() useInputLevel = false;
   @property({type: String}) currency = '';
-  @property({type: Array}) items: ManagementBudgetItem[] = [];
+  @property({type: Array}) items: GDDManagementBudgetItem[] = [];
   @property({type: Boolean}) readonly = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
-  @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
+  @query('activity-items-table') private activityItemsTable!: GDDActivityItemsTable;
 
   valdateNonInputLevFields() {
     const pCash = this.shadowRoot?.querySelector<EtoolsCurrency>('#partnerContribution')!;
@@ -250,7 +250,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
 
-    this.items.forEach((row: ManagementBudgetItem) => {
+    this.items.forEach((row: GDDManagementBudgetItem) => {
       row.kind = this.data.kind;
     });
     this.loadingInProcess = true;
@@ -259,14 +259,14 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     patchData.items = patchData.items.concat(this.items);
     this.formatDataBeforeSave(patchData);
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
+      endpoint: getEndpoint(gddEndpoints.interventionBudgetUpdate, {
         interventionId: this.interventionId
       }),
       method: 'PATCH',
       body: patchData
     })
-      .then(({intervention}) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+      .then(({gdd}) => {
+        getStore().dispatch(updateCurrentIntervention(gdd));
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch((error: any) => {
@@ -322,7 +322,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   }
 
   validateActivityItems(): AnyObject | undefined {
-    const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
+    const itemsTable: GDDActivityItemsTable | null = this.shadowRoot!.querySelector('gdd-activity-items-table');
     return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 

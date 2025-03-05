@@ -2,8 +2,8 @@ import {css, CSSResult} from 'lit';
 
 // language=css
 export const CommentPanelsStyles: CSSResult = css`
-  comments-list,
-  messages-panel {
+  gdd-comments-list,
+  gdd-messages-panel {
     position: absolute;
     top: 0;
     left: 0;
@@ -25,8 +25,8 @@ export const CommentPanelsStyles: CSSResult = css`
     height: 100%;
     overflow-y: auto;
   }
-  comments-panel-header,
-  messages-panel-header {
+  gdd-comments-panel-header,
+  gdd-messages-panel-header {
     flex-wrap: nowrap;
     display: flex;
     align-items: center;
@@ -37,16 +37,16 @@ export const CommentPanelsStyles: CSSResult = css`
     color: #ffffff;
     cursor: move;
   }
-  comments-panel-header {
+  gdd-comments-panel-header {
     padding: 0 24px 0 24px;
   }
   @media screen and (min-width: 890px) {
-    messages-panel-header {
+    gdd-messages-panel-header {
       padding: 0 64px 0 24px;
     }
   }
   @media screen and (max-width: 889px) {
-    messages-panel-header {
+    gdd-messages-panel-header {
       padding: 0 24px 0 24px;
     }
   }

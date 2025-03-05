@@ -2,15 +2,15 @@ import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentPanelsStyles} from '../common-comments.styles';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {makeCommentsDraggable} from '../../comments/comments.helpers';
-import {CommentRelatedItem} from '../../comments/comments-types';
+import {GDDCommentRelatedItem} from '../../comments/comments-types';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('messages-panel-header')
-export class MessagesPanelHeader extends LitElement {
+@customElement('gdd-messages-panel-header')
+export class GDDMessagesPanelHeader extends LitElement {
   @property() relatedToKey = '';
-  @property() relatedItem: CommentRelatedItem | null = null;
+  @property() relatedItem: GDDCommentRelatedItem | null = null;
 
   protected render(): TemplateResult {
     return html`
@@ -45,9 +45,9 @@ export class MessagesPanelHeader extends LitElement {
 
   hideMessages(refocusInList?: boolean): void {
     if (refocusInList) {
-      const commentsPanelElement = document.querySelector('comments-panels');
-      const commentsListElement = commentsPanelElement?.shadowRoot?.querySelector('comments-list');
-      (commentsListElement?.shadowRoot?.querySelector('comments-group[opened]') as any)?.focus();
+      const commentsPanelElement = document.querySelector('gdd-comments-panels');
+      const commentsListElement = commentsPanelElement?.shadowRoot?.querySelector('gdd-comments-list');
+      (commentsListElement?.shadowRoot?.querySelector('gdd-comments-group[opened]') as any)?.focus();
     }
     fireEvent(this, 'hide-messages');
   }

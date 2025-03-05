@@ -7,16 +7,16 @@ import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import './hru-list.js';
-import CONSTANTS from '../../../common/constants';
+import GDD_CONSTANTS from '../../../common/constants.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints.js';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit.js';
@@ -29,8 +29,8 @@ import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist
  * @appliesMixin EndpointsMixin
  */
 
-@customElement('edit-hru-dialog')
-export class EditHruDialog extends connectStore(LitElement) {
+@customElement('gdd-edit-hru-dialog')
+export class GDDEditHruDialog extends connectStore(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -117,7 +117,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           </div>
           <div class="col-md-6">
             <div class="row" ?hidden="${!this._empty(this.hruData.length)}">${translate('NO_DATES_ADDED')}</div>
-            <hru-list
+            <gdd-hru-list
               id="hruList"
               class="col-12"
               with-scroll
@@ -126,7 +126,7 @@ export class EditHruDialog extends connectStore(LitElement) {
               ?editMode="${true}"
               @delete-hru="${this._deleteHruDate}"
             >
-            </hru-list>
+            </gdd-hru-list>
           </div>
         </div>
       </etools-dialog>
@@ -283,9 +283,9 @@ export class EditHruDialog extends connectStore(LitElement) {
     }
 
     this.updateStartDates(this.repStartDate);
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.reportingRequirements, {
       intervId: this.interventionId,
-      reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
+      reportType: GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });
     const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as unknown as EtoolsDialog;
     dialog.startSpinner();

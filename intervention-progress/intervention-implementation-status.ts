@@ -1,21 +1,21 @@
-import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
+import {GDD} from '@unicef-polymer/etools-types/dist/models-and-classes/gdd.classes';
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import get from 'lodash-es/get';
 import {RootState} from '../common/types/store.types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './fund-reservations-display.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {TABS} from '../common/constants';
+import {GDD_TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 
-@customElement('intervention-implementation-status')
-export class InterventionImplementationStatus extends connectStore(LitElement) {
+@customElement('gdd-intervention-implementation-status')
+export class GDDInterventionImplementationStatus extends connectStore(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -27,25 +27,29 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
         class="content-section"
         panel-title=${translate('IMPLEMENTATION_STATUS_SUBTAB')}
       >
-        <fund-reservations-display
+        <gdd-fund-reservations-display
           .intervention="${this.intervention}"
           .frsDetails="${this.intervention?.frs_details}"
-        ></fund-reservations-display>
+        ></gdd-fund-reservations-display>
       </etools-content-panel>
     `;
   }
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.ImplementationStatus)
+      EtoolsRouter.pageIsNotCurrentlyActive(
+        get(state, 'app.routeDetails'),
+        'gpd-interventions',
+        GDD_TABS.ImplementationStatus
+      )
     ) {
       return;
     }
 
-    if (get(state, 'interventions.current')) {
-      this.intervention = cloneDeep(get(state, 'interventions.current'));
+    if (get(state, 'gddInterventions.current')) {
+      this.intervention = cloneDeep(get(state, 'gddInterventions.current'));
     }
   }
 
@@ -54,7 +58,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 }

@@ -7,8 +7,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {GDD, GDDFrsDetails} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -18,8 +18,8 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 /**
  * @customElement
  */
-@customElement('fund-reservations-display')
-export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElement) {
+@customElement('gdd-fund-reservations-display')
+export class GDDFundReservationsDisplay extends FrNumbersConsistencyMixin(LitElement) {
   static get styles() {
     return [frWarningsStyles, layoutStyles];
   }
@@ -33,7 +33,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         ${dataTableStylesLit} :host {
           --list-column-label: {
             margin-inline-end: 0;
-          }
+          };
         }
         #totalsRow {
           --list-row-no-collapse-bg-color: var(--light-theme-background-color);
@@ -319,7 +319,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
               <strong>${translate('PLANNED')}</strong><strong>${translate('UNICEF_CASH')}</strong>
             </span>
             <span class="col-sm-4  col-md-2 unicef-cash-col">
-              <label for="pd-currency">${translate('PD_CURRENCY')}</label>
+              <label for="pd-currency">${translate('GDD_CURRENCY')}</label>
               ${this.renderPdCurrency()}
             </span>
             <span class="col-sm-4 col-md-3 unicef-cash-col">
@@ -335,9 +335,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
     `;
   }
 
-  _intervention: Intervention | null = null;
+  _intervention: GDD | null = null;
 
-  set intervention(intervention: Intervention | null) {
+  set intervention(intervention: GDD | null) {
     this._intervention = intervention;
     this._checkFrsAmountConsistency();
   }
@@ -347,9 +347,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
     return this._intervention;
   }
 
-  _frsDetails: FrsDetails | null = null;
+  _frsDetails: GDDFrsDetails | null = null;
 
-  set frsDetails(frsDetails: FrsDetails | null) {
+  set frsDetails(frsDetails: GDDFrsDetails | null) {
     this._frsDetails = frsDetails;
     this._checkFrsAmountConsistency();
   }
@@ -365,7 +365,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
   @property({type: Boolean})
   lowResolutionLayout = false;
 
-  _noFrs(frsDetails: FrsDetails) {
+  _noFrs(frsDetails: GDDFrsDetails) {
     return !frsDetails || !frsDetails.frs || !frsDetails.frs.length;
   }
 

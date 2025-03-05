@@ -5,8 +5,8 @@ import '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.js';
 /**
  * LitElement
  */
-@customElement('etools-progress-bar')
-export class EtoolsProgressBar extends LitElement {
+@customElement('gdd-etools-progress-bar')
+export class GDDEtoolsProgressBar extends LitElement {
   // static get is() {
   //   return 'etools-progress-bar';
   // }

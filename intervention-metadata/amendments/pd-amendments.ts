@@ -20,13 +20,13 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import {get as getTranslation} from 'lit-translate/util';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate/util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {getIntervention, setShouldReGetList} from '../../common/actions/interventions';
+import {getIntervention, setShouldReGetList} from '../../common/actions/gddInterventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import './amendment-difference';
@@ -36,8 +36,8 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-
 /**
  * @customElement
  */
-@customElement('pd-amendments')
-export class PdAmendments extends CommentsMixin(LitElement) {
+@customElement('gdd-pd-amendments')
+export class GDDPdAmendments extends CommentsMixin(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -161,7 +161,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                       ? html`
                           <a
                             class="layout-horizontal align-items-center"
-                            href="${Environment.basePath}interventions/${item.amended_intervention}/metadata"
+                            href="${Environment.basePath}gpd-interventions/${item.amended_gdd}/metadata"
                           >
                             ${translate('ACTIVE')} <etools-icon name="launch"></etools-icon>
                           </a>
@@ -207,7 +207,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
                   <div class="info-block">
                     <div class="label">${translate('DIFFERENCE')}</div>
-                    <amendment-difference .difference="${item.difference}"></amendment-difference>
+                    <gdd-amendment-difference .difference="${item.difference}"></gdd-amendment-difference>
                   </div>
                 </div>
               </etools-data-table-row>
@@ -241,17 +241,16 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
-      !state.interventions.current
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'metadata') ||
+      !state.gddInterventions.current
     ) {
       return;
     }
-
-    const amendmentTypes = get(state, 'commonData.interventionAmendmentTypes');
+    const amendmentTypes = get(state, 'commonData.gddAmendmentTypes');
     if (amendmentTypes && !isJsonStrMatch(this.amendmentTypes, amendmentTypes)) {
-      this.amendmentTypes = [...state.commonData!.interventionAmendmentTypes];
+      this.amendmentTypes = [...state.commonData!.gddAmendmentTypes];
     }
-    const currentIntervention = get(state, 'interventions.current');
+    const currentIntervention = get(state, 'gddInterventions.current');
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
       this.amendments = this.intervention.amendments?.sort((a: any, b: any) => b.id - a.id);
@@ -286,7 +285,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
   _showAddAmendmentDialog() {
     openDialog({
-      dialog: 'add-amendment-dialog',
+      dialog: 'gdd-add-amendment-dialog',
       dialogData: {
         intervention: cloneDeep(this.intervention),
         amendmentTypes: this.amendmentTypes
@@ -294,7 +293,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     }).then(({response}) => {
       if (response?.id) {
         getStore().dispatch(setShouldReGetList(true));
-        history.pushState(window.history.state, '', `${Environment.basePath}interventions/${response.id}/metadata`);
+        history.pushState(window.history.state, '', `${Environment.basePath}gpd-interventions/${response.id}/metadata`);
         window.dispatchEvent(new CustomEvent('popstate'));
       }
     });
@@ -317,7 +316,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       });
       const options = {
         method: 'DELETE',
-        endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAmendmentDelete, {
+        endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.interventionAmendmentDelete, {
           amendmentId
         })
       };

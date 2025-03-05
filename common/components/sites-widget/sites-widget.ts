@@ -2,22 +2,22 @@ import {CSSResultArray, html, LitElement, PropertyValues, TemplateResult} from '
 import {customElement, property, query} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {IMarker, MapHelper, MarkerDataObj} from './map-mixin';
+import {IMarker, GDDMapHelper, MarkerDataObj} from './map-mixin';
 import {LocationWidgetStyles} from './location-widget.styles';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {leafletStyles} from './leaflet-styles';
+import {LeafletStyles} from './leaflet-styles';
 import {Site} from '@unicef-polymer/etools-types';
 import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 const DEFAULT_COORDINATES = [-0.09, 51.505];
 
-@customElement('sites-widget')
-export class LocationSitesWidgetComponent extends connectStore(LitElement) {
+@customElement('gdd-sites-widget')
+export class GDDLocationSitesWidgetComponent extends connectStore(LitElement) {
   @property() selectedSites: Site[] = [];
   @property() sites: Site[] = [];
   @property() displayedSites!: Site[];
@@ -29,10 +29,10 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   @query('#map') private mapElement!: HTMLElement;
 
   protected defaultMapCenter = DEFAULT_COORDINATES;
-  private MapHelper!: MapHelper;
+  private MapHelper!: GDDMapHelper;
 
   static get styles(): CSSResultArray {
-    return [elevationStyles, layoutStyles, LocationWidgetStyles, leafletStyles];
+    return [elevationStyles, layoutStyles, LocationWidgetStyles, LeafletStyles];
   }
   get itemStyle(): string {
     // language=CSS
@@ -114,7 +114,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
               type="search"
               .value="${this.locationSearch}"
               @value-changed="${({detail}: CustomEvent<{value: string}>) => this.search(detail)}"
-              placeholder="${translate('INTERVENTIONS_LIST.SEARCH_RECORDS')}"
+              placeholder="${translate('GDD_LIST.SEARCH_RECORDS')}"
               inline
             >
               <etools-icon name="search" slot="prefix"></etools-icon>
@@ -154,7 +154,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.MapHelper = new MapHelper();
+    this.MapHelper = new GDDMapHelper();
     this.mapInitializationProcess = true;
 
     this.defaultMapCenter = this.workspaceCoordinates || DEFAULT_COORDINATES;

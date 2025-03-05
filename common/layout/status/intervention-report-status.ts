@@ -2,13 +2,13 @@ import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import {listenForLangChanged} from 'lit-translate';
+import {listenForLangChanged} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 /**
  * @customElement
  */
-@customElement('intervention-report-status')
-export class InterventionReportStatus extends LitElement {
+@customElement('gdd-intervention-report-status')
+export class GDDInterventionReportStatus extends LitElement {
   render() {
     return html`
       <style>

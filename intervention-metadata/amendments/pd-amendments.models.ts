@@ -1,8 +1,8 @@
-import {InterventionPermissionsFields} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDDPermissionsFields} from '@unicef-polymer/etools-types';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class PdAmendmentPermissions extends ModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+export class PdAmendmentPermissions extends GDDModelsBase {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }
@@ -10,11 +10,9 @@ export class PdAmendmentPermissions extends ModelsBase {
 }
 
 export enum AmendmentsKind {
-  normal = 'normal',
-  contingency = 'contingency'
+  normal = 'normal'
 }
 
 export const AmendmentsKindTranslateKeys = {
-  [AmendmentsKind.normal]: 'NORMAL',
-  [AmendmentsKind.contingency]: 'CONTINGENCY'
+  [AmendmentsKind.normal]: 'NORMAL'
 };

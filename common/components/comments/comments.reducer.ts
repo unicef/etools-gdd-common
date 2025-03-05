@@ -1,21 +1,21 @@
 import {Reducer} from 'redux';
 import {SET_ENDPOINT, ADD_COMMENT, ENABLE_COMMENT_MODE, SET_COMMENTS, UPDATE_COMMENT} from './comments.actions';
-import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
-import {CommentsEndpoints} from './comments-types';
+import {GDDComment, GenericObject} from '@unicef-polymer/etools-types';
+import {GDDCommentsEndpoints} from './comments-types';
 
-export type CommentsCollection = GenericObject<InterventionComment[]>;
-export type CommentsState = {
+export type GDDCommentsCollection = GenericObject<GDDComment[]>;
+export type GDDCommentsState = {
   commentsModeEnabled: boolean;
-  collection: GenericObject<CommentsCollection>;
-  endpoints: CommentsEndpoints;
+  collection: GenericObject<GDDCommentsCollection>;
+  endpoints: GDDCommentsEndpoints;
 };
-const INITIAL: CommentsState = {
+const INITIAL: GDDCommentsState = {
   commentsModeEnabled: false,
   collection: {},
-  endpoints: {} as CommentsEndpoints
+  endpoints: {} as GDDCommentsEndpoints
 };
 
-export const commentsData: Reducer<CommentsState, any> = (state = INITIAL, action) => {
+export const gddCommentsData: Reducer<GDDCommentsState, any> = (state = INITIAL, action) => {
   switch (action.type) {
     case SET_ENDPOINT:
       return {
@@ -51,20 +51,20 @@ export const commentsData: Reducer<CommentsState, any> = (state = INITIAL, actio
 };
 
 function setCommentsToCollection(
-  collection: GenericObject<CommentsCollection>,
+  collection: GenericObject<GDDCommentsCollection>,
   id: number,
-  comments: GenericObject<InterventionComment[]>
-): GenericObject<CommentsCollection> {
+  comments: GenericObject<GDDComment[]>
+): GenericObject<GDDCommentsCollection> {
   collection[id] = comments;
   return collection;
 }
 
 function addCommentToCollection(
-  collection: GenericObject<CommentsCollection>,
+  collection: GenericObject<GDDCommentsCollection>,
   id: number,
   relatedTo: string,
-  comment: InterventionComment
-): GenericObject<CommentsCollection> {
+  comment: GDDComment
+): GenericObject<GDDCommentsCollection> {
   if (!collection[id]) {
     collection[id] = {};
   }
@@ -74,18 +74,18 @@ function addCommentToCollection(
 }
 
 function updateComment(
-  collection: GenericObject<CommentsCollection>,
+  collection: GenericObject<GDDCommentsCollection>,
   id: number,
   relatedTo: string,
-  comment: InterventionComment
-): GenericObject<CommentsCollection> {
+  comment: GDDComment
+): GenericObject<GDDCommentsCollection> {
   const currentComments = collection[id][relatedTo] || [];
-  const index: number = currentComments.findIndex(({id}: InterventionComment) => id === comment.id);
+  const index: number = currentComments.findIndex(({id}: GDDComment) => id === comment.id);
   if (index === -1) {
     console.warn("Comment which you want to update doesn't exists");
     return collection;
   }
-  const updatedComments: InterventionComment[] = [...currentComments];
+  const updatedComments: GDDComment[] = [...currentComments];
   updatedComments.splice(index, 1, comment);
   collection[id][relatedTo] = updatedComments;
   return collection;

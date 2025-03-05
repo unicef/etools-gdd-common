@@ -6,25 +6,25 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import './comment';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
-import {get as getTranslation, translate} from 'lit-translate';
+import {GDDComment, GenericObject} from '@unicef-polymer/etools-types';
+import {get as getTranslation, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {CommentsItemsNameMap} from './comments-items-name-map';
+import {GDDCommentsItemsNameMap} from './comments-items-name-map';
 import {EditComments} from './edit-comments-base';
 import {removeTrailingIds} from './comments.helpers';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
-@customElement('comments-dialog')
-export class CommentsDialog extends EditComments {
+@customElement('gdd-comments-dialog')
+export class GDDCommentsDialog extends EditComments {
   get dialogTitle(): string {
     if (!this.relatedTo) {
       return '';
     }
     const relatedToKey: string = removeTrailingIds(this.relatedTo);
-    const itemType = CommentsItemsNameMap[relatedToKey];
+    const itemType = GDDCommentsItemsNameMap[relatedToKey];
     if (itemType) {
       const description = this.relatedToDescription ? ` - ${this.relatedToDescription}` : '';
-      return `${getTranslation('COMMENTS_ON')}: ${getTranslation(CommentsItemsNameMap[relatedToKey])}${description}`;
+      return `${getTranslation('COMMENTS_ON')}: ${getTranslation(GDDCommentsItemsNameMap[relatedToKey])}${description}`;
     } else if (this.relatedToDescription) {
       return `${getTranslation('COMMENTS_ON')}: ${this.relatedToDescription}`;
     } else {
@@ -37,9 +37,8 @@ export class CommentsDialog extends EditComments {
     this.relatedTo = relatedTo;
     this.endpoints = endpoints;
     this.relatedToDescription = relatedToDescription;
-    const comments: GenericObject<InterventionComment[]> =
-      getStore().getState().commentsData.collection[interventionId];
-    const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
+    const comments: GenericObject<GDDComment[]> = getStore().getState().gddCommentsData.collection[interventionId];
+    const relatedToComments: GDDComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
     this.updateComplete.then(() => this.scrollDown());
   }
@@ -55,11 +54,11 @@ export class CommentsDialog extends EditComments {
           overflow-y: auto;
         }
       </style>
-      <etools-dialog size="md" keep-dialog-open dialog-title="${this.dialogTitle}" @close="${this.onClose}" no-padding>
+      <etools-dialog size="md" keep-dialog-open dialog-title="${this.dialogTitle}" @close="${this.onClose}">
         <div class="container-dialog">
           ${this.comments.map(
             (comment: any, index: number) =>
-              html`<comment-element
+              html`<gdd-comment-element
                 .comment="${comment}"
                 ?my-comment="${comment.user.id === this.currentUser.id}"
                 .resolving="${this.isResolving(comment.id)}"
@@ -67,7 +66,7 @@ export class CommentsDialog extends EditComments {
                 @resolve="${() => this.resolveComment(comment.id, index)}"
                 @delete="${() => this.deleteComment(comment.id, index)}"
                 @retry="${() => this.retry(index)}"
-              ></comment-element>`
+              ></gdd-comment-element>`
           )}
           <div class="no-comments" ?hidden="${this.comments.length}">${translate('NO_COMMENTS')}</div>
         </div>

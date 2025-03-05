@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import './sites-widget';
 import {Site} from '@unicef-polymer/etools-types';
@@ -13,8 +13,8 @@ import {Site} from '@unicef-polymer/etools-types';
 /**
  * @customElement
  */
-@customElement('sites-dialog')
-export class GroupedLocationsDialog extends LitElement {
+@customElement('gdd-sites-dialog')
+export class GDDGroupedLocationsDialog extends LitElement {
   static get styles() {
     return [layoutStyles];
   }
@@ -83,14 +83,14 @@ export class GroupedLocationsDialog extends LitElement {
       >
         <div class="row">
           <div class="col-12">
-            <sites-widget
+            <gdd-sites-widget
               .workspaceCoordinates="${this.workspaceCoordinates}"
               .sites="${this.sites}"
               .selectedSites="${this.selectedSites}"
               @sites-changed="${({detail}: CustomEvent) => {
                 this.onSitesChanged(detail.sites || []);
               }}"
-            ></sites-widget>
+            ></gdd-sites-widget>
           </div>
           <div class="col-12">
             <etools-textarea

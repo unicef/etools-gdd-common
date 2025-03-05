@@ -5,13 +5,13 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
-import '../../intervention-workplan-editor/time-intervals/time-intervals';
+import '../time-intervals/time-intervals';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {GDDActivity, GDDQuarter} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
@@ -31,13 +31,13 @@ import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query.js';
 
-@customElement('pd-activities')
-export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
+@customElement('gdd-pd-activities')
+export class GDDPdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
   currency = '';
 
   @property({type: Array})
-  activities: InterventionActivity[] = [];
+  activities: GDDActivity[] = [];
 
   @property({type: Boolean})
   readonly!: boolean;
@@ -49,13 +49,26 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   inAmendmentDate!: string;
 
   @property({type: String})
+  flatLocations: any[] = [];
+
+  @property({type: String})
   interventionStatus!: string;
 
   @property({type: Boolean}) showInactive!: boolean;
 
+  @property({type: Number})
+  ewpKeyIntervention!: number;
+
+  @property({type: Number})
   interventionId!: number;
-  pdOutputId!: number;
-  quarters!: InterventionQuarter[];
+
+  @property({type: Number})
+  keyInterventionId!: number;
+
+  @property({type: Number})
+  partnerId!: number;
+
+  quarters!: GDDQuarter[];
 
   protected render(): TemplateResult {
     // language=HTML
@@ -75,6 +88,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         .word-break {
           word-break: break-word;
         }
+        #iit-dfp {
+          --iit-margin: 0 0 4px 4px;
+        }
       </style>
 
       <etools-media-query
@@ -85,17 +101,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
       ></etools-media-query>
       <etools-data-table-row .detailsOpened="${true}" id="activitiesRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
-          <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
-          <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <etools-icon-button
-              name="add-box"
-              slot="custom-icon"
-              class="add"
-              @click="${() => this.openDialog()}"
-              ?hidden="${this.readonly}"
-            ></etools-icon-button>
-            <span class="no-wrap" slot="message">${translate('ADD_PD_ACTIVITY')}</span>
-          </etools-info-tooltip>
+          <div class="title-text">${translate(gddTranslatesMap.activities)} (${this.activities.length})</div>
         </div>
         <div slot="row-data-details">
           <div
@@ -104,14 +110,12 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           >
             <div class="left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
             <div class="secondary-cell center">${translate('TIME_PERIODS')}</div>
-            <div class="secondary-cell right">${translate('PARTNER_CASH')}</div>
-            <div class="secondary-cell right">${translate('UNICEF_CASH')}</div>
             <div class="secondary-cell right">${translate('GENERAL.TOTAL')} (${this.currency})</div>
           </div>
 
           ${this.activities.length
             ? this.activities.map(
-                (activity: InterventionActivity, index: number) => html`
+                (activity: GDDActivity, index: number) => html`
                   <div
                     class="table-row editable-row"
                     related-to="activity-${activity.id}"
@@ -139,6 +143,12 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                                 >${activity.is_active ? '' : html`(<u>${translate('INACTIVE')}</u>) `}${activity.name ||
                                 '-'}</b
                               >
+                              <info-icon-tooltip
+                                ?hidden="${!this.activityHasDifferentPartnerThanGpd(activity)}"
+                                id="iit-dfp"
+                                .tooltipText="${translate('DIFFERENT_PARTNER_INVOLVED')}"
+                              >
+                              </info-icon-tooltip>
                             </div>
                             <div class="details word-break" ?hidden="${!activity.context_details}">
                               ${this.truncateString(activity.context_details)}
@@ -161,39 +171,18 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                         ? html`<div class="layout-horizontal w100">
                             <div class="cellLabel">${translate('TIME_PERIODS')}</div>
                             <div>
-                              <time-intervals
+                              <gdd-time-intervals
                                 .quarters="${this.quarters}"
                                 .selectedTimeFrames="${activity.time_frames}"
                                 without-popup
                               >
-                              </time-intervals>
+                              </gdd-time-intervals>
                             </div>
                           </div>`
-                        : html` <time-intervals
+                        : html` <gdd-time-intervals
                             .quarters="${this.quarters}"
                             .selectedTimeFrames="${activity.time_frames}"
-                            without-popup
-                          ></time-intervals>`}
-                    </div>
-
-                    <!--    CSO Cash    -->
-                    <div class="secondary-cell right">
-                      ${this.lowResolutionLayout
-                        ? html` <div class="layout-horizontal w100">
-                            <div class="cellLabel">${translate('PARTNER_CASH')}</div>
-                            <div>${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}</div>
-                          </div>`
-                        : html`${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}`}
-                    </div>
-
-                    <!--    UNICEF Cash    -->
-                    <div class="secondary-cell right">
-                      ${this.lowResolutionLayout
-                        ? html` <div class="layout-horizontal w100">
-                            <div class="cellLabel">${translate('UNICEF_CASH')}</div>
-                            <div></div>
-                          </div>`
-                        : html`${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}`}
+                          ></gdd-time-intervals>`}
                     </div>
 
                     <!--    Total    -->
@@ -244,7 +233,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                               this.inAmendmentDate
                             )}"
                             @click="${() =>
-                              openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
+                              openActivityDeactivationDialog(activity.id, this.keyInterventionId, this.interventionId)}"
                           >
                             <etools-icon slot="prefix" name="block"></etools-icon>
                             ${translate('DEACTIVATE')}
@@ -259,7 +248,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                               this.inAmendmentDate
                             )}"
                             @click="${() =>
-                              openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
+                              openDeleteActivityDialog(activity.id, this.keyInterventionId, this.interventionId)}"
                           >
                             <etools-icon slot="prefix" name="delete"></etools-icon>
                             ${translate('DELETE')}
@@ -270,7 +259,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                   </div>
                 `
               )
-            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_PD_ACTIVITIES')}</div> `}
+            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_WORKPLAN_ACTIVITIES')}</div> `}
         </div>
       </etools-data-table-row>
     `;
@@ -327,13 +316,24 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     row.detailsOpened = true;
   }
 
-  openDialog(activity?: InterventionActivity, readonly?: boolean): void {
+  activityHasDifferentPartnerThanGpd(activity?: GDDActivity) {
+    const partners = activity?.ewp_activity?.partners;
+    if (!partners) {
+      return false;
+    }
+    return partners.length && (partners.length > 1 || !partners.includes(Number(this.partnerId)));
+  }
+
+  openDialog(activity?: GDDActivity, readonly?: boolean): void {
     openDialog<any>({
-      dialog: 'activity-data-dialog',
+      dialog: 'gdd-activity-data-dialog',
       dialogData: {
         activityId: activity && activity.id,
         interventionId: this.interventionId,
-        pdOutputId: this.pdOutputId,
+        keyInterventionId: this.keyInterventionId,
+        ewpKeyIntervention: this.ewpKeyIntervention,
+        flatLocations: this.flatLocations,
+        partnerId: this.partnerId,
         quarters: this.quarters,
         readonly: readonly,
         currency: this.currency

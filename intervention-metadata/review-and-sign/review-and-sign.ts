@@ -10,7 +10,7 @@ import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
-import CONSTANTS from '../../common/constants';
+import GDD_CONSTANTS from '../../common/constants';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -18,22 +18,22 @@ import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-compari
 
 import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../common/managementDocument.selectors';
-import {ReviewDataPermission, ReviewData} from './managementDocument.model';
+import {GDDReviewDataPermission, GDDReviewData} from './managementDocument.model';
 import isEmpty from 'lodash-es/isEmpty';
 import cloneDeep from 'lodash-es/cloneDeep';
 
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, EtoolsEndpoint, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 
@@ -42,8 +42,8 @@ import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/aja
  * @appliesMixin CommonMixin
  * @appliesMixin UploadsMixin
  */
-@customElement('review-and-sign')
-export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
+@customElement('gdd-review-and-sign')
+export class GDDInterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
   static get styles() {
     return [layoutStyles];
   }
@@ -99,7 +99,21 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
-        <div class="row">
+        <div class="row padding-v">
+            <div class="col-12">
+              <etools-checkbox
+                id="ckbSignatureRequired"
+                ?checked="${this.data?.signature_required}"
+                ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.signature_required)}"
+                @sl-change="${(e: any) => {
+                  this.valueChanged({value: e.target.checked}, 'signature_required');
+                }}"
+              >
+                ${translate('SIGNATURE_REQUIRED')}
+              </etools-checkbox>
+            </div>
+        </div>
+        <div class="row" ?hidden="${!this.data?.signature_required}">
           <div class="col-md-6 col-12">
             <!-- Signed By Partner Authorized Officer -->
             <etools-dropdown
@@ -216,10 +230,10 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             }
           </div>
           <div class="col-md-9 col-12">
-            <!-- Signed PD/SPD -->
+            <!-- Signed GDD -->
             <etools-upload
               id="signedIntervFile"
-              label=${translate('SIGNED_PD_SPD')}
+              label=${translate('SIGNED_GDD_SPD')}
               accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.signed_pd_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
@@ -228,7 +242,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               ?auto-validate="${this.editMode}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.signed_pd_attachment)}"
               ?required="${this.permissions?.required.signed_pd_attachment}"
-              error-message=${translate('SELECT_SIGNED_PD_SPD_DOC')}
+              error-message=${translate('SELECT_SIGNED_GDD_SGDD_DOC')}
               @upload-started="${this.__onUploadStarted}"
               @upload-finished="${this._signedPDUploadFinished}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
@@ -252,16 +266,16 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
-  originalData!: ReviewData;
+  originalData!: GDDReviewData;
 
   @property({type: Object})
-  data!: ReviewData;
+  data!: GDDReviewData;
 
   @property({type: Object})
-  permissions!: Permission<ReviewDataPermission>;
+  permissions!: Permission<GDDReviewDataPermission>;
 
   @property({type: Array})
   signedByUnicefUsers!: User[] | MinimalUser[];
@@ -281,7 +295,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   private justUploaded = false;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'metadata')) {
       return;
     }
 
@@ -297,7 +311,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
 
-    if (state.interventions.current) {
+    if (state.gddInterventions.current) {
       const reviewData = selectReviewData(state);
       if (!isJsonStrMatch(this.originalData, reviewData)) {
         this.data = cloneDeep(reviewData);
@@ -357,7 +371,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
 
   _isDraft(status: string) {
-    return status === CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
+    return status === GDD_CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
   }
 
   _hideDeleteBtn(status: string, fileUrl: string) {
@@ -425,11 +439,10 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     if (!this.validate()) {
       return Promise.resolve(false);
     }
-
     return getStore()
       .dispatch<AsyncAction>(
         // @ts-ignore
-        patchIntervention(this.formatUserData(getDifference<ReviewData>(this.originalData, this.data)))
+        patchIntervention(this.formatUserData(getDifference<GDDReviewData>(this.originalData, this.data)))
       )
       .then(() => {
         this._onUploadSaved();
@@ -437,10 +450,10 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       });
   }
 
-  private formatUserData(data: ReviewData) {
+  private formatUserData(data: GDDReviewData) {
     const dataToSave: any = cloneDeep(data);
     dataToSave.unicef_signatory = data.unicef_signatory?.id;
-    // eslint-disable-next-line max-len
+
     dataToSave.partner_authorized_officer_signatory = data.partner_authorized_officer_signatory?.id;
     return dataToSave;
   }

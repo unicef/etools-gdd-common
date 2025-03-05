@@ -1,14 +1,14 @@
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 const EXPORT_COMMENTS = 'download_comments';
 const EXPORT_RESULTS = 'export_results';
 const EXPORT_PDF = 'export_pdf';
 const EXPORT_XLS = 'export_xls';
-const EXPORT_COMMENTS_EPD = 'download_comments_epd';
-const EXPORT_RESULTS_EPD = 'export_results_epd';
-const EXPORT_PDF_EPD = 'export_pdf_epd';
-const EXPORT_XLS_EPD = 'export_xls_epd';
+const EXPORT_COMMENTS_GDD = 'download_comments_gdd';
+const EXPORT_RESULTS_GDD = 'export_results_gdd';
+const EXPORT_PDF_GDD = 'export_pdf_gdd';
+const EXPORT_XLS_GDD = 'export_xls_gdd';
 
 export const SEND_TO_PARTNER = 'send_to_partner';
 export const SEND_TO_UNICEF = 'send_to_unicef';
@@ -30,7 +30,7 @@ export const SEND_BACK_REVIEW = 'send_back_review';
 export const SUSPEND = 'suspend';
 export const UNSUSPEND = 'unsuspend';
 
-export const EXPORT_ACTIONS = [EXPORT_PDF, EXPORT_XLS, EXPORT_COMMENTS, EXPORT_RESULTS];
+export const EXPORT_ACTIONS = [EXPORT_PDF, EXPORT_XLS, EXPORT_COMMENTS];
 export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK, REJECT_REVIEW, SEND_BACK_REVIEW];
 export const ACTIONS_WITH_INPUT = [
   CANCEL,
@@ -49,10 +49,10 @@ export const ActionNamesMap: AnyObject = {
   [EXPORT_PDF]: {text: translate('EXPORT_PDF'), textKey: 'EXPORT_PDF'},
   [EXPORT_XLS]: {text: translate('EXPORT_XLS'), textKey: 'EXPORT_XLS'},
   [EXPORT_RESULTS]: {text: translate('EXPORT_RESULTS'), textKey: 'EXPORT_RESULTS'},
-  [EXPORT_COMMENTS_EPD]: {text: translate('EXPORT_EPD_COMMENTS'), textKey: 'EXPORT_EPD_COMMENTS'},
-  [EXPORT_PDF_EPD]: {text: translate('EXPORT_EPD_PDF'), textKey: 'EXPORT_EPD_PDF'},
-  [EXPORT_XLS_EPD]: {text: translate('EXPORT_EPD_XLS'), textKey: 'EXPORT_EPD_XLS'},
-  [EXPORT_RESULTS_EPD]: {text: translate('EXPORT_EPD_RESULTS'), textKey: 'EXPORT_EPD_RESULTS'},
+  [EXPORT_COMMENTS_GDD]: {text: translate('EXPORT_COMMENTS_GDD'), textKey: 'EXPORT_COMMENTS_GDD'},
+  [EXPORT_PDF_GDD]: {text: translate('EXPORT_PDF_GDD'), textKey: 'EXPORT_PDF_GDD'},
+  [EXPORT_XLS_GDD]: {text: translate('EXPORT_XLS_GDD'), textKey: 'EXPORT_XLS_GDD'},
+  [EXPORT_RESULTS_GDD]: {text: translate('EXPORT_RESULTS_GDD'), textKey: 'EXPORT_RESULTS_GDD'},
   [SEND_TO_PARTNER]: {text: translate('SEND_TO_PARTNER'), textKey: 'SEND_TO_PARTNER'},
   [SEND_TO_UNICEF]: {text: translate('SEND_TO_UNICEF'), textKey: 'SEND_TO_UNICEF'},
   [UNLOCK]: {text: translate('UNLOCK'), textKey: 'UNLOCK'},

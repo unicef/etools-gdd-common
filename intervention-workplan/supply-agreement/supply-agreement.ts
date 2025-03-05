@@ -23,36 +23,38 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
-import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {getIntervention, updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {addCurrencyAmountDelimiter, displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
 import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {AnyObject, AsyncAction, EtoolsEndpoint, InterventionSupplyItem} from '@unicef-polymer/etools-types';
-import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {GDD, GDDExpectedResult} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 const customStyles = html`
   <style>
-    .col_title {
-      width: 99%;
-      min-width: 70px;
-    }
-    .col_nowrap {
-      width: 1%;
-      white-space: nowrap;
-    }
-    .word-break {
+    .col_3 {
+      max-width: 25%;
+      width: 25%;
       word-break: break-word;
     }
-    @media (min-width: 760px) and (max-width: 1000px) {
+    .col_2 {
+      max-width: 18%;
+      width: 18%;
+      word-break: break-word;
+    }
+    .row-actions {
+      min-width: 94px !important;
+    }
+    @media (min-width: 760px) and (max-width: 1080px) {
       .row-actions .actions {
         left: 0;
       }
@@ -64,8 +66,8 @@ const customStyles = html`
   </style>
 `;
 
-@customElement('supply-agreements')
-export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-supply-agreements')
+export class GDDFollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -116,7 +118,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate(translatesMap.supply_items)}
+        panel-title=${translate(gddTranslatesMap.supply_items)}
         comment-element="supply-agreement"
       >
         ${this.supply_items?.length && this.permissions.edit.supply_items
@@ -184,7 +186,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         hidden
         accept=".csv"
         .endpointInfo="${{
-          endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyItemsUpload, {
+          endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.supplyItemsUpload, {
             interventionId: this.intervention.id
           }).url,
           rawFilePropertyName: 'supply_items_file',
@@ -200,38 +202,38 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   supply_items!: AnyObject[];
 
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: translate('ITEM_ALL_PRICES') as unknown as string,
+      label: translate('ITEM_GDD_CURRENCY') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      cssClass: 'col_title word-break'
+      cssClass: 'col_3'
     },
     {
       label: translate('NUMBER_UNITS') as unknown as string,
       name: 'unit_number',
       type: EtoolsTableColumnType.Number,
-      cssClass: 'col_nowrap'
+      cssClass: 'col_2'
     },
     {
       label: translate('PRICE_UNIT') as unknown as string,
       name: 'unit_price',
       type: EtoolsTableColumnType.Number,
-      cssClass: 'col_nowrap'
+      cssClass: 'col_2'
     },
     {
       label: '',
       name: 'total_price',
-      cssClass: 'col_nowrap',
+      cssClass: 'col_2',
       type: EtoolsTableColumnType.Number
     },
     {
       label: translate('PROVIDED_BY') as unknown as string,
       name: 'provided_by',
-      cssClass: 'col_nowrap',
+      cssClass: 'col_2',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
       customMethod: (item: any, _key: string, customData: AnyObject) => {
@@ -261,7 +263,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
     childRow.showExpanded = false;
-    const resultLink = this.intervention.result_links.find((result: ExpectedResult) => result.id === item.result);
+    const resultLink = this.intervention.result_links.find((result: GDDExpectedResult) => result.id === item.result);
     const output = resultLink ? resultLink.cp_output_name : '';
     // hide CP Output for Partner User, and preserve layout
     childRow.rowHTML = html`
@@ -300,7 +302,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   getUploadHelpText() {
     const link1 = 'https://supply.unicef.org/all-materials.html';
     const link2 = 'https://unpartnerportalcso.zendesk.com/hc/en-us/articles/12669187044631-Creating-a-supply-plan';
-    return getTranslation('UPLOAD_SUPPLY_HELPER')
+    return getTranslation('GDD_UPLOAD_SUPPLY_HELPER')
       .replace('{0}', `<a target='_blank' href=${link1}>${link1}</a>`)
       .replace('{1}', `<a target='_blank' href=${link2}>${getTranslation('GUIDE')}</a>`);
   }
@@ -312,12 +314,12 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   stateChanged(state: RootState): void {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Workplan)) {
       return;
     }
-    if (get(state, 'interventions.current')) {
-      const currentIntervention = get(state, 'interventions.current');
-      this.intervention = cloneDeep(currentIntervention) as Intervention;
+    if (get(state, 'gddInterventions.current')) {
+      const currentIntervention = get(state, 'gddInterventions.current');
+      this.intervention = cloneDeep(currentIntervention) as GDD;
       this.currencyDisplayForTotal();
     }
     this.supply_items = selectSupplyAgreement(state);
@@ -368,14 +370,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   deleteSupplyItem(supplyId: number) {
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.supplyAgreementEdit, {
       interventionId: this.intervention.id,
       supplyId: supplyId
     });
 
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'intervention-tabs'
+      loadingSource: 'gdd-intervention-tabs'
     });
 
     sendRequest({
@@ -388,7 +390,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           .finally(() =>
             fireEvent(this, 'global-loading', {
               active: false,
-              loadingSource: 'intervention-tabs'
+              loadingSource: 'gdd-intervention-tabs'
             })
           );
       })
@@ -396,7 +398,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'intervention-tabs'
+          loadingSource: 'gdd-intervention-tabs'
         });
       });
   }
@@ -420,14 +422,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     try {
       const response: AnyObject = JSON.parse(errorResponse);
       return Object.values(response).join('; ');
-    } catch (e) {
+    } catch {
       return defaultMessage;
     }
   }
 
   private openSupplyDialog(item: InterventionSupplyItem) {
     openDialog({
-      dialog: 'supply-agreement-dialog',
+      dialog: 'gdd-supply-agreement-dialog',
       dialogData: {
         data: cloneDeep(item),
         interventionId: this.intervention.id,

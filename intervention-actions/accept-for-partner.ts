@@ -3,12 +3,12 @@ import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
-@customElement('accept-for-partner')
-export class AcceptForPartner extends LitElement {
+@customElement('gdd-accept-for-partner')
+export class GDDAcceptForPartner extends LitElement {
   render() {
     return html` ${sharedStyles}
       <style>

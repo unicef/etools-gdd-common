@@ -1,7 +1,7 @@
 import {LitElement, html, TemplateResult, CSSResultArray} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import CONSTANTS from '../../common/constants';
+import GDD_CONSTANTS from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
@@ -9,42 +9,36 @@ import './intervention-attachment-dialog';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {
-  InterventionAttachment,
-  Intervention,
-  IdAndName,
-  AsyncAction,
-  EtoolsEndpoint
-} from '@unicef-polymer/etools-types';
+import {GDDAttachment, GDD, IdAndName, AsyncAction, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {AttachmentsListStyles} from './attachments-list.styles';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {getFileNameFromURL, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {getIntervention} from '../../common/actions/interventions';
+import {getIntervention} from '../../common/actions/gddInterventions';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('attachments-list')
-export class AttachmentsList extends CommentsMixin(LitElement) {
+@customElement('gdd-attachments-list')
+export class GDDAttachmentsList extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     return [layoutStyles];
   }
-  @property() attachments: InterventionAttachment[] = [];
+  @property() attachments: GDDAttachment[] = [];
   @property() showInvalid = false;
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
   @property({type: String}) deleteConfirmationMessage = translate('DELETE_ATTACHMENTS_PROMPT') as unknown as string;
   @property({type: Boolean}) lowResolutionLayout = false;
-  private intervention!: Intervention;
+  private intervention!: GDD;
 
   protected render(): TemplateResult {
     return html`
@@ -153,14 +147,14 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: any): void {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'attachments')) {
       return;
     }
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
 
-    this.intervention = cloneDeep(state.interventions.current);
+    this.intervention = cloneDeep(state.gddInterventions.current);
     this.attachments = this.intervention.attachments || [];
     this.canEdit = this.intervention.permissions!.edit.attachments || false;
 
@@ -168,9 +162,9 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     super.stateChanged(state);
   }
 
-  openAttachmentDialog(attachment?: InterventionAttachment): void {
+  openAttachmentDialog(attachment?: GDDAttachment): void {
     openDialog({
-      dialog: 'intervention-attachment-dialog',
+      dialog: 'gdd-intervention-attachment-dialog',
       dialogData: {attachment}
     });
   }
@@ -181,7 +175,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     return attachmentType ? getTranslatedValue(attachmentType.name, 'FILE_TYPES') : '—';
   }
 
-  async openDeleteConfirmation(attachment: InterventionAttachment) {
+  async openDeleteConfirmation(attachment: GDDAttachment) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
@@ -196,13 +190,13 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     }
   }
 
-  deleteAttachment(attachment: InterventionAttachment) {
+  deleteAttachment(attachment: GDDAttachment) {
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'interv-attachment-remove'
+      loadingSource: 'gdd-interv-attachment-remove'
     });
 
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.updatePdAttachment, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.updatePdAttachment, {
       id: attachment.intervention,
       attachment_id: attachment.id
     });
@@ -220,19 +214,19 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
       .finally(() =>
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'interv-attachment-remove'
+          loadingSource: 'gdd-interv-attachment-remove'
         })
       );
   }
 
   canEditAttachments() {
     return (
-      this.intervention.status !== CONSTANTS.STATUSES.Closed.toLowerCase() &&
-      this.intervention.status !== CONSTANTS.STATUSES.Terminated.toLowerCase()
+      this.intervention.status !== GDD_CONSTANTS.STATUSES.Closed.toLowerCase() &&
+      this.intervention.status !== GDD_CONSTANTS.STATUSES.Terminated.toLowerCase()
     );
   }
 
   canDeleteAttachments() {
-    return this.intervention.status === CONSTANTS.STATUSES.Draft.toLowerCase();
+    return this.intervention.status === GDD_CONSTANTS.STATUSES.Draft.toLowerCase();
   }
 }

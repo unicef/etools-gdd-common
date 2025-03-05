@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../../utils/intervention-endpoints';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
@@ -17,15 +17,15 @@ import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {get as getTranslation, translate} from 'lit-translate';
+import {get as getTranslation, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import dayjs from 'dayjs';
 
 /**
  * @LitElement
  * @customElement
  */
-@customElement('pd-termination')
-export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitElement)) {
+@customElement('gdd-pd-termination')
+export class GDDPdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -42,6 +42,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         #pdTerminationConfirmation {
           --etools-dialog-confirm-btn-bg: var(--primary-color);
         }
+        .p-static {
+          position: static !important;
+        }
       </style>
       <etools-dialog
         no-padding
@@ -50,16 +53,17 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         size="md"
         ?hidden="${this.warningOpened}"
         ok-btn-text="${translate('TERMINATE')}"
-        dialog-title="${translate('TERMINATE_PD_SPD')}"
+        dialog-title="${translate('TERMINATE_GDD_SPD')}"
         confirmBtnVariant="danger"
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
         ?show-spinner="${this.savingInProcess}"
       >
+      <div class="container-dialog">
         <div class="row">
           <datepicker-lite
-            class="col-12"
+            class="col-12 p-static"
             id="terminationDate"
             label="${translate('TERMINATION_DATE')}"
             .value="${this.termination.date}"
@@ -73,7 +77,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
           >
           </datepicker-lite>
         </div>
-        <div class="row">
+        <div class="row padding-v">
           <etools-upload
             class="col-12"
             id="terminationNotice"
@@ -87,7 +91,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
             error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
           >
         </div>
-        <div class="row">
+        <div class="row padding-v">
           <etools-warn-message-lit
             class="col-12"
             .messages="${this.warnMessages}"
@@ -95,12 +99,13 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
           </etools-warn-message-lit>
 
         </div>
+        </div>
       </etools-dialog>
     `;
   }
 
   @property({type: String})
-  uploadEndpoint: string | undefined = interventionEndpoints.attachmentsUpload.url;
+  uploadEndpoint: string | undefined = gddEndpoints.attachmentsUpload.url;
 
   @property({type: Number})
   interventionId!: number;
@@ -131,7 +136,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
     this.interventionId = interventionId;
   }
 
-  warnMessages: string[] = [getTranslation('ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE')];
+  warnMessages: string[] = [getTranslation('ONCE_YOU_HIT_SAVE_THE_GDD_WILL_BE_TERMINATED_AND_UNREVERSABLE')];
 
   _getMaxDate() {
     return dayjs(Date.now()).add(30, 'd').toDate();

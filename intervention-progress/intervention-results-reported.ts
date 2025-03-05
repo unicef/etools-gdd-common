@@ -23,10 +23,10 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils
 import get from 'lodash-es/get';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {currentIntervention} from '../common/selectors';
-import {TABS} from '../common/constants';
+import {GDD_TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-mixin';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
@@ -44,7 +44,7 @@ import {
   datesAreEqual,
   isValidDate
 } from '@unicef-polymer/etools-utils/dist/date.util';
-import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {gddEndpoints} from '../utils/intervention-endpoints';
 import {getIndicatorDisplayType} from '../utils/utils';
 import dayjs from 'dayjs';
 
@@ -58,8 +58,8 @@ import dayjs from 'dayjs';
 /**
  * @customElement
  */
-@customElement('intervention-results-reported')
-export class InterventionResultsReported extends connectStore(
+@customElement('gdd-intervention-results-reported')
+export class GDDInterventionResultsReported extends connectStore(
   UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
 ) {
   static get styles() {
@@ -178,11 +178,11 @@ export class InterventionResultsReported extends connectStore(
             <etools-input
               readonly
               placeholder="—"
-              label="${translate('PD_DURATION')}"
+              label="${translate('GDD_DURATION')}"
               .value="${this._getPdDuration(this.progress.start_date, this.progress.end_date)}"
             >
             </etools-input>
-            <etools-progress-bar value="${this.pdProgress}" noDecimals></etools-progress-bar>
+            <gdd-etools-progress-bar value="${this.pdProgress}" noDecimals></gdd-etools-progress-bar>
           </div>
           <div class="layout-vertical col-md-5 col-12">
             <div class="row" id="cash-progress">
@@ -222,12 +222,12 @@ export class InterventionResultsReported extends connectStore(
               </etools-input>
             </div>
 
-            <etools-progress-bar
+            <gdd-etools-progress-bar
               .value="${this._getPropertyText(this.progress.disbursement_percent)}"
               noDecimals
               ?hidden="${this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
             >
-            </etools-progress-bar>
+            </gdd-etools-progress-bar>
             ${this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)
               ? html`<etools-info-tooltip
                   class="currency-mismatch col-6"
@@ -245,14 +245,14 @@ export class InterventionResultsReported extends connectStore(
             <etools-input
               readonly
               placeholder="—"
-              label="${translate('OVERALL_PD_SPD_RATING')}"
+              label="${translate('OVERALL_GDD_SGDD_RATING')}"
               .value="${this._getOverallPdStatusDate(this.latestAcceptedPr)}"
               noPlaceholder
             >
-              <intervention-report-status
+              <gdd-intervention-report-status
                 status="${this.latestAcceptedPr ? this.latestAcceptedPr.review_overall_status : ''}"
                 slot="prefix"
-              ></intervention-report-status>
+              ></gdd-intervention-report-status>
             </etools-input>
           </div>
         </div>
@@ -272,81 +272,83 @@ export class InterventionResultsReported extends connectStore(
             </div>
 
             <!-- RAM indicators display -->
-            <etools-ram-indicators
+            <gdd-etools-ram-indicators
               interventionId="${this.interventionId}"
               cpId="${item.external_cp_output_id}"
-            ></etools-ram-indicators>
+            ></gdd-etools-ram-indicators>
 
             <div class="row padding-row" ?hidden="${!this._emptyList(item.ll_outputs)}">
-              <p class="col-12">${translate('NO_PD_OUTPUTS')}</p>
+              <p class="col-12">${translate('NO_KEY_INTERVENTIONS')}</p>
             </div>
 
             <div class="lower-results-table" ?hidden="${this._emptyList(item.ll_outputs)}">
               <etools-data-table-header id="listHeader" no-title .lowResolutionLayout="${this.lowResolutionLayout}">
-                <etools-data-table-column class="col-9">${translate('PD_OUTPUTS')}</etools-data-table-column>
+                <etools-data-table-column class="col-9">${translate('KEY_INTERVENTIONS')}</etools-data-table-column>
                 <etools-data-table-column class="col-3">${translate('CURRENT_PROGRESS')}</etools-data-table-column>
               </etools-data-table-header>
 
               ${item.ll_outputs.map(
-                (lowerResult: any) => html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
-                  <div slot="row-data">
-                    <span class="col-data col-9" data-col-header-label="${translate('PD_OUTPUTS')}">
-                      ${lowerResult.title}
-                    </span>
-                    <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
-                      <intervention-report-status
-                        status="${this._getLowerResultStatus(lowerResult.id)}"
-                      ></intervention-report-status>
-                      <span class="lower-result-status-date">${this._getLowerResultStatusDate(lowerResult.id)}</span>
-                    </span>
-                  </div>
-                  <div slot="row-data-details">
-                    <div class="row-details-content">
-                      <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
-                        ${translate('NO_INDICATORS')}
-                      </div>
-                      ${this._getIndicatorsReports(lowerResult.id).map(
-                        (indicatorReport: any) => html`<div class="row indicator-report">
-                            <div class="col-data col-12 col-md-9">
-                              ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
-                              ${indicatorReport.reportable.blueprint.title}
-                            </div>
-                            <div class="col-data col-12 col-md-3 progress-bar">
-                              <etools-progress-bar
-                                class="report-progress-bar"
-                                value="${this.getProgressPercentage(
-                                  indicatorReport.reportable.total_against_target,
-                                  indicatorReport.reportable.blueprint.display_type
-                                )}"
-                              >
-                              </etools-progress-bar>
-                            </div>
-                          </div>
-                          <div class="row progress-details">
-                            <div class="layout-vertical col-12 col-md-5 target-details">
-                              <indicator-report-target
-                                class="print-inline"
-                                .displayType="${indicatorReport.reportable.blueprint.display_type}"
-                                .target="${indicatorReport.reportable.target}"
-                                .cumulativeProgress="${this._ternary(
-                                  indicatorReport.reportable.blueprint.display_type,
-                                  'number',
-                                  indicatorReport.reportable.achieved.v,
-                                  indicatorReport.reportable.achieved.c
-                                )}"
-                                .achievement="${this._ternary(
-                                  indicatorReport.reportable.blueprint.display_type,
-                                  'number',
-                                  indicatorReport.total.v,
-                                  indicatorReport.total.c
-                                )}"
-                              ></indicator-report-target>
-                            </div>
-                          </div>`
-                      )}
+                (lowerResult: any) =>
+                  html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
+                    <div slot="row-data">
+                      <span class="col-data col-9" data-col-header-label="${translate('KEY_INTERVENTIONS')}">
+                        ${lowerResult.title}
+                      </span>
+                      <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
+                        <gdd-intervention-report-status
+                          status="${this._getLowerResultStatus(lowerResult.id)}"
+                        ></gdd-intervention-report-status>
+                        <span class="lower-result-status-date">${this._getLowerResultStatusDate(lowerResult.id)}</span>
+                      </span>
                     </div>
-                  </div>
-                </etools-data-table-row>`
+                    <div slot="row-data-details">
+                      <div class="row-details-content">
+                        <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
+                          ${translate('GDD_NO_INDICATORS')}
+                        </div>
+                        ${this._getIndicatorsReports(lowerResult.id).map(
+                          (indicatorReport: any) =>
+                            html`<div class="row indicator-report">
+                                <div class="col-data col-12 col-md-9">
+                                  ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
+                                  ${indicatorReport.reportable.blueprint.title}
+                                </div>
+                                <div class="col-data col-12 col-md-3 progress-bar">
+                                  <gdd-etools-progress-bar
+                                    class="report-progress-bar"
+                                    value="${this.getProgressPercentage(
+                                      indicatorReport.reportable.total_against_target,
+                                      indicatorReport.reportable.blueprint.display_type
+                                    )}"
+                                  >
+                                  </gdd-etools-progress-bar>
+                                </div>
+                              </div>
+                              <div class="row progress-details">
+                                <div class="layout-vertical col-12 col-md-5 target-details">
+                                  <gdd-indicator-report-target
+                                    class="print-inline"
+                                    .displayType="${indicatorReport.reportable.blueprint.display_type}"
+                                    .target="${indicatorReport.reportable.target}"
+                                    .cumulativeProgress="${this._ternary(
+                                      indicatorReport.reportable.blueprint.display_type,
+                                      'number',
+                                      indicatorReport.reportable.achieved.v,
+                                      indicatorReport.reportable.achieved.c
+                                    )}"
+                                    .achievement="${this._ternary(
+                                      indicatorReport.reportable.blueprint.display_type,
+                                      'number',
+                                      indicatorReport.total.v,
+                                      indicatorReport.total.c
+                                    )}"
+                                  ></gdd-indicator-report-target>
+                                </div>
+                              </div>`
+                        )}
+                      </div>
+                    </div>
+                  </etools-data-table-row>`
               )}
             </div>
           `
@@ -403,8 +405,12 @@ export class InterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.ResultsReported) ||
-      !state.interventions.current
+      EtoolsRouter.pageIsNotCurrentlyActive(
+        get(state, 'app.routeDetails'),
+        'gpd-interventions',
+        GDD_TABS.ResultsReported
+      ) ||
+      !state.gddInterventions.current
     ) {
       return;
     }
@@ -425,7 +431,7 @@ export class InterventionResultsReported extends connectStore(
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
     fireEvent(this, 'tab-content-attached');
   }
@@ -454,7 +460,7 @@ export class InterventionResultsReported extends connectStore(
     });
     this.requestInProgress = true;
 
-    this.fireRequest(interventionEndpoints, 'interventionProgress', {pdId: id})
+    this.fireRequest(gddEndpoints, 'interventionProgress', {pdId: id})
       .then((response: any) => {
         this.progress = response;
         fireEvent(this, 'global-loading', {
@@ -463,7 +469,7 @@ export class InterventionResultsReported extends connectStore(
         });
       })
       .catch((error: any) => {
-        EtoolsLogger.error('PD/SPD progress request failed!', 'intervention-results-reported', error);
+        EtoolsLogger.error('GDD progress request failed!', 'intervention-results-reported', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         fireEvent(this, 'global-loading', {
           active: false,

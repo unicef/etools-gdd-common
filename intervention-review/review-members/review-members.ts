@@ -1,15 +1,15 @@
 import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {EtoolsEndpoint, InterventionReview, User} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {EtoolsEndpoint, GDD, GDDReview, User} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -20,9 +20,10 @@ import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import {PRC_REVIEW} from '../../common/components/intervention/review.const';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import {addItemToListIfMissing} from '../../utils/utils';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 
-@customElement('review-members')
-export class ReviewMembers extends ComponentBaseMixin(LitElement) {
+@customElement('gdd-review-members')
+export class GDDReviewMembers extends ComponentBaseMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -57,7 +58,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
       `
     ];
   }
-  @property() set review(review: InterventionReview) {
+
+  @property({type: Object}) intervention: Partial<GDD> = {};
+  @property() set review(review: GDDReview) {
     this.originalData = review;
     this.data = cloneDeep(review);
     addItemToListIfMissing(this.data?.overall_approver, this.users, 'id');
@@ -70,7 +73,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   get showNotifyButton(): boolean {
-    return this.canEditAtLeastOneField && !this.editMode && this.data?.meeting_date && this.data?.prc_officers?.length;
+    return (
+      this.canEditAtLeastOneField && !this.editMode && this.data?.overall_approver && this.data?.authorized_officer
+    );
   }
   private interventionId!: number;
 
@@ -78,7 +83,12 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-content-panel class="content-section" panel-title="${translate('REVIEW_MEMBERS')}">
+      <style>
+        .ml-auto {
+          margin-left: auto;
+        }
+      </style>
+      <etools-content-panel class="content-section" panel-title="${translate('GDD_REVIEW_MEMBERS')}">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
@@ -93,38 +103,13 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
           >
           </datepicker-lite>
         </div>
-        <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
-          <div class="col-12 layout-horizontal align-items-center">
-            <div class="flex-1">
-              <etools-dropdown-multi
-                label=${translate('REVIEWERS')}
-                placeholder="&#8212;"
-                .options="${this.users}"
-                .selectedValues="${this.data?.prc_officers}"
-                ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
-                option-label="name"
-                option-value="id"
-                ?trigger-value-change-event="${this.users.length}"
-                @etools-selected-items-changed="${({detail}: CustomEvent) => {
-                  this.selectedItemsChanged(detail, 'prc_officers', 'id');
-                }}"
-              >
-              </etools-dropdown-multi>
-            </div>
-            <div>
-              <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
-                ${translate('SEND_NOTIFICATIONS')}
-              </etools-button>
-            </div>
-          </div>
-        </div>
         <div class="row">
           <etools-dropdown
             class="col-md-4 col-sm-12"
             label=${translate('OVERALL_APPROVER')}
             placeholder="&#8212;"
             .options="${this.users}"
-            .selected="${this.data?.overall_approver?.id}"
+            .selected="${this.getDefaultApprover(this.editMode, this.data?.overall_approver?.id)}"
             ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
             option-label="name"
             option-value="id"
@@ -134,6 +119,31 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
             }}"
           >
           </etools-dropdown>
+          <etools-dropdown
+            class="col-md-4 col-sm-12"
+            label=${translate('AUTH_OFFICER')}
+            placeholder="&#8212;"
+            .options="${this.users}"
+            .selected="${this.getDefaultAuthOfficer(this.editMode, this.data?.authorized_officer?.id)}"
+            ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
+            option-label="name"
+            option-value="id"
+            ?trigger-value-change-event="${this.users.length}"
+            @etools-selected-item-changed="${({detail}: CustomEvent) => {
+              this.selectedUserChanged(detail, 'authorized_officer');
+            }}"
+          >
+          </etools-dropdown>
+          <div class="col-md-4 col-sm-12 layout-horizontal align-items-center">
+            <etools-button
+              class="ml-auto"
+              variant="primary"
+              @click="${this.sendNotification}"
+              ?hidden="${!this.showNotifyButton}"
+            >
+              ${translate('SEND_NOTIFICATIONS')}
+            </etools-button>
+          </div>
         </div>
 
         ${this.renderActions(this.editMode, true)}
@@ -141,8 +151,22 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
     `;
   }
 
+  getDefaultApprover(editMode: boolean, id?: number) {
+    if (!id && editMode) {
+      return this.intervention?.unicef_focal_points?.length ? this.intervention?.unicef_focal_points[0].id : id;
+    }
+    return id;
+  }
+
+  getDefaultAuthOfficer(editMode: boolean, id?: number) {
+    if (!id && editMode) {
+      return this.intervention?.budget_owner ? this.intervention?.budget_owner.id : id;
+    }
+    return id;
+  }
+
   saveData(): Promise<void> {
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionReview, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.interventionReview, {
       id: this.data!.id,
       interventionId: this.interventionId
     });
@@ -150,26 +174,27 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
       endpoint,
       method: 'PATCH',
       body: {
-        prc_officers: this.data.prc_officers || [],
         overall_approver: this.data.overall_approver?.id || null,
-        meeting_date: this.data.meeting_date || null
+        authorized_officer: this.data.authorized_officer?.id || null
       }
     })
-      .then(({intervention}: any) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+      .then((response: any) => {
+        getStore().dispatch(updateCurrentIntervention(response.gdd));
         this.editMode = false;
       })
       .catch((err: any) => {
-        const errorText = err?.response?.detail || getTranslation('TRY_AGAIN_LATER');
-        fireEvent(this, 'toast', {text: `${getTranslation('CAN_NOT_SAVE_REVIEW')} ${errorText}`});
+        parseRequestErrorsAndShowAsToastMsgs(err, this);
       });
   }
 
   sendNotification(): void {
-    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.sendReviewNotification, {
-      id: this.data!.id,
-      interventionId: this.interventionId
-    });
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(
+      gddEndpoints.sendAuthorizedOfficerReviewNotification,
+      {
+        id: this.data!.id,
+        interventionId: this.interventionId
+      }
+    );
     sendRequest({
       endpoint,
       method: 'POST'
@@ -178,6 +203,10 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         fireEvent(this, 'toast', {text: getTranslation('NOTIFICATION_SENT_SUCCESS')});
       })
       .catch((err: any) => {
+        if (err.response.already_sent_today) {
+          fireEvent(this, 'toast', {text: `${getTranslation('NOTIFICATION_ALREADY_SENT_TODAY')}`});
+          return;
+        }
         const errorText = err?.response?.detail || getTranslation('TRY_AGAIN_LATER');
         fireEvent(this, 'toast', {text: `${getTranslation('CAN_NOT_SEND_NOTIFICATION')} ${errorText}`});
       });

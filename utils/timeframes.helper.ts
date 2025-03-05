@@ -1,4 +1,4 @@
-import {InterventionActivityTimeframe, GenericObject} from '@unicef-polymer/etools-types';
+import {GDDActivityTimeframe, GenericObject} from '@unicef-polymer/etools-types';
 import dayjs from 'dayjs';
 
 export type ActivityTime = {
@@ -12,8 +12,8 @@ export type ActivityTime = {
 
 export type GroupedActivityTime = [string, ActivityTime[]];
 
-export function serializeTimeFrameData(data: InterventionActivityTimeframe[]): ActivityTime[] {
-  return (data || []).map((frame: InterventionActivityTimeframe) => {
+export function serializeTimeFrameData(data: GDDActivityTimeframe[]): ActivityTime[] {
+  return (data || []).map((frame: GDDActivityTimeframe) => {
     const start = dayjs(frame.start);
     const end = dayjs(frame.end);
     return {

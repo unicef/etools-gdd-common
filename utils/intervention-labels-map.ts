@@ -1,12 +1,12 @@
-import {get as getTranslation} from 'lit-translate/util';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate/util';
 import {GenericObject} from '@unicef-polymer/etools-types';
 
-export const translatesMap: GenericObject = {
+export const gddTranslatesMap: GenericObject = {
   end: 'END_DATE',
   start: 'START_DATE',
   context: 'CONTEXT',
   confidential: 'CONFIDENTIAL',
-  sections: 'UNICEF_SECTIONS',
+  sections: 'CONTRIBUTING_SECTIONS',
   other_info: 'OTHER_INFORMATION',
   result_links: 'RESULTS_STRUCTURE',
   supply_items: 'SUPPLY_CONTRIBUTION',
@@ -21,8 +21,8 @@ export const translatesMap: GenericObject = {
   equity_narrative: 'EQUITY_NARATIVE',
   gender_narrative: 'GENDER_NARATIVE',
   management_budgets: 'EFFECTIVE_EFFICIENT_PROG_MGM',
-  applied_indicators: 'PD_INDICATORS',
-  activities: 'PD_ACTIVITIES',
+  applied_indicators: 'GDD_INDICATORS',
+  activities: 'GDD_ACTIVITIES',
   offices: 'UNICEF_OFFICES',
   risks: 'RISKS',
   mitigation_measures: 'PROPOSED_MITIGATION_MEASURES',
@@ -30,6 +30,7 @@ export const translatesMap: GenericObject = {
   cso_cash: 'PARTNER_CASH_BUDGET',
   unicef_cash: 'UNICEF_CASH',
   target: 'TARGET',
+  quantity: 'QUANTITY',
   reporting_requirements: 'PARTNER_REPORTING_REQUIREMENTS',
   special_reporting_requirements: 'SPECIAL_REPORTING_REQUIREMENTS',
   start_date: 'START_DATE',
@@ -52,8 +53,7 @@ export const translatesMap: GenericObject = {
   unit: 'UNIT',
   no_units: 'NUMBER_UNITS',
   document_type: 'DOCUMENT_TYPE',
-  contingency_pd: 'CONTINGENCY_DOC',
-  humanitarian_flag: 'SPD_HUMANITARIAN',
+  humanitarian_flag: 'SGDD_HUMANITARIAN',
   act2_partner: () => `${getTranslation('PARTNER_CASH')} for ${getTranslation('TITLE_2')}`,
   act1_partner: () => `${getTranslation('PARTNER_CASH')} for ${getTranslation('TITLE_1')}`,
   act3_partner: () => `${getTranslation('PARTNER_CASH')} for ${getTranslation('TITLE_3')}`,
@@ -63,7 +63,7 @@ export const translatesMap: GenericObject = {
   technical_guidance: 'TECHNICAL_GUIDANCE',
   capacity_development: 'CAPACITY_DEVELOPMENT',
   sustainability_rating: 'SUSTAINABILITY_RATING',
-  implementation_strategy: 'IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE',
+  implementation_strategy: 'BACKGROUND_TAB',
   ip_program_contribution: 'OTHER_NON_FINANCIAL_CONTRIBUTION',
   other_partners_involved: 'OTHER_PARTNERS_INVOLVED',
   other_details: 'OTHER',
@@ -71,7 +71,7 @@ export const translatesMap: GenericObject = {
   sustainability_narrative: 'SUSTAINABILITY_NARRATIVE',
   unit_price: 'PRICE_UNIT',
   unicef_product_number: 'UNICEF_PRODUCT_NUMBER',
-  ll_results: 'PROGRAM_DOCUMENT_OUTPUT',
+  gdd_key_interventions: 'KEY_INTERVENTION',
   activation_protocol: 'ACTIVATION_PROTOCOL',
   required_in_status: 'REQUIRED_ERROR',
   budget_owner: 'UNICEF_BUDGET_OWNER',

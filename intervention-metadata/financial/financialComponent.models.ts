@@ -1,16 +1,16 @@
-import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {GDD, GDDPermissionsFields} from '@unicef-polymer/etools-types';
+import {GDDModelsBase} from '../../common/models/models.base';
 
-export class FinancialComponentData extends ModelsBase {
-  constructor(intervention: Intervention) {
+export class GDDFinancialComponentData extends GDDModelsBase {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention);
   }
   cash_transfer_modalities: string[] = [];
 }
 
-export class FinancialComponentPermissions extends ModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
+export class GDDFinancialComponentPermissions extends GDDModelsBase {
+  constructor(permissions: GDDPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }

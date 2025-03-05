@@ -10,22 +10,22 @@ import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
 
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
-import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
-import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
+import {GDDHumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
+import {GDDQuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
+import {GDDReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {AnyObject, Intervention, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, GDD, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
@@ -35,8 +35,8 @@ import {isActiveTab} from '../../utils/utils';
  * @LitElement
  * @customElement
  */
-@customElement('partner-reporting-requirements')
-export class PartnerReportingRequirements extends connectStore(LitElement) {
+@customElement('gdd-partner-reporting-requirements')
+export class GDDPartnerReportingRequirements extends connectStore(LitElement) {
   static get styles() {
     return [layoutStyles];
   }
@@ -97,7 +97,9 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         }
         .nav-menu-item:focus-visible {
           outline: 0;
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+          box-shadow:
+            0 6px 10px 0 rgba(0, 0, 0, 0.14),
+            0 1px 18px 0 rgba(0, 0, 0, 0.12),
             0 3px 5px -1px rgba(0, 0, 0, 0.4);
           background-color: rgba(170, 165, 165, 0.2);
         }
@@ -140,59 +142,14 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       <etools-content-panel
         show-expand-btn
         class="content-section"
-        panel-title=${translate(translatesMap.reporting_requirements)}
+        panel-title=${translate(gddTranslatesMap.reporting_requirements)}
       >
         <div class="row">
           <div class="col-12 d-flex">
             <div class="reports-menu nav-menu">
               <div
-                name="qtyProgress"
-                title=${translate('QUARTERLY_PROGRESS_REPORTS')}
-                class="nav-menu-item qpr"
-                ?selected="${this.isSelected('qtyProgress')}"
-                @click="${this.selectType}"
-                tabindex="0"
-                id="clickable"
-              >
-                <info-icon-tooltip
-                  id="iit-qpr"
-                  ?hidden="${this.isReadonly}"
-                  .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
-                ></info-icon-tooltip>
-                <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
-                <etools-icon-button
-                  class="edit-rep-req"
-                  name="create"
-                  @click="${this._openQprEditDialog}"
-                  ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
-                ></etools-icon-button>
-              </div>
-              <div
-                name="humanitarianUnicef"
-                title=${translate('HUMANITARIAN_REPORTS_UNICEF')}
-                class="nav-menu-item"
-                ?selected="${this.isSelected('humanitarianUnicef')}"
-                @click="${this.selectType}"
-                tabindex="0"
-                id="clickable"
-              >
-                <info-icon-tooltip
-                  id="iit-hrr"
-                  ?hidden="${this.isReadonly}"
-                  .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
-                ></info-icon-tooltip>
-                <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
-                <etools-icon-button
-                  class="edit-rep-req"
-                  name="create"
-                  @click="${this._openHruEditDialog}"
-                  ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
-                ></etools-icon-button>
-              </div>
-              ${this.getHumanitarianLink(this.hrClusterRequirementsCount)}
-              <div
                 name="special"
-                title=${translate('SPECIAL_REPORT')}
+                title=${translate('GDD_SPECIAL_REPORT')}
                 class="nav-menu-item"
                 ?selected="${this.isSelected('special')}"
                 @click="${this.selectType}"
@@ -202,13 +159,45 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 <info-icon-tooltip
                   id="iit-sp"
                   ?hidden="${this.isReadonly}"
-                  .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"
+                  .tooltipText="${translate('GDD_SPECIAL_REPORT_TOOLTIP')}"
                 ></info-icon-tooltip>
-                ${translate('SPECIAL_REPORT')} (${this.specialRequirementsCount})
+                ${translate('GDD_SPECIAL_REPORT')} (${this.specialRequirementsCount})
+              </div>
+              <div
+                name="qtyProgress"
+                title=${translate('GDD_PROGRESS_REPORTS')}
+                class="nav-menu-item qpr"
+                ?selected="${this.isSelected('qtyProgress')}"
+                @click="${this.selectType}"
+                tabindex="0"
+                id="clickable"
+              >
+                <info-icon-tooltip
+                  id="iit-qpr"
+                  ?hidden="${this.isReadonly}"
+                  .tooltipText="${translate('GDD_PROGRESS_REPORT_TOOLTIP')}"
+                ></info-icon-tooltip>
+                <span>${translate('GDD_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
+                <etools-icon-button
+                  class="edit-rep-req"
+                  name="create"
+                  @click="${this._openQprEditDialog}"
+                  ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
+                ></etools-icon-button>
               </div>
             </div>
             <div class="reporting-req-data">
-              <quarterly-reporting-requirements
+              <gdd-special-reporting-requirements
+                ?hidden="${!isActiveTab(this.selectedReportType, 'special')}"
+                name="special"
+                .interventionId="${this.interventionId}"
+                .requirementsCount="${this.specialRequirementsCount}"
+                .editMode="${!this.isReadonly}"
+                @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
+              >
+              </gdd-special-reporting-requirements>
+
+              <gdd-quarterly-reporting-requirements
                 ?hidden="${!isActiveTab(this.selectedReportType, 'qtyProgress')}"
                 id="qpr"
                 name="qtyProgress"
@@ -220,40 +209,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateQPRCount(e.detail)}
               >
-              </quarterly-reporting-requirements>
-
-              <humanitarian-reporting-req-unicef
-                ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianUnicef')}"
-                id="hru"
-                name="humanitarianUnicef"
-                .interventionId="${this.interventionId}"
-                .interventionStart="${this.interventionStart}"
-                .requirementsCount="${this.hrUnicefRequirementsCount}"
-                .expectedResults="${this.expectedResults}"
-                .editMode="${!this.isReadonly}"
-                @count-changed=${(e: CustomEvent) => this.updateHRUCount(e.detail)}
-              >
-              </humanitarian-reporting-req-unicef>
-
-              <humanitarian-reporting-req-cluster
-                ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianCluster')}"
-                name="humanitarianCluster"
-                .interventionId="${this.interventionId}"
-                .requirementsCount="${this.hrClusterRequirementsCount}"
-                .expectedResults="${this.expectedResults}"
-                @count-changed=${(e: CustomEvent) => this.updateHRCCount(e.detail)}
-              >
-              </humanitarian-reporting-req-cluster>
-
-              <special-reporting-requirements
-                ?hidden="${!isActiveTab(this.selectedReportType, 'special')}"
-                name="special"
-                .interventionId="${this.interventionId}"
-                .requirementsCount="${this.specialRequirementsCount}"
-                .editMode="${!this.isReadonly}"
-                @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
-              >
-              </special-reporting-requirements>
+              </gdd-quarterly-reporting-requirements>
             </div>
           </div>
         </div>
@@ -268,7 +224,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
 
   @property({type: String})
-  selectedReportType = 'qtyProgress';
+  selectedReportType = 'special';
 
   @property({type: Number})
   interventionId!: number;
@@ -280,7 +236,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   interventionEnd!: string;
 
   @property({type: Array})
-  expectedResults!: [];
+  GDDExpectedResults!: [];
 
   // count properties
   @property({type: Number})
@@ -296,7 +252,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   specialRequirementsCount = 0;
 
   @property({type: Object})
-  reportingRequirementsPermissions!: Permission<ReportingRequirementsPermissions>;
+  reportingRequirementsPermissions!: Permission<GDDReportingRequirementsPermissions>;
 
   @property({type: Object})
   intervention!: AnyObject;
@@ -311,20 +267,20 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   isReadonly!: boolean;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'timing')) {
       return;
     }
-    if (!get(state, 'interventions.current')) {
+    if (!get(state, 'gddInterventions.current')) {
       return;
     }
     this.isUnicefUser = isUnicefUser(state);
     this.reportingRequirementsPermissions = selectReportingRequirementsPermissions(state);
-    const currentIntervention = get(state, 'interventions.current');
-    this.intervention = cloneDeep(currentIntervention) as Intervention;
+    const currentIntervention = get(state, 'gddInterventions.current');
+    this.intervention = cloneDeep(currentIntervention) as GDD;
     this.interventionId = this.intervention.id;
     this.interventionStart = this.intervention.start;
     this.interventionEnd = this.intervention.end;
-    this.expectedResults = this.intervention.result_links;
+    this.GDDExpectedResults = this.intervention.result_links;
     this.isReadonly = this._isReadOnly();
   }
 
@@ -361,12 +317,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
 
   _openQprEditDialog() {
-    const dialog = this.shadowRoot!.querySelector(`#qpr`) as QuarterlyReportingRequirementsEL;
+    const dialog = this.shadowRoot!.querySelector(`#qpr`) as GDDQuarterlyReportingRequirementsEL;
     dialog.openQuarterlyRepRequirementsDialog();
   }
 
   _openHruEditDialog() {
-    const dialog = this.shadowRoot!.querySelector(`#hru`) as HumanitarianReportingReqUnicefEl;
+    const dialog = this.shadowRoot!.querySelector(`#hru`) as GDDHumanitarianReportingReqUnicefEl;
     dialog.openUnicefHumanitarianRepReqDialog();
   }
 

@@ -2,24 +2,24 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {RootState} from '../../common/types/store.types';
-import {TABS} from '../../common/constants';
+import {GDD_TABS} from '../../common/constants';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AsyncAction} from '@unicef-polymer/etools-types';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 
 /** Visible only when PD is in status Ended */
-@customElement('final-progress-report')
-export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-final-progress-report')
+export class GDDIndicatorReportTarget extends connectStore(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -55,18 +55,18 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
   permissions: any;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Reports)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Reports)) {
       return;
     }
-    if (state.interventions.current) {
+    if (state.gddInterventions.current) {
       // @ts-ignore
-      const currData = {final_review_approved: state.interventions.current.final_review_approved};
+      const currData = {final_review_approved: state.gddInterventions.current.final_review_approved};
       if (!isJsonStrMatch(this.originalData, currData)) {
         this.data = currData;
         this.originalData = cloneDeep(this.data);
       }
 
-      this.setPermissions(state.interventions.current?.permissions);
+      this.setPermissions(state.gddInterventions.current?.permissions);
     }
   }
 

@@ -6,7 +6,7 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import get from 'lodash-es/get';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {LocationObject} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 class GroupedLocations {
@@ -17,8 +17,8 @@ class GroupedLocations {
 /**
  * @customElement
  */
-@customElement('grouped-locations-dialog')
-export class GroupedLocationsDialog extends LitElement {
+@customElement('gdd-grouped-locations-dialog')
+export class GDDGroupedLocationsDialog extends LitElement {
   static get styles() {
     return [layoutStyles];
   }
@@ -69,7 +69,7 @@ export class GroupedLocationsDialog extends LitElement {
       <etools-dialog
         id="groupedLocDialog"
         size="md"
-        dialog-title=${translate('LOCATIONS_PD_COVERS')}
+        dialog-title=${translate('LOCATIONS_GDD_COVERS')}
         hide-confirm-btn
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         @close="${() => this.onClose()}"

@@ -2,16 +2,16 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {AnyObject, PlannedVisit, Site} from '@unicef-polymer/etools-types';
+import {AnyObject, GDDPlannedVisit, Site} from '@unicef-polymer/etools-types';
 import {css, html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {langChanged, translate} from 'lit-translate';
+import {langChanged, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import dayjs from 'dayjs';
 
-@customElement('pv-quarter')
-export class PvQuarter extends LitElement {
+@customElement('gdd-pv-quarter')
+export class GDDPvQuarter extends LitElement {
   static get styles() {
     return [
       layoutStyles,
@@ -131,7 +131,7 @@ export class PvQuarter extends LitElement {
   }
 
   @property({type: Object})
-  item!: PlannedVisit;
+  item!: GDDPlannedVisit;
 
   @property({type: Number})
   qIndex!: number;
@@ -150,7 +150,7 @@ export class PvQuarter extends LitElement {
 
   private openSitesDialog() {
     openDialog({
-      dialog: 'sites-dialog',
+      dialog: 'gdd-sites-dialog',
       dialogData: {
         workspaceCoordinates: [this.currentCountry.longitude, this.currentCountry.latitude],
         sites: this.allSites,

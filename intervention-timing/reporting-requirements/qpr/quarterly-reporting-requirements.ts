@@ -1,14 +1,14 @@
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import CONSTANTS from '../../../common/constants';
+import GDD_CONSTANTS from '../../../common/constants';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 import './edit-qpr-dialog';
 import './qpr-list';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
@@ -24,8 +24,8 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
  * @appliesMixin GenerateQuarterlyReportingRequirementsMixin
  */
 
-@customElement('quarterly-reporting-requirements')
-export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequirementsMixin(
+@customElement('gdd-quarterly-reporting-requirements')
+export class GDDQuarterlyReportingRequirements extends GenerateQuarterlyReportingRequirementsMixin(
   ReportingRequirementsCommonMixin(LitElement)
 ) {
   static get styles() {
@@ -41,11 +41,11 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       </style>
 
       <div class="col-12" ?hidden="${this._empty(this.reportingRequirements)}">
-        <qpr-list .qprData="${this.reportingRequirements}"></qpr-list>
+        <gdd-qpr-list .qprData="${this.reportingRequirements}"></gdd-qpr-list>
       </div>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="col-12">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
+        <div class="col-12">${translate('NO_GDD_REPORTING_REQUIREMENTS')}</div>
         <div class="col-12" ?hidden="${!this.editMode}">
           <etools-button
             variant="text"
@@ -76,7 +76,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
       fireEvent(this, 'toast', {
-        text: getTranslation('QUARTERLY_REPORT_PROMPT')
+        text: getTranslation('GDD_REPORT_PROMPT')
       });
       return;
     }
@@ -88,7 +88,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
     }
 
     openDialog({
-      dialog: 'edit-qpr-dialog',
+      dialog: 'gdd-edit-qpr-dialog',
       dialogData: {
         qprData: cloneDeep(qprData),
         interventionId: this.interventionId,
@@ -102,12 +102,12 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
         return;
       }
       this._onReportingRequirementsSaved(response);
-      this.updateReportingRequirements(response, CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR);
+      this.updateReportingRequirements(response, GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR);
     });
   }
 
   _getReportType() {
-    return CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR;
+    return GDD_CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR;
   }
 
   _sortRequirementsAsc() {
@@ -118,4 +118,4 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   }
 }
 
-export {QuarterlyReportingRequirements as QuarterlyReportingRequirementsEL};
+export {GDDQuarterlyReportingRequirements as GDDQuarterlyReportingRequirementsEL};

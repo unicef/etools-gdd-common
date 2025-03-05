@@ -1,8 +1,8 @@
-import {Intervention} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../models/models.base';
+import {GDD} from '@unicef-polymer/etools-types';
+import {GDDModelsBase} from '../models/models.base';
 
-export class BudgetSummary extends ModelsBase {
-  constructor(intervention: Intervention) {
+export class GDDBudgetSummary extends GDDModelsBase {
+  constructor(intervention: GDD) {
     super();
     this.setObjProperties(intervention.planned_budget);
     this.hq_support_cost = intervention.hq_support_cost!;
@@ -12,7 +12,6 @@ export class BudgetSummary extends ModelsBase {
   programme_effectiveness = '';
   partner_contribution_local = '';
   unicef_cash_local = '';
-  in_kind_amount_local = 0;
   total_supply = 0;
   partner_contribution_percent = 0;
   total_local = 0;

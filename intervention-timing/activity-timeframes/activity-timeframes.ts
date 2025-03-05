@@ -8,25 +8,20 @@ import {ActivityTimeframesStyles} from './activity-timeframes.styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {
-  InterventionActivity,
-  GenericObject,
-  InterventionQuarter,
-  InterventionActivityTimeframe
-} from '@unicef-polymer/etools-types';
+import {GDDActivity, GenericObject, GDDQuarter, GDDActivityTimeframe} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {GDD, GDDResultLinkLowerResult, GDDExpectedResult} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {repeat} from 'lit/directives/repeat.js';
 
-@customElement('activity-timeframes')
-export class ActivityTimeframes extends CommentsMixin(LitElement) {
+@customElement('gdd-activity-timeframes')
+export class GDDActivityTimeframes extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [layoutStyles, ActivityTimeframesStyles];
   }
 
-  @property() intervention: Intervention | null = null;
+  @property() intervention: GDD | null = null;
   @property() language = 'en';
 
   protected render(): TemplateResult {
@@ -35,7 +30,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
     }
 
     const timeFrames: GroupedActivityTime[] = this.getTimeFrames();
-    const mappedActivities: GenericObject<InterventionActivity[]> = this.getActivities();
+    const mappedActivities: GenericObject<GDDActivity[]> = this.getActivities();
     return html`
       ${sharedStyles}
       <style>
@@ -80,7 +75,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
                           - ${translate('NO_ACTIVITIES')}
                         </div>
                         ${mappedActivities[id].map(
-                          ({name: activityName}: InterventionActivity) => html`
+                          ({name: activityName}: GDDActivity) => html`
                             <div class="activity-name">${translate('ACTIVITY')} ${activityName}</div>
                           `
                         )}
@@ -98,11 +93,11 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: RootState): void {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'timing')) {
       return;
     }
     this.language = state.activeLanguage.activeLanguage; // Set language property in order to trigger re-render
-    this.intervention = state.interventions.current;
+    this.intervention = state.gddInterventions.current;
     super.stateChanged(state);
   }
 
@@ -111,34 +106,34 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
       return [];
     }
     // process time frames
-    const quarters: InterventionQuarter[] = this.intervention.quarters || [];
-    const serialisedFrames: ActivityTime[] = serializeTimeFrameData(quarters as InterventionActivityTimeframe[]);
+    const quarters: GDDQuarter[] = this.intervention.quarters || [];
+    const serialisedFrames: ActivityTime[] = serializeTimeFrameData(quarters as GDDActivityTimeframe[]);
     return groupByYear(serialisedFrames);
   }
 
-  private getActivities(): GenericObject<InterventionActivity[]> {
+  private getActivities(): GenericObject<GDDActivity[]> {
     if (!this.intervention) {
       return {};
     }
 
     // get activities array
-    const pdOutputs: ResultLinkLowerResult[] = this.intervention.result_links
-      .map(({ll_results}: ExpectedResult) => ll_results)
+    const keyInterventions: GDDResultLinkLowerResult[] = this.intervention.result_links
+      .map(({gdd_key_interventions}: GDDExpectedResult) => gdd_key_interventions)
       .flat();
-    const activities: InterventionActivity[] = pdOutputs
-      .map(({activities}: ResultLinkLowerResult) => activities)
+    const activities: GDDActivity[] = keyInterventions
+      .map(({activities}: GDDResultLinkLowerResult) => activities)
       .flat();
 
     // map activities to time frames
-    const quarters: InterventionQuarter[] = this.intervention.quarters || [];
-    const mappedActivities: GenericObject<InterventionActivity[]> = quarters.reduce(
-      (data: GenericObject<InterventionActivity[]>, quarter: InterventionQuarter) => ({
+    const quarters: GDDQuarter[] = this.intervention.quarters || [];
+    const mappedActivities: GenericObject<GDDActivity[]> = quarters.reduce(
+      (data: GenericObject<GDDActivity[]>, quarter: GDDQuarter) => ({
         ...data,
         [quarter.id]: []
       }),
       {}
     );
-    activities.forEach((activity: InterventionActivity) => {
+    activities.forEach((activity: GDDActivity) => {
       activity.time_frames.forEach((id: number) => {
         mappedActivities[id].push(activity);
       });

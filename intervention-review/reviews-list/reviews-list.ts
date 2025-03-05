@@ -2,8 +2,8 @@ import {LitElement, html, CSSResultArray, css, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {translate} from 'lit-translate';
-import {InterventionReview, PrcOfficerReview} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {GDDReview, GDDPrcOfficerReview} from '@unicef-polymer/etools-types';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {loadPrcMembersIndividualReviews} from '../../common/actions/officers-reviews';
 import isEqual from 'lodash-es/isEqual';
@@ -17,8 +17,8 @@ import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
-@customElement('reviews-list')
-export class ReviewsList extends connectStore(LitElement) {
+@customElement('gdd-reviews-list')
+export class GDDReviewsList extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -48,8 +48,8 @@ export class ReviewsList extends connectStore(LitElement) {
     ];
   }
 
-  private _review!: InterventionReview;
-  set review(review: InterventionReview) {
+  private _review!: GDDReview;
+  set review(review: GDDReview) {
     // Info: this._review is not persisted on nav to list and back to pd review (component is removed from DOM)
     const oldOfficers: number[] | undefined = this._review ? this._review.prc_officers : undefined;
 
@@ -60,11 +60,11 @@ export class ReviewsList extends connectStore(LitElement) {
   }
 
   @property({type: Object})
-  get review(): InterventionReview {
+  get review(): GDDReview {
     return this._review;
   }
 
-  @property() approvals: PrcOfficerReview[] = [];
+  @property() approvals: GDDPrcOfficerReview[] = [];
   @property() readonly = false;
   @property() currentUserId!: number;
   @property({type: Boolean})
@@ -139,7 +139,7 @@ export class ReviewsList extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'gpd-interventions', 'review')) {
       return;
     }
     this.approvals = state.prcIndividualReviews || [];
@@ -148,7 +148,7 @@ export class ReviewsList extends connectStore(LitElement) {
 
   openReviewPopup(review?: any) {
     openDialog({
-      dialog: 'review-checklist-popup',
+      dialog: 'gdd-review-checklist-popup',
       dialogData: {
         review
       }

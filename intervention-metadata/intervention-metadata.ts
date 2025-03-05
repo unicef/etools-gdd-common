@@ -9,7 +9,7 @@ import './review-and-sign/review-and-sign';
 import './other/other';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
-import {InterventionPermissionsFields, Permission} from '@unicef-polymer/etools-types';
+import {GDDPermissionsFields, Permission} from '@unicef-polymer/etools-types';
 import {currentInterventionPermissions, currentPage, currentSubpage} from '../common/selectors';
 import {selectDatesAndSignaturesPermissions} from '../common/managementDocument.selectors';
 import './financial/financial-component';
@@ -18,9 +18,9 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 /**
  * @customElement
  */
-export class InterventionMetadata extends connectStore(LitElement) {
+export class GDDInterventionMetadata extends connectStore(LitElement) {
   @property({type: Object})
-  permissions!: Permission<InterventionPermissionsFields>;
+  permissions!: Permission<GDDPermissionsFields>;
 
   @property() showSignatureAndDates = false;
 
@@ -29,14 +29,14 @@ export class InterventionMetadata extends connectStore(LitElement) {
     return html`
       <style></style>
 
-      <details-overview></details-overview>
-      <partner-info></partner-info>
-      <unicef-details></unicef-details>
-      <financial-component></financial-component>
-      ${this.permissions?.view!.frs ? html`<fund-reservations></fund-reservations>` : ''}
-      ${this.permissions?.view!.amendments ? html`<pd-amendments></pd-amendments>` : ''}
-      ${this.showSignatureAndDates ? html`<review-and-sign></review-and-sign>` : ''}
-      <other-metadata></other-metadata>
+      <gdd-details-overview></gdd-details-overview>
+      <gdd-partner-info></gdd-partner-info>
+      <gdd-unicef-details></gdd-unicef-details>
+      <gdd-financial-component></gdd-financial-component>
+      ${this.permissions?.view!.frs ? html`<gdd-fund-reservations></gdd-fund-reservations>` : ''}
+      ${this.permissions?.view!.amendments ? html`<gdd-pd-amendments></gdd-pd-amendments>` : ''}
+      ${this.showSignatureAndDates ? html`<gdd-review-and-sign></gdd-review-and-sign>` : ''}
+      <gdd-other-metadata></gdd-other-metadata>
     `;
   }
 
@@ -45,15 +45,15 @@ export class InterventionMetadata extends connectStore(LitElement) {
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 
   stateChanged(state: RootState): void {
     if (
-      currentPage(state) !== 'interventions' ||
+      currentPage(state) !== 'gpd-interventions' ||
       currentSubpage(state) !== 'metadata' ||
-      !state.interventions.current
+      !state.gddInterventions.current
     ) {
       return;
     }
@@ -69,4 +69,4 @@ export class InterventionMetadata extends connectStore(LitElement) {
   }
 }
 
-window.customElements.define('intervention-metadata', InterventionMetadata);
+window.customElements.define('gdd-intervention-metadata', GDDInterventionMetadata);

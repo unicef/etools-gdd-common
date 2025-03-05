@@ -1,9 +1,9 @@
 import {css, html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {translate} from 'lit-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';
-import {get as getTranslation} from 'lit-translate/util';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate/util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
@@ -15,8 +15,8 @@ const ACTIONS: GenericObject<string> = {
   original: 'ORIGINAL_VALUE'
 };
 
-@customElement('amendment-difference')
-export class AmendmentDifference extends LitElement {
+@customElement('gdd-amendment-difference')
+export class GDDAmendmentDifference extends LitElement {
   static get styles() {
     // language=css
     return [
@@ -88,11 +88,11 @@ export class AmendmentDifference extends LitElement {
   displayDifference(difference: GenericObject): TemplateResult[] {
     return Object.entries(difference as GenericObject).map(([field, diff]) => {
       let translatedString;
-      if (!translatesMap[field]) {
+      if (!gddTranslatesMap[field]) {
         translatedString = field;
       } else {
         translatedString =
-          typeof translatesMap[field] === 'string' ? translate(translatesMap[field]) : translatesMap[field]();
+          typeof gddTranslatesMap[field] === 'string' ? translate(gddTranslatesMap[field]) : gddTranslatesMap[field]();
       }
       return html`<div class="offset">
         <div class="field-name">${translatedString || field}</div>
@@ -121,10 +121,11 @@ export class AmendmentDifference extends LitElement {
           <div class="offset">
             <span class="action-name">${translate(ACTIONS[action])}:</span>
             ${value.map(
-              (item: GenericObject) => html`<div class="offset">
-                <div class="field-name"><span class="changed-value">${item.name}</span></div>
-                ${this.displayDifference(item.diff)}
-              </div>`
+              (item: GenericObject) =>
+                html`<div class="offset">
+                  <div class="field-name"><span class="changed-value">${item.name}</span></div>
+                  ${this.displayDifference(item.diff)}
+                </div>`
             )}
           </div>
         `;
@@ -185,7 +186,7 @@ export class AmendmentDifference extends LitElement {
         collectionKey = 'genderEquityRatings';
         break;
       case 'risk_type':
-        collectionKey = 'riskTypes';
+        collectionKey = 'gpdRiskTypes';
         break;
       case 'supply_item_provided_by':
         collectionKey = 'providedBy';

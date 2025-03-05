@@ -7,25 +7,25 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
-import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
+import {GDDProgrammeDocDates, GDDInterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
 
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, EtoolsEndpoint, FrsDetails, Intervention, Permission} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {AsyncAction, EtoolsEndpoint, GDDFrsDetails, GDD, Permission} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import pick from 'lodash-es/pick';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -33,8 +33,8 @@ import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/aja
 /**
  * @customElement
  */
-@customElement('intervention-dates')
-export class InterventionDates extends CommentsMixin(
+@customElement('gdd-intervention-dates')
+export class GDDInterventionDates extends CommentsMixin(
   UploadsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement))))
 ) {
   static get styles() {
@@ -65,7 +65,7 @@ export class InterventionDates extends CommentsMixin(
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('PROGRAMME_DOC_DATES')}
+        panel-title=${translate('GDD_DATES')}
         comment-element="programme-document-dates"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
@@ -82,7 +82,7 @@ export class InterventionDates extends CommentsMixin(
               <datepicker-lite
                 slot="field"
                 id="intStart"
-                label=${translate(translatesMap.start)}
+                label=${translate(gddTranslatesMap.start)}
                 .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.start)}"
                 ?required="${this.permissions?.required.start}"
@@ -110,7 +110,7 @@ export class InterventionDates extends CommentsMixin(
               <datepicker-lite
                 slot="field"
                 id="intEnd"
-                label=${translate(translatesMap.end)}
+                label=${translate(gddTranslatesMap.end)}
                 .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.end)}"
                 ?required="${this.permissions?.required.end}"
@@ -126,7 +126,7 @@ export class InterventionDates extends CommentsMixin(
             </etools-info-tooltip>
           </div>
         </div>
-        <div class="row" ?hidden="${this.hideActivationLetter(this.data.status, this.data.contingency_pd)}">
+        <div class="row" hidden>
           <div class="col-12">
             <etools-upload
               label=${translate('ACTIVATION_LETTER')}
@@ -153,13 +153,13 @@ export class InterventionDates extends CommentsMixin(
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
-  originalData!: ProgrammeDocDates;
+  originalData!: GDDProgrammeDocDates;
 
   @property({type: Object})
-  data!: ProgrammeDocDates;
+  data!: GDDProgrammeDocDates;
 
   @property({type: String})
   _frsStartConsistencyWarning: string | boolean = '';
@@ -168,7 +168,7 @@ export class InterventionDates extends CommentsMixin(
   _frsEndConsistencyWarning: string | boolean = '';
 
   @property({type: Object})
-  permissions!: Permission<InterventionDatesPermissions>;
+  permissions!: Permission<GDDInterventionDatesPermissions>;
 
   warningRequired = false;
 
@@ -177,10 +177,10 @@ export class InterventionDates extends CommentsMixin(
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'timing')) {
       return;
     }
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
     this.data = selectInterventionDates(state);
@@ -189,31 +189,28 @@ export class InterventionDates extends CommentsMixin(
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
 
-    this.checkIntervDateConsistency(this.data, state.interventions.current.frs_details);
+    this.checkIntervDateConsistency(this.data, state.gddInterventions.current.frs_details);
     super.stateChanged(state);
   }
 
-  checkIntervDateConsistency(data: ProgrammeDocDates, frs_details: FrsDetails) {
+  checkIntervDateConsistency(data: GDDProgrammeDocDates, frs_details: GDDFrsDetails) {
     this._frsStartConsistencyWarning = this.checkFrsAndIntervDateConsistency(
       data.start,
       frs_details.earliest_start_date,
-      getTranslation(translatesMap.start),
+      getTranslation(gddTranslatesMap.start),
       true
     );
     this._frsEndConsistencyWarning = this.checkFrsAndIntervDateConsistency(
       data.end,
       frs_details.latest_end_date,
-      getTranslation(translatesMap.end),
+      getTranslation(gddTranslatesMap.end),
       true
     );
   }
 
-  private hideActivationLetter(interventionStatus: string, isContingencyPd: boolean) {
-    if (!isContingencyPd) {
-      return true;
-    }
-    return ['draft', 'development', ''].includes(interventionStatus);
-  }
+  // private hideActivationLetter(interventionStatus: string) {
+  //   return ['draft', 'development', ''].includes(interventionStatus);
+  // }
 
   private activationLetterUploadFinished(e: CustomEvent) {
     this._onUploadFinished(e.detail.success);
@@ -236,8 +233,8 @@ export class InterventionDates extends CommentsMixin(
   private checkIfWarningRequired(state: RootState) {
     // Existence of PD Output activities with timeframes are validated on BK
     this.warningRequired =
-      this.thereArePartnerReportingRequirements(state.interventions.partnerReportingRequirements) ||
-      this.thereAreProgrammaticVisits(state.interventions.current);
+      this.thereArePartnerReportingRequirements(state.gddInterventions.partnerReportingRequirements) ||
+      this.thereAreProgrammaticVisits(state.gddInterventions.current);
   }
 
   private thereArePartnerReportingRequirements(partnerReportingRequirements: PartnerReportingRequirements) {
@@ -247,7 +244,7 @@ export class InterventionDates extends CommentsMixin(
     return false;
   }
 
-  private thereAreProgrammaticVisits(intervention: Intervention | null) {
+  private thereAreProgrammaticVisits(intervention: GDD | null) {
     return !!intervention?.planned_visits && intervention.planned_visits.length > 0;
   }
 

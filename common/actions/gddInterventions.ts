@@ -1,9 +1,15 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {INTERVENTION_LOADING, SHOULD_REGET_LIST, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
-import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
+import {
+  INTERVENTION_LOADING,
+  SHOULD_REGET_LIST,
+  SHOW_TOAST,
+  UPDATE_CURRENT_INTERVENTION,
+  UPDATE_E_WORK_PLAN
+} from '../actionsConstants';
+import {AnyObject, GDDPlannedBudget, GDD} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {PartnerReportingRequirements} from '../types/store.types';
+import {EWorkPlan, PartnerReportingRequirements} from '../types/store.types';
 import pick from 'lodash-es/pick';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
@@ -11,7 +17,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
   if (intervention && !intervention.planned_budget) {
-    intervention.planned_budget = new PlannedBudget();
+    intervention.planned_budget = new GDDPlannedBudget();
   }
   return {
     type: UPDATE_CURRENT_INTERVENTION,
@@ -33,6 +39,14 @@ export const setShouldReGetList = (reGet: boolean) => {
   };
 };
 
+export const setEworkPlan = (countryProgrameId: number, eWorkPlans: EWorkPlan[]) => {
+  return {
+    type: UPDATE_E_WORK_PLAN,
+    countryProgrameId: countryProgrameId,
+    eWorkPlans: eWorkPlans
+  };
+};
+
 export const getIntervention = (interventionId?: string) => (dispatch: any, getState: any) => {
   if (!interventionId) {
     interventionId = getState().app.routeDetails.params.interventionId;
@@ -40,13 +54,13 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
 
   fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
     active: true,
-    loadingSource: 'interv-get'
+    loadingSource: 'gdd-interv-get'
   });
 
   return sendRequest({
-    endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId})
+    endpoint: getEndpoint(gddEndpoints.intervention, {interventionId: interventionId})
   })
-    .then((intervention: Intervention) => {
+    .then((intervention: GDD) => {
       dispatch(updateCurrentIntervention(intervention));
     })
     .catch((err: any) => {
@@ -58,8 +72,21 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
       dispatch(setInterventionLoading(null));
       fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
         active: false,
-        loadingSource: 'interv-get'
+        loadingSource: 'gdd-interv-get'
       });
+    });
+};
+
+export const getEWorkPlan = (countryProgrameId: number) => (dispatch: any) => {
+  return sendRequest({
+    endpoint: getEndpoint(gddEndpoints.eWorkPlans, {countryProgrameId: countryProgrameId})
+  })
+    .then((eWorkplans: any[]) => {
+      dispatch(setEworkPlan(countryProgrameId, eWorkplans));
+    })
+    .catch((err: any) => {
+      console.log(err);
+      throw err;
     });
 };
 
@@ -83,12 +110,12 @@ export const patchIntervention =
     if (!interventionId) {
       interventionId = getState().app.routeDetails.params.interventionId;
     }
-    const prevInterventionState = getState().interventions?.current;
+    const prevInterventionState = getState().gddInterventions?.current;
     return _sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId}),
+      endpoint: getEndpoint(gddEndpoints.intervention, {interventionId: interventionId}),
       body: interventionChunck,
       method: 'PATCH'
-    }).then((intervention: Intervention) => {
+    }).then((intervention: GDD) => {
       dispatch(updateCurrentIntervention(intervention));
 
       if (shouldReGetList(prevInterventionState, intervention)) {
@@ -97,7 +124,7 @@ export const patchIntervention =
     });
   };
 
-function shouldReGetList(prevInterventionState: Intervention, currentInterventionState: Intervention) {
+function shouldReGetList(prevInterventionState: GDD, currentInterventionState: GDD) {
   const fieldsDisplayedOnList = [
     'number',
     'partner_name',

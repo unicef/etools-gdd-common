@@ -9,10 +9,10 @@ import '@shoelace-style/shoelace/dist/components/range/range.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {selectHqContributionData, selectHqContributionPermissions} from './hqContribution.selectors';
-import {HqContributionData, HqContributionPermissions} from './hqContribution.models';
+import {GDDHqContributionData, GDDHqContributionPermissions} from './hqContribution.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention} from '../../common/actions/gddInterventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -21,17 +21,17 @@ import {areEqual} from '@unicef-polymer/etools-utils/dist/equality-comparisons.u
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate, translateUnsafeHTML} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {translate, translateUnsafeHTML} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import {getPageDirection} from '../../utils/utils';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';
 
 /**
  * @customElement
  */
-@customElement('hq-contribution')
-export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-hq-contribution')
+export class GDDHqContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles];
   }
@@ -89,7 +89,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
 
         <div class="row extra-padd-top-no-bottom">
           <div class="col-12">
-            <label class="label">${translate(translatesMap.hq_support_cost)}</label>
+            <label class="label">${translate(gddTranslatesMap.hq_support_cost)}</label>
           </div>
           <div class="space-betw">
             <sl-range
@@ -134,7 +134,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
               class="w100"
               placeholder="&#8212;"
               required
-              label=${translate(translatesMap.total_hq_cash_local)}
+              label=${translate(gddTranslatesMap.total_hq_cash_local)}
               .value="${this.data.planned_budget.total_hq_cash_local}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget)}"
               tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget) ? -1 : undefined}"
@@ -150,10 +150,10 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     `;
   }
   @property({type: Object})
-  data!: HqContributionData;
+  data!: GDDHqContributionData;
 
   @property({type: Object})
-  permissions!: Permission<HqContributionPermissions>;
+  permissions!: Permission<GDDHqContributionPermissions>;
 
   @property({type: Object})
   originalData = {};
@@ -168,11 +168,11 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Workplan)) {
       return;
     }
 
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
 
@@ -198,7 +198,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     if (!e.target) {
       return;
     }
-    this.data = {...this.data, hq_support_cost: (e.target as any).value} as HqContributionData;
+    this.data = {...this.data, hq_support_cost: (e.target as any).value} as GDDHqContributionData;
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
   }
 
@@ -241,7 +241,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   /**
    * Backend errors out otherwise
    */
-  cleanUp(data: HqContributionData) {
+  cleanUp(data: GDDHqContributionData) {
     if (!data || !data.planned_budget) {
       return data;
     }

@@ -7,9 +7,9 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {RootState} from '../common/types/store.types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-polymer/etools-types';
-import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {AnyObject, CpOutput, StaticPartner, GDDManagementBudget} from '@unicef-polymer/etools-types';
+import {GDDExpectedResult, MinimalAgreement, GDD} from '@unicef-polymer/etools-types';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
@@ -19,8 +19,8 @@ import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-compari
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 // TODO - NOT USED AT THE MOMENT
-@customElement('intervention-summary')
-export class InterventionSummary extends connectStore(LitElement) {
+@customElement('gdd-intervention-summary')
+export class GDDInterventionSummary extends connectStore(LitElement) {
   static get styles() {
     return [layoutStyles, elevationStyles];
   }
@@ -194,7 +194,7 @@ export class InterventionSummary extends connectStore(LitElement) {
           <div>
             <label class="label-secondary-color">${translate('UNICEF_SUPPLY_CONTRIB')}</label>
             <etools-currency
-              .value="${this.intervention.planned_budget.in_kind_amount_local}"
+              .value="${this.intervention.planned_budget.total_supply}"
               type="number"
               placeholder="&#8212;"
               no-label-float
@@ -237,7 +237,7 @@ export class InterventionSummary extends connectStore(LitElement) {
     `;
   }
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: GDD;
 
   @property({type: Object})
   interventionAgreement!: MinimalAgreement;
@@ -258,7 +258,7 @@ export class InterventionSummary extends connectStore(LitElement) {
   inteventionSections = '';
 
   @property({type: Array})
-  resultLinks!: ExpectedResult[];
+  resultLinks!: GDDExpectedResult[];
 
   @property({type: Array})
   interventionPartner!: AnyObject;
@@ -267,13 +267,13 @@ export class InterventionSummary extends connectStore(LitElement) {
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'summary')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', 'summary')) {
       return;
     }
 
-    if (get(state, 'interventions.current')) {
-      const currentIntervention = get(state, 'interventions.current');
-      this.intervention = cloneDeep(currentIntervention) as Intervention;
+    if (get(state, 'gddInterventions.current')) {
+      const currentIntervention = get(state, 'gddInterventions.current');
+      this.intervention = cloneDeep(currentIntervention) as GDD;
       this.resultLinks = this.intervention.result_links;
     }
 
@@ -312,7 +312,7 @@ export class InterventionSummary extends connectStore(LitElement) {
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
-      loadingSource: 'interv-page'
+      loadingSource: 'gdd-interv-page'
     });
   }
 
@@ -345,7 +345,7 @@ export class InterventionSummary extends connectStore(LitElement) {
     );
   }
 
-  private getUnicefEEContrib(management_budgets?: ManagementBudget) {
+  private getUnicefEEContrib(management_budgets?: GDDManagementBudget) {
     if (!management_budgets) {
       return 0;
     }
@@ -396,7 +396,7 @@ export class InterventionSummary extends connectStore(LitElement) {
     if (!this.isUnicefUser || !this.interventionPartner?.sea_risk_rating_name) {
       return html`${this.interventionPartner?.sea_risk_rating_name || 'N\\A'}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
       <strong class="blue">${this.interventionPartner.sea_risk_rating_name}</strong></a
     >`;
@@ -406,7 +406,7 @@ export class InterventionSummary extends connectStore(LitElement) {
     if (!this.isUnicefUser || !this.interventionPartner?.rating) {
       return html`${this.interventionPartner?.rating || 'N\\A'}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
       <strong class="blue">${this.interventionPartner.rating}</strong></a
     >`;

@@ -3,7 +3,7 @@ import {css, CSSResult} from 'lit';
 // language=CSS
 export const ResultStructureStyles: CSSResult = css`
   :host {
-    --pd-output-background: #ccebff;
+    --key-intervention-background: #ccebff;
     --cp-output-background: #a6dbff;
   }
   .heading {
@@ -116,6 +116,11 @@ export const ResultStructureStyles: CSSResult = css`
   }
   div[slot='panel-btns'] {
     opacity: 1;
+  }
+  .result-structure-buttons {
+    margin-inline: 13px;
+    display: flex;
+    justify-content: end;
   }
   .add-button {
     display: flex;

@@ -20,13 +20,13 @@ import {
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {KindChoices, ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
+import {KindChoices, GDDProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {get as getTranslation, translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {TABS} from '../../common/constants';
+import {get as getTranslation, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {gddTranslatesMap} from '../../utils/intervention-labels-map';
+import {GDD_TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
@@ -34,8 +34,8 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 /**
  * @customElement
  */
-@customElement('effective-and-efficient-programme-management')
-export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('gdd-effective-and-efficient-programme-management')
+export class GDDEffectiveAndEfficientProgrammeManagement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [layoutStyles, elevationStyles];
   }
@@ -104,7 +104,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         query="(max-width: 767px)"
         @query-matches-changed="${this.resolutionChanged}"
       ></etools-media-query>
-      <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.management_budgets)}>
+      <etools-content-panel show-expand-btn panel-title=${translate(gddTranslatesMap.management_budgets)}>
         <div slot="after-title">
           <info-icon-tooltip
             id="iit-eepm"
@@ -120,14 +120,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
 
         <etools-data-table-header id="listHeader" .lowResolutionLayout="${this.lowResolutionLayout}" no-title>
           <etools-data-table-column class="col-5" field="title">
-            ${translate('ITEM_PD_CURRENCY')}
+            ${translate('ITEM_GDD_CURRENCY')}
           </etools-data-table-column>
           <etools-data-table-column class="col-2 text-right" field="partner_contribution">
-            ${translate('PARTNER_CASH')}
-          </etools-data-table-column>
-          <etools-data-table-column class="col-2 text-right" field="unicef_cash">
-            ${translate('UNICEF_CASH')}
-          </etools-data-table-column>
           <etools-data-table-column class="col-2 text-right" field="total">
             ${getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')'}
           </etools-data-table-column>
@@ -135,40 +130,42 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         </etools-data-table-header>
 
         ${this.formattedData.map(
-          (item: any) => html` <div comment-element="eepm-${item.index}">
-            <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
-              <div slot="row-data" class="layout-horizontal editable-row">
-                <div class="col-data col-5" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">${item.title}</div>
-                <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
-                  ${item.partner_contribution}
+          (item: any) =>
+            html` <div comment-element="eepm-${item.index}">
+              <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
+                <div slot="row-data" class="layout-horizontal editable-row">
+                  <div class="col-data col-5" data-col-header-label="${translate('ITEM_GDD_CURRENCY')}">
+                    ${item.title}
+                  </div>
+                  <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
+                    ${item.partner_contribution}
+                  </div>
+                  <div class="col-data col-2 text-right" data-col-header-label="${translate('TOTAL')}">
+                    ${item.total}
+                  </div>
+                  <div class="col-1 actions">
+                    <etools-icon-button
+                      ?hidden="${!this.canEdit}"
+                      name="create"
+                      @click="${() => this.openActivityDialog(item)}"
+                      tabindex="0"
+                    ></etools-icon-button>
+                    <etools-icon-button
+                      ?hidden="${this.canEdit}"
+                      name="visibility"
+                      @click="${() => this.openActivityDialog(item)}"
+                      tabindex="0"
+                    ></etools-icon-button>
+                  </div>
                 </div>
-                <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_CASH')}">
-                  ${item.unicef_cash}
+                <div slot="row-data-details">
+                  <div class="row-details-content">
+                    <label class="label">${translate('GENERAL.DESCRIPTION')}</label><br />
+                    <label>${item.description}</label>
+                  </div>
                 </div>
-                <div class="col-data col-2 text-right" data-col-header-label="${translate('TOTAL')}">${item.total}</div>
-                <div class="col-1 actions">
-                  <etools-icon-button
-                    ?hidden="${!this.canEdit}"
-                    name="create"
-                    @click="${() => this.openActivityDialog(item)}"
-                    tabindex="0"
-                  ></etools-icon-button>
-                  <etools-icon-button
-                    ?hidden="${this.canEdit}"
-                    name="visibility"
-                    @click="${() => this.openActivityDialog(item)}"
-                    tabindex="0"
-                  ></etools-icon-button>
-                </div>
-              </div>
-              <div slot="row-data-details">
-                <div class="row-details-content">
-                  <label class="label">${translate('GENERAL.DESCRIPTION')}</label><br />
-                  <label>${item.description}</label>
-                </div>
-              </div>
-            </etools-data-table-row>
-          </div>`
+              </etools-data-table-row>
+            </div>`
         )}
       </etools-content-panel>
     `;
@@ -184,7 +181,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   canEdit = true;
 
   @property({type: Object})
-  data!: ProgrammeManagement;
+  data!: GDDProgrammeManagement;
 
   @property({type: Number})
   total_amount = '0';
@@ -200,13 +197,13 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   }
 
   stateChanged(state: RootState) {
-    if (!state.interventions.current) {
+    if (!state.gddInterventions.current) {
       return;
     }
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'gpd-interventions', GDD_TABS.Workplan)) {
       return;
     }
-    this.interventionId = state.interventions.current.id!;
+    this.interventionId = state.gddInterventions.current.id!;
     this.data = selectProgrammeManagement(state);
 
     this.originalData = cloneDeep(this.data);
@@ -219,7 +216,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     super.stateChanged(state);
   }
 
-  formatData(data: ProgrammeManagement) {
+  formatData(data: GDDProgrammeManagement) {
     this.total_amount = addCurrencyAmountDelimiter(data.total) || '0';
     return [
       {
@@ -254,7 +251,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
 
   openActivityDialog(activity: any) {
     openDialog({
-      dialog: 'activity-dialog',
+      dialog: 'gdd-activity-dialog',
       dialogData: {
         activity: {...activity, items: cloneDeep(this.data.items)},
         interventionId: this.interventionId,

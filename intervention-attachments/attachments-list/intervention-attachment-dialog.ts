@@ -2,13 +2,13 @@ import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gddEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/gddInterventions';
 import {
   validateRequiredFields,
   resetRequiredFields
@@ -17,11 +17,11 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
-@customElement('intervention-attachment-dialog')
-export class InterventionAttachmentDialog extends connectStore(LitElement) {
+@customElement('gdd-intervention-attachment-dialog')
+export class GDDInterventionAttachmentDialog extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -83,8 +83,8 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
               allow-outside-scroll
               dynamic-align
               required
-              ?invalid="${this.errors.type}"
-              .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
+              ?invalid="${this.errors?.type}"
+              .errorMessage="${(this.errors?.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
               @focus="${() => this.resetFieldError('type', this)}"
               @click="${() => this.resetFieldError('type', this)}"
             ></etools-dropdown>
@@ -98,10 +98,10 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
               ?readonly="${this.data.id}"
               required
               .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
-              .uploadEndpoint="${interventionEndpoints.attachmentsUpload.url!}"
+              .uploadEndpoint="${gddEndpoints.attachmentsUpload.url!}"
               @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
-              ?invalid="${this.errors.attachment_document}"
-              .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
+              ?invalid="${this.errors?.attachment_document}"
+              .errorMessage="${this.errors?.attachment_document && this.errors.attachment_document[0]}"
               @focus="${() => this.resetFieldError('attachment_document', this)}"
               @click="${() => this.resetFieldError('attachment_document', this)}"
             ></etools-upload>
@@ -120,7 +120,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
   }
 
   stateChanged(state: any): void {
-    this.interventionId = state.interventions?.current.id;
+    this.interventionId = state.gddInterventions?.current.id;
     this.fileTypes =
       state.commonData.fileTypes.map((x: any) => ({
         ...x,
@@ -170,11 +170,11 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           type
         };
     const endpoint = id
-      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.updatePdAttachment, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.updatePdAttachment, {
           id: this.interventionId,
           attachment_id: id
         })
-      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdAttachments, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.pdAttachments, {
           id: this.interventionId
         });
     sendRequest({
@@ -182,8 +182,8 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
       method: id ? 'PATCH' : 'POST',
       body
     })
-      .then(({intervention}: any) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+      .then((response: any) => {
+        getStore().dispatch(updateCurrentIntervention(response.gdd));
         this.onClose();
       })
       .catch((error: any) => {

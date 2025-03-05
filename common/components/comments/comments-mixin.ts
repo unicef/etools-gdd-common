@@ -1,11 +1,11 @@
 import {RootState} from '../../types/store.types';
 import {LitElement} from 'lit';
-import {CommentsCollection} from './comments.reducer';
+import {GDDCommentsCollection} from './comments.reducer';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import './comments-dialog';
 import '../comments-panels/comments-panels';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
+import {Constructor, GDDComment} from '@unicef-polymer/etools-types';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
@@ -46,15 +46,15 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private currentInterventionId: number | null = null;
-    private comments: CommentsCollection = {};
+    private comments: GDDCommentsCollection = {};
     private metaDataCollection: MetaData[] = [];
     private commentsModeEnabled = false;
     private currentEditedComments: MetaData | null = null;
 
     stateChanged(state: RootState) {
-      const commentsState = state.commentsData;
+      const commentsState = state.gddCommentsData;
       this.currentInterventionId =
-        Number(state.app.routeDetails?.params?.interventionId) || state.interventions?.current?.id || null;
+        Number(state.app.routeDetails?.params?.interventionId) || state.gddInterventions?.current?.id || null;
       if (!commentsState || !this.currentInterventionId) {
         return;
       }
@@ -255,7 +255,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private createOverlay(relatedTo: string): HTMLElement {
-      const comments: InterventionComment[] = this.comments[relatedTo] || [];
+      const comments: GDDComment[] = this.comments[relatedTo] || [];
       const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
       const element: HTMLElement = Object.assign(document.createElement('div'), {className: 'commentsOverlay'});
       element.setAttribute('tabindex', '0');
@@ -295,7 +295,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private updateCounter(meta: MetaData): void {
-      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const comments: GDDComment[] = this.comments[meta.relatedTo] || [];
       meta.element.style.cssText = `
         position: relative;
       `;
@@ -308,7 +308,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private updateBorderColor(meta: MetaData) {
-      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const comments: GDDComment[] = this.comments[meta.relatedTo] || [];
       const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
       // @ts-ignore
       meta.overlay.style['box-shadow'] = `inset 0px 0px 0px 3px ${borderColor}
@@ -323,14 +323,14 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     _handleFocus(meta: MetaData) {
-      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const comments: GDDComment[] = this.comments[meta.relatedTo] || [];
       const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
       // eslint-disable-next-line max-len
       meta.overlay.style.boxShadow = `inset 0px 0px 0px 3px ${borderColor}, 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4)`;
     }
 
     _handleBlur(meta: MetaData) {
-      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const comments: GDDComment[] = this.comments[meta.relatedTo] || [];
       const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
       meta.overlay.style.boxShadow = `inset 0px 0px 0px 3px ${borderColor}`;
     }
@@ -338,12 +338,12 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private onTriggerListener(meta: MetaData, shouldRefocus?: boolean) {
       this.currentEditedComments = meta;
       openDialog({
-        dialog: 'comments-dialog',
+        dialog: 'gdd-comments-dialog',
         dialogData: {
           interventionId: this.currentInterventionId,
           relatedTo: meta.relatedTo,
           relatedToDescription: meta.relatedToDescription,
-          endpoints: getStore().getState().commentsData.endpoints
+          endpoints: getStore().getState().gddCommentsData.endpoints
         }
       }).then(() => {
         this.currentEditedComments = null;

@@ -16,10 +16,10 @@ export interface EtoolsEndpoints {
   resultLinks: EtoolsEndpoint;
   ramIndicators: EtoolsEndpoint;
   resultLinkGetDelete: EtoolsEndpoint;
-  pdOutputDetails: EtoolsEndpoint;
-  createPdOutput: EtoolsEndpoint;
-  pdActivityDetails: EtoolsEndpoint;
-  pdActivities: EtoolsEndpoint;
+  keyInterventionDetails: EtoolsEndpoint;
+  createKeyIntervention: EtoolsEndpoint;
+  gddActivityDetails: EtoolsEndpoint;
+  gddActivities: EtoolsEndpoint;
   interventionBudgetUpdate: EtoolsEndpoint;
   supplyAgreementAdd: EtoolsEndpoint;
   supplyAgreementEdit: EtoolsEndpoint;
@@ -37,7 +37,7 @@ export interface EtoolsEndpoints {
   interventionProgress: EtoolsEndpoint;
   prpToken: EtoolsEndpoint;
   reports: EtoolsEndpoint;
-  expectedResultsExport: EtoolsEndpoint;
+  GDDExpectedResultsExport: EtoolsEndpoint;
   riskDelete: EtoolsEndpoint;
   pdAttachments: EtoolsEndpoint;
   updatePdAttachment: EtoolsEndpoint;
@@ -52,18 +52,43 @@ export interface EtoolsEndpoints {
   exportXls: EtoolsEndpoint;
   interventionReview: EtoolsEndpoint;
   sendReviewNotification: EtoolsEndpoint;
+  sendAuthorizedOfficerReviewNotification: EtoolsEndpoint;
   officersReviews: EtoolsEndpoint;
   officerReviewData: EtoolsEndpoint;
   interventionPVDelete: EtoolsEndpoint;
   exportReviewPdf: EtoolsEndpoint;
+  eWorkPlans: EtoolsEndpoint;
+  ewpOutputs: EtoolsEndpoint;
+  ewpKeyInterventions: EtoolsEndpoint;
+  ewpActivities: EtoolsEndpoint;
+  getSyncResultsStructure: EtoolsEndpoint;
+  syncResultsStructure: EtoolsEndpoint;
 }
 
-export const interventionEndpoints: EtoolsEndpoints = {
+export const gddEndpoints: EtoolsEndpoints = {
+  eWorkPlans: {
+    template: '/api/gdd/dropdown-options/e-workplans/?country_programme_id=<%=countryProgrameId%>'
+  },
+  ewpOutputs: {
+    template: '/api/gdd/dropdown-options/ewp-outputs/?gdd_id=<%=gddId%>'
+  },
+  ewpKeyInterventions: {
+    template: '/api/gdd/dropdown-options/ewp-key-interventions/?ewp_output_id=<%=ewpOutputId%>'
+  },
+  ewpActivities: {
+    template: '/api/gdd/dropdown-options/ewp-activities/?ewp_key_intervention_id=<%=keyInterventionId%>'
+  },
   intervention: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/'
+    template: '/api/gdd/gdds/<%=interventionId%>/'
+  },
+  getSyncResultsStructure: {
+    template: '/api/gdd/gdds/<%=interventionId%>/sync-results-structure/'
+  },
+  syncResultsStructure: {
+    template: '/api/gdd/gdds/<%=interventionId%>/sync-results-structure/'
   },
   interventionAction: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/<%=action%>/'
+    template: '/api/gdd/gdds/<%=interventionId%>/<%=action%>/'
   },
   partnerStaffMembers: {
     template: '/api/pmp/v3/partners/<%=id%>/staff-members/'
@@ -72,13 +97,13 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/pmp/v3/agreements/?partner_id=<%=id%>'
   },
   specialReportingRequirements: {
-    template: '/api/reports/v3/interventions/<%=intervId%>/special-reporting-requirements/'
+    template: '/api/gdd/gdds/<%=intervId%>/special-reporting-requirements/'
   },
   reportingRequirements: {
-    template: '/api/pmp/v3/interventions/<%=intervId%>/reporting-requirements/<%=reportType%>/'
+    template: '/api/gdd/gdds/<%=intervId%>/reporting-requirements/<%=reportType%>/'
   },
   specialReportingRequirementsUpdate: {
-    template: '/api/v2/reports/interventions/special-reporting-requirements/<%=reportId%>/'
+    template: '/api/gdd/gdds/<%=intervId%>/special-reporting-requirements/<%=reportId%>/'
   },
   monitoringVisits: {
     template: '/api/t2f/travels/activities/partnership/<%=id%>/?year=<%=year%>'
@@ -95,73 +120,73 @@ export const interventionEndpoints: EtoolsEndpoints = {
       '/api/tpm/activities/?tpm_visit__status=unicef_approved&date__year=<%=year%>&intervention=<%=interventionId%>'
   },
   resultLinksDetails: {
-    template: '/api/pmp/v3/interventions/<%=id%>/results-structure/'
+    template: '/api/gdd/gdds/<%=id%>/results-structure/'
   },
   resultLinks: {
-    template: '/api/v2/interventions/<%=id%>/result-links/'
+    template: '/api/gdd/gdds/<%=id%>/result-links/'
   },
   resultLinkGetDelete: {
-    template: '/api/v2/interventions/result-links/<%=result_link%>/'
+    template: '/api/gdd/gdds/<%=interventionId%>/result-links/<%=result_link%>/'
   },
   ramIndicators: {
     template: '/api/v2/reports/results/<%=id%>/indicators/'
   },
-  pdOutputDetails: {
-    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/<%=pd_id%>/'
+  keyInterventionDetails: {
+    template: '/api/gdd/gdds/<%=intervention_id%>/key-interventions/<%=pd_id%>/'
   },
-  createPdOutput: {
-    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/'
+  createKeyIntervention: {
+    template: '/api/gdd/gdds/<%=intervention_id%>/key-interventions/'
   },
-  pdActivities: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/'
+  gddActivities: {
+    template: '/api/gdd/gdds/<%=interventionId%>/key-interventions/<%=keyInterventionId%>/activities/'
+  },
+  gddActivityDetails: {
+    template: '/api/gdd/gdds/<%=interventionId%>/key-interventions/<%=keyInterventionId%>/activities/<%=activityId%>/'
   },
   interventionBudgetUpdate: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/budget/'
-  },
-  pdActivityDetails: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/<%=activityId%>/'
+    template: '/api/gdd/gdds/<%=interventionId%>/budget/'
   },
   supplyAgreementAdd: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/supply/'
+    template: '/api/gdd/gdds/<%=interventionId%>/supply/'
   },
   supplyAgreementEdit: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/supply/<%=supplyId%>/'
+    template: '/api/gdd/gdds/<%=interventionId%>/supply/<%=supplyId%>/'
   },
   attachmentsUpload: {
     url: '/api/v2/attachments/upload/'
   },
   supplyItemsUpload: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/supply/upload/'
+    template: '/api/gdd/gdds/<%=interventionId%>/supply/upload/'
   },
   interventionAmendmentAdd: {
-    template: '/api/v2/interventions/<%=intervId%>/amendments/'
+    template: '/api/gdd/gdds/<%=intervId%>/amendments/'
   },
   interventionAmendmentDelete: {
-    template: '/api/v2/interventions/amendments/<%=amendmentId%>/'
+    template: '/api/gdd/gdds/amendments/<%=amendmentId%>/'
   },
   frNumbersDetails: {
-    url: '/api/v2/funds/frs'
+    url: '/api/gdd/frs'
   },
   comments: {
-    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/'
+    template: '/api/comments/v1/governments/gdd/<%=interventionId%>/'
   },
   resolveComment: {
-    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/resolve/'
+    template: '/api/comments/v1/governments/gdd/<%=interventionId%>/<%=commentId%>/resolve/'
   },
   deleteComment: {
-    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
+    template: '/api/comments/v1/governments/gdd/<%=interventionId%>/<%=commentId%>/delete/'
   },
   downloadComment: {
-    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/csv/'
+    template: '/api/comments/v1/governments/gdd/<%=interventionId%>/csv/'
   },
   lowerResultsDelete: {
-    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/<%=lower_result_id%>/'
+    template: '/api/gdd/gdds/<%=intervention_id%>/key-interventions/<%=lower_result_id%>/'
   },
   createIndicator: {
-    template: '/api/pmp/v3/interventions/lower-results/<%=id%>/indicators/'
+    template: '/api/gdd/gdds/lower-results/<%=id%>/indicators/'
   },
   getEditDeleteIndicator: {
-    template: '/api/pmp/v3/interventions/applied-indicators/<%=id%>/'
+    template: '/api/gdd/gdds/applied-indicators/<%=id%>/'
   },
   cpOutputRamIndicators: {
     template: '/api/v2/interventions/<%=intervention_id%>/output_cp_indicators/<%=cp_output_id%>/'
@@ -177,29 +202,32 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/unicef/<%=countryId%>/progress-reports/',
     token: 'prp'
   },
-  expectedResultsExport: {
+  GDDExpectedResultsExport: {
     template: '/api/reports/v3/interventions/results/<%=intervention_id%>/?format=docx_table'
   },
   riskDelete: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/risks/<%=riskId%>'
+    template: '/api/gdd/gdds/<%=interventionId%>/risks/<%=riskId%>'
   },
   pdAttachments: {
-    template: '/api/pmp/v3/interventions/<%=id%>/attachments/'
+    template: '/api/gdd/gdds/<%=id%>/attachments/'
   },
   interventionReview: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=id%>/'
+    template: '/api/gdd/gdds/<%=interventionId%>/reviews/<%=id%>/'
   },
   sendReviewNotification: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=id%>/notify/'
+    template: '/api/gdd/gdds/<%=interventionId%>/reviews/<%=id%>/notify/'
+  },
+  sendAuthorizedOfficerReviewNotification: {
+    template: '/api/gdd/gdds/<%=interventionId%>/reviews/<%=id%>/notify-authorized-officer/'
   },
   officersReviews: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=id%>/officers-reviews/'
+    template: '/api/gdd/gdds/<%=interventionId%>/reviews/<%=id%>/officers-reviews/'
   },
   officerReviewData: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=id%>/officers-reviews/<%=userId%>/'
+    template: '/api/gdd/gdds/<%=interventionId%>/reviews/<%=id%>/officers-reviews/<%=userId%>/'
   },
   updatePdAttachment: {
-    template: '/api/pmp/v3/interventions/<%=id%>/attachments/<%=attachment_id%>/'
+    template: '/api/gdd/gdds/<%=id%>/attachments/<%=attachment_id%>/'
   },
   getPrpClusterIndicators: {
     // by cluster id
@@ -226,15 +254,15 @@ export const interventionEndpoints: EtoolsEndpoints = {
     cachingKey: 'prpCountries'
   },
   exportPdf: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/pdf'
+    template: '/api/gdd/gdds/<%=interventionId%>/pdf'
   },
   exportXls: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/xls'
+    template: '/api/gdd/gdds/<%=interventionId%>/xls'
   },
   interventionPVDelete: {
     template: '/api/v2/interventions/<%=intervention_id%>/planned-visits/<%=id%>/'
   },
   exportReviewPdf: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=reviewId%>/pdf'
+    template: '/api/gdd/gdds/<%=interventionId%>/reviews/<%=reviewId%>/pdf'
   }
 };

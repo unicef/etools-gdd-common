@@ -7,18 +7,18 @@ import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {gddEndpoints} from '../utils/intervention-endpoints';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
 /**
  * @customElement
  */
-@customElement('monitoring-visits-list')
-export class MonitoringVisitsList extends LitElement {
+@customElement('gdd-monitoring-visits-list')
+export class GDDMonitoringVisitsList extends LitElement {
   static get styles() {
     return [layoutStyles];
   }
@@ -175,7 +175,7 @@ export class MonitoringVisitsList extends LitElement {
 
     this.showLoading = true;
     const url =
-      getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.fmActivities).url +
+      getEndpoint<EtoolsEndpoint, RequestEndpoint>(gddEndpoints.fmActivities).url +
       `&interventions__in=${interventionId}`;
 
     sendRequest({endpoint: {url: url}})
